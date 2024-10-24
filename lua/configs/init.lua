@@ -18,7 +18,30 @@ require("configs.globals")
 require("configs.keymaps")
 require("configs.options")
 
-local plugins = "plugins"
-local opts = {}
+local plugins = {
+    { import = "settings" },
+    { import = "plugins" },
+    { import = "plugins.editor" },
+    { import = "plugins.languages" }
+}
+local opts = {
+    performance = {
+        cache = {
+            enabled = true,
+        },
+        rtp = {
+            disabled_plugins = {
+                "gzip",
+                "matchit",
+                "matchparen",
+                "netrwPlugin",
+                "tarPlugin",
+                "tohtml",
+                "tutor",
+                "zipPlugin",
+            },
+        },
+    },
+}
 
 require("lazy").setup(plugins, opts)
