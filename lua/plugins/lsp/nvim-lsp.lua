@@ -1,5 +1,3 @@
-local map_key = require("utils.key_mapper").map_key
-
 return {
     {
         "neovim/nvim-lspconfig",
@@ -44,12 +42,6 @@ return {
             lspconfig.html.setup({})
             lspconfig.htmx.setup({})
             lspconfig.tailwindcss.setup({})
-
-            -- keymaps
-            map_key("K", vim.lsp.buf.hover)
-            map_key("gd", vim.lsp.buf.definition)
-            map_key("<leader>cc", vim.diagnostic.open_float)
-            map_key("<leader>ca", vim.lsp.buf.code_action)
         end,
     }
 }

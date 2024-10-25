@@ -22,10 +22,10 @@ vim.opt.rtp:prepend(lazypath)
 
 -- Plugin specifications
 local plugins = {
-    { import = "plugins.ui" },
-    { import = "plugins.editor" },
     { import = "plugins.coding" },
+    { import = "plugins.editor" },
     { import = "plugins.lsp" },
+    { import = "plugins.ui" },
 }
 
 -- Lazy.nvim options

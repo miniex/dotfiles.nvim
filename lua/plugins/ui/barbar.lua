@@ -12,7 +12,7 @@ return {
 
         map_key("<leader>j", ":BufferPrevious<CR>")
         map_key("<leader>k", ":BufferNext<CR>")
-        map_key("<leader>c", ":BufferClose<CR>")
+        map_key("<leader>x", ":BufferClose<CR>")
     end,
     opts = {
     },
