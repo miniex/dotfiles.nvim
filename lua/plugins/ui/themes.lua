@@ -10,7 +10,6 @@ return {
                 italic_comments = false,
                 hide_fillchars = false,
                 borderless_telescope = true,
-                
                 theme = {
                     colors = {
                         bg = "#111213",

@@ -1,16 +1,4 @@
 return {
-    {
-        "windwp/nvim-autopairs",
-        event = "InsertEnter",
-        config = true,
-    },
-    {
-        "numToStr/Comment.nvim",
-        opts = {
-            -- add any options here
-        },
-        lazy = false,
-    },
 	{
 		"hrsh7th/nvim-cmp",
 		event = { "BufReadPost", "BufNewFile" },
