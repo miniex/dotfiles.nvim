@@ -5,7 +5,7 @@ return {
 
         conform.setup({
             formatters_by_ft = {
-                toml = { "taplo" },
+                cmake = { "cmake_format" },
             },
         })
     end

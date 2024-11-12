@@ -31,6 +31,9 @@ return {
                 "rust",
                 "ron",
 
+                -- cmake
+                "cmake",
+
                 -- web
                 "css", "scss",
                 "html",

@@ -38,10 +38,15 @@ return {
                     "marksman",
                     -- rust
                     "rust_analyzer",
+                    -- python
+                    "ruff",
                     -- svelte
                     "svelte",
                     -- toml
                     "taplo",
+                    -- cmake
+                    "neocmake",
+
                     -- web
                     "html",
                     "htmx",
