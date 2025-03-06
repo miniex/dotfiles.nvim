@@ -30,6 +30,9 @@ return {
             -- rust
             lspconfig.rust_analyzer.setup({
                 root_dir = util.root_pattern("Cargo.toml"),
+                on_attach = function(client, bufnr)
+                    client.server_capabilities.didChangeWatchedFilesDynamicRegistration = true
+                end,
                 settings = {
                     ["rust-analyzer"] = {
                         procMacro = { enable = true },
@@ -37,6 +40,9 @@ return {
                         checkOnSave = {
                             command = "clippy",
                             extraArgs = { "--no-deps" },
+                        },
+                        files = {
+                            watcher = "client",
                         },
                     },
                 },

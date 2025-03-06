@@ -51,3 +51,17 @@ local opts = {
 
 -- Initialize lazy.nvim
 require("lazy").setup(plugins, opts)
+
+-- WSL2 clip
+local clip = '/mnt/c/Windows/System32/clip.exe'
+
+-- Check if clip.exe exists
+if vim.fn.executable(clip) == 1 then
+    vim.api.nvim_create_autocmd('TextYankPost', {
+        group = vim.api.nvim_create_augroup('WSLYank', { clear = true }),
+        callback = function()
+            local content = table.concat(vim.v.event.regcontents, '\n')
+            os.execute(string.format('echo %s | %s', vim.fn.shellescape(content), clip))
+        end,
+    })
+end
