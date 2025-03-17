@@ -44,6 +44,9 @@ return {
                         files = {
                             watcher = "client",
                         },
+                        diagnostics = {
+                            disabled = { "inactive-code" },
+                        },
                     },
                 },
             })
