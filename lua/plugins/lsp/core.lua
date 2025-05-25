@@ -21,6 +21,8 @@ return {
             lspconfig.somesass_ls.setup({})
             -- javascript + typescript
             lspconfig.ts_ls.setup({})
+            -- python
+            lspconfig.pyright.setup({})
             -- json
             lspconfig.jsonls.setup({})
             -- lua

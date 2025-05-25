@@ -15,7 +15,7 @@ return {
         cmd = { "TSUpdateSync" },
         keys = {
             { "<c-space>", desc = "Increment selection" },
-            { "<bs>", desc = "Decrement selection", mode = "x" },
+            { "<bs>",      desc = "Decrement selection", mode = "x" },
         },
         opts = {
             highlight = { enable = true },
@@ -41,6 +41,9 @@ return {
                 "typescript",
                 "tsx",
                 "svelte",
+
+                -- python
+                "ninja", "rst",
 
                 -- doc
                 "json", "json5",
@@ -100,7 +103,7 @@ return {
         "rayliwell/tree-sitter-rstml",
         dependencies = { "nvim-treesitter" },
         build = ":TSUpdate",
-        config = function ()
+        config = function()
             require("tree-sitter-rstml").setup()
         end
     },

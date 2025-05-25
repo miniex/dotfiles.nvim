@@ -25,6 +25,7 @@ local plugins = {
     { import = "plugins.coding" },
     { import = "plugins.editor" },
     { import = "plugins.lsp" },
+    { import = "plugins.nvim" },
     { import = "plugins.ui" },
 }
 
