@@ -24,3 +24,9 @@ opt.encoding = "UTF-8"
 opt.cmdheight = 1
 opt.scrolloff = 10
 opt.mouse:append("a")
+
+-- Auto reload file when changed externally
+opt.autoread = true
+vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold" }, {
+    command = "checktime",
+})
