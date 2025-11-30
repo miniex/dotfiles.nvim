@@ -39,6 +39,8 @@ return {
             popup_border_style = "rounded",
             enable_git_status = true,
             enable_diagnostics = true,
+            async_directory_scan = "auto",
+            git_status_async = true,
             git_status = {
                 symbols = {
                     -- Change type
@@ -84,5 +86,15 @@ return {
         vim.cmd([[nnoremap \ :Neotree reveal<cr>]])
 
         map_key("<leader>e", ":Neotree toggle<cr>")
+
+        -- auto-refresh git status on focus
+        vim.api.nvim_create_autocmd("FocusGained", {
+            pattern = "*",
+            callback = function()
+                if package.loaded["neo-tree.sources.manager"] then
+                    require("neo-tree.sources.manager").refresh("filesystem")
+                end
+            end,
+        })
     end,
 }
