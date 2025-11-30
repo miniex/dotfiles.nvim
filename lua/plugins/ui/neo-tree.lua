@@ -73,6 +73,11 @@ return {
                         "node_modules",
                     },
                 },
+                use_libuv_file_watcher = true, -- auto-detect external file changes
+                bind_to_cwd = true,
+                follow_current_file = {
+                    enabled = true,
+                },
             },
         })
 
