@@ -11,9 +11,8 @@ return {
                 },
                 on_open = function(term)
                     local opts = { buffer = term.bufnr }
-                    vim.keymap.set("n", "<Esc>", ":ToggleTerm<CR>", opts)
-                    vim.keymap.set("n", "q", ":ToggleTerm<CR>", opts)
-                    vim.keymap.set("t", "<Esc>", "<C-\\><C-n>:ToggleTerm<CR>", opts)
+                    vim.keymap.set("t", "<C-x>", [[<C-\><C-n><cmd>ToggleTerm<CR>]], opts)
+                    vim.keymap.set("n", "<C-x>", "<cmd>ToggleTerm<CR>", opts)
                 end,
             })
 

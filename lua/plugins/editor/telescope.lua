@@ -3,8 +3,11 @@ local map_key = require("utils.key_mapper").map_key
 return {
     {
         "nvim-telescope/telescope.nvim",
-        tag = "0.1.6",
-        dependencies = { "nvim-lua/plenary.nvim" },
+        version = "*",
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+            { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
+        },
         config = function()
             local builtin = require("telescope.builtin")
 

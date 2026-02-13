@@ -29,6 +29,7 @@ return {
             lua = { "stylua" },
             markdown = { "prettierd", "prettier", stop_after_first = true },
             python = { "isort", "black" },
+            ron = { "rustfmt" },
             rust = { "rustfmt" },
             toml = { "taplo" },
             yaml = { "prettierd", "prettier", stop_after_first = true },

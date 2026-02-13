@@ -5,9 +5,8 @@ return {
     branch = "v3.x",
     dependencies = {
         "nvim-lua/plenary.nvim",
-        "nvim-tree/nvim-web-devicons",
+        "nvim-tree/nvim-web-devicons", -- Required for file icons
         "MunifTanjim/nui.nvim",
-        -- "3rd/image.nvim", -- Optional image support in preview window: See `# Preview Mode` for more information
         {
             "s1n7ax/nvim-window-picker",
             version = "2.*",
@@ -16,11 +15,8 @@ return {
                     filter_rules = {
                         include_current_win = false,
                         autoselect_one = true,
-                        -- filter using buffer options
                         bo = {
-                            -- if the file type is one of following, the window will be ignored
                             filetype = { "neo-tree", "neo-tree-popup", "notify" },
-                            -- if the buffer type is one of following, the window will be ignored
                             buftype = { "terminal", "quickfix" },
                         },
                     },
@@ -29,72 +25,89 @@ return {
         },
     },
     config = function()
-        vim.fn.sign_define("DiagnosticSignError", { text = " ", texthl = "DiagnosticSignError" })
-        vim.fn.sign_define("DiagnosticSignWarn", { text = " ", texthl = "DiagnosticSignWarn" })
-        vim.fn.sign_define("DiagnosticSignInfo", { text = " ", texthl = "DiagnosticSignInfo" })
-        vim.fn.sign_define("DiagnosticSignHint", { text = "󰌵", texthl = "DiagnosticSignHint" })
+        -- Modern Diagnostic Signs
+        local signs = { Error = "󰅚 ", Warn = "󰀪 ", Hint = "󰌶 ", Info = "󰋽 " }
+        for type, icon in pairs(signs) do
+            local hl = "DiagnosticSign" .. type
+            vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
+        end
 
         require("neo-tree").setup({
             close_if_last_window = true,
             popup_border_style = "rounded",
             enable_git_status = true,
             enable_diagnostics = true,
-            async_directory_scan = "auto",
-            git_status_async = true,
-            git_status = {
-                symbols = {
-                    -- Change type
-                    added = "", -- or "✚", but this is redundant info if you use git_status_colors on the name
-                    modified = "", -- or "", but this is redundant info if you use git_status_colors on the name
-                    deleted = "✖", -- this can only be used in the git_status source
-                    renamed = "󰁕", -- this can only be used in the git_status source
-                    -- Status type
-                    untracked = "",
-                    ignored = "",
-                    unstaged = "󰄱",
-                    staged = "",
-                    conflict = "",
+
+            default_component_configs = {
+                container = { enable_character_fade = true },
+                indent = {
+                    indent_size = 2,
+                    padding = 1,
+                    with_markers = true,
+                    indent_marker = "│",
+                    last_indent_marker = "└",
+                    highlight = "NeoTreeIndentMarker",
+                    with_expanders = true, -- Adds arrows for folders
+                    expander_collapsed = "",
+                    expander_expanded = "",
+                },
+                icon = {
+                    folder_closed = "",
+                    folder_open = "",
+                    folder_empty = "󰜌",
+                    -- The "default" icon for unknown files
+                    default = "󰈚",
+                    highlight = "NeoTreeFileIcon"
+                },
+                modified = {
+                    symbol = "●", -- Simple dot for modified files
+                    highlight = "NeoTreeModified",
+                },
+                git_status = {
+                    symbols = {
+                        -- Change type
+                        added     = "✚",
+                        modified  = "",
+                        deleted   = "✖",
+                        renamed   = "󰁕",
+                        -- Status type
+                        untracked = "",
+                        ignored   = "",
+                        unstaged  = "󰄱",
+                        staged    = "",
+                        conflict  = "",
+                    }
                 },
             },
+
             window = {
                 position = "left",
-                width = 40,
+                width = 35,
+                mapping_options = { noremap = true, nowait = true },
+                mappings = {
+                    ["<space>"] = "none",
+                    ["l"] = "open",       -- Better navigation: l to open
+                    ["h"] = "close_node", -- Better navigation: h to collapse
+                    ["P"] = { "toggle_preview", config = { use_float = true } },
+                }
             },
+
             filesystem = {
                 filtered_items = {
                     visible = false,
                     hide_dotfiles = false,
                     hide_gitignored = false,
-                    hide_hidden = false,
                     hide_by_name = {
-                        ".git",
-                        ".DS_Store",
-                        "thumbs.db",
-
-                        -- node.js
-                        "node_modules",
+                        ".git", ".DS_Store", "thumbs.db", "node_modules", "__pycache__"
                     },
                 },
-                use_libuv_file_watcher = true, -- auto-detect external file changes
-                bind_to_cwd = true,
-                follow_current_file = {
-                    enabled = true,
-                },
+                follow_current_file = { enabled = true },
+                use_libuv_file_watcher = true,
             },
         })
 
-        vim.cmd([[nnoremap \ :Neotree reveal<cr>]])
-
+        -- Modern Keybindings
         map_key("<leader>e", ":Neotree toggle<cr>")
-
-        -- auto-refresh git status on focus
-        vim.api.nvim_create_autocmd("FocusGained", {
-            pattern = "*",
-            callback = function()
-                if package.loaded["neo-tree.sources.manager"] then
-                    require("neo-tree.sources.manager").refresh("filesystem")
-                end
-            end,
-        })
+        map_key("<leader>o", ":Neotree reveal<cr>")
     end,
 }
