@@ -7,4 +7,11 @@ vim.filetype.add({
 
 vim.treesitter.language.register("cpp", "metal")
 
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = "metal",
+    callback = function(args)
+        vim.treesitter.start(args.buf, "cpp")
+    end,
+})
+
 return {}
