@@ -27,7 +27,6 @@ return {
             json = { "prettierd", "prettier", stop_after_first = true },
             jsonc = { "prettierd", "prettier", stop_after_first = true },
             lua = { "stylua" },
-            metal = { "clang-format" },
             markdown = { "prettierd", "prettier", stop_after_first = true },
             python = { "isort", "black" },
             ron = { "rustfmt" },
