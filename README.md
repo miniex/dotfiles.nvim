@@ -221,8 +221,11 @@ A modern, modular Neovim configuration with powerful LSP support, built for effi
 - Neovim >= 0.9.0
 - Git
 - A [Nerd Font](https://www.nerdfonts.com/) (for icons)
+- C compiler (`gcc` or `clang`) + `make` (for telescope-fzf-native, LuaSnip)
 - ripgrep (for Telescope live grep)
-- Node.js (for some LSP servers)
+- Node.js & npm (for LSP servers, JS/TS tools)
+- Python 3 & pip (for Python linters/formatters)
+- Rust toolchain via [rustup](https://rustup.rs/) (for rustfmt, rust-analyzer)
 
 ### Install
 
@@ -247,12 +250,57 @@ A modern, modular Neovim configuration with powerful LSP support, built for effi
    - Open Neovim and run `:Mason`
    - All configured servers will be automatically installed via Mason
 
-### External Tools (for linting)
+### Mason Auto-installed (LSP servers & DAP)
+
+These are installed automatically via Mason on first launch:
+
+| Tool            | Purpose                    |
+|-----------------|----------------------------|
+| clangd          | C/C++ LSP                  |
+| neocmake        | CMake LSP                  |
+| vtsls           | JavaScript/TypeScript LSP  |
+| jsonls          | JSON LSP                   |
+| lua-language-server | Lua LSP              |
+| marksman        | Markdown LSP               |
+| rust-analyzer   | Rust LSP                   |
+| codelldb        | Rust DAP debugger          |
+
+### External Tools
+
+Formatters and linters that need to be installed separately:
+
+#### Formatters
 
 ```bash
-npm i -g eslint_d          # JavaScript/TypeScript linting
-pip install ruff           # Python linting
-brew install markdownlint-cli  # Markdown linting
+# C/C++/Metal
+brew install clang-format
+
+# CMake
+pip install cmakelang            # provides cmake_format
+
+# JavaScript/TypeScript/CSS/HTML/JSON/Markdown/YAML
+npm i -g @fsouza/prettierd       # prettierd (preferred)
+npm i -g prettier                # prettier (fallback)
+
+# Lua
+brew install stylua
+
+# Python
+pip install isort black
+
+# Rust/RON
+rustup component add rustfmt     # comes with Rust toolchain
+
+# TOML
+brew install taplo
+```
+
+#### Linters
+
+```bash
+npm i -g eslint_d                # JavaScript/TypeScript
+pip install ruff                 # Python
+brew install markdownlint-cli    # Markdown
 ```
 
 ### WSL2 Clipboard Integration
