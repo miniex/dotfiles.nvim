@@ -41,7 +41,7 @@ return {
             default_component_configs = {
                 container = { enable_character_fade = true },
                 indent = {
-                    indent_size = 2,
+                    indent_size = 1,
                     padding = 1,
                     with_markers = true,
                     indent_marker = "│",
@@ -82,7 +82,7 @@ return {
 
             window = {
                 position = "left",
-                width = 35,
+                width = 70,
                 mapping_options = { noremap = true, nowait = true },
                 mappings = {
                     ["<space>"] = "none",
