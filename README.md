@@ -62,7 +62,6 @@ A modern, modular Neovim configuration with powerful LSP support, built for effi
         ├── ui/                 # UI plugins
         │   ├── themes.lua      # Cyberdream theme
         │   ├── lualine.lua     # Status line
-        │   ├── bufferline.lua  # Buffer tabs
         │   ├── neo-tree.lua    # File explorer
         │   └── alpha.lua       # Dashboard
         ├── lang/               # Language configs
@@ -115,14 +114,6 @@ A modern, modular Neovim configuration with powerful LSP support, built for effi
 | `l`          | Open file/folder         |
 | `h`          | Collapse folder          |
 | `P`          | Preview in float         |
-
-### Buffer Navigation (Bufferline)
-
-| Key          | Description              |
-|--------------|--------------------------|
-| `<Tab>`      | Next buffer              |
-| `<S-Tab>`    | Previous buffer          |
-| `<leader>x`  | Close buffer             |
 
 ### LSP
 
