@@ -12,6 +12,7 @@ A modern, modular Neovim configuration with powerful LSP support, built for effi
 - **Auto-completion** - Intelligent completion with nvim-cmp
 - **Debug Support** - DAP integration for Rust (CodeLLDB)
 - **Syntax Highlighting** - Tree-sitter powered syntax highlighting
+- **Status Line** - Custom lualine with mode, git branch, diagnostics, and diff indicators
 - **Git Integration** - Fugitive, gitsigns, and commit message completions
 - **Formatting** - Auto format-on-save with conform.nvim
 - **Linting** - nvim-lint with eslint_d, ruff, markdownlint
