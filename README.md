@@ -18,6 +18,7 @@ A modern, modular Neovim configuration with powerful LSP support, built for effi
 - **Linting** - nvim-lint with eslint_d, ruff, markdownlint
 - **Diagnostics** - trouble.nvim for structured diagnostics panel
 - **Terminal** - Integrated floating terminal with toggleterm
+- **Auto Buffer Cleanup** - Automatically closes hidden buffers after 1 minute of inactivity to reduce memory usage
 
 ## Language Support
 
