@@ -15,8 +15,8 @@ A modern, modular Neovim configuration with powerful LSP support, built for effi
 - **Status Line** - Custom lualine with mode, git branch, diagnostics, and diff indicators
 - **Git Integration** - Fugitive, gitsigns, and commit message completions
 - **Formatting** - Auto format-on-save with conform.nvim
-- **Linting** - nvim-lint with eslint_d, ruff, markdownlint
-- **Diagnostics** - trouble.nvim for structured diagnostics panel
+- **Linting** - nvim-lint with eslint_d, ruff, markdownlint (runs on save, not while typing)
+- **Diagnostics** - trouble.nvim for structured diagnostics panel (deferred until normal mode for performance)
 - **Terminal** - Integrated floating terminal with toggleterm
 - **Auto Buffer Cleanup** - Automatically closes hidden buffers after 1 minute of inactivity to reduce memory usage
 

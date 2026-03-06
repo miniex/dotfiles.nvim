@@ -1,6 +1,6 @@
 return {
     "mfussenegger/nvim-lint",
-    event = { "BufReadPost", "BufWritePost", "InsertLeave" },
+    event = { "BufReadPost", "BufWritePost" },
     config = function()
         local lint = require("lint")
 
@@ -13,7 +13,7 @@ return {
             markdown = { "markdownlint" },
         }
 
-        vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost", "InsertLeave" }, {
+        vim.api.nvim_create_autocmd({ "BufEnter", "BufWritePost" }, {
             group = vim.api.nvim_create_augroup("nvim-lint", { clear = true }),
             callback = function()
                 lint.try_lint()
