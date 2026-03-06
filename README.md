@@ -85,127 +85,136 @@ A modern, modular Neovim configuration with powerful LSP support, built for effi
 
 ## Key Bindings
 
-### Global Keymaps
+> Leader key: `<Space>`
 
-| Key              | Mode   | Description                    |
-|------------------|--------|--------------------------------|
-| `<Space>`        | -      | Leader key                     |
-| `<C-h/j/k/l>`   | Normal | Navigate between splits        |
-| `<leader>h`      | Normal | Clear search highlighting      |
-| `<leader>s`      | Normal | Save file                      |
-| `<leader>d`      | N / V  | Delete without clipboard       |
-| `<leader>p`      | Visual | Paste without overwrite        |
-| `< / >`          | Visual | Indent/outdent (keep selection)|
+### Global (`configs/keymaps.lua`)
 
-### File Navigation (Telescope)
+| Key            | Mode     | Description                     |
+|----------------|----------|---------------------------------|
+| `<C-h/j/k/l>` | Normal   | Navigate between splits         |
+| `<leader>h`    | Normal   | Clear search highlighting       |
+| `<leader>s`    | Normal   | Save file                       |
+| `<leader>d`    | N / V    | Delete without yanking          |
+| `<leader>p`    | Visual   | Paste without overwriting register |
+| `< / >`        | Visual   | Indent/outdent (keep selection) |
 
-| Key          | Description           |
-|--------------|-----------------------|
-| `<leader>ff` | Find files            |
-| `<leader>fg` | Live grep (search)    |
-| `<leader>fr` | Recent files          |
-| `<leader>fb` | Find buffers          |
-| `<leader>fh` | Find help tags        |
+### File Navigation — Telescope (`plugins/editor/telescope.lua`)
 
-### File Explorer (Neo-tree)
+| Key          | Description        |
+|--------------|--------------------|
+| `<leader>ff` | Find files         |
+| `<leader>fg` | Live grep (search) |
+| `<leader>fr` | Recent files       |
+| `<leader>fb` | Find buffers       |
+| `<leader>fh` | Find help tags     |
 
-| Key          | Description              |
-|--------------|--------------------------|
-| `<leader>e`  | Toggle file tree         |
-| `<leader>o`  | Reveal current file      |
-| `l`          | Open file/folder         |
-| `h`          | Collapse folder          |
-| `P`          | Preview in float         |
+### File Explorer — Neo-tree (`plugins/ui/neo-tree.lua`)
 
-### LSP
+| Key         | Description         |
+|-------------|---------------------|
+| `<leader>e` | Toggle file tree    |
+| `<leader>o` | Reveal current file |
+| `l`         | Open file/folder    |
+| `h`         | Collapse folder     |
+| `P`         | Preview in float    |
 
-| Key          | Description              |
-|--------------|--------------------------|
-| `K`          | Hover documentation      |
-| `gd`         | Go to definition         |
-| `gr`         | Go to references         |
-| `gi`         | Go to implementation     |
-| `<leader>rn` | Rename symbol            |
-| `<leader>cc` | Show diagnostics float   |
-| `<leader>ca` | Code actions             |
-| `<leader>cf` | Format buffer            |
-| `<leader>cm` | Open Mason               |
+### LSP (`plugins/lang/lsp.lua`)
 
-### Diagnostics (Trouble)
+| Key          | Description            |
+|--------------|------------------------|
+| `K`          | Hover documentation    |
+| `gd`         | Go to definition       |
+| `gr`         | Go to references       |
+| `gi`         | Go to implementation   |
+| `<leader>rn` | Rename symbol          |
+| `<leader>cc` | Show diagnostics float |
+| `<leader>ca` | Code actions           |
+| `<leader>cf` | Format buffer (async)  |
+| `<leader>cm` | Open Mason             |
 
-| Key          | Description                    |
-|--------------|--------------------------------|
-| `<leader>xx` | Toggle diagnostics panel       |
-| `<leader>xd` | Buffer diagnostics only        |
-| `<leader>xs` | Symbols outline                |
-| `<leader>xq` | Quickfix list                  |
-| `<leader>xl` | Location list                  |
-| `[q / ]q`    | Previous/next item             |
-
-### Git
-
-| Key            | Description              |
-|----------------|--------------------------|
-| `<leader>gs`   | Git status               |
-| `<leader>gb`   | Git blame                |
-| `<leader>gd`   | Git diff                 |
-| `<leader>gl`   | Git log                  |
-| `<leader>gp`   | Git push                 |
-| `<leader>gP`   | Git pull                 |
-| `<leader>gc`   | Git commit               |
-| `]h / [h`      | Next/prev hunk           |
-| `<leader>ghs`  | Stage hunk               |
-| `<leader>ghr`  | Reset hunk               |
-| `<leader>ghS`  | Stage buffer             |
-| `<leader>ghu`  | Undo stage hunk          |
-| `<leader>ghR`  | Reset buffer             |
-| `<leader>ghp`  | Preview hunk             |
-| `<leader>ghi`  | Preview hunk inline      |
-| `<leader>ghb`  | Blame line (full)        |
-| `<leader>ghd`  | Diff this                |
-| `<leader>ghD`  | Diff this ~              |
-| `<leader>gtb`  | Toggle line blame        |
-| `<leader>gtd`  | Toggle deleted           |
-
-### Language-Specific
-
-#### Rust
-| Key          | Description              |
-|--------------|--------------------------|
-| `<leader>cR` | Rust code actions        |
-| `<leader>dr` | Rust debuggables         |
-
-#### C/C++
-| Key          | Description              |
-|--------------|--------------------------|
-| `<leader>ch` | Switch source/header     |
-
-### Terminal
+### Diagnostics — Trouble (`plugins/editor/trouble.lua`)
 
 | Key          | Description              |
 |--------------|--------------------------|
-| `<leader>t`  | Toggle floating terminal |
-| `<C-x>`      | Close terminal           |
+| `<leader>xx` | Toggle diagnostics panel |
+| `<leader>xd` | Buffer diagnostics only  |
+| `<leader>xs` | Symbols outline          |
+| `<leader>xq` | Quickfix list            |
+| `<leader>xl` | Location list            |
+| `[q`         | Previous item            |
+| `]q`         | Next item                |
 
-### Completion (Insert Mode)
+### Git — Fugitive (`plugins/lang/git.lua`)
 
-| Key          | Description              |
-|--------------|--------------------------|
-| `<Tab>`      | Next item                |
-| `<S-Tab>`    | Previous item            |
-| `<C-n/p>`    | Next/previous item       |
-| `<C-Space>`  | Trigger completion       |
-| `<CR>`       | Confirm selection        |
-| `<C-e>`      | Close completion         |
-| `<C-f>`      | Scroll docs down         |
-| `<C-S-f>`    | Scroll docs up           |
+| Key          | Description |
+|--------------|-------------|
+| `<leader>gs` | Git status  |
+| `<leader>gb` | Git blame   |
+| `<leader>gd` | Git diff    |
+| `<leader>gl` | Git log     |
+| `<leader>gp` | Git push    |
+| `<leader>gP` | Git pull    |
+| `<leader>gc` | Git commit  |
 
-### Treesitter
+### Git — Gitsigns (`plugins/lang/git.lua`)
 
-| Key          | Description              |
-|--------------|--------------------------|
-| `<C-Space>`  | Init/increment selection |
-| `<BS>`       | Decrement selection      |
+| Key           | Mode   | Description          |
+|---------------|--------|----------------------|
+| `]h`          | Normal | Next hunk            |
+| `[h`          | Normal | Previous hunk        |
+| `<leader>ghs` | N / V  | Stage hunk           |
+| `<leader>ghr` | N / V  | Reset hunk           |
+| `<leader>ghS` | Normal | Stage buffer         |
+| `<leader>ghu` | Normal | Undo stage hunk      |
+| `<leader>ghR` | Normal | Reset buffer         |
+| `<leader>ghp` | Normal | Preview hunk         |
+| `<leader>ghi` | Normal | Preview hunk inline  |
+| `<leader>ghb` | Normal | Blame line (full)    |
+| `<leader>ghd` | Normal | Diff this            |
+| `<leader>ghD` | Normal | Diff this ~          |
+| `<leader>gtb` | Normal | Toggle line blame    |
+| `<leader>gtd` | Normal | Toggle deleted       |
+
+### Rust (`plugins/lang/rust.lua`)
+
+| Key          | Description        |
+|--------------|--------------------|
+| `<leader>cR` | Rust code actions  |
+| `<leader>dr` | Rust debuggables   |
+
+### C/C++ (`plugins/lang/c-cpp.lua`)
+
+| Key          | Description          |
+|--------------|----------------------|
+| `<leader>ch` | Switch source/header |
+
+### Terminal (`plugins/editor/toggleterm.lua`)
+
+| Key         | Mode     | Description              |
+|-------------|----------|--------------------------|
+| `<leader>t` | Normal   | Toggle floating terminal |
+| `<C-x>`     | N / T    | Close terminal           |
+
+### Completion — nvim-cmp (`plugins/coding/completion.lua`)
+
+| Key         | Mode   | Description          |
+|-------------|--------|----------------------|
+| `<Tab>`     | Insert | Next item            |
+| `<S-Tab>`   | Insert | Previous item        |
+| `<C-n>`     | Insert | Next item            |
+| `<C-p>`     | Insert | Previous item        |
+| `<C-Space>` | Insert | Trigger completion   |
+| `<CR>`      | Insert | Confirm selection    |
+| `<C-e>`     | Insert | Close completion     |
+| `<C-f>`     | Insert | Scroll docs down     |
+| `<C-S-f>`   | Insert | Scroll docs up       |
+
+### Treesitter (`plugins/lang/treesitter.lua`)
+
+| Key         | Description                    |
+|-------------|--------------------------------|
+| `<C-Space>` | Init/increment node selection  |
+| `<BS>`      | Decrement node selection       |
 
 ## Installation
 
