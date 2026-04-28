@@ -21,13 +21,13 @@ return {
         "tpope/vim-fugitive",
         cmd = { "Git", "G", "Gstatus", "Gblame", "Gpush", "Gpull", "Gdiff", "Glog" },
         keys = {
-            { "<leader>gs", "<cmd>Git<cr>",               desc = "Git Status" },
-            { "<leader>gb", "<cmd>Git blame<cr>",         desc = "Git Blame" },
-            { "<leader>gd", "<cmd>Gdiffsplit<cr>",        desc = "Git Diff" },
+            { "<leader>gs", "<cmd>Git<cr>", desc = "Git Status" },
+            { "<leader>gb", "<cmd>Git blame<cr>", desc = "Git Blame" },
+            { "<leader>gd", "<cmd>Gdiffsplit<cr>", desc = "Git Diff" },
             { "<leader>gl", "<cmd>Git log --oneline<cr>", desc = "Git Log" },
-            { "<leader>gp", "<cmd>Git push<cr>",          desc = "Git Push" },
-            { "<leader>gP", "<cmd>Git pull<cr>",          desc = "Git Pull" },
-            { "<leader>gc", "<cmd>Git commit<cr>",        desc = "Git Commit" },
+            { "<leader>gp", "<cmd>Git push<cr>", desc = "Git Push" },
+            { "<leader>gP", "<cmd>Git pull<cr>", desc = "Git Pull" },
+            { "<leader>gc", "<cmd>Git commit<cr>", desc = "Git Commit" },
         },
     },
 
@@ -73,18 +73,24 @@ return {
                 -- Actions
                 map("n", "<leader>ghs", gs.stage_hunk, "Stage Hunk")
                 map("n", "<leader>ghr", gs.reset_hunk, "Reset Hunk")
-                map("v", "<leader>ghs", function() gs.stage_hunk({ vim.fn.line("."), vim.fn.line("v") }) end,
-                    "Stage Hunk")
-                map("v", "<leader>ghr", function() gs.reset_hunk({ vim.fn.line("."), vim.fn.line("v") }) end,
-                    "Reset Hunk")
+                map("v", "<leader>ghs", function()
+                    gs.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
+                end, "Stage Hunk")
+                map("v", "<leader>ghr", function()
+                    gs.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
+                end, "Reset Hunk")
                 map("n", "<leader>ghS", gs.stage_buffer, "Stage Buffer")
                 map("n", "<leader>ghu", gs.undo_stage_hunk, "Undo Stage Hunk")
                 map("n", "<leader>ghR", gs.reset_buffer, "Reset Buffer")
                 map("n", "<leader>ghp", gs.preview_hunk, "Preview Hunk")
                 map("n", "<leader>ghi", gs.preview_hunk_inline, "Preview Hunk Inline")
-                map("n", "<leader>ghb", function() gs.blame_line({ full = true }) end, "Blame Line")
+                map("n", "<leader>ghb", function()
+                    gs.blame_line({ full = true })
+                end, "Blame Line")
                 map("n", "<leader>ghd", gs.diffthis, "Diff This")
-                map("n", "<leader>ghD", function() gs.diffthis("~") end, "Diff This ~")
+                map("n", "<leader>ghD", function()
+                    gs.diffthis("~")
+                end, "Diff This ~")
 
                 -- Toggle
                 map("n", "<leader>gtb", gs.toggle_current_line_blame, "Toggle Line Blame")

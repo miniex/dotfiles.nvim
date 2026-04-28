@@ -1,5 +1,3 @@
-local map_key = require("utils.key_mapper").map_key
-
 return {
     "nvim-neo-tree/neo-tree.nvim",
     branch = "v3.x",
@@ -25,13 +23,6 @@ return {
         },
     },
     config = function()
-        -- Modern Diagnostic Signs
-        local signs = { Error = "󰅚 ", Warn = "󰀪 ", Hint = "󰌶 ", Info = "󰋽 " }
-        for type, icon in pairs(signs) do
-            local hl = "DiagnosticSign" .. type
-            vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
-        end
-
         require("neo-tree").setup({
             close_if_last_window = true,
             popup_border_style = "rounded",
@@ -57,7 +48,7 @@ return {
                     folder_empty = "󰜌",
                     -- The "default" icon for unknown files
                     default = "󰈚",
-                    highlight = "NeoTreeFileIcon"
+                    highlight = "NeoTreeFileIcon",
                 },
                 modified = {
                     symbol = "●", -- Simple dot for modified files
@@ -66,17 +57,17 @@ return {
                 git_status = {
                     symbols = {
                         -- Change type
-                        added     = "✚",
-                        modified  = "",
-                        deleted   = "✖",
-                        renamed   = "󰁕",
+                        added = "✚",
+                        modified = "",
+                        deleted = "✖",
+                        renamed = "󰁕",
                         -- Status type
                         untracked = "",
-                        ignored   = "",
-                        unstaged  = "󰄱",
-                        staged    = "",
-                        conflict  = "",
-                    }
+                        ignored = "",
+                        unstaged = "󰄱",
+                        staged = "",
+                        conflict = "",
+                    },
                 },
             },
 
@@ -86,10 +77,10 @@ return {
                 mapping_options = { noremap = true, nowait = true },
                 mappings = {
                     ["<space>"] = "none",
-                    ["l"] = "open",       -- Better navigation: l to open
+                    ["l"] = "open", -- Better navigation: l to open
                     ["h"] = "close_node", -- Better navigation: h to collapse
                     ["P"] = { "toggle_preview", config = { use_float = true } },
-                }
+                },
             },
 
             filesystem = {
@@ -98,7 +89,11 @@ return {
                     hide_dotfiles = false,
                     hide_gitignored = false,
                     hide_by_name = {
-                        ".git", ".DS_Store", "thumbs.db", "node_modules", "__pycache__"
+                        ".git",
+                        ".DS_Store",
+                        "thumbs.db",
+                        "node_modules",
+                        "__pycache__",
                     },
                 },
                 follow_current_file = { enabled = true },
@@ -106,8 +101,7 @@ return {
             },
         })
 
-        -- Modern Keybindings
-        map_key("<leader>e", ":Neotree toggle<cr>")
-        map_key("<leader>o", ":Neotree reveal<cr>")
+        vim.keymap.set("n", "<leader>e", ":Neotree toggle<cr>", { silent = true })
+        vim.keymap.set("n", "<leader>o", ":Neotree reveal<cr>", { silent = true })
     end,
 }

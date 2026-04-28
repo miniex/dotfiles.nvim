@@ -1,24 +1,26 @@
-local map_key = require("utils.key_mapper").map_key
+local map = function(lhs, rhs, mode)
+    vim.keymap.set(mode or "n", lhs, rhs, { noremap = true, silent = true })
+end
 
 -- pane navigation
-map_key("<C-h>", "<C-w>h") -- Left
-map_key("<C-j>", "<C-w>j") -- Down
-map_key("<C-k>", "<C-w>k") -- Up
-map_key("<C-l>", "<C-w>l") -- Right
+map("<C-h>", "<C-w>h")
+map("<C-j>", "<C-w>j")
+map("<C-k>", "<C-w>k")
+map("<C-l>", "<C-w>l")
 
 -- clear search highlight
-map_key("<leader>h", ":nohlsearch<CR>")
+map("<leader>h", ":nohlsearch<CR>")
 
 -- indent
-map_key("<", "<gv", "v")
-map_key(">", ">gv", "v")
+map("<", "<gv", "v")
+map(">", ">gv", "v")
 
 -- save
-map_key("<leader>s", ":w<CR>")
+map("<leader>s", ":w<CR>")
 
--- delete
-map_key("<leader>d", '"_d', "n") -- Normal mode
-map_key("<leader>d", '"_d', "x") -- Visual mode
+-- delete without yank
+map("<leader>d", '"_d', "n")
+map("<leader>d", '"_d', "x")
 
--- paste
-map_key("<leader>p", '"_dP', "x") -- Visual mode
+-- paste without yank
+map("<leader>p", '"_dP', "x")

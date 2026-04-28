@@ -1,21 +1,22 @@
-local map_key = require("utils.key_mapper").map_key
-
 return {
     {
         "nvim-telescope/telescope.nvim",
         version = "*",
         dependencies = {
             "nvim-lua/plenary.nvim",
-            { 'nvim-telescope/telescope-fzf-native.nvim', build = 'make' },
+            { "nvim-telescope/telescope-fzf-native.nvim", build = "make" },
         },
         config = function()
             local builtin = require("telescope.builtin")
+            local map = function(lhs, rhs)
+                vim.keymap.set("n", lhs, rhs, { silent = true })
+            end
 
-            map_key("<leader>ff", builtin.find_files)
-            map_key("<leader>fg", builtin.live_grep)
-            map_key("<leader>fr", builtin.oldfiles)
-            map_key("<leader>fb", builtin.buffers)
-            map_key("<leader>fh", builtin.help_tags)
+            map("<leader>ff", builtin.find_files)
+            map("<leader>fg", builtin.live_grep)
+            map("<leader>fr", builtin.oldfiles)
+            map("<leader>fb", builtin.buffers)
+            map("<leader>fh", builtin.help_tags)
         end,
     },
     {

@@ -50,8 +50,6 @@ A modern, modular Neovim configuration with powerful LSP support, built for effi
     │   ├── options.lua         # Vim options
     │   ├── keymaps.lua         # Global keymaps
     │   └── diagnostic.lua      # Diagnostic settings
-    ├── utils/
-    │   └── key_mapper.lua      # Keymap utility
     └── plugins/                # Plugin specifications
         ├── coding/             # Coding tools
         │   ├── autopairs.lua   # Auto bracket pairing
@@ -220,7 +218,7 @@ A modern, modular Neovim configuration with powerful LSP support, built for effi
 
 ### Prerequisites
 
-- Neovim >= 0.9.0
+- Neovim >= 0.11.0 (uses `vim.diagnostic.config({ signs = { text = ... } })` and `vim.lsp.buf.hover({ border = ... })`)
 - Git
 - A [Nerd Font](https://www.nerdfonts.com/) (for icons)
 - C compiler (`gcc` or `clang`) + `make` (for telescope-fzf-native, LuaSnip)
@@ -285,7 +283,8 @@ npm i -g @fsouza/prettierd       # prettierd (preferred)
 npm i -g prettier                # prettier (fallback)
 
 # Lua
-brew install stylua
+brew install stylua            # macOS
+cargo install stylua           # any platform with Rust toolchain
 
 # Python
 pip install isort black
@@ -350,10 +349,13 @@ Edit `lua/plugins/ui/themes.lua` to use a different colorscheme, or customize th
 
 ### Custom Keymaps
 
-Add your custom keymaps to `lua/configs/keymaps.lua` using the `map_key` utility:
+Add your custom keymaps to `lua/configs/keymaps.lua` using the local `map` helper or `vim.keymap.set` directly:
 ```lua
-local map_key = require("utils.key_mapper").map_key
-map_key("<leader>cc", ":YourCommand<CR>")
+-- via the local helper defined at the top of keymaps.lua
+map("<leader>cc", ":YourCommand<CR>")
+
+-- or call the API directly
+vim.keymap.set("n", "<leader>cc", ":YourCommand<CR>", { noremap = true, silent = true })
 ```
 
 ## Configuration Philosophy

@@ -8,6 +8,7 @@ return {
         local alpha = require("alpha")
         local dashboard = require("alpha.themes.dashboard")
 
+        ---@diagnostic disable-next-line: missing-fields
         dashboard.section.buttons.val = {
             -- dashboard.button("n", "  > New file", ":ene <BAR> startinsert <CR>"),
             -- dashboard.button("f", "  > Find file", ":Telescope find_files<CR>"),
@@ -60,7 +61,6 @@ return {
         }
 
         dashboard.section.header.val = logo
-
 
         alpha.setup(dashboard.opts)
     end,

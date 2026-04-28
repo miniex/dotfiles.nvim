@@ -1,5 +1,3 @@
-local map_key = require("utils.key_mapper").map_key
-
 return {
     {
         "williamboman/mason.nvim",
@@ -70,27 +68,23 @@ return {
             setup = {},
         },
         config = function(_, opts)
-            -- Global mappings
-            map_key("K", vim.lsp.buf.hover)
-            map_key("gd", vim.lsp.buf.definition)
-            map_key("<leader>cc", vim.diagnostic.open_float)
-            map_key("<leader>ca", vim.lsp.buf.code_action)
-            map_key("gr", vim.lsp.buf.references)
-            map_key("gi", vim.lsp.buf.implementation)
-            map_key("<leader>rn", vim.lsp.buf.rename)
+            local map = function(lhs, rhs)
+                vim.keymap.set("n", lhs, rhs, { silent = true, noremap = true })
+            end
 
-            -- Global handlers
-            vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(
-                vim.lsp.handlers.hover, {
-                    border = "rounded",
-                }
-            )
+            map("K", function()
+                vim.lsp.buf.hover({ border = "rounded" })
+            end)
+            map("gd", vim.lsp.buf.definition)
+            map("<leader>cc", vim.diagnostic.open_float)
+            map("<leader>ca", vim.lsp.buf.code_action)
+            map("gr", vim.lsp.buf.references)
+            map("gi", vim.lsp.buf.implementation)
+            map("<leader>rn", vim.lsp.buf.rename)
 
-            vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(
-                vim.lsp.handlers.signature_help, {
-                    border = "rounded",
-                }
-            )
+            vim.keymap.set("i", "<C-k>", function()
+                vim.lsp.buf.signature_help({ border = "rounded" })
+            end, { silent = true, noremap = true })
 
             local servers = opts.servers
             local has_cmp, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
@@ -142,19 +136,4 @@ return {
             end
         end,
     },
-    {
-        "stevearc/conform.nvim",
-        event = { "BufReadPre", "BufWritePre", "BufNewFile" },
-        config = function()
-            local conform = require("conform")
-
-            conform.setup({
-                format_on_save = {
-                    timeout_ms = 500,
-                    lsp_fallback = true,
-                },
-            })
-        end,
-        cmd = "ConformInfo"
-    }
 }

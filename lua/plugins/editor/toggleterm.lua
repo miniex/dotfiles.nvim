@@ -1,5 +1,3 @@
-local map_key = require("utils.key_mapper").map_key
-
 return {
     {
         "akinsho/toggleterm.nvim",
@@ -16,7 +14,7 @@ return {
                 end,
             })
 
-            map_key("<leader>t", ":ToggleTerm<CR>")
+            vim.keymap.set("n", "<leader>t", ":ToggleTerm<CR>", { silent = true })
         end,
     },
 }

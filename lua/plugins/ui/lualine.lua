@@ -18,8 +18,10 @@ return {
                     {
                         "mode",
                         icons_enabled = true,
-                        fmt = function(str) return "  " .. str end,
-                    }
+                        fmt = function(str)
+                            return "  " .. str
+                        end,
+                    },
                 },
                 lualine_b = { { "branch", icon = " " } },
                 lualine_c = {
