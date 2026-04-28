@@ -41,7 +41,7 @@ A modern, modular Neovim configuration with powerful LSP support, built for effi
 | CMake          | neocmake      | cmake_format       | -        | Project detection           |
 | Metal          | -             | clang-format       | -        | Treesitter via cpp parser   |
 | RON            | -             | rustfmt            | -        | Syntax highlighting         |
-| TOML           | -             | taplo              | -        | -                           |
+| TOML           | taplo         | taplo              | -        | Schema validation, hover    |
 | CSS/SCSS/HTML  | -             | prettierd/prettier | -        | -                           |
 | YAML           | -             | prettierd/prettier | -        | -                           |
 
@@ -91,6 +91,7 @@ A modern, modular Neovim configuration with powerful LSP support, built for effi
         │   ├── markdown.lua    # Markdown support
         │   ├── metal.lua       # Metal shading language
         │   ├── ron.lua         # RON syntax
+        │   ├── toml.lua        # TOML LSP (taplo)
         │   └── git.lua         # Git integration
         └── cord.lua            # Discord Rich Presence
 ```
@@ -314,6 +315,7 @@ These are installed automatically via Mason on first launch:
 | lua-language-server | Lua LSP              |
 | marksman        | Markdown LSP               |
 | rust-analyzer   | Rust LSP                   |
+| taplo           | TOML LSP / formatter       |
 | codelldb        | Rust DAP debugger          |
 
 ### External Tools
