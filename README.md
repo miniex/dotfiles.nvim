@@ -26,7 +26,7 @@ A modern, modular Neovim configuration with powerful LSP support, built for effi
 - **QoL Bundle** - snacks.nvim modules: notifier, indent guides, statuscolumn, LSP word highlight, smarter buffer delete, bigfile optimization
 - **Animations** - snacks.scroll smooth scrolling, snacks.dim inactive-code dim, smear-cursor.nvim cursor trail, mini.animate window resize/open/close
 - **Inline Images** - snacks.image renders images, GIFs, video previews and LaTeX math via Kitty graphics protocol (Markdown / HTML / LaTeX)
-- **Visual Feedback** - fidget.nvim LSP progress toasts, undo-glow.nvim fade glow on undo/redo/yank/paste, modicator.nvim mode-colored cursor line number
+- **Visual Feedback** - fidget.nvim LSP progress toasts, undo-glow.nvim fade glow on undo/redo/yank/paste, modicator.nvim mode-colored cursor line number (`cursorlineopt = "number"` keeps the line body unhighlighted)
 
 ## Language Support
 
