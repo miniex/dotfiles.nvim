@@ -9,7 +9,7 @@ return {
             typescript = { "eslint_d" },
             javascriptreact = { "eslint_d" },
             typescriptreact = { "eslint_d" },
-            python = { "ruff" },
+            -- python lint handled by ruff LSP (see lang/python.lua)
             markdown = { "markdownlint" },
         }
 

@@ -10,7 +10,7 @@ A modern, modular Neovim configuration with powerful LSP support, built for effi
 - **Neo-tree** - Feature-rich file explorer with git integration
 - **LSP Support** - Full language server protocol integration
 - **Auto-completion** - Intelligent completion with nvim-cmp
-- **Debug Support** - DAP integration for Rust (CodeLLDB)
+- **Debug Support** - nvim-dap with UI + virtual text; adapters for Rust (CodeLLDB), C/C++ (cpptools), Python (debugpy)
 - **Syntax Highlighting** - Tree-sitter powered syntax highlighting
 - **Status Line** - Custom lualine with mode, git branch, diagnostics, and diff indicators
 - **Git Integration** - Fugitive, gitsigns, and commit message completions
@@ -31,19 +31,20 @@ A modern, modular Neovim configuration with powerful LSP support, built for effi
 
 | Language       | LSP           | Formatter          | Debugger | Features                    |
 |----------------|---------------|--------------------|----------|-----------------------------|
-| Rust           | rust-analyzer | rustfmt            | CodeLLDB | Macro expansion, cargo      |
-| C/C++          | clangd        | clang-format       | -        | AST view, IWYU, clang-tidy  |
-| JavaScript/TS  | vtsls         | prettierd/prettier | -        | Linting (eslint_d)          |
-| Python         | -             | isort, black       | -        | Linting (ruff)              |
-| Lua            | lua_ls        | stylua             | -        | Neovim API support          |
-| JSON           | jsonls        | prettierd/prettier | -        | Schema validation           |
-| Markdown       | marksman      | prettierd/prettier | -        | Linting (markdownlint)      |
-| CMake          | neocmake      | cmake_format       | -        | Project detection           |
-| Metal          | -             | clang-format       | -        | Treesitter via cpp parser   |
-| RON            | -             | rustfmt            | -        | Syntax highlighting         |
-| TOML           | taplo         | taplo              | -        | Schema validation, hover    |
-| CSS/SCSS/HTML  | -             | prettierd/prettier | -        | -                           |
-| YAML           | -             | prettierd/prettier | -        | -                           |
+| Rust           | rust-analyzer       | rustfmt            | CodeLLDB | Macro expansion, cargo, crates.nvim |
+| C/C++          | clangd              | clang-format       | cpptools | AST view, IWYU, clang-tidy          |
+| JavaScript/TS  | vtsls               | prettierd/prettier | -        | Linting (eslint_d)                  |
+| Python         | basedpyright + ruff | ruff (via LSP)     | debugpy  | Type check, lint, import sort       |
+| Lua            | lua_ls              | stylua             | -        | Neovim API via lazydev              |
+| JSON           | jsonls              | prettierd/prettier | -        | Schema validation                   |
+| Markdown       | marksman            | prettierd/prettier | -        | Linting (markdownlint)              |
+| CMake          | neocmake            | cmake_format       | -        | Project detection                   |
+| Metal          | -                   | clang-format       | -        | Treesitter via cpp parser           |
+| RON            | -                   | rustfmt            | -        | Syntax highlighting                 |
+| TOML           | taplo               | taplo              | -        | Schema validation, hover            |
+| CSS/SCSS       | cssls               | prettierd/prettier | -        | Validation, lint                    |
+| HTML           | html + emmet_ls     | prettierd/prettier | -        | Emmet expansions                    |
+| YAML           | yamlls              | prettierd/prettier | -        | SchemaStore validation              |
 
 ## Directory Structure
 
@@ -92,6 +93,10 @@ A modern, modular Neovim configuration with powerful LSP support, built for effi
         │   ├── metal.lua       # Metal shading language
         │   ├── ron.lua         # RON syntax
         │   ├── toml.lua        # TOML LSP (taplo)
+        │   ├── python.lua      # Python LSP (basedpyright + ruff) + DAP
+        │   ├── web.lua         # CSS / HTML / Emmet LSPs
+        │   ├── yaml.lua        # YAML LSP with SchemaStore
+        │   ├── dap.lua         # nvim-dap base + UI + mason adapters
         │   └── git.lua         # Git integration
         └── cord.lua            # Discord Rich Presence
 ```
@@ -230,7 +235,27 @@ A modern, modular Neovim configuration with powerful LSP support, built for effi
 | Key          | Description        |
 |--------------|--------------------|
 | `<leader>cR` | Rust code actions  |
-| `<leader>dr` | Rust debuggables   |
+| `<leader>dr` | Rust debuggables (rustaceanvim) |
+
+### Debugger — DAP (`plugins/lang/dap.lua`)
+
+| Key           | Description                       |
+|---------------|-----------------------------------|
+| `<leader>db`  | Toggle breakpoint                 |
+| `<leader>dB`  | Conditional breakpoint            |
+| `<leader>dc`  | Continue / start                  |
+| `<leader>dC`  | Run to cursor                     |
+| `<leader>di`  | Step into                         |
+| `<leader>dO`  | Step over                         |
+| `<leader>do`  | Step out                          |
+| `<leader>dl`  | Run last                          |
+| `<leader>dp`  | Pause                             |
+| `<leader>dr`  | Toggle REPL                       |
+| `<leader>ds`  | Show session                      |
+| `<leader>dt`  | Terminate                         |
+| `<leader>du`  | Toggle DAP UI                     |
+| `<leader>dPt` | (Python) Debug test method        |
+| `<leader>dPc` | (Python) Debug test class         |
 
 ### C/C++ (`plugins/lang/c-cpp.lua`)
 
@@ -316,7 +341,15 @@ These are installed automatically via Mason on first launch:
 | marksman        | Markdown LSP               |
 | rust-analyzer   | Rust LSP                   |
 | taplo           | TOML LSP / formatter       |
+| basedpyright    | Python LSP (types)         |
+| ruff            | Python LSP (lint/format)   |
+| css-lsp         | CSS/SCSS LSP               |
+| html-lsp        | HTML LSP                   |
+| emmet-ls        | Emmet expansions           |
+| yaml-language-server | YAML LSP              |
 | codelldb        | Rust DAP debugger          |
+| cpptools        | C/C++ DAP debugger         |
+| debugpy         | Python DAP debugger        |
 
 ### External Tools
 
@@ -339,8 +372,7 @@ npm i -g prettier                # prettier (fallback)
 brew install stylua            # macOS
 cargo install stylua           # any platform with Rust toolchain
 
-# Python
-pip install isort black
+# Python — formatter/linter handled by ruff LSP (auto-installed via Mason)
 
 # Rust/RON
 rustup component add rustfmt     # comes with Rust toolchain
@@ -353,8 +385,8 @@ brew install taplo
 
 ```bash
 npm i -g eslint_d                # JavaScript/TypeScript
-pip install ruff                 # Python
 brew install markdownlint-cli    # Markdown
+# Python lint via ruff LSP (auto-installed via Mason)
 ```
 
 ### WSL2 Clipboard Integration
