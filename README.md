@@ -17,14 +17,14 @@ A modern, modular Neovim configuration with powerful LSP support, built for effi
 - **Formatting** - Auto format-on-save with conform.nvim
 - **Linting** - nvim-lint with eslint_d, ruff, markdownlint (runs on save, not while typing)
 - **Diagnostics** - trouble.nvim for structured diagnostics panel (deferred until normal mode for performance)
-- **Terminal** - Integrated floating terminal with toggleterm
+- **Terminal** - Integrated bottom-split terminal via snacks.terminal
 - **Auto Buffer Cleanup** - Automatically closes hidden buffers after 1 minute of inactivity to reduce memory usage
 - **Keymap Discovery** - which-key.nvim popup hints when leader is held
 - **Fast Motion** - flash.nvim label-based jumping (`s` / `S`) with treesitter integration
 - **TODO Highlighting** - todo-comments.nvim for `TODO` / `FIXME` / `HACK` markers, searchable via Telescope/Trouble
 - **Lua Dev** - lazydev.nvim provides Neovim runtime types for editing this very config
-- **QoL Bundle** - snacks.nvim modules: notifier, indent guides, statuscolumn, LSP word highlight, smarter buffer delete, bigfile optimization
-- **Animations** - snacks.scroll smooth scrolling, snacks.dim inactive-code dim, smear-cursor.nvim cursor trail, mini.animate window resize/open/close
+- **QoL Bundle** - snacks.nvim modules: notifier, indent guides, statuscolumn, LSP word highlight, smarter buffer delete, bigfile optimization, terminal
+- **Animations** - snacks.scroll smooth scrolling, snacks.dim inactive-code dim, smear-cursor.nvim cursor trail
 - **Inline Images** - snacks.image renders images, GIFs, video previews and LaTeX math via Kitty graphics protocol (Markdown / HTML / LaTeX)
 - **Visual Feedback** - fidget.nvim LSP progress toasts, undo-glow.nvim fade glow on undo/redo/yank/paste, modicator.nvim mode-colored cursor line number (`cursorlineopt = "number"` keeps the line body unhighlighted)
 
@@ -66,7 +66,6 @@ A modern, modular Neovim configuration with powerful LSP support, built for effi
         │   └── completion.lua  # nvim-cmp completion
         ├── editor/             # Editor enhancements
         │   ├── telescope.lua   # Fuzzy finder
-        │   ├── toggleterm.lua  # Terminal emulator
         │   ├── trouble.lua     # Diagnostics panel
         │   ├── which-key.lua   # Keymap discovery popup
         │   ├── flash.lua       # s/S motion + treesitter jump
@@ -76,9 +75,9 @@ A modern, modular Neovim configuration with powerful LSP support, built for effi
         │   ├── lualine.lua     # Status line
         │   ├── neo-tree.lua    # File explorer
         │   ├── devicons.lua    # File icons (nvim-web-devicons)
-        │   ├── snacks.lua      # QoL bundle (notifier, indent, scroll, dim, ...)
+        │   ├── snacks.lua      # QoL bundle (notifier, indent, scroll, dim, terminal, ...)
         │   ├── smear-cursor.lua # Cursor smear/trail effect
-        │   ├── mini-animate.lua # Window resize/open/close animations
+        │   ├── mini-animate.lua # mini.animate (currently fully disabled)
         │   ├── fidget.lua      # LSP progress toasts
         │   ├── undo-glow.lua   # Glow effect on undo/redo/yank/paste
         │   ├── modicator.lua   # Mode-colored CursorLineNr
@@ -200,6 +199,7 @@ A modern, modular Neovim configuration with powerful LSP support, built for effi
 | `<leader>bd` | Normal  | Smart buffer delete                    |
 | `<leader>cn` | Normal  | Notification history                   |
 | `<leader>un` | Normal  | Dismiss all notifications              |
+| `<leader>t`  | N / T   | Toggle bottom terminal                 |
 | `]]`         | N / T   | Next reference (LSP word highlight)    |
 | `[[`         | N / T   | Previous reference                     |
 
@@ -267,12 +267,13 @@ A modern, modular Neovim configuration with powerful LSP support, built for effi
 |--------------|----------------------|
 | `<leader>ch` | Switch source/header |
 
-### Terminal (`plugins/editor/toggleterm.lua`)
+### Terminal (`plugins/ui/snacks.lua`)
 
-| Key         | Mode     | Description              |
-|-------------|----------|--------------------------|
-| `<leader>t` | Normal   | Toggle floating terminal |
-| `<C-x>`     | N / T    | Close terminal           |
+| Key         | Mode     | Description            |
+|-------------|----------|------------------------|
+| `<leader>t` | N / T    | Toggle bottom terminal |
+| `<C-x>`     | N / T    | Hide terminal          |
+| `q`         | Normal   | Hide terminal          |
 
 ### Completion — nvim-cmp (`plugins/coding/completion.lua`)
 

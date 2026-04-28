@@ -32,6 +32,14 @@ return {
             })
 
             vim.cmd([[colorscheme cyberdream]])
+
+            local function set_separator()
+                vim.api.nvim_set_hl(0, "WinSeparator", { fg = "#ffb6c1", bg = "NONE" })
+            end
+            set_separator()
+            vim.api.nvim_create_autocmd("ColorScheme", {
+                callback = set_separator,
+            })
         end,
     },
 }

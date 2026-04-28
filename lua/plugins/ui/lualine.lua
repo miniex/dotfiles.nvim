@@ -72,7 +72,7 @@ return {
                     end,
                 },
             },
-            extensions = { "lazy", "toggleterm", "mason", "neo-tree", "trouble" },
+            extensions = { "lazy", "mason", "neo-tree", "trouble" },
         })
     end,
 }

@@ -18,6 +18,17 @@ return {
         scope = { enabled = true },
         scroll = { enabled = true },
         statuscolumn = { enabled = true },
+        terminal = {
+            enabled = true,
+            win = {
+                position = "bottom",
+                height = 0.3,
+                wo = { winbar = "" },
+                keys = {
+                    term_close = { "<C-x>", "hide", mode = { "n", "t" }, desc = "Hide Terminal" },
+                },
+            },
+        },
         words = { enabled = true },
     },
     keys = {
@@ -27,6 +38,14 @@ return {
                 Snacks.bufdelete()
             end,
             desc = "Delete Buffer",
+        },
+        {
+            "<leader>t",
+            function()
+                Snacks.terminal.toggle()
+            end,
+            mode = { "n", "t" },
+            desc = "Toggle Terminal",
         },
         {
             "<leader>un",
