@@ -19,6 +19,11 @@ A modern, modular Neovim configuration with powerful LSP support, built for effi
 - **Diagnostics** - trouble.nvim for structured diagnostics panel (deferred until normal mode for performance)
 - **Terminal** - Integrated floating terminal with toggleterm
 - **Auto Buffer Cleanup** - Automatically closes hidden buffers after 1 minute of inactivity to reduce memory usage
+- **Keymap Discovery** - which-key.nvim popup hints when leader is held
+- **Fast Motion** - flash.nvim label-based jumping (`s` / `S`) with treesitter integration
+- **TODO Highlighting** - todo-comments.nvim for `TODO` / `FIXME` / `HACK` markers, searchable via Telescope/Trouble
+- **Lua Dev** - lazydev.nvim provides Neovim runtime types for editing this very config
+- **QoL Bundle** - snacks.nvim modules: notifier, indent guides, statuscolumn, LSP word highlight, smarter buffer delete, bigfile optimization
 
 ## Language Support
 
@@ -58,12 +63,16 @@ A modern, modular Neovim configuration with powerful LSP support, built for effi
         ├── editor/             # Editor enhancements
         │   ├── telescope.lua   # Fuzzy finder
         │   ├── toggleterm.lua  # Terminal emulator
-        │   └── trouble.lua     # Diagnostics panel
+        │   ├── trouble.lua     # Diagnostics panel
+        │   ├── which-key.lua   # Keymap discovery popup
+        │   ├── flash.lua       # s/S motion + treesitter jump
+        │   └── todo-comments.lua # TODO/FIXME highlight + search
         ├── ui/                 # UI plugins
         │   ├── themes.lua      # Cyberdream theme
         │   ├── lualine.lua     # Status line
         │   ├── neo-tree.lua    # File explorer
         │   ├── devicons.lua    # File icons (nvim-web-devicons)
+        │   ├── snacks.lua      # QoL bundle (notifier, indent, statuscolumn, words, ...)
         │   └── alpha.lua       # Dashboard
         ├── lang/               # Language configs
         │   ├── lsp.lua         # LSP setup (Mason + lspconfig)
@@ -140,8 +149,45 @@ A modern, modular Neovim configuration with powerful LSP support, built for effi
 | `<leader>xs` | Symbols outline          |
 | `<leader>xq` | Quickfix list            |
 | `<leader>xl` | Location list            |
+| `<leader>xt` | TODO list (Trouble)      |
+| `<leader>xT` | TODO/FIX/FIXME (Trouble) |
 | `[q`         | Previous item            |
 | `]q`         | Next item                |
+
+### Motion — Flash (`plugins/editor/flash.lua`)
+
+| Key      | Mode      | Description                         |
+|----------|-----------|-------------------------------------|
+| `s`      | N / X / O | Flash jump (search + label)         |
+| `S`      | N / X / O | Treesitter-based jump               |
+| `r`      | Op-pending| Remote flash (operate at distance)  |
+| `R`      | Op / X    | Treesitter search                   |
+| `<C-s>`  | Cmdline   | Toggle flash inside `/` `?` search  |
+
+### TODO Comments (`plugins/editor/todo-comments.lua`)
+
+| Key          | Description                |
+|--------------|----------------------------|
+| `]t`         | Next TODO comment          |
+| `[t`         | Previous TODO comment      |
+| `<leader>ft` | Find todos via Telescope   |
+
+### Keymap Discovery — which-key (`plugins/editor/which-key.lua`)
+
+| Key          | Description                          |
+|--------------|--------------------------------------|
+| `<leader>?`  | Show buffer-local keymaps            |
+| `<leader>`   | Hold to popup all leader keymaps     |
+
+### QoL — Snacks (`plugins/ui/snacks.lua`)
+
+| Key          | Mode    | Description                            |
+|--------------|---------|----------------------------------------|
+| `<leader>bd` | Normal  | Smart buffer delete                    |
+| `<leader>cn` | Normal  | Notification history                   |
+| `<leader>un` | Normal  | Dismiss all notifications              |
+| `]]`         | N / T   | Next reference (LSP word highlight)    |
+| `[[`         | N / T   | Previous reference                     |
 
 ### Git — Fugitive (`plugins/lang/git.lua`)
 
@@ -399,5 +445,10 @@ vim.keymap.set("n", "<leader>cc", ":YourCommand<CR>", { noremap = true, silent =
 - [trouble.nvim](https://github.com/folke/trouble.nvim) - Diagnostics panel
 - [nvim-lint](https://github.com/mfussenegger/nvim-lint) - Async linting
 - [conform.nvim](https://github.com/stevearc/conform.nvim) - Formatter
+- [snacks.nvim](https://github.com/folke/snacks.nvim) - QoL bundle
+- [which-key.nvim](https://github.com/folke/which-key.nvim) - Keymap discovery
+- [flash.nvim](https://github.com/folke/flash.nvim) - Label-based motion
+- [todo-comments.nvim](https://github.com/folke/todo-comments.nvim) - TODO highlighting
+- [lazydev.nvim](https://github.com/folke/lazydev.nvim) - Lua dev types
 - [cyberdream.nvim](https://github.com/scottmckendry/cyberdream.nvim) - Color scheme
 - All the amazing plugin authors in the Neovim community
