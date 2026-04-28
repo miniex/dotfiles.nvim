@@ -63,6 +63,7 @@ A modern, modular Neovim configuration with powerful LSP support, built for effi
         │   ├── themes.lua      # Cyberdream theme
         │   ├── lualine.lua     # Status line
         │   ├── neo-tree.lua    # File explorer
+        │   ├── devicons.lua    # File icons (nvim-web-devicons)
         │   └── alpha.lua       # Dashboard
         ├── lang/               # Language configs
         │   ├── lsp.lua         # LSP setup (Mason + lspconfig)

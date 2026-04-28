@@ -17,6 +17,17 @@ return {
             -- dashboard.button("q", "󰅚  > Quit", ":qa<CR>"),
         }
 
+        -- no buttons -> drop buttons section AND disable the press keymaps,
+        -- otherwise <CR>/<M-CR> on the dashboard call into an empty press table.
+        dashboard.config.layout = {
+            { type = "padding", val = 2 },
+            dashboard.section.header,
+            { type = "padding", val = 2 },
+            dashboard.section.footer,
+        }
+        dashboard.config.opts = dashboard.config.opts or {}
+        dashboard.config.opts.keymap = { press = {}, queue_press = {} }
+
         dashboard.section.header.opts.hl = "AlphaHeader"
         vim.api.nvim_set_hl(0, "AlphaHeader", { fg = "#FFFFFF" })
 
