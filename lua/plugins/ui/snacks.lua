@@ -6,6 +6,7 @@ return {
     opts = {
         bigfile = { enabled = true },
         bufdelete = { enabled = true },
+        dim = { enabled = true },
         indent = { enabled = true },
         input = { enabled = true },
         notifier = {
@@ -14,6 +15,7 @@ return {
         },
         quickfile = { enabled = true },
         scope = { enabled = true },
+        scroll = { enabled = true },
         statuscolumn = { enabled = true },
         words = { enabled = true },
     },

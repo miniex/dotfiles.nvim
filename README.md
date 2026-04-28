@@ -24,6 +24,7 @@ A modern, modular Neovim configuration with powerful LSP support, built for effi
 - **TODO Highlighting** - todo-comments.nvim for `TODO` / `FIXME` / `HACK` markers, searchable via Telescope/Trouble
 - **Lua Dev** - lazydev.nvim provides Neovim runtime types for editing this very config
 - **QoL Bundle** - snacks.nvim modules: notifier, indent guides, statuscolumn, LSP word highlight, smarter buffer delete, bigfile optimization
+- **Animations** - snacks.scroll smooth scrolling, snacks.dim inactive-code dim, smear-cursor.nvim cursor trail, mini.animate window resize/open/close
 
 ## Language Support
 
@@ -72,7 +73,9 @@ A modern, modular Neovim configuration with powerful LSP support, built for effi
         │   ├── lualine.lua     # Status line
         │   ├── neo-tree.lua    # File explorer
         │   ├── devicons.lua    # File icons (nvim-web-devicons)
-        │   ├── snacks.lua      # QoL bundle (notifier, indent, statuscolumn, words, ...)
+        │   ├── snacks.lua      # QoL bundle (notifier, indent, scroll, dim, ...)
+        │   ├── smear-cursor.lua # Cursor smear/trail effect
+        │   ├── mini-animate.lua # Window resize/open/close animations
         │   └── alpha.lua       # Dashboard
         ├── lang/               # Language configs
         │   ├── lsp.lua         # LSP setup (Mason + lspconfig)
@@ -450,5 +453,7 @@ vim.keymap.set("n", "<leader>cc", ":YourCommand<CR>", { noremap = true, silent =
 - [flash.nvim](https://github.com/folke/flash.nvim) - Label-based motion
 - [todo-comments.nvim](https://github.com/folke/todo-comments.nvim) - TODO highlighting
 - [lazydev.nvim](https://github.com/folke/lazydev.nvim) - Lua dev types
+- [smear-cursor.nvim](https://github.com/sphamba/smear-cursor.nvim) - Cursor smear effect
+- [mini.animate](https://github.com/echasnovski/mini.nvim) - Window animations
 - [cyberdream.nvim](https://github.com/scottmckendry/cyberdream.nvim) - Color scheme
 - All the amazing plugin authors in the Neovim community
