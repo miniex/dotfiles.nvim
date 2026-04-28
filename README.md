@@ -75,13 +75,12 @@ A modern, modular Neovim configuration with powerful LSP support, built for effi
         │   ├── lualine.lua     # Status line
         │   ├── neo-tree.lua    # File explorer
         │   ├── devicons.lua    # File icons (nvim-web-devicons)
-        │   ├── snacks.lua      # QoL bundle (notifier, indent, scroll, dim, terminal, ...)
+        │   ├── snacks.lua      # QoL bundle (notifier, indent, scroll, dim, terminal, dashboard, ...)
         │   ├── smear-cursor.lua # Cursor smear/trail effect
         │   ├── mini-animate.lua # mini.animate (currently fully disabled)
         │   ├── fidget.lua      # LSP progress toasts
         │   ├── undo-glow.lua   # Glow effect on undo/redo/yank/paste
-        │   ├── modicator.lua   # Mode-colored CursorLineNr
-        │   └── alpha.lua       # Dashboard
+        │   └── modicator.lua   # Mode-colored CursorLineNr
         ├── lang/               # Language configs
         │   ├── lsp.lua         # LSP setup (Mason + lspconfig)
         │   ├── treesitter.lua  # Syntax highlighting

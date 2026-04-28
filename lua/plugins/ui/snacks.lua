@@ -6,6 +6,39 @@ return {
     opts = {
         bigfile = { enabled = true },
         bufdelete = { enabled = true },
+        dashboard = {
+            enabled = true,
+            preset = {
+                header = table.concat({
+                    [[        ███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗       ]],
+                    [[        ████╗  ██║██╔════╝██╔═══██╗██║   ██║██║████╗ ████║       ]],
+                    [[        ██╔██╗ ██║█████╗  ██║   ██║██║   ██║██║██╔████╔██║       ]],
+                    [[        ██║╚██╗██║██╔══╝  ██║   ██║╚██╗ ██╔╝██║██║╚██╔╝██║       ]],
+                    [[        ██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║       ]],
+                    [[        ╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝       ]],
+                }, "\n"),
+                keys = {
+                    { icon = " ", key = "f", desc = "Find File", action = ":Telescope find_files" },
+                    { icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
+                    { icon = " ", key = "g", desc = "Find Text", action = ":Telescope live_grep" },
+                    { icon = " ", key = "r", desc = "Recent Files", action = ":Telescope oldfiles" },
+                    {
+                        icon = " ",
+                        key = "c",
+                        desc = "Config",
+                        action = ":lua Snacks.dashboard.pick('files', { cwd = vim.fn.stdpath('config') })",
+                    },
+                    { icon = "󰒲 ", key = "L", desc = "Lazy", action = ":Lazy" },
+                    { icon = " ", key = "q", desc = "Quit", action = ":qa" },
+                },
+            },
+            sections = {
+                { section = "header" },
+                { section = "keys", gap = 1, padding = 1 },
+                { icon = " ", title = "Recent Files", section = "recent_files", limit = 5, padding = 1 },
+                { section = "startup" },
+            },
+        },
         dim = { enabled = true },
         image = { enabled = true },
         indent = { enabled = true },
