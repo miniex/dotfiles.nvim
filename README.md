@@ -26,6 +26,7 @@ A modern, modular Neovim configuration with powerful LSP support, built for effi
 - **QoL Bundle** - snacks.nvim modules: notifier, indent guides, statuscolumn, LSP word highlight, smarter buffer delete, bigfile optimization
 - **Animations** - snacks.scroll smooth scrolling, snacks.dim inactive-code dim, smear-cursor.nvim cursor trail, mini.animate window resize/open/close
 - **Inline Images** - snacks.image renders images, GIFs, video previews and LaTeX math via Kitty graphics protocol (Markdown / HTML / LaTeX)
+- **Visual Feedback** - fidget.nvim LSP progress toasts, undo-glow.nvim fade glow on undo/redo/yank/paste, modicator.nvim mode-colored cursor line number
 
 ## Language Support
 
@@ -78,6 +79,9 @@ A modern, modular Neovim configuration with powerful LSP support, built for effi
         │   ├── snacks.lua      # QoL bundle (notifier, indent, scroll, dim, ...)
         │   ├── smear-cursor.lua # Cursor smear/trail effect
         │   ├── mini-animate.lua # Window resize/open/close animations
+        │   ├── fidget.lua      # LSP progress toasts
+        │   ├── undo-glow.lua   # Glow effect on undo/redo/yank/paste
+        │   ├── modicator.lua   # Mode-colored CursorLineNr
         │   └── alpha.lua       # Dashboard
         ├── lang/               # Language configs
         │   ├── lsp.lua         # LSP setup (Mason + lspconfig)
@@ -490,5 +494,8 @@ vim.keymap.set("n", "<leader>cc", ":YourCommand<CR>", { noremap = true, silent =
 - [lazydev.nvim](https://github.com/folke/lazydev.nvim) - Lua dev types
 - [smear-cursor.nvim](https://github.com/sphamba/smear-cursor.nvim) - Cursor smear effect
 - [mini.animate](https://github.com/echasnovski/mini.nvim) - Window animations
+- [fidget.nvim](https://github.com/j-hui/fidget.nvim) - LSP progress toasts
+- [undo-glow.nvim](https://github.com/y3owk1n/undo-glow.nvim) - Edit operation glow
+- [modicator.nvim](https://github.com/mawkler/modicator.nvim) - Mode-aware line numbers
 - [cyberdream.nvim](https://github.com/scottmckendry/cyberdream.nvim) - Color scheme
 - All the amazing plugin authors in the Neovim community
