@@ -67,13 +67,10 @@ return {
         config = function(_, opts)
             local mason_ok, mason_registry = pcall(require, "mason-registry")
             if mason_ok and mason_registry.is_installed("codelldb") then
-                local package_path = mason_registry.get_package("codelldb"):get_install_path()
+                local package_path = vim.fn.expand("$MASON/packages/codelldb")
                 local codelldb = package_path .. "/extension/adapter/codelldb"
-                local library_path = package_path .. "/extension/lldb/lib/liblldb.dylib"
-                local uname = io.popen("uname"):read("*l")
-                if uname == "Linux" then
-                    library_path = package_path .. "/extension/lldb/lib/liblldb.so"
-                end
+                local lib_ext = vim.uv.os_uname().sysname == "Darwin" and "dylib" or "so"
+                local library_path = package_path .. "/extension/lldb/lib/liblldb." .. lib_ext
                 opts.dap = {
                     adapter = require("rustaceanvim.config").get_codelldb_adapter(codelldb, library_path),
                 }
