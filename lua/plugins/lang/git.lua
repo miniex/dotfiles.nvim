@@ -16,6 +16,34 @@ return {
         end,
     },
 
+    -- LazyGit: Floating window for the lazygit TUI
+    {
+        "kdheepak/lazygit.nvim",
+        cmd = {
+            "LazyGit",
+            "LazyGitConfig",
+            "LazyGitCurrentFile",
+            "LazyGitFilter",
+            "LazyGitFilterCurrentFile",
+        },
+        dependencies = {
+            "nvim-lua/plenary.nvim",
+        },
+        keys = {
+            { "<leader>gg", "<cmd>LazyGit<cr>", desc = "LazyGit" },
+            { "<leader>gf", "<cmd>LazyGitCurrentFile<cr>", desc = "LazyGit Current File" },
+            { "<leader>gF", "<cmd>LazyGitFilterCurrentFile<cr>", desc = "LazyGit Filter Current File" },
+            { "<leader>gL", "<cmd>LazyGitFilter<cr>", desc = "LazyGit Filter" },
+        },
+        init = function()
+            vim.g.lazygit_floating_window_winblend = 0
+            vim.g.lazygit_floating_window_scaling_factor = 0.9
+            vim.g.lazygit_floating_window_border_chars = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" }
+            vim.g.lazygit_floating_window_use_plenary = 1
+            vim.g.lazygit_use_neovim_remote = 1
+        end,
+    },
+
     -- Fugitive: Git wrapper for Neovim
     {
         "tpope/vim-fugitive",

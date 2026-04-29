@@ -13,7 +13,7 @@ A modern, modular Neovim configuration with powerful LSP support, built for effi
 - **Debug Support** - nvim-dap with UI + virtual text; adapters for Rust (CodeLLDB), C/C++ (cpptools), Python (debugpy)
 - **Syntax Highlighting** - Tree-sitter powered syntax highlighting
 - **Status Line** - Custom lualine with mode, git branch, diagnostics, and diff indicators
-- **Git Integration** - Fugitive, gitsigns, and commit message completions
+- **Git Integration** - Fugitive, gitsigns, lazygit.nvim (floating TUI), and commit message completions
 - **Formatting** - Auto format-on-save with conform.nvim
 - **Linting** - nvim-lint with eslint_d, ruff, markdownlint (runs on save, not while typing)
 - **Diagnostics** - trouble.nvim for structured diagnostics panel (deferred until normal mode for performance)
@@ -214,6 +214,15 @@ A modern, modular Neovim configuration with powerful LSP support, built for effi
 | `<leader>gP` | Git pull    |
 | `<leader>gc` | Git commit  |
 
+### Git — LazyGit (`plugins/lang/git.lua`)
+
+| Key          | Description                    |
+|--------------|--------------------------------|
+| `<leader>gg` | Open LazyGit (floating window) |
+| `<leader>gf` | LazyGit for current file       |
+| `<leader>gF` | LazyGit filter (current file)  |
+| `<leader>gL` | LazyGit filter (all)           |
+
 ### Git — Gitsigns (`plugins/lang/git.lua`)
 
 | Key           | Mode   | Description          |
@@ -301,6 +310,7 @@ A modern, modular Neovim configuration with powerful LSP support, built for effi
 
 - Neovim >= 0.11.0 (uses `vim.diagnostic.config({ signs = { text = ... } })` and `vim.lsp.buf.hover({ border = ... })`)
 - Git
+- [lazygit](https://github.com/jesseduffield/lazygit) (for the lazygit.nvim floating TUI integration)
 - A [Nerd Font](https://www.nerdfonts.com/) (for icons)
 - C compiler (`gcc` or `clang`) + `make` (for telescope-fzf-native, LuaSnip)
 - ripgrep (for Telescope live grep)
@@ -497,5 +507,6 @@ vim.keymap.set("n", "<leader>cc", ":YourCommand<CR>", { noremap = true, silent =
 - [fidget.nvim](https://github.com/j-hui/fidget.nvim) - LSP progress toasts
 - [undo-glow.nvim](https://github.com/y3owk1n/undo-glow.nvim) - Edit operation glow
 - [modicator.nvim](https://github.com/mawkler/modicator.nvim) - Mode-aware line numbers
+- [lazygit.nvim](https://github.com/kdheepak/lazygit.nvim) - Floating window integration for lazygit
 - [cyberdream.nvim](https://github.com/scottmckendry/cyberdream.nvim) - Color scheme
 - All the amazing plugin authors in the Neovim community
