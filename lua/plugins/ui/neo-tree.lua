@@ -3,7 +3,7 @@ return {
     branch = "v3.x",
     dependencies = {
         "nvim-lua/plenary.nvim",
-        "nvim-tree/nvim-web-devicons", -- Required for file icons
+        "nvim-tree/nvim-web-devicons", -- File icons with brand colors
         "MunifTanjim/nui.nvim",
         {
             "s1n7ax/nvim-window-picker",

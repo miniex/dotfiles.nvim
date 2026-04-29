@@ -8,6 +8,7 @@ A modern, modular Neovim configuration with powerful LSP support, built for effi
 - **Fast Startup** - Lazy loading plugins with lazy.nvim
 - **Telescope** - Fuzzy finder for files, text, and more
 - **Neo-tree** - Feature-rich file explorer with git integration
+- **File Icons** - nvim-web-devicons with verified Nerd Font glyph overrides and brand colors for modern dev files (Rust crate, Python tooling, biome/deno/turbo, env variants, AI agent files like CLAUDE.md/AGENTS.md, lockfiles, fly.toml/wrangler.toml, etc.)
 - **LSP Support** - Full language server protocol integration
 - **Auto-completion** - Intelligent completion with nvim-cmp
 - **Debug Support** - nvim-dap with UI + virtual text; adapters for Rust (CodeLLDB), C/C++ (cpptools), Python (debugpy)
@@ -74,7 +75,7 @@ A modern, modular Neovim configuration with powerful LSP support, built for effi
         │   ├── themes.lua      # Cyberdream theme
         │   ├── lualine.lua     # Status line
         │   ├── neo-tree.lua    # File explorer
-        │   ├── devicons.lua    # File icons (nvim-web-devicons)
+        │   ├── devicons.lua    # File icons (nvim-web-devicons + Nerd Font overrides)
         │   ├── snacks.lua      # QoL bundle (notifier, indent, scroll, dim, terminal, dashboard, ...)
         │   ├── smear-cursor.lua # Cursor smear/trail effect
         │   ├── mini-animate.lua # mini.animate (currently fully disabled)
