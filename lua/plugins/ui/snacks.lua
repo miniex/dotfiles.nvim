@@ -109,7 +109,7 @@ return {
             },
         },
         dim = { enabled = true },
-        image = { enabled = true },
+        image = { enabled = vim.env.TERM == "xterm-kitty" or vim.env.KITTY_WINDOW_ID ~= nil },
         indent = { enabled = true },
         input = { enabled = true },
         notifier = {

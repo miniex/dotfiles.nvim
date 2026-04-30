@@ -1,5 +1,9 @@
 return {
     {
+        "williamboman/mason.nvim",
+        opts = { ensure_installed = { "rust-analyzer" } },
+    },
+    {
         "Saecki/crates.nvim",
         event = { "BufRead Cargo.toml" },
         opts = {

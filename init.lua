@@ -63,7 +63,7 @@ if vim.fn.executable(clip) == 1 then
         group = vim.api.nvim_create_augroup("WSLYank", { clear = true }),
         callback = function()
             local content = table.concat(vim.v.event.regcontents, "\n")
-            os.execute(string.format("echo %s | %s", vim.fn.shellescape(content), clip))
+            vim.system({ clip }, { stdin = content })
         end,
     })
 end

@@ -1,13 +1,5 @@
 return {
     {
-        "williamboman/mason.nvim",
-        opts = { ensure_installed = { "yaml-language-server" } },
-    },
-    {
-        "williamboman/mason-lspconfig.nvim",
-        opts = { ensure_installed = { "yamlls" } },
-    },
-    {
         "neovim/nvim-lspconfig",
         opts = {
             servers = {

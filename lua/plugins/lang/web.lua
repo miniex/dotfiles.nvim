@@ -1,16 +1,9 @@
 return {
     {
-        "williamboman/mason.nvim",
-        opts = { ensure_installed = { "css-lsp", "html-lsp", "emmet-ls" } },
-    },
-    {
-        "williamboman/mason-lspconfig.nvim",
-        opts = { ensure_installed = { "cssls", "html", "emmet_ls" } },
-    },
-    {
         "neovim/nvim-lspconfig",
         opts = {
             servers = {
+                vtsls = {},
                 cssls = {
                     settings = {
                         css = { validate = true, lint = { unknownAtRules = "ignore" } },

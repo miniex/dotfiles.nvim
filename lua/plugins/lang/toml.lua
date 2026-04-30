@@ -1,13 +1,5 @@
 return {
     {
-        "williamboman/mason.nvim",
-        opts = { ensure_installed = { "taplo" } },
-    },
-    {
-        "williamboman/mason-lspconfig.nvim",
-        opts = { ensure_installed = { "taplo" } },
-    },
-    {
         "neovim/nvim-lspconfig",
         opts = {
             servers = {

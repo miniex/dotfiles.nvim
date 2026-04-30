@@ -1,13 +1,5 @@
 return {
     {
-        "williamboman/mason.nvim",
-        opts = { ensure_installed = { "basedpyright", "ruff", "debugpy" } },
-    },
-    {
-        "williamboman/mason-lspconfig.nvim",
-        opts = { ensure_installed = { "basedpyright", "ruff" } },
-    },
-    {
         "neovim/nvim-lspconfig",
         opts = {
             servers = {

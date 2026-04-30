@@ -4,33 +4,11 @@ return {
         cmd = "Mason",
         keys = { { "<leader>cm", "<cmd>Mason<cr>", desc = "Mason" } },
         build = ":MasonUpdate",
-        opts = {
-            ensure_installed = {
-                "clangd",
-                "neocmake",
-                "vtsls",
-                "jsonls",
-                "lua-language-server",
-                "marksman",
-                "rust-analyzer",
-                "codelldb",
-            },
-        },
+        opts = {},
     },
     {
         "williamboman/mason-lspconfig.nvim",
         dependencies = { "mason.nvim" },
-        opts = {
-            ensure_installed = {
-                "clangd",
-                "neocmake",
-                "vtsls",
-                "jsonls",
-                "lua_ls",
-                "marksman",
-            },
-            automatic_installation = true,
-        },
     },
     {
         "neovim/nvim-lspconfig",
