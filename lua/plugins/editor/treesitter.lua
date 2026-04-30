@@ -33,6 +33,7 @@ return {
 
             vim.treesitter.language.register("json", "jsonc")
 
+            local notified = {}
             local function attach(bufnr)
                 if not vim.api.nvim_buf_is_valid(bufnr) then
                     return
@@ -48,7 +49,16 @@ return {
                 if not lang or lang == "" then
                     return
                 end
-                if not pcall(vim.treesitter.start, bufnr, lang) then
+                local ok, err = pcall(vim.treesitter.start, bufnr, lang)
+                if not ok then
+                    local key = bufnr .. ":" .. lang
+                    if not notified[key] then
+                        notified[key] = true
+                        vim.notify(
+                            string.format("[ts attach] buf=%d ft=%s lang=%s err=%s", bufnr, ft, lang, tostring(err)),
+                            vim.log.levels.WARN
+                        )
+                    end
                     return
                 end
                 vim.bo[bufnr].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
