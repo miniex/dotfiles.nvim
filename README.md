@@ -1,6 +1,6 @@
 # Neovim Configuration
 
-Modular, fast-startup, LSP-first Neovim setup. Lazy.nvim for plugins, Mason for LSP/DAP toolchain.
+Lean, fast, easy on the eyes. Native LSP (`vim.lsp.config`), Rust-backed completion (blink.cmp), aggressive lazy-loading. Lazy.nvim manages plugins, Mason handles the LSP/DAP toolchain.
 
 > **Targets Linux and macOS, in [Kitty](https://sw.kovidgoyal.net/kitty/) terminal.** WSL2 is supported (clipboard bridges to Windows via `clip.exe`). Other terminals work for everything except inline image / GIF / video previews and the Material Design Icons font fallback, which both rely on Kitty.
 
