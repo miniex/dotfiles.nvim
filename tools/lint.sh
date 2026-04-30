@@ -1,18 +1,23 @@
 #!/bin/sh
-# Lint Lua files: stylua format check + linter if available.
+# Lint Lua: stylua format check + lua-language-server diagnostics.
+# Contributor/maintainer tool — both binaries must be on PATH.
 set -e
 
 cd "$(dirname "$0")/.."
 
-if ! command -v stylua >/dev/null 2>&1; then
-    echo "stylua not found" >&2
+missing=
+for tool in stylua lua-language-server; do
+    if ! command -v "$tool" >/dev/null 2>&1; then
+        missing="$missing $tool"
+    fi
+done
+
+if [ -n "$missing" ]; then
+    echo "missing required tool(s):$missing" >&2
+    echo "install via your package manager (brew/apt/cargo/etc.)" >&2
     exit 1
 fi
 
 stylua --check .
 
-if command -v selene >/dev/null 2>&1; then
-    selene lua init.lua
-elif command -v luacheck >/dev/null 2>&1; then
-    luacheck lua init.lua
-fi
+lua-language-server --check . --logpath /tmp/lua-ls-check
