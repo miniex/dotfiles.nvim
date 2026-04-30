@@ -1,12 +1,14 @@
 # Neovim Configuration
 
-Modular, LSP-first Neovim setup. Lazy.nvim for plugins, Mason for LSP/DAP toolchain.
+Modular, fast-startup, LSP-first Neovim setup. Lazy.nvim for plugins, Mason for LSP/DAP toolchain.
 
 > **Targets Linux and macOS, in [Kitty](https://sw.kovidgoyal.net/kitty/) terminal.** WSL2 is supported (clipboard bridges to Windows via `clip.exe`). Other terminals work for everything except inline image / GIF / video previews and the Material Design Icons font fallback, which both rely on Kitty.
 
 ## Highlights
 
-- LSP + completion (blink.cmp, lazydev for Lua), inlay hints auto-enabled per buffer
+- **Aggressive lazy-loading** — most plugins deferred via `VeryLazy` / `cmd` / `keys`; only colorscheme, treesitter, and snacks.nvim load eagerly. Treesitter parser installs deferred via `vim.schedule` so they never block startup
+- **Native LSP** — `vim.lsp.config` + `mason-lspconfig.automatic_enable` (no lspconfig framework overhead)
+- LSP + completion (blink.cmp, Rust backend; lazydev for Lua), inlay hints auto-enabled per buffer
 - Treesitter highlighting via nvim-treesitter `main` + built-in `vim.treesitter`
 - DAP debugging (Rust / C-C++ / Python)
 - Telescope, neo-tree, which-key, flash, trouble, todo-comments
