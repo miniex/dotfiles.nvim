@@ -36,57 +36,21 @@ return {
             vim.treesitter.language.register("json", "jsonc")
             vim.treesitter.language.register("bash", { "sh", "zsh" })
 
-            local function has_parser(lang)
-                return #vim.api.nvim_get_runtime_file("parser/" .. lang .. ".so", false) > 0
-            end
-
-            local function attach(bufnr)
-                if not vim.api.nvim_buf_is_valid(bufnr) then
-                    return
+            -- Set indentexpr for buffers attached by the early autocmd
+            -- (which runs before this plugin loaded).
+            for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+                if vim.api.nvim_buf_is_loaded(buf) and vim.treesitter.highlighter.active[buf] then
+                    vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
                 end
-                if vim.treesitter.highlighter.active[bufnr] then
-                    return
-                end
-                local ft = vim.bo[bufnr].filetype
-                if not ft or ft == "" then
-                    return
-                end
-                local lang = vim.treesitter.language.get_lang(ft) or ft
-                if not has_parser(lang) then
-                    return
-                end
-                if not pcall(vim.treesitter.start, bufnr, lang) then
-                    return
-                end
-                vim.bo[bufnr].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
             end
 
             local function attach_all()
                 for _, buf in ipairs(vim.api.nvim_list_bufs()) do
                     if vim.api.nvim_buf_is_loaded(buf) then
-                        attach(buf)
+                        vim.api.nvim_exec_autocmds("FileType", { buffer = buf, modeline = false })
                     end
                 end
             end
-
-            local group = vim.api.nvim_create_augroup("treesitter-attach", { clear = true })
-
-            vim.api.nvim_create_autocmd({ "FileType", "BufWinEnter" }, {
-                group = group,
-                callback = function(args)
-                    attach(args.buf)
-                end,
-            })
-
-            attach_all()
-
-            vim.api.nvim_create_autocmd("VimEnter", {
-                group = group,
-                once = true,
-                callback = function()
-                    vim.schedule(attach_all)
-                end,
-            })
 
             local ok, installed = pcall(ts.get_installed, "parsers")
             local missing
@@ -104,6 +68,7 @@ return {
             if #missing > 0 then
                 vim.schedule(function()
                     ts.install(missing)
+                    -- Re-fire FileType for loaded buffers as parsers finish installing
                     local attempts = 0
                     local timer = assert(vim.uv.new_timer())
                     timer:start(
