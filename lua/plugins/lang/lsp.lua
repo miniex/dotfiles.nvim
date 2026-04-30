@@ -20,7 +20,6 @@ return {
         opts = {
             inlay_hints = { enabled = true },
             servers = {},
-            setup = {},
         },
         config = function(_, opts)
             vim.api.nvim_create_autocmd("LspAttach", {
@@ -57,7 +56,6 @@ return {
                 end,
             })
 
-            local servers = opts.servers
             local has_cmp, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
             local capabilities = vim.tbl_deep_extend(
                 "force",
@@ -65,51 +63,24 @@ return {
                 vim.lsp.protocol.make_client_capabilities(),
                 has_cmp and cmp_nvim_lsp.default_capabilities() or {}
             )
-
-            local function setup(server)
-                if servers[server] and servers[server].enabled == false then
-                    return
-                end
-
-                local server_opts = vim.tbl_deep_extend("force", {
-                    capabilities = vim.deepcopy(capabilities),
-                }, servers[server] or {})
-
-                if opts.setup[server] then
-                    if opts.setup[server](server, server_opts) then
-                        return
-                    end
-                elseif opts.setup["*"] then
-                    if opts.setup["*"](server, server_opts) then
-                        return
-                    end
-                end
-                require("lspconfig")[server].setup(server_opts)
-            end
-
-            local have_mason, mlsp = pcall(require, "mason-lspconfig")
-            local all_mslp_servers = {}
-            if have_mason then
-                all_mslp_servers = mlsp.get_available_servers()
-            end
+            vim.lsp.config("*", { capabilities = capabilities })
 
             local ensure_installed = {}
-            for server, server_opts in pairs(servers) do
+            for server, server_opts in pairs(opts.servers) do
                 if server_opts then
-                    server_opts = server_opts == true and {} or server_opts
-                    if server_opts.enabled == false then
-                        -- skip
-                    elseif server_opts.mason == false or not vim.tbl_contains(all_mslp_servers, server) then
-                        setup(server)
-                    else
+                    if server_opts == true then
+                        ensure_installed[#ensure_installed + 1] = server
+                    elseif server_opts.enabled ~= false then
+                        vim.lsp.config(server, server_opts)
                         ensure_installed[#ensure_installed + 1] = server
                     end
                 end
             end
 
-            if have_mason then
-                mlsp.setup({ ensure_installed = ensure_installed, handlers = { setup } })
-            end
+            require("mason-lspconfig").setup({
+                ensure_installed = ensure_installed,
+                automatic_enable = { exclude = { "rust_analyzer" } },
+            })
         end,
     },
 }

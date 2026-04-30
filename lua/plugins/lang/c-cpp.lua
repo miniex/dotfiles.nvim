@@ -1,8 +1,7 @@
 return {
     {
         "p00f/clangd_extensions.nvim",
-        lazy = true,
-        config = true,
+        ft = { "c", "cpp" },
         init = function()
             vim.api.nvim_create_autocmd("LspAttach", {
                 group = vim.api.nvim_create_augroup("clangd-keys", { clear = true }),
@@ -47,22 +46,23 @@ return {
         opts = {
             servers = {
                 clangd = {
-                    root_dir = function(fname)
-                        local util = require("lspconfig.util")
-                        return util.root_pattern(
+                    root_dir = function(bufnr, on_dir)
+                        local fname = vim.api.nvim_buf_get_name(bufnr)
+                        local primary = vim.fs.root(fname, {
                             "Makefile",
                             "configure.ac",
                             "configure.in",
                             "config.h.in",
                             "meson.build",
                             "meson_options.txt",
-                            "build.ninja"
-                        )(fname) or util.root_pattern(
+                            "build.ninja",
+                        })
+                        local secondary = vim.fs.root(fname, {
                             "compile_commands.json",
-                            "compile_flags.txt"
-                        )(fname) or vim.fs.dirname(
-                            vim.fs.find(".git", { upward = true, path = fname })[1]
-                        )
+                            "compile_flags.txt",
+                        })
+                        local fallback = vim.fs.root(fname, ".git")
+                        on_dir(primary or secondary or fallback)
                     end,
                     capabilities = {
                         offsetEncoding = { "utf-16" },
@@ -82,12 +82,6 @@ return {
                         clangdFileStatus = true,
                     },
                 },
-            },
-            setup = {
-                clangd = function(_, opts)
-                    require("clangd_extensions").setup({ server = opts })
-                    return false
-                end,
             },
         },
     },
