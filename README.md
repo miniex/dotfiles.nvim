@@ -153,7 +153,7 @@ Leader: `<Space>`
 - **Theme** — `lua/plugins/ui/themes.lua`.
 - **Keymaps** — `lua/config/keymaps.lua`, helper `map(lhs, rhs, mode, desc)`.
 - **Autocmds** — `lua/config/autocmds.lua` (treesitter attach, WSL2 clipboard, file reload).
-- **CLI scripts** — `tools/format.sh` runs stylua across all Lua files; `tools/lint.sh` runs `stylua --check` plus `selene`/`luacheck` if installed.
+- **Contributor tools** — `tools/format.sh` (stylua) and `tools/lint.sh` (stylua check + lua-language-server diagnostics). See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Troubleshooting
 
