@@ -1,3 +1,72 @@
+local restore_win = nil
+
+local function any_term_visible()
+    for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+        local buf = vim.api.nvim_win_get_buf(win)
+        if vim.bo[buf].buftype == "terminal" then
+            return true
+        end
+    end
+    return false
+end
+
+local function toggle_terminal()
+    if not any_term_visible() and vim.bo.filetype == "neo-tree" then
+        restore_win = vim.api.nvim_get_current_win()
+        for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+            local buf = vim.api.nvim_win_get_buf(win)
+            local ft = vim.api.nvim_get_option_value("filetype", { buf = buf })
+            if ft ~= "neo-tree" then
+                vim.api.nvim_set_current_win(win)
+                break
+            end
+        end
+    end
+    Snacks.terminal.toggle()
+end
+
+local restore_group = vim.api.nvim_create_augroup("SnacksTerminalRestore", { clear = true })
+
+local function do_restore()
+    if not restore_win then
+        return
+    end
+    local target = restore_win
+    restore_win = nil
+    vim.schedule(function()
+        if vim.api.nvim_win_is_valid(target) then
+            vim.api.nvim_set_current_win(target)
+        end
+    end)
+end
+
+vim.api.nvim_create_autocmd("TermClose", {
+    group = restore_group,
+    callback = do_restore,
+})
+
+vim.api.nvim_create_autocmd("WinClosed", {
+    group = restore_group,
+    callback = function(args)
+        if not restore_win then
+            return
+        end
+        local win = tonumber(args.match)
+        if not win then
+            return
+        end
+        local ok, buf = pcall(vim.api.nvim_win_get_buf, win)
+        if not ok then
+            return
+        end
+        local bt_ok, bt = pcall(vim.api.nvim_get_option_value, "buftype", { buf = buf })
+        if not bt_ok or bt ~= "terminal" then
+            return
+        end
+        do_restore()
+    end,
+})
+
 return {
     "folke/snacks.nvim",
     priority = 1000,
@@ -54,8 +123,9 @@ return {
         terminal = {
             enabled = true,
             win = {
+                relative = "win",
                 position = "bottom",
-                height = 0.3,
+                height = 0.45,
                 wo = { winbar = "" },
                 keys = {
                     term_close = { "<C-x>", "hide", mode = { "n", "t" }, desc = "Hide Terminal" },
@@ -74,9 +144,7 @@ return {
         },
         {
             "<leader>t",
-            function()
-                Snacks.terminal.toggle()
-            end,
+            toggle_terminal,
             mode = { "n", "t" },
             desc = "Toggle Terminal",
         },
