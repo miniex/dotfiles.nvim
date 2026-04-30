@@ -40,51 +40,40 @@ return {
             "mason-lspconfig.nvim",
         },
         opts = {
-            diagnostics = {
-                underline = true,
-                update_in_insert = false,
-                virtual_text = {
-                    spacing = 4,
-                    source = "if_many",
-                    prefix = "●",
-                },
-                severity_sort = true,
-            },
-            inlay_hints = {
-                enabled = true,
-            },
-            codelens = {
-                enabled = false,
-            },
-            document_highlight = {
-                enabled = true,
-            },
-            capabilities = {},
-            format = {
-                formatting_options = nil,
-                timeout_ms = nil,
-            },
+            inlay_hints = { enabled = true },
             servers = {},
             setup = {},
         },
         config = function(_, opts)
-            local map = function(lhs, rhs)
-                vim.keymap.set("n", lhs, rhs, { silent = true, noremap = true })
-            end
+            vim.api.nvim_create_autocmd("LspAttach", {
+                group = vim.api.nvim_create_augroup("lsp-attach-keys", { clear = true }),
+                callback = function(args)
+                    local bufnr = args.buf
+                    local function map(mode, lhs, rhs, desc)
+                        vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, silent = true, desc = desc })
+                    end
 
-            map("K", function()
-                vim.lsp.buf.hover({ border = "rounded" })
-            end)
-            map("gd", vim.lsp.buf.definition)
-            map("<leader>cc", vim.diagnostic.open_float)
-            map("<leader>ca", vim.lsp.buf.code_action)
-            map("gr", vim.lsp.buf.references)
-            map("gi", vim.lsp.buf.implementation)
-            map("<leader>rn", vim.lsp.buf.rename)
+                    map("n", "K", function()
+                        vim.lsp.buf.hover({ border = "rounded" })
+                    end, "Hover")
+                    map("n", "gd", vim.lsp.buf.definition, "Goto Definition")
+                    map("n", "gr", vim.lsp.buf.references, "References")
+                    map("n", "gi", vim.lsp.buf.implementation, "Goto Implementation")
+                    map("n", "<leader>cc", vim.diagnostic.open_float, "Line Diagnostics")
+                    map("n", "<leader>ca", vim.lsp.buf.code_action, "Code Action")
+                    map("n", "<leader>rn", vim.lsp.buf.rename, "Rename")
+                    map("i", "<C-k>", function()
+                        vim.lsp.buf.signature_help({ border = "rounded" })
+                    end, "Signature Help")
 
-            vim.keymap.set("i", "<C-k>", function()
-                vim.lsp.buf.signature_help({ border = "rounded" })
-            end, { silent = true, noremap = true })
+                    if opts.inlay_hints.enabled then
+                        local client = vim.lsp.get_client_by_id(args.data.client_id)
+                        if client and client:supports_method("textDocument/inlayHint") then
+                            vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+                        end
+                    end
+                end,
+            })
 
             local servers = opts.servers
             local has_cmp, cmp_nvim_lsp = pcall(require, "cmp_nvim_lsp")
@@ -92,11 +81,14 @@ return {
                 "force",
                 {},
                 vim.lsp.protocol.make_client_capabilities(),
-                has_cmp and cmp_nvim_lsp.default_capabilities() or {},
-                opts.capabilities or {}
+                has_cmp and cmp_nvim_lsp.default_capabilities() or {}
             )
 
             local function setup(server)
+                if servers[server] and servers[server].enabled == false then
+                    return
+                end
+
                 local server_opts = vim.tbl_deep_extend("force", {
                     capabilities = vim.deepcopy(capabilities),
                 }, servers[server] or {})
@@ -123,7 +115,9 @@ return {
             for server, server_opts in pairs(servers) do
                 if server_opts then
                     server_opts = server_opts == true and {} or server_opts
-                    if server_opts.mason == false or not vim.tbl_contains(all_mslp_servers, server) then
+                    if server_opts.enabled == false then
+                        -- skip
+                    elseif server_opts.mason == false or not vim.tbl_contains(all_mslp_servers, server) then
                         setup(server)
                     else
                         ensure_installed[#ensure_installed + 1] = server
