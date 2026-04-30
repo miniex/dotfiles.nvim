@@ -10,15 +10,23 @@ return {
         end,
     },
     {
-        "hrsh7th/nvim-cmp",
+        "saghen/blink.cmp",
         optional = true,
-        dependencies = {
-            { "petertriho/cmp-git", opts = {} },
+        dependencies = { "Kaiser-Yang/blink-cmp-git" },
+        opts = {
+            sources = {
+                per_filetype = {
+                    gitcommit = { "git", inherit_defaults = true },
+                },
+                providers = {
+                    git = {
+                        module = "blink-cmp-git",
+                        name = "Git",
+                        opts = {},
+                    },
+                },
+            },
         },
-        opts = function(_, opts)
-            opts.sources = opts.sources or {}
-            table.insert(opts.sources, { name = "git" })
-        end,
     },
 
     -- LazyGit: Floating window for the lazygit TUI

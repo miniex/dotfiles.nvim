@@ -1,71 +1,55 @@
 return {
     {
-        "hrsh7th/nvim-cmp",
-        event = { "BufReadPost", "BufNewFile" },
+        "saghen/blink.cmp",
+        version = "v1.*",
+        event = { "BufReadPost", "BufNewFile", "InsertEnter" },
         dependencies = {
+            "rafamadriz/friendly-snippets",
             {
                 "L3MON4D3/LuaSnip",
                 version = "v2.*",
                 build = "make install_jsregexp",
-                dependencies = { "rafamadriz/friendly-snippets" },
+                config = function()
+                    require("luasnip.loaders.from_vscode").lazy_load()
+                end,
             },
-            "saadparwaiz1/cmp_luasnip",
-            "hrsh7th/cmp-nvim-lsp",
-            "hrsh7th/cmp-nvim-lsp-signature-help",
-            "hrsh7th/cmp-buffer",
-            "hrsh7th/cmp-path",
         },
-        opts = function()
-            local cmp = require("cmp")
-            return {
-                snippet = {
-                    expand = function(args)
-                        require("luasnip").lsp_expand(args.body)
-                    end,
+        ---@module "blink.cmp"
+        ---@type blink.cmp.Config
+        opts = {
+            keymap = {
+                preset = "none",
+                ["<C-Space>"] = { "show", "show_documentation", "hide_documentation" },
+                ["<C-e>"] = { "hide", "fallback" },
+                ["<CR>"] = { "accept", "fallback" },
+                ["<Tab>"] = { "select_next", "snippet_forward", "fallback" },
+                ["<S-Tab>"] = { "select_prev", "snippet_backward", "fallback" },
+                ["<C-n>"] = { "select_next", "fallback" },
+                ["<C-p>"] = { "select_prev", "fallback" },
+                ["<C-f>"] = { "scroll_documentation_down", "fallback" },
+                ["<C-S-f>"] = { "scroll_documentation_up", "fallback" },
+            },
+            appearance = {
+                nerd_font_variant = "mono",
+            },
+            completion = {
+                accept = { auto_brackets = { enabled = true } },
+                documentation = { auto_show = true, auto_show_delay_ms = 200 },
+                menu = {
+                    border = "rounded",
+                    draw = {
+                        columns = {
+                            { "label", "label_description", gap = 1 },
+                            { "kind_icon", "kind" },
+                        },
+                    },
                 },
-                window = {
-                    completion = cmp.config.window.bordered(),
-                    documentation = cmp.config.window.bordered(),
-                },
-                mapping = cmp.mapping.preset.insert({
-                    ["<C-p>"] = cmp.mapping.select_prev_item(),
-                    ["<C-n>"] = cmp.mapping.select_next_item(),
-                    ["<S-Tab>"] = cmp.mapping.select_prev_item(),
-                    ["<Tab>"] = cmp.mapping.select_next_item(),
-                    ["<C-S-f>"] = cmp.mapping.scroll_docs(-4),
-                    ["<C-f>"] = cmp.mapping.scroll_docs(4),
-                    ["<C-Space>"] = cmp.mapping.complete(),
-                    ["<C-e>"] = cmp.mapping.close(),
-                    ["<CR>"] = cmp.mapping.confirm({
-                        behavior = cmp.ConfirmBehavior.Insert,
-                        select = true,
-                    }),
-                }),
-                sources = cmp.config.sources({
-                    { name = "path" },
-                    { name = "nvim_lsp", keyword_length = 3 },
-                    { name = "nvim_lsp_signature_help" },
-                    { name = "luasnip", keyword_length = 2 },
-                    { name = "buffer", keyword_length = 2 },
-                }),
-                formatting = {
-                    fields = { "menu", "abbr", "kind" },
-                    format = function(entry, item)
-                        local menu_icon = {
-                            nvim_lsp = "λ",
-                            luasnip = "⋗",
-                            buffer = "Ω",
-                            path = "🖫",
-                        }
-                        item.menu = menu_icon[entry.source.name]
-                        return item
-                    end,
-                },
-            }
-        end,
-        config = function(_, opts)
-            require("luasnip.loaders.from_vscode").lazy_load()
-            require("cmp").setup(opts)
-        end,
+            },
+            signature = { enabled = true, window = { border = "rounded" } },
+            snippets = { preset = "luasnip" },
+            sources = {
+                default = { "lsp", "path", "snippets", "buffer" },
+            },
+        },
     },
 }

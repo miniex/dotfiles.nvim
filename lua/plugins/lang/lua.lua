@@ -9,12 +9,20 @@ return {
         },
     },
     {
-        "hrsh7th/nvim-cmp",
+        "saghen/blink.cmp",
         optional = true,
-        opts = function(_, opts)
-            opts.sources = opts.sources or {}
-            table.insert(opts.sources, 1, { name = "lazydev", group_index = 0 })
-        end,
+        opts = {
+            sources = {
+                default = { "lsp", "path", "snippets", "buffer", "lazydev" },
+                providers = {
+                    lazydev = {
+                        name = "LazyDev",
+                        module = "lazydev.integrations.blink",
+                        score_offset = 100,
+                    },
+                },
+            },
+        },
     },
     {
         "neovim/nvim-lspconfig",

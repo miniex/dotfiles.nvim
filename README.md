@@ -6,7 +6,7 @@ Modular, LSP-first Neovim setup. Lazy.nvim for plugins, Mason for LSP/DAP toolch
 
 ## Highlights
 
-- LSP + completion (nvim-cmp, lazydev for Lua), inlay hints auto-enabled per buffer
+- LSP + completion (blink.cmp, lazydev for Lua), inlay hints auto-enabled per buffer
 - Treesitter highlighting via nvim-treesitter `main` + built-in `vim.treesitter`
 - DAP debugging (Rust / C-C++ / Python)
 - Telescope, neo-tree, which-key, flash, trouble, todo-comments
@@ -14,7 +14,7 @@ Modular, LSP-first Neovim setup. Lazy.nvim for plugins, Mason for LSP/DAP toolch
 - snacks.nvim bundle: terminal (anchored to file window), dashboard, statuscolumn, notifier, scroll, dim, image, bufdelete, words, bigfile, indent, input, quickfile, scope
 - Cyberdream theme + lualine + smear-cursor + modicator + fidget + undo-glow
 - Format-on-save (conform.nvim), async lint (nvim-lint)
-- Git: gitsigns, fugitive, lazygit.nvim, cmp-git commit completions
+- Git: gitsigns, fugitive, lazygit.nvim, blink-cmp-git commit completions
 - WSL2 clipboard integration via `clip.exe`
 
 ## Language Support
