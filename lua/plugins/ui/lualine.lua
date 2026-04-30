@@ -12,6 +12,7 @@ return {
                 section_separators = { left = " ", right = " " },
                 globalstatus = true,
                 disabled_filetypes = { statusline = { "snacks_dashboard" } },
+                refresh = { statusline = 1000 },
             },
             sections = {
                 lualine_a = {
@@ -38,15 +39,6 @@ return {
                     {
                         "filename",
                         symbols = { modified = "   ", readonly = "", unnamed = "" },
-                    },
-                    {
-                        function()
-                            return require("nvim-navic").get_location()
-                        end,
-                        cond = function()
-                            return package.loaded["nvim-navic"] and require("nvim-navic").is_available()
-                        end,
-                        color = { fg = colors.grey, bg = colors.none },
                     },
                 },
                 lualine_x = {
