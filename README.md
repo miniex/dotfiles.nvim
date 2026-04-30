@@ -1,532 +1,153 @@
 # Neovim Configuration
 
-A modern, modular Neovim configuration with powerful LSP support, built for efficient software development.
+Modular, LSP-first Neovim setup. Lazy.nvim for plugins, Mason for LSP/DAP toolchain.
 
-## Features
+## Highlights
 
-- **Cyberdream Theme** - Modern dark theme with transparent background
-- **Fast Startup** - Lazy loading plugins with lazy.nvim
-- **Telescope** - Fuzzy finder for files, text, and more
-- **Neo-tree** - Feature-rich file explorer with git integration
-- **File Icons** - nvim-web-devicons with verified Nerd Font glyph overrides and brand colors for modern dev files (Rust crate, Python tooling, biome/deno/turbo, env variants, AI agent files like CLAUDE.md/AGENTS.md, lockfiles, fly.toml/wrangler.toml, etc.)
-- **LSP Support** - Full language server protocol integration
-- **Auto-completion** - Intelligent completion with nvim-cmp
-- **Debug Support** - nvim-dap with UI + virtual text; adapters for Rust (CodeLLDB), C/C++ (cpptools), Python (debugpy)
-- **Syntax Highlighting** - Tree-sitter powered syntax highlighting
-- **Status Line** - Custom lualine with mode, git branch, diagnostics, and diff indicators
-- **Git Integration** - Fugitive, gitsigns, lazygit.nvim (floating TUI), and commit message completions
-- **Formatting** - Auto format-on-save with conform.nvim
-- **Linting** - nvim-lint with eslint_d, ruff, markdownlint (runs on save, not while typing)
-- **Diagnostics** - trouble.nvim for structured diagnostics panel (deferred until normal mode for performance)
-- **Terminal** - Integrated bottom-split terminal via snacks.terminal, anchored to the file window only (skips neo-tree); auto-restores focus to the originating window on close (`<leader>t`, `<C-x>`, or `Ctrl+D`/`exit`)
-- **Auto Buffer Cleanup** - Automatically closes hidden buffers after 1 minute of inactivity to reduce memory usage
-- **Keymap Discovery** - which-key.nvim popup hints when leader is held
-- **Fast Motion** - flash.nvim label-based jumping (`s` / `S`) with treesitter integration
-- **TODO Highlighting** - todo-comments.nvim for `TODO` / `FIXME` / `HACK` markers, searchable via Telescope/Trouble
-- **Hex Editing** - hex.nvim for viewing/editing binary files via `xxd` (`:HexToggle` / `:HexDump` / `:HexAssemble`, or `nvim -b <file>`)
-- **Lua Dev** - lazydev.nvim provides Neovim runtime types for editing this very config
-- **QoL Bundle** - snacks.nvim modules: notifier, indent guides, statuscolumn, LSP word highlight, smarter buffer delete, bigfile optimization, terminal
-- **Animations** - snacks.scroll smooth scrolling, snacks.dim inactive-code dim, smear-cursor.nvim cursor trail
-- **Inline Images** - snacks.image renders images, GIFs, video previews and LaTeX math via Kitty graphics protocol (Markdown / HTML / LaTeX)
-- **Visual Feedback** - fidget.nvim LSP progress toasts, undo-glow.nvim fade glow on undo/redo/yank/paste, modicator.nvim mode-colored cursor line number (`cursorlineopt = "number"` keeps the line body unhighlighted)
+- LSP + completion (nvim-cmp, lazydev for Lua), inlay hints auto-enabled per buffer
+- Treesitter highlighting via nvim-treesitter `main` + built-in `vim.treesitter`
+- DAP debugging (Rust / C-C++ / Python)
+- Telescope, neo-tree, which-key, flash, trouble, todo-comments, hex.nvim
+- snacks.nvim bundle: terminal (anchored to file window), dashboard, statuscolumn, notifier, scroll, dim, image, bufdelete, words
+- Cyberdream theme + lualine + smear-cursor + modicator + fidget + undo-glow
+- Format-on-save (conform.nvim), async lint (nvim-lint)
+- Git: gitsigns, fugitive, lazygit.nvim, cmp-git commit completions
+- WSL2 clipboard integration via `clip.exe`
 
 ## Language Support
 
-| Language       | LSP           | Formatter          | Debugger | Features                    |
-|----------------|---------------|--------------------|----------|-----------------------------|
-| Rust           | rust-analyzer       | rustfmt            | CodeLLDB | Macro expansion, cargo, crates.nvim |
-| C/C++          | clangd              | clang-format       | cpptools | AST view, IWYU, clang-tidy          |
-| JavaScript/TS  | vtsls               | prettierd/prettier | -        | Linting (eslint_d)                  |
-| Python         | basedpyright + ruff | ruff (via LSP)     | debugpy  | Type check, lint, import sort       |
-| Lua            | lua_ls              | stylua             | -        | Neovim API via lazydev              |
-| JSON           | jsonls              | prettierd/prettier | -        | Schema validation                   |
-| Markdown       | marksman            | prettierd/prettier | -        | Linting (markdownlint)              |
-| CMake          | neocmake            | cmake_format       | -        | Project detection                   |
-| Metal          | -                   | clang-format       | -        | Treesitter via cpp parser           |
-| RON            | -                   | rustfmt            | -        | Syntax highlighting                 |
-| TOML           | taplo               | taplo              | -        | Schema validation, hover            |
-| CSS/SCSS       | cssls               | prettierd/prettier | -        | Validation, lint                    |
-| HTML           | html + emmet_ls     | prettierd/prettier | -        | Emmet expansions                    |
-| YAML           | yamlls              | prettierd/prettier | -        | SchemaStore validation              |
+| Language      | LSP                 | Formatter        | Debugger |
+|---------------|---------------------|------------------|----------|
+| Rust          | rust-analyzer       | rustfmt          | CodeLLDB |
+| C/C++         | clangd              | clang-format     | cpptools |
+| JavaScript/TS | vtsls               | prettierd        | -        |
+| Python        | basedpyright + ruff | ruff (via LSP)   | debugpy  |
+| Lua           | lua_ls              | stylua           | -        |
+| JSON / YAML   | jsonls / yamlls     | prettierd        | -        |
+| Markdown      | marksman            | prettierd        | -        |
+| CMake         | neocmake            | cmake_format     | -        |
+| TOML          | taplo               | taplo            | -        |
+| CSS / HTML    | cssls / html+emmet  | prettierd        | -        |
+| Metal / RON   | -                   | clang-format / rustfmt | -  |
 
-## Directory Structure
+Linters: `eslint_d` (JS/TS), `markdownlint`, `ruff` (Python via LSP).
 
-```
-~/.config/nvim/
-├── init.lua                    # Main entry point
-├── stylua.toml                 # Lua formatter config
-└── lua/
-    ├── configs/                # Core configurations
-    │   ├── globals.lua         # Leader keys
-    │   ├── options.lua         # Vim options
-    │   ├── keymaps.lua         # Global keymaps
-    │   └── diagnostic.lua      # Diagnostic settings
-    └── plugins/                # Plugin specifications
-        ├── coding/             # Coding tools
-        │   ├── autopairs.lua   # Auto bracket pairing
-        │   ├── comment.lua     # Code commenting
-        │   └── completion.lua  # nvim-cmp completion
-        ├── editor/             # Editor enhancements
-        │   ├── telescope.lua   # Fuzzy finder
-        │   ├── trouble.lua     # Diagnostics panel
-        │   ├── which-key.lua   # Keymap discovery popup
-        │   ├── flash.lua       # s/S motion + treesitter jump
-        │   ├── todo-comments.lua # TODO/FIXME highlight + search
-        │   └── hex.lua         # Hex view/edit via xxd
-        ├── ui/                 # UI plugins
-        │   ├── themes.lua      # Cyberdream theme
-        │   ├── lualine.lua     # Status line
-        │   ├── neo-tree.lua    # File explorer
-        │   ├── devicons.lua    # File icons (nvim-web-devicons + Nerd Font overrides)
-        │   ├── snacks.lua      # QoL bundle (notifier, indent, scroll, dim, terminal, dashboard, ...)
-        │   ├── smear-cursor.lua # Cursor smear/trail effect
-        │   ├── mini-animate.lua # mini.animate (currently fully disabled)
-        │   ├── fidget.lua      # LSP progress toasts
-        │   ├── undo-glow.lua   # Glow effect on undo/redo/yank/paste
-        │   └── modicator.lua   # Mode-colored CursorLineNr
-        ├── lang/               # Language configs
-        │   ├── lsp.lua         # LSP setup (Mason + lspconfig)
-        │   ├── treesitter.lua  # Syntax highlighting
-        │   ├── conform.lua     # Formatters
-        │   ├── lint.lua        # Linters (nvim-lint)
-        │   ├── rust.lua        # Rust support
-        │   ├── c-cpp.lua       # C/C++ support
-        │   ├── cmake.lua       # CMake support
-        │   ├── lua.lua         # Lua support
-        │   ├── json.lua        # JSON support
-        │   ├── markdown.lua    # Markdown support
-        │   ├── metal.lua       # Metal shading language
-        │   ├── ron.lua         # RON syntax
-        │   ├── toml.lua        # TOML LSP (taplo)
-        │   ├── python.lua      # Python LSP (basedpyright + ruff) + DAP
-        │   ├── web.lua         # CSS / HTML / Emmet LSPs
-        │   ├── yaml.lua        # YAML LSP with SchemaStore
-        │   ├── dap.lua         # nvim-dap base + UI + mason adapters
-        │   └── git.lua         # Git integration
-        └── cord.lua            # Discord Rich Presence
-```
-
-## Key Bindings
-
-> Leader key: `<Space>`
-
-### Global (`configs/keymaps.lua`)
-
-| Key            | Mode     | Description                     |
-|----------------|----------|---------------------------------|
-| `<C-h/j/k/l>` | Normal   | Navigate between splits         |
-| `<leader>h`    | Normal   | Clear search highlighting       |
-| `<leader>s`    | Normal   | Save file                       |
-| `<leader>d`    | N / V    | Delete without yanking          |
-| `<leader>p`    | Visual   | Paste without overwriting register |
-| `< / >`        | Visual   | Indent/outdent (keep selection) |
-
-### File Navigation — Telescope (`plugins/editor/telescope.lua`)
-
-| Key          | Description        |
-|--------------|--------------------|
-| `<leader>ff` | Find files         |
-| `<leader>fg` | Live grep (search) |
-| `<leader>fr` | Recent files       |
-| `<leader>fb` | Find buffers       |
-| `<leader>fh` | Find help tags     |
-
-### File Explorer — Neo-tree (`plugins/ui/neo-tree.lua`)
-
-| Key         | Description         |
-|-------------|---------------------|
-| `<leader>e` | Toggle file tree    |
-| `<leader>o` | Reveal current file |
-| `l`         | Open file/folder    |
-| `h`         | Collapse folder     |
-| `P`         | Preview in float    |
-
-### LSP (`plugins/lang/lsp.lua`)
-
-| Key          | Description            |
-|--------------|------------------------|
-| `K`          | Hover documentation    |
-| `gd`         | Go to definition       |
-| `gr`         | Go to references       |
-| `gi`         | Go to implementation   |
-| `<leader>rn` | Rename symbol          |
-| `<leader>cc` | Show diagnostics float |
-| `<leader>ca` | Code actions           |
-| `<leader>cf` | Format buffer (async)  |
-| `<leader>cm` | Open Mason             |
-
-### Diagnostics — Trouble (`plugins/editor/trouble.lua`)
-
-| Key          | Description              |
-|--------------|--------------------------|
-| `<leader>xx` | Toggle diagnostics panel |
-| `<leader>xd` | Buffer diagnostics only  |
-| `<leader>xs` | Symbols outline          |
-| `<leader>xq` | Quickfix list            |
-| `<leader>xl` | Location list            |
-| `<leader>xt` | TODO list (Trouble)      |
-| `<leader>xT` | TODO/FIX/FIXME (Trouble) |
-| `[q`         | Previous item            |
-| `]q`         | Next item                |
-
-### Motion — Flash (`plugins/editor/flash.lua`)
-
-| Key      | Mode      | Description                         |
-|----------|-----------|-------------------------------------|
-| `s`      | N / X / O | Flash jump (search + label)         |
-| `S`      | N / X / O | Treesitter-based jump               |
-| `r`      | Op-pending| Remote flash (operate at distance)  |
-| `R`      | Op / X    | Treesitter search                   |
-| `<C-s>`  | Cmdline   | Toggle flash inside `/` `?` search  |
-
-### TODO Comments (`plugins/editor/todo-comments.lua`)
-
-| Key          | Description                |
-|--------------|----------------------------|
-| `]t`         | Next TODO comment          |
-| `[t`         | Previous TODO comment      |
-| `<leader>ft` | Find todos via Telescope   |
-
-### Hex Editing — hex.nvim (`plugins/editor/hex.lua`)
-
-| Command        | Description                       |
-|----------------|-----------------------------------|
-| `:HexToggle`   | Toggle hex view ↔ normal view     |
-| `:HexDump`     | Switch to hex view                |
-| `:HexAssemble` | Switch back to normal view        |
-| `nvim -b <f>`  | Open file directly in hex view    |
-
-> Requires `xxd` on `$PATH`.
-
-### Keymap Discovery — which-key (`plugins/editor/which-key.lua`)
-
-| Key          | Description                          |
-|--------------|--------------------------------------|
-| `<leader>?`  | Show buffer-local keymaps            |
-| `<leader>`   | Hold to popup all leader keymaps     |
-
-### QoL — Snacks (`plugins/ui/snacks.lua`)
-
-| Key          | Mode    | Description                            |
-|--------------|---------|----------------------------------------|
-| `<leader>bd` | Normal  | Smart buffer delete                    |
-| `<leader>cn` | Normal  | Notification history                   |
-| `<leader>un` | Normal  | Dismiss all notifications              |
-| `<leader>t`  | N / T   | Toggle terminal under file window      |
-| `]]`         | N / T   | Next reference (LSP word highlight)    |
-| `[[`         | N / T   | Previous reference                     |
-
-### Git — Fugitive (`plugins/lang/git.lua`)
-
-| Key          | Description |
-|--------------|-------------|
-| `<leader>gs` | Git status  |
-| `<leader>gb` | Git blame   |
-| `<leader>gd` | Git diff    |
-| `<leader>gl` | Git log     |
-| `<leader>gp` | Git push    |
-| `<leader>gP` | Git pull    |
-| `<leader>gc` | Git commit  |
-
-### Git — LazyGit (`plugins/lang/git.lua`)
-
-| Key          | Description                    |
-|--------------|--------------------------------|
-| `<leader>gg` | Open LazyGit (floating window) |
-| `<leader>gf` | LazyGit for current file       |
-| `<leader>gF` | LazyGit filter (current file)  |
-| `<leader>gL` | LazyGit filter (all)           |
-
-### Git — Gitsigns (`plugins/lang/git.lua`)
-
-| Key           | Mode   | Description          |
-|---------------|--------|----------------------|
-| `]h`          | Normal | Next hunk            |
-| `[h`          | Normal | Previous hunk        |
-| `<leader>ghs` | N / V  | Stage hunk           |
-| `<leader>ghr` | N / V  | Reset hunk           |
-| `<leader>ghS` | Normal | Stage buffer         |
-| `<leader>ghu` | Normal | Undo stage hunk      |
-| `<leader>ghR` | Normal | Reset buffer         |
-| `<leader>ghp` | Normal | Preview hunk         |
-| `<leader>ghi` | Normal | Preview hunk inline  |
-| `<leader>ghb` | Normal | Blame line (full)    |
-| `<leader>ghd` | Normal | Diff this            |
-| `<leader>ghD` | Normal | Diff this ~          |
-| `<leader>gtb` | Normal | Toggle line blame    |
-| `<leader>gtd` | Normal | Toggle deleted       |
-
-### Rust (`plugins/lang/rust.lua`)
-
-| Key          | Description        |
-|--------------|--------------------|
-| `<leader>cR` | Rust code actions  |
-| `<leader>dr` | Rust debuggables (rustaceanvim) |
-
-### Debugger — DAP (`plugins/lang/dap.lua`)
-
-| Key           | Description                       |
-|---------------|-----------------------------------|
-| `<leader>db`  | Toggle breakpoint                 |
-| `<leader>dB`  | Conditional breakpoint            |
-| `<leader>dc`  | Continue / start                  |
-| `<leader>dC`  | Run to cursor                     |
-| `<leader>di`  | Step into                         |
-| `<leader>dO`  | Step over                         |
-| `<leader>do`  | Step out                          |
-| `<leader>dl`  | Run last                          |
-| `<leader>dp`  | Pause                             |
-| `<leader>dr`  | Toggle REPL                       |
-| `<leader>ds`  | Show session                      |
-| `<leader>dt`  | Terminate                         |
-| `<leader>du`  | Toggle DAP UI                     |
-| `<leader>dPt` | (Python) Debug test method        |
-| `<leader>dPc` | (Python) Debug test class         |
-
-### C/C++ (`plugins/lang/c-cpp.lua`)
-
-| Key          | Description          |
-|--------------|----------------------|
-| `<leader>ch` | Switch source/header |
-
-### Terminal (`plugins/ui/snacks.lua`)
-
-| Key         | Mode     | Description                                 |
-|-------------|----------|---------------------------------------------|
-| `<leader>t` | N / T    | Toggle terminal under the file window       |
-| `<C-x>`     | N / T    | Hide terminal                               |
-| `q`         | Normal   | Hide terminal                               |
-| `<C-d>`     | Terminal | Exit shell (closes terminal, restores focus)|
-
-- Terminal opens as a 45% split below the **current file window**, not under neo-tree.
-- Triggering `<leader>t` from neo-tree auto-jumps to the file window first.
-- On any close path (`<leader>t` / `<C-x>` / `Ctrl+D` / `exit`), focus returns to the window that opened it.
-
-### Completion — nvim-cmp (`plugins/coding/completion.lua`)
-
-| Key         | Mode   | Description          |
-|-------------|--------|----------------------|
-| `<Tab>`     | Insert | Next item            |
-| `<S-Tab>`   | Insert | Previous item        |
-| `<C-n>`     | Insert | Next item            |
-| `<C-p>`     | Insert | Previous item        |
-| `<C-Space>` | Insert | Trigger completion   |
-| `<CR>`      | Insert | Confirm selection    |
-| `<C-e>`     | Insert | Close completion     |
-| `<C-f>`     | Insert | Scroll docs down     |
-| `<C-S-f>`   | Insert | Scroll docs up       |
-
-### Treesitter (`plugins/lang/treesitter.lua`)
-
-| Key         | Description                    |
-|-------------|--------------------------------|
-| `<C-Space>` | Init/increment node selection  |
-| `<BS>`      | Decrement node selection       |
-
-## Installation
+## Setup
 
 ### Prerequisites
 
-- Neovim >= 0.11.0 (uses `vim.diagnostic.config({ signs = { text = ... } })` and `vim.lsp.buf.hover({ border = ... })`)
-- Git
-- [lazygit](https://github.com/jesseduffield/lazygit) (for the lazygit.nvim floating TUI integration)
-- A [Nerd Font](https://www.nerdfonts.com/) (for icons)
-- C compiler (`gcc` or `clang`) + `make` (for telescope-fzf-native, LuaSnip)
-- ripgrep (for Telescope live grep)
-- Node.js & npm (for LSP servers, JS/TS tools)
-- Python 3 & pip (for Python linters/formatters)
-- Rust toolchain via [rustup](https://rustup.rs/) (for rustfmt, rust-analyzer)
+- **Neovim ≥ 0.12.0**
+- `git`, `tar`, `curl`, C compiler, `make`, ripgrep, a [Nerd Font](https://www.nerdfonts.com/)
+- [`tree-sitter-cli`](https://github.com/tree-sitter/tree-sitter) **≥ 0.26.1** — `cargo install tree-sitter-cli` or OS package manager. **Not npm.**
+- Node.js + npm (LSP servers, prettierd, eslint_d)
+- Python 3 (linters/formatters)
+- Rust toolchain (rustfmt, rust-analyzer)
+- [lazygit](https://github.com/jesseduffield/lazygit) — optional, for `<leader>gg`
 
 ### Install
 
-1. **Backup your existing config:**
-   ```bash
-   mv ~/.config/nvim ~/.config/nvim.backup
-   mv ~/.local/share/nvim ~/.local/share/nvim.backup
-   ```
-
-2. **Clone this configuration:**
-   ```bash
-   git clone https://github.com/yourusername/dotfiles.nvim.git ~/.config/nvim
-   ```
-
-3. **Launch Neovim:**
-   ```bash
-   nvim
-   ```
-   Lazy.nvim will automatically install all plugins on first launch.
-
-4. **Install language servers:**
-   - Open Neovim and run `:Mason`
-   - All configured servers will be automatically installed via Mason
-
-### Mason Auto-installed (LSP servers & DAP)
-
-These are installed automatically via Mason on first launch:
-
-| Tool            | Purpose                    |
-|-----------------|----------------------------|
-| clangd          | C/C++ LSP                  |
-| neocmake        | CMake LSP                  |
-| vtsls           | JavaScript/TypeScript LSP  |
-| jsonls          | JSON LSP                   |
-| lua-language-server | Lua LSP              |
-| marksman        | Markdown LSP               |
-| rust-analyzer   | Rust LSP                   |
-| taplo           | TOML LSP / formatter       |
-| basedpyright    | Python LSP (types)         |
-| ruff            | Python LSP (lint/format)   |
-| css-lsp         | CSS/SCSS LSP               |
-| html-lsp        | HTML LSP                   |
-| emmet-ls        | Emmet expansions           |
-| yaml-language-server | YAML LSP              |
-| codelldb        | Rust DAP debugger          |
-| cpptools        | C/C++ DAP debugger         |
-| debugpy         | Python DAP debugger        |
-
-### External Tools
-
-Formatters and linters that need to be installed separately:
-
-#### Formatters
-
 ```bash
-# C/C++/Metal
-brew install clang-format
-
-# CMake
-pip install cmakelang            # provides cmake_format
-
-# JavaScript/TypeScript/CSS/HTML/JSON/Markdown/YAML
-npm i -g @fsouza/prettierd       # prettierd (preferred)
-npm i -g prettier                # prettier (fallback)
-
-# Lua
-brew install stylua            # macOS
-cargo install stylua           # any platform with Rust toolchain
-
-# Python — formatter/linter handled by ruff LSP (auto-installed via Mason)
-
-# Rust/RON
-rustup component add rustfmt     # comes with Rust toolchain
-
-# TOML
-brew install taplo
+mv ~/.config/nvim ~/.config/nvim.backup
+mv ~/.local/share/nvim ~/.local/share/nvim.backup
+git clone <repo> ~/.config/nvim
+nvim
 ```
 
-#### Linters
+Plugins, LSP servers, and DAP adapters install on first launch. Treesitter parsers download/build asynchronously — re-open files if highlight is briefly missing.
 
-```bash
-npm i -g eslint_d                # JavaScript/TypeScript
-brew install markdownlint-cli    # Markdown
-# Python lint via ruff LSP (auto-installed via Mason)
-```
+## Key Bindings
 
-### WSL2 Clipboard Integration
+Leader: `<Space>`
 
-If you're using WSL2, clipboard integration is automatically configured in `init.lua` to use Windows clipboard via `clip.exe`.
+### Global
+| Key | Mode | Description |
+|---|---|---|
+| `<C-h/j/k/l>` | N | Pane navigation |
+| `<leader>h` | N | Clear search highlight |
+| `<leader>s` | N | Save |
+| `<leader>d` | N/V | Delete without yank |
+| `<leader>p` | V | Paste without overwriting register |
+| `<` / `>` | V | Indent/outdent (keep selection) |
+
+### Find & Navigate
+| Key | Description |
+|---|---|
+| `<leader>ff` / `fg` / `fr` / `fb` / `fh` | Telescope: files / grep / recent / buffers / help |
+| `<leader>ft` | TODO comments (Telescope) |
+| `<leader>e` / `<leader>o` | Neo-tree: toggle / reveal current file |
+| `s` / `S` (n/x/o) | Flash: jump / treesitter jump |
+| `<leader>?` | which-key: buffer-local keymaps |
+
+### LSP / Diagnostics
+| Key | Description |
+|---|---|
+| `K` / `<C-k>` (i) | Hover / signature help |
+| `gd` / `gr` / `gi` | Definition / references / implementation |
+| `<leader>rn` | Rename symbol |
+| `<leader>cc` / `<leader>ca` | Diagnostics float / code action |
+| `<leader>cf` | Format buffer |
+| `<leader>cm` | Open Mason |
+| `<leader>xx/xd/xs/xq/xl` | Trouble: diagnostics / buf only / symbols / qf / loclist |
+| `<leader>xt` / `<leader>xT` | Trouble: TODOs / TODO+FIX+FIXME |
+| `[q` / `]q` | Prev / next item (Trouble + qf fallback) |
+| `[t` / `]t` | Prev / next TODO comment |
+
+### Git
+| Key | Description |
+|---|---|
+| `<leader>gs/gb/gd/gl/gc/gp/gP` | Fugitive: status/blame/diff/log/commit/push/pull |
+| `<leader>gg` / `gf` / `gF` / `gL` | LazyGit: full / current file / filter file / filter all |
+| `[h` / `]h` | Prev / next hunk |
+| `<leader>ghs/r/S/u/R/p/i/b/d/D` | Stage / reset / stage-buf / undo-stage / reset-buf / preview / inline-preview / blame-line / diff / diff~ |
+| `<leader>gtb` / `<leader>gtd` | Toggle line blame / show deleted |
+
+### Debugger (DAP)
+| Key | Description |
+|---|---|
+| `<leader>db` / `dB` | Toggle / conditional breakpoint |
+| `<leader>dc` / `dC` | Continue / run-to-cursor |
+| `<leader>di` / `dO` / `do` | Step into / over / out |
+| `<leader>dl/dr/dp/dt/ds/du` | Last / REPL / pause / terminate / session / toggle UI |
+| `<leader>dPt` / `<leader>dPc` | Python: debug test method / class |
+
+### Terminal & Buffers (snacks.nvim)
+| Key | Description |
+|---|---|
+| `<leader>t` (n/t) | Toggle terminal (45% bottom split, anchored to file window) |
+| `<C-x>` | Hide terminal |
+| `<leader>bd` | Smart buffer delete |
+| `<leader>cn` / `<leader>un` | Notification history / dismiss all |
+| `]]` / `[[` | LSP word: next / previous reference |
+
+### Language-specific
+| Key | Description |
+|---|---|
+| `<leader>ch` | C/C++: switch source ↔ header |
+| `<leader>cR` / `<leader>dr` | Rust: code action / debuggables (rustaceanvim) |
+
+### Hex (hex.nvim — requires `xxd`)
+`:HexToggle`, `:HexDump`, `:HexAssemble`, or `nvim -b <file>`.
+
+### Completion (insert mode)
+`<Tab>` / `<S-Tab>` next/prev · `<C-Space>` trigger · `<CR>` confirm · `<C-e>` close · `<C-f>` / `<C-S-f>` scroll docs.
 
 ## Customization
 
-### Adding a New Language
-
-1. Create a new file in `lua/plugins/lang/`:
-   ```lua
-   -- lua/plugins/lang/mylang.lua
-   return {
-     {
-       "neovim/nvim-lspconfig",
-       opts = {
-         servers = {
-           mylang_ls = {
-             -- LSP settings here
-           },
-         },
-       },
-     },
-   }
-   ```
-
-2. Add formatter to `lua/plugins/lang/conform.lua`:
-   ```lua
-   formatters_by_ft = {
-     mylang = { "my_formatter" },
-   },
-   ```
-
-3. Add linter to `lua/plugins/lang/lint.lua`:
-   ```lua
-   lint.linters_by_ft = {
-     mylang = { "my_linter" },
-   }
-   ```
-
-### Changing Theme
-
-Edit `lua/plugins/ui/themes.lua` to use a different colorscheme, or customize the Cyberdream theme colors.
-
-### Custom Keymaps
-
-Add your custom keymaps to `lua/configs/keymaps.lua` using the local `map` helper or `vim.keymap.set` directly:
-```lua
--- via the local helper defined at the top of keymaps.lua
-map("<leader>cc", ":YourCommand<CR>")
-
--- or call the API directly
-vim.keymap.set("n", "<leader>cc", ":YourCommand<CR>", { noremap = true, silent = true })
-```
-
-## Configuration Philosophy
-
-- **Modular:** Each plugin has its own file for easy management
-- **Lazy Loading:** Plugins load only when needed for fast startup
-- **Minimal:** Only essential plugins, no bloat
-- **LSP-First:** Built around Language Server Protocol for IDE features
-- **Performance:** Optimized for speed with disabled default plugins
+- **New language** — add a file under `lua/plugins/lang/`. See `python.lua` for the LSP + formatter + linter + treesitter wiring pattern.
+- **Theme** — `lua/plugins/ui/themes.lua`.
+- **Keymaps** — `lua/configs/keymaps.lua`, helper `map(lhs, rhs, mode, desc)`.
 
 ## Troubleshooting
 
-### LSP not working
+| Issue | Check |
+|---|---|
+| LSP not attaching | `:Mason`, `:LspInfo`, `:LspLog` |
+| Format not running | `:ConformInfo`, formatter on `$PATH` |
+| Lint not running | linter on `$PATH`, see `lua/plugins/lang/lint.lua` |
+| Treesitter errors | `:checkhealth nvim-treesitter`; `tree-sitter --version` ≥ 0.26.1 (not the npm build) |
 
-1. Check if the language server is installed: `:Mason`
-2. Check LSP status: `:LspInfo`
-3. View logs: `:LspLog`
+> The `master` branch of nvim-treesitter is archived and incompatible with Neovim 0.12; this config is pinned to `main`.
 
-### Formatters not working
+## License
 
-1. Ensure the formatter is installed via Mason or system package manager
-2. Check Conform status: `:ConformInfo`
-3. Verify formatter is configured in `conform.lua`
-
-### Linters not working
-
-1. Ensure the linter binary is installed and in `$PATH`
-2. Check configured linters in `lint.lua`
-
-### Treesitter errors
-
-1. Update parsers: `:TSUpdate`
-2. Check installation: `:TSInstallInfo`
-
-## Acknowledgments
-
-- [lazy.nvim](https://github.com/folke/lazy.nvim) - Plugin manager
-- [nvim-lspconfig](https://github.com/neovim/nvim-lspconfig) - LSP configurations
-- [telescope.nvim](https://github.com/nvim-telescope/telescope.nvim) - Fuzzy finder
-- [trouble.nvim](https://github.com/folke/trouble.nvim) - Diagnostics panel
-- [nvim-lint](https://github.com/mfussenegger/nvim-lint) - Async linting
-- [conform.nvim](https://github.com/stevearc/conform.nvim) - Formatter
-- [snacks.nvim](https://github.com/folke/snacks.nvim) - QoL bundle
-- [which-key.nvim](https://github.com/folke/which-key.nvim) - Keymap discovery
-- [flash.nvim](https://github.com/folke/flash.nvim) - Label-based motion
-- [todo-comments.nvim](https://github.com/folke/todo-comments.nvim) - TODO highlighting
-- [hex.nvim](https://github.com/RaafatTurki/hex.nvim) - Hex editing via xxd
-- [lazydev.nvim](https://github.com/folke/lazydev.nvim) - Lua dev types
-- [smear-cursor.nvim](https://github.com/sphamba/smear-cursor.nvim) - Cursor smear effect
-- [mini.animate](https://github.com/echasnovski/mini.nvim) - Window animations
-- [fidget.nvim](https://github.com/j-hui/fidget.nvim) - LSP progress toasts
-- [undo-glow.nvim](https://github.com/y3owk1n/undo-glow.nvim) - Edit operation glow
-- [modicator.nvim](https://github.com/mawkler/modicator.nvim) - Mode-aware line numbers
-- [lazygit.nvim](https://github.com/kdheepak/lazygit.nvim) - Floating window integration for lazygit
-- [cyberdream.nvim](https://github.com/scottmckendry/cyberdream.nvim) - Color scheme
-- All the amazing plugin authors in the Neovim community
+[MIT](LICENSE) © 2026 Han Damin.
