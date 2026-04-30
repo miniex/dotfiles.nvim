@@ -9,6 +9,14 @@ return {
         },
     },
     {
+        "hrsh7th/nvim-cmp",
+        optional = true,
+        opts = function(_, opts)
+            opts.sources = opts.sources or {}
+            table.insert(opts.sources, 1, { name = "lazydev", group_index = 0 })
+        end,
+    },
+    {
         "neovim/nvim-lspconfig",
         opts = {
             servers = {
