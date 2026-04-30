@@ -15,7 +15,6 @@ return {
                 "typescript",
                 "json",
                 "json5",
-                "jsonc",
                 "lua",
                 "markdown",
                 "markdown_inline",
@@ -31,6 +30,8 @@ return {
         config = function(_, opts)
             local ts = require("nvim-treesitter")
             ts.setup({})
+
+            vim.treesitter.language.register("json", "jsonc")
 
             local ok, installed = pcall(ts.get_installed, "parsers")
             local missing
