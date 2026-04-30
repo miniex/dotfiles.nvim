@@ -18,7 +18,7 @@ A modern, modular Neovim configuration with powerful LSP support, built for effi
 - **Formatting** - Auto format-on-save with conform.nvim
 - **Linting** - nvim-lint with eslint_d, ruff, markdownlint (runs on save, not while typing)
 - **Diagnostics** - trouble.nvim for structured diagnostics panel (deferred until normal mode for performance)
-- **Terminal** - Integrated bottom-split terminal via snacks.terminal
+- **Terminal** - Integrated bottom-split terminal via snacks.terminal, anchored to the file window only (skips neo-tree); auto-restores focus to the originating window on close (`<leader>t`, `<C-x>`, or `Ctrl+D`/`exit`)
 - **Auto Buffer Cleanup** - Automatically closes hidden buffers after 1 minute of inactivity to reduce memory usage
 - **Keymap Discovery** - which-key.nvim popup hints when leader is held
 - **Fast Motion** - flash.nvim label-based jumping (`s` / `S`) with treesitter integration
@@ -212,7 +212,7 @@ A modern, modular Neovim configuration with powerful LSP support, built for effi
 | `<leader>bd` | Normal  | Smart buffer delete                    |
 | `<leader>cn` | Normal  | Notification history                   |
 | `<leader>un` | Normal  | Dismiss all notifications              |
-| `<leader>t`  | N / T   | Toggle bottom terminal                 |
+| `<leader>t`  | N / T   | Toggle terminal under file window      |
 | `]]`         | N / T   | Next reference (LSP word highlight)    |
 | `[[`         | N / T   | Previous reference                     |
 
@@ -291,11 +291,16 @@ A modern, modular Neovim configuration with powerful LSP support, built for effi
 
 ### Terminal (`plugins/ui/snacks.lua`)
 
-| Key         | Mode     | Description            |
-|-------------|----------|------------------------|
-| `<leader>t` | N / T    | Toggle bottom terminal |
-| `<C-x>`     | N / T    | Hide terminal          |
-| `q`         | Normal   | Hide terminal          |
+| Key         | Mode     | Description                                 |
+|-------------|----------|---------------------------------------------|
+| `<leader>t` | N / T    | Toggle terminal under the file window       |
+| `<C-x>`     | N / T    | Hide terminal                               |
+| `q`         | Normal   | Hide terminal                               |
+| `<C-d>`     | Terminal | Exit shell (closes terminal, restores focus)|
+
+- Terminal opens as a 45% split below the **current file window**, not under neo-tree.
+- Triggering `<leader>t` from neo-tree auto-jumps to the file window first.
+- On any close path (`<leader>t` / `<C-x>` / `Ctrl+D` / `exit`), focus returns to the window that opened it.
 
 ### Completion — nvim-cmp (`plugins/coding/completion.lua`)
 
