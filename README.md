@@ -21,21 +21,22 @@ Lean, fast, easy on the eyes. Native LSP (`vim.lsp.config`), Rust-backed complet
 
 ## Language Support
 
-| Language      | LSP                 | Formatter        | Debugger |
-|---------------|---------------------|------------------|----------|
-| Rust          | rust-analyzer       | rustfmt          | CodeLLDB |
-| C/C++         | clangd              | clang-format     | cpptools |
-| JavaScript/TS | vtsls               | prettierd        | -        |
-| Python        | basedpyright + ruff | ruff (via LSP)   | debugpy  |
-| Lua           | lua_ls              | stylua           | -        |
-| JSON / YAML   | jsonls / yamlls     | prettierd        | -        |
-| Markdown      | marksman            | prettierd        | -        |
-| CMake         | neocmake            | cmake_format     | -        |
-| TOML          | taplo               | taplo            | -        |
-| CSS / HTML    | cssls / html+emmet  | prettierd        | -        |
-| RON           | -                   | rustfmt          | -        |
-
-Linters: `eslint_d` (JS/TS), `markdownlint`, `ruff` (Python via LSP).
+| Language        | LSP                 | Formatter        | Linter        | Debugger |
+|-----------------|---------------------|------------------|---------------|----------|
+| Shell (sh/bash) | -                   | shfmt            | shellcheck    | -        |
+| Zsh             | -                   | -                | zsh -n        | -        |
+| Fish            | -                   | fish_indent      | fish -n       | -        |
+| Rust            | rust-analyzer       | rustfmt          | -             | CodeLLDB |
+| C/C++           | clangd              | clang-format     | -             | cpptools |
+| JavaScript/TS   | vtsls               | prettierd        | eslint_d      | -        |
+| Python          | basedpyright + ruff | ruff (via LSP)   | ruff (LSP)    | debugpy  |
+| Lua             | lua_ls              | stylua           | -             | -        |
+| JSON / YAML     | jsonls / yamlls     | prettierd        | -             | -        |
+| Markdown        | marksman            | prettierd        | markdownlint  | -        |
+| CMake           | neocmake            | cmake_format     | -             | -        |
+| TOML            | taplo               | taplo            | -             | -        |
+| CSS / HTML      | cssls / html+emmet  | prettierd        | -             | -        |
+| RON             | -                   | rustfmt          | -             | -        |
 
 ## Setup
 

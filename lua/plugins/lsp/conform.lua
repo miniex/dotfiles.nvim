@@ -7,6 +7,7 @@ return {
                 "prettierd",
                 "clang-format",
                 "cmakelang",
+                "shfmt",
             },
         },
     },
@@ -26,6 +27,9 @@ return {
         },
         opts = {
             formatters_by_ft = {
+                sh = { "shfmt" },
+                bash = { "shfmt" },
+                fish = { "fish_indent" },
                 c = { "clang-format" },
                 cmake = { "cmake_format" },
                 cpp = { "clang-format" },

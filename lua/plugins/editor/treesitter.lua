@@ -6,10 +6,12 @@ return {
         build = ":TSUpdate",
         opts = {
             ensure_installed = {
+                "bash",
                 "c",
                 "cpp",
                 "cmake",
                 "css",
+                "fish",
                 "html",
                 "javascript",
                 "typescript",
@@ -32,6 +34,7 @@ return {
             ts.setup({})
 
             vim.treesitter.language.register("json", "jsonc")
+            vim.treesitter.language.register("bash", { "sh", "zsh" })
 
             local function has_parser(lang)
                 return #vim.api.nvim_get_runtime_file("parser/" .. lang .. ".so", false) > 0

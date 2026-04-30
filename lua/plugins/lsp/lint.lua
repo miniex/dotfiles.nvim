@@ -3,6 +3,7 @@ return {
         "williamboman/mason.nvim",
         opts = {
             ensure_installed = {
+                "shellcheck",
                 "eslint_d",
                 "markdownlint",
             },
@@ -15,6 +16,10 @@ return {
             local lint = require("lint")
 
             lint.linters_by_ft = {
+                sh = { "shellcheck" },
+                bash = { "shellcheck" },
+                zsh = { "zsh" },
+                fish = { "fish" },
                 javascript = { "eslint_d" },
                 typescript = { "eslint_d" },
                 javascriptreact = { "eslint_d" },
