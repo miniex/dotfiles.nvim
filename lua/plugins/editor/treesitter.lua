@@ -62,14 +62,26 @@ return {
                 end
             end
 
-            vim.api.nvim_create_autocmd({ "FileType", "BufEnter" }, {
-                group = vim.api.nvim_create_augroup("treesitter-attach", { clear = true }),
+            local group = vim.api.nvim_create_augroup("treesitter-attach", { clear = true })
+
+            vim.api.nvim_create_autocmd({ "FileType", "BufEnter", "BufWinEnter" }, {
+                group = group,
                 callback = function(args)
                     attach(args.buf)
                 end,
             })
 
+            -- After plugin config: try buffers loaded so far (nvim file.lua args)
             attach_all()
+
+            -- After startup is fully done: catch anything missed by autocmd timing
+            vim.api.nvim_create_autocmd("VimEnter", {
+                group = group,
+                once = true,
+                callback = function()
+                    vim.schedule(attach_all)
+                end,
+            })
 
             local ok, installed = pcall(ts.get_installed, "parsers")
             local missing
