@@ -18,7 +18,7 @@ opt.smartcase = true
 opt.number = true
 opt.relativenumber = true
 opt.termguicolors = true
-opt.signcolumn = "yes"
+opt.signcolumn = "yes:2"
 
 -- etc
 opt.encoding = "UTF-8"
@@ -26,3 +26,4 @@ opt.cmdheight = 1
 opt.scrolloff = 10
 opt.mouse:append("a")
 opt.autoread = true
+opt.undofile = true

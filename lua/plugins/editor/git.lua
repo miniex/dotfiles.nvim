@@ -84,7 +84,7 @@ return {
                 delay = 300,
             },
             current_line_blame_formatter = "<author>, <author_time:%Y-%m-%d> - <summary>",
-            word_diff = true,
+            word_diff = false,
             signs = {
                 add = { text = "▎" },
                 change = { text = "▎" },
