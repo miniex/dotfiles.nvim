@@ -152,6 +152,8 @@ Leader: `<Space>`
 - **New language** — add a file under `lua/plugins/lang/` extending `nvim-lspconfig` `servers` (auto-installs via Mason). Formatters live in `lua/plugins/lsp/conform.lua`, linters in `lua/plugins/lsp/lint.lua`, treesitter parsers in `lua/plugins/editor/treesitter.lua`. `python.lua` shows the LSP + DAP wiring.
 - **Theme** — `lua/plugins/ui/themes.lua`.
 - **Keymaps** — `lua/config/keymaps.lua`, helper `map(lhs, rhs, mode, desc)`.
+- **Autocmds** — `lua/config/autocmds.lua` (treesitter attach, WSL2 clipboard, file reload).
+- **CLI scripts** — `tools/format.sh` runs stylua across all Lua files; `tools/lint.sh` runs `stylua --check` plus `selene`/`luacheck` if installed.
 
 ## Troubleshooting
 
