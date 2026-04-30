@@ -38,7 +38,7 @@ Linters: `eslint_d` (JS/TS), `markdownlint`, `ruff` (Python via LSP).
 ### Prerequisites
 
 - **Neovim ≥ 0.12.0**
-- `git`, `tar`, `curl`, C compiler, `make`, ripgrep, a [Nerd Font](https://www.nerdfonts.com/)
+- `git`, `tar`, `curl`, `xxd`, C compiler, `make`, ripgrep, a [Nerd Font](https://www.nerdfonts.com/)
 - [`tree-sitter-cli`](https://github.com/tree-sitter/tree-sitter) **≥ 0.26.1** — `cargo install tree-sitter-cli` or OS package manager. **Not npm.**
 - Node.js + npm (LSP servers, prettierd, eslint_d)
 - Python 3 (linters/formatters)
