@@ -138,7 +138,7 @@ Leader: `<Space>`
 
 ## Customization
 
-- **New language** — add a file under `lua/plugins/lang/`. See `python.lua` for the LSP + formatter + linter + treesitter wiring pattern.
+- **New language** — add a file under `lua/plugins/lang/` extending `nvim-lspconfig` `servers` (auto-installs via Mason). Formatters live in `conform.lua`, linters in `lint.lua`, treesitter parsers in `treesitter.lua`. `python.lua` shows the LSP + DAP wiring.
 - **Theme** — `lua/plugins/ui/themes.lua`.
 - **Keymaps** — `lua/configs/keymaps.lua`, helper `map(lhs, rhs, mode, desc)`.
 
