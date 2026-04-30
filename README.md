@@ -11,7 +11,7 @@ Modular, LSP-first Neovim setup. Lazy.nvim for plugins, Mason for LSP/DAP toolch
 - DAP debugging (Rust / C-C++ / Python)
 - Telescope, neo-tree, which-key, flash, trouble, todo-comments
 - Binary file hex view/edit via `xxd` (hex.nvim) — `:HexToggle`, `:HexDump`, `:HexAssemble`, or `nvim -b <file>`
-- snacks.nvim bundle: terminal (anchored to file window), dashboard, statuscolumn, notifier, scroll, dim, image, bufdelete, words
+- snacks.nvim bundle: terminal (anchored to file window), dashboard, statuscolumn, notifier, scroll, dim, image, bufdelete, words, bigfile, indent, input, quickfile, scope
 - Cyberdream theme + lualine + smear-cursor + modicator + fidget + undo-glow
 - Format-on-save (conform.nvim), async lint (nvim-lint)
 - Git: gitsigns, fugitive, lazygit.nvim, cmp-git commit completions
