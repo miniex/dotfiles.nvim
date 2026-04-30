@@ -138,9 +138,9 @@ Leader: `<Space>`
 
 ## Customization
 
-- **New language** — add a file under `lua/plugins/lang/` extending `nvim-lspconfig` `servers` (auto-installs via Mason). Formatters live in `conform.lua`, linters in `lint.lua`, treesitter parsers in `treesitter.lua`. `python.lua` shows the LSP + DAP wiring.
+- **New language** — add a file under `lua/plugins/lang/` extending `nvim-lspconfig` `servers` (auto-installs via Mason). Formatters live in `lua/plugins/lsp/conform.lua`, linters in `lua/plugins/lsp/lint.lua`, treesitter parsers in `lua/plugins/editor/treesitter.lua`. `python.lua` shows the LSP + DAP wiring.
 - **Theme** — `lua/plugins/ui/themes.lua`.
-- **Keymaps** — `lua/configs/keymaps.lua`, helper `map(lhs, rhs, mode, desc)`.
+- **Keymaps** — `lua/config/keymaps.lua`, helper `map(lhs, rhs, mode, desc)`.
 
 ## Troubleshooting
 
@@ -148,7 +148,7 @@ Leader: `<Space>`
 |---|---|
 | LSP not attaching | `:Mason`, `:LspInfo`, `:LspLog` |
 | Format not running | `:ConformInfo`, formatter on `$PATH` |
-| Lint not running | linter on `$PATH`, see `lua/plugins/lang/lint.lua` |
+| Lint not running | linter on `$PATH`, see `lua/plugins/lsp/lint.lua` |
 | Treesitter errors | `:checkhealth nvim-treesitter`; `tree-sitter --version` ≥ 0.26.1 (not the npm build) |
 
 > The `master` branch of nvim-treesitter is archived and incompatible with Neovim 0.12; this config is pinned to `main`.
