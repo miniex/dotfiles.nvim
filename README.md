@@ -155,6 +155,15 @@ Leader: `<Space>`
 - **Autocmds** — `lua/config/autocmds.lua` (treesitter attach, WSL2 clipboard, file reload).
 - **Contributor tools** — `tools/format.sh` (stylua) and `tools/lint.sh` (stylua check + lua-language-server diagnostics). See [CONTRIBUTING.md](CONTRIBUTING.md).
 
+## Contributing
+
+PRs welcome. Before opening one:
+
+- Run `./tools/format.sh` and `./tools/lint.sh` — both must pass clean.
+- Follow the commit prefix convention (`feat:`, `fix:`, `refactor:`, `docs:`, …, all lowercase).
+
+Full details in [CONTRIBUTING.md](CONTRIBUTING.md).
+
 ## Troubleshooting
 
 | Issue | Check |

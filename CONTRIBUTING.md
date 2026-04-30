@@ -38,3 +38,26 @@ Before every commit:
 - Update `README.md` when behavior, keymaps, or prerequisites change.
 - Match the existing module layout (`lua/config/`, `lua/plugins/{coding,editor,lang,lsp,ui}/`).
 - Don't commit `lazy-lock.json` churn unless the PR is explicitly a plugin bump.
+
+## Commit messages
+
+Follow the prefixes already in `git log`. Shape: `prefix(scope?): description`.
+
+Common prefixes: `feat`, `fix`, `refactor`, `perf`, `docs`, `chore`, `tools`.
+
+Rules:
+
+- **Prefix is always lowercase** — `feat:` not `Feat:`.
+- **First word after the prefix is always lowercase** — `fix: handle empty buffer`, not `fix: Handle empty buffer`.
+- The rest of the description follows no strict case rule, but prefer lowercase. Reserve uppercase for proper nouns, acronyms, or genuine emphasis.
+
+Examples:
+
+```
+feat: add inlay hint toggle
+fix(treesitter): retry attach on BufEnter
+refactor(lsp): migrate to vim.lsp.config
+docs: clarify language wiring
+```
+
+Single-line, imperative mood. No trailing period.
