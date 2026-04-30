@@ -23,6 +23,7 @@ A modern, modular Neovim configuration with powerful LSP support, built for effi
 - **Keymap Discovery** - which-key.nvim popup hints when leader is held
 - **Fast Motion** - flash.nvim label-based jumping (`s` / `S`) with treesitter integration
 - **TODO Highlighting** - todo-comments.nvim for `TODO` / `FIXME` / `HACK` markers, searchable via Telescope/Trouble
+- **Hex Editing** - hex.nvim for viewing/editing binary files via `xxd` (`:HexToggle` / `:HexDump` / `:HexAssemble`, or `nvim -b <file>`)
 - **Lua Dev** - lazydev.nvim provides Neovim runtime types for editing this very config
 - **QoL Bundle** - snacks.nvim modules: notifier, indent guides, statuscolumn, LSP word highlight, smarter buffer delete, bigfile optimization, terminal
 - **Animations** - snacks.scroll smooth scrolling, snacks.dim inactive-code dim, smear-cursor.nvim cursor trail
@@ -70,7 +71,8 @@ A modern, modular Neovim configuration with powerful LSP support, built for effi
         │   ├── trouble.lua     # Diagnostics panel
         │   ├── which-key.lua   # Keymap discovery popup
         │   ├── flash.lua       # s/S motion + treesitter jump
-        │   └── todo-comments.lua # TODO/FIXME highlight + search
+        │   ├── todo-comments.lua # TODO/FIXME highlight + search
+        │   └── hex.lua         # Hex view/edit via xxd
         ├── ui/                 # UI plugins
         │   ├── themes.lua      # Cyberdream theme
         │   ├── lualine.lua     # Status line
@@ -184,6 +186,17 @@ A modern, modular Neovim configuration with powerful LSP support, built for effi
 | `]t`         | Next TODO comment          |
 | `[t`         | Previous TODO comment      |
 | `<leader>ft` | Find todos via Telescope   |
+
+### Hex Editing — hex.nvim (`plugins/editor/hex.lua`)
+
+| Command        | Description                       |
+|----------------|-----------------------------------|
+| `:HexToggle`   | Toggle hex view ↔ normal view     |
+| `:HexDump`     | Switch to hex view                |
+| `:HexAssemble` | Switch back to normal view        |
+| `nvim -b <f>`  | Open file directly in hex view    |
+
+> Requires `xxd` on `$PATH`.
 
 ### Keymap Discovery — which-key (`plugins/editor/which-key.lua`)
 
@@ -502,6 +515,7 @@ vim.keymap.set("n", "<leader>cc", ":YourCommand<CR>", { noremap = true, silent =
 - [which-key.nvim](https://github.com/folke/which-key.nvim) - Keymap discovery
 - [flash.nvim](https://github.com/folke/flash.nvim) - Label-based motion
 - [todo-comments.nvim](https://github.com/folke/todo-comments.nvim) - TODO highlighting
+- [hex.nvim](https://github.com/RaafatTurki/hex.nvim) - Hex editing via xxd
 - [lazydev.nvim](https://github.com/folke/lazydev.nvim) - Lua dev types
 - [smear-cursor.nvim](https://github.com/sphamba/smear-cursor.nvim) - Cursor smear effect
 - [mini.animate](https://github.com/echasnovski/mini.nvim) - Window animations
