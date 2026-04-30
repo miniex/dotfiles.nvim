@@ -60,6 +60,14 @@ nvim
 
 Plugins, LSP servers, formatters, linters, and DAP adapters install via Mason on first launch. Treesitter parsers download/build asynchronously — re-open files if highlight is briefly missing.
 
+> **If something breaks after `git pull`** — Lazy's compiled spec cache or a stale plugin version is the usual culprit. Nuke local nvim state and restart:
+>
+> ```bash
+> rm -rf ~/.local/share/nvim ~/.local/state/nvim ~/.cache/nvim
+> ```
+>
+> This wipes plugins, Mason packages, treesitter parsers, undo history, shada, and LSP logs. Plugins and tooling reinstall on next launch.
+
 ## Key Bindings
 
 Leader: `<Space>`
