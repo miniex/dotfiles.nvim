@@ -32,3 +32,11 @@ vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter", "CursorHold" }, {
     group = vim.api.nvim_create_augroup("auto-checktime", { clear = true }),
     command = "checktime",
 })
+
+-- Highlight yanked text
+vim.api.nvim_create_autocmd("TextYankPost", {
+    group = vim.api.nvim_create_augroup("highlight-yank", { clear = true }),
+    callback = function()
+        vim.hl.on_yank()
+    end,
+})

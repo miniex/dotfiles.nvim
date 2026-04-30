@@ -31,7 +31,7 @@ Modular, LSP-first Neovim setup. Lazy.nvim for plugins, Mason for LSP/DAP toolch
 | CMake         | neocmake            | cmake_format     | -        |
 | TOML          | taplo               | taplo            | -        |
 | CSS / HTML    | cssls / html+emmet  | prettierd        | -        |
-| Metal / RON   | -                   | clang-format / rustfmt | -  |
+| RON           | -                   | rustfmt          | -        |
 
 Linters: `eslint_d` (JS/TS), `markdownlint`, `ruff` (Python via LSP).
 
@@ -88,6 +88,7 @@ Leader: `<Space>`
 | `gd` / `gr` / `gi` | Definition / references / implementation |
 | `<leader>rn` | Rename symbol |
 | `<leader>cc` / `<leader>ca` | Diagnostics float / code action |
+| `<leader>ci` | Toggle inlay hints |
 | `<leader>cf` | Format buffer |
 | `<leader>cm` | Open Mason |
 | `<leader>xx/xd/xs/xq/xl` | Trouble: diagnostics / buf only / symbols / qf / loclist |
@@ -110,6 +111,7 @@ Leader: `<Space>`
 | `<leader>db` / `dB` | Toggle / conditional breakpoint |
 | `<leader>dc` / `dC` | Continue / run-to-cursor |
 | `<leader>di` / `dO` / `do` | Step into / over / out |
+| `<leader>dg` / `dj` / `dk` | Go to line (no execute) / Down / Up frame |
 | `<leader>dl/dr/dp/dt/ds/du` | Last / REPL / pause / terminate / session / toggle UI |
 | `<leader>dPt` / `<leader>dPc` | Python: debug test method / class |
 
@@ -126,7 +128,7 @@ Leader: `<Space>`
 | Key | Description |
 |---|---|
 | `<leader>ch` | C/C++: switch source ↔ header |
-| `<leader>cR` / `<leader>dr` | Rust: code action / debuggables (rustaceanvim) |
+| `<leader>cR` / `<leader>cD` | Rust: code action / debuggables (rustaceanvim) |
 
 ### Hex (hex.nvim — requires `xxd`)
 `:HexToggle`, `:HexDump`, `:HexAssemble`, or `nvim -b <file>`.

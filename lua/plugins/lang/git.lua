@@ -9,7 +9,6 @@ return {
             )
         end,
     },
-    { "petertriho/cmp-git", opts = {} },
     {
         "hrsh7th/nvim-cmp",
         optional = true,
