@@ -44,9 +44,9 @@ Linters: `eslint_d` (JS/TS), `markdownlint`, `ruff` (Python via LSP).
 - **Neovim ≥ 0.12.0**
 - `git`, `tar`, `curl`, `xxd`, C compiler, `make`, ripgrep, a [Nerd Font](https://www.nerdfonts.com/)
 - [`tree-sitter-cli`](https://github.com/tree-sitter/tree-sitter) **≥ 0.26.1** — `cargo install tree-sitter-cli` or OS package manager. **Not npm.**
-- Node.js + npm (LSP servers, prettierd, eslint_d)
-- Python 3 (linters/formatters)
-- Rust toolchain (rustfmt, rust-analyzer)
+- Node.js + npm — runtime for npm-based Mason packages (vtsls, prettierd, eslint_d, marksman, …)
+- Python 3 — required by debugpy
+- Rust toolchain — required for rustfmt (rust-analyzer is Mason-installed)
 - [lazygit](https://github.com/jesseduffield/lazygit) — optional, for `<leader>gg`
 
 ### Install
@@ -58,7 +58,7 @@ git clone <repo> ~/.config/nvim
 nvim
 ```
 
-Plugins, LSP servers, and DAP adapters install on first launch. Treesitter parsers download/build asynchronously — re-open files if highlight is briefly missing.
+Plugins, LSP servers, formatters, linters, and DAP adapters install via Mason on first launch. Treesitter parsers download/build asynchronously — re-open files if highlight is briefly missing.
 
 ## Key Bindings
 
