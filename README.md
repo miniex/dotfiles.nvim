@@ -2,6 +2,8 @@
 
 Modular, LSP-first Neovim setup. Lazy.nvim for plugins, Mason for LSP/DAP toolchain.
 
+> **Targets Linux and macOS, in [Kitty](https://sw.kovidgoyal.net/kitty/) terminal.** WSL2 is supported (clipboard bridges to Windows via `clip.exe`). Other terminals work for everything except inline image / GIF / video previews and the Material Design Icons font fallback, which both rely on Kitty.
+
 ## Highlights
 
 - LSP + completion (nvim-cmp, lazydev for Lua), inlay hints auto-enabled per buffer
