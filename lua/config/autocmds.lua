@@ -20,14 +20,19 @@ end
 -- during startup. vim.treesitter is a builtin; only the parser .so on rtp is
 -- required. Canonical pattern: resolve lang via get_lang (handles ft/parser
 -- naming mismatches like typescriptreact -> tsx), skip if no parser maps.
-vim.api.nvim_create_autocmd("FileType", {
+vim.api.nvim_create_autocmd({ "FileType", "BufWinEnter" }, {
     group = vim.api.nvim_create_augroup("ts-attach", { clear = true }),
     callback = function(args)
-        local lang = vim.treesitter.language.get_lang(vim.bo[args.buf].filetype)
-        if not lang then
+        if vim.treesitter.highlighter.active[args.buf] then
             return
         end
-        if vim.treesitter.highlighter.active[args.buf] then
+        local ft = vim.bo[args.buf].filetype
+        -- Skip if filetype not set yet (BufWinEnter sometimes fires before FileType).
+        if ft == "" then
+            return
+        end
+        local lang = vim.treesitter.language.get_lang(ft)
+        if not lang then
             return
         end
         if not pcall(vim.treesitter.start, args.buf) then
