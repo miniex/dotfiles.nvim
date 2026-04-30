@@ -1,6 +1,11 @@
 return {
     "nvim-neo-tree/neo-tree.nvim",
     branch = "v3.x",
+    cmd = "Neotree",
+    keys = {
+        { "<leader>e", ":Neotree toggle<cr>", silent = true, desc = "Neo-tree toggle" },
+        { "<leader>o", ":Neotree reveal<cr>", silent = true, desc = "Neo-tree reveal" },
+    },
     dependencies = {
         "nvim-lua/plenary.nvim",
         "nvim-tree/nvim-web-devicons", -- File icons with brand colors
@@ -100,8 +105,5 @@ return {
                 use_libuv_file_watcher = true,
             },
         })
-
-        vim.keymap.set("n", "<leader>e", ":Neotree toggle<cr>", { silent = true })
-        vim.keymap.set("n", "<leader>o", ":Neotree reveal<cr>", { silent = true })
     end,
 }

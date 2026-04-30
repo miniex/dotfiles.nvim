@@ -4,14 +4,6 @@ vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter" }, {
     command = "checktime",
 })
 
--- Highlight yanked text
-vim.api.nvim_create_autocmd("TextYankPost", {
-    group = vim.api.nvim_create_augroup("highlight-yank", { clear = true }),
-    callback = function()
-        vim.hl.on_yank()
-    end,
-})
-
 -- WSL2 clipboard sync via clip.exe
 local clip = "/mnt/c/Windows/System32/clip.exe"
 if vim.fn.executable(clip) == 1 then

@@ -45,7 +45,9 @@ return {
                 missing = opts.ensure_installed
             end
             if #missing > 0 then
-                ts.install(missing)
+                vim.schedule(function()
+                    ts.install(missing)
+                end)
             end
 
             vim.api.nvim_create_autocmd("FileType", {

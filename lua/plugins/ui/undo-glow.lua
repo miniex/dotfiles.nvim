@@ -1,6 +1,6 @@
 return {
     "y3owk1n/undo-glow.nvim",
-    event = { "BufReadPre", "BufNewFile" },
+    event = "VeryLazy",
     opts = {
         animation = {
             enabled = true,
