@@ -56,14 +56,9 @@ return {
                 end,
             })
 
-            local has_blink, blink = pcall(require, "blink.cmp")
-            local capabilities = vim.tbl_deep_extend(
-                "force",
-                {},
-                vim.lsp.protocol.make_client_capabilities(),
-                has_blink and blink.get_lsp_capabilities({}, false) or {}
-            )
-            vim.lsp.config("*", { capabilities = capabilities })
+            -- blink.cmp self-registers capabilities via its plugin/blink-cmp.lua
+            -- when it loads on InsertEnter; Neovim 0.11+ merges them with any
+            -- prior vim.lsp.config('*') call. No manual merge needed here.
 
             local ensure_installed = {}
             for server, server_opts in pairs(opts.servers) do
