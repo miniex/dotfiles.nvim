@@ -8,25 +8,16 @@ Lean, fast, easy on the eyes. Native LSP (`vim.lsp.config`), Rust-backed complet
 
 ## Highlights
 
-- **Aggressive lazy-loading** — most plugins deferred via `VeryLazy` / `cmd` / `keys`; only colorscheme, treesitter, and snacks.nvim load eagerly. Treesitter parser installs deferred via `vim.schedule` so they never block startup
-- **Native LSP** — `vim.lsp.config` + `vim.lsp.enable` (no lspconfig framework overhead, no `automatic_enable` shim). Mason install runs deferred on `VimEnter`
-- LSP + completion (blink.cmp, Rust backend; lazydev for Lua), inlay hints auto-enabled per buffer and auto-suppressed during insert mode
-- **Diagnostic UX** — tiny-inline-diagnostic on cursor line; `<leader>cl` toggles native multi-line `virtual_lines`; `<leader>cd` toggles inline display
-- **Idle LSP GC** — garbage-day.nvim stops idle LSP servers after 15 min of inactivity to keep memory in check
-- **Winbar breadcrumb** — dropbar.nvim shows current scope path; `<leader>uw` to pick a segment
-- Treesitter highlighting via nvim-treesitter `main` + textobjects (`af`/`if`/`ac`/`ic`/`aa`/`ia`/`ai`/`ii`/`al`/`il`/`a/`/`i/` + `]f`/`[f`/`]c`/`[c`), context (sticky function header), nvim-ts-autotag (HTML/JSX), ts-context-commentstring (embedded JSX/Vue comments)
-- DAP debugging (Rust / C-C++ / Python)
-- **fff.nvim** for file finding — Rust-backed, sub-10ms even on 500k-file repos. snacks.picker handles grep / buffers / help / recent
-- snacks.picker, neo-tree, which-key, flash, trouble, todo-comments
-- **markview.nvim** — hybrid editing & split preview for markdown / typst / mdx
-- **persistence.nvim** — auto session save / restore per cwd
-- **snacks.profiler** — runtime + startup profiling (`PROF=1 nvim`, `<leader>pp` to toggle)
-- Binary file hex view/edit via `xxd` (hex.nvim) — `:HexToggle`, `:HexDump`, `:HexAssemble`, or `nvim -b <file>`
-- snacks.nvim bundle: picker (replaces Telescope), profiler, terminal (anchored to file window), dashboard, statuscolumn, notifier, scroll, dim, image, bufdelete, words, bigfile, indent, input, quickfile, scope
-- Cyberdream theme + lualine + smear-cursor + modicator + fidget + undo-glow
-- Format-on-save (conform.nvim), async lint (nvim-lint)
-- Git: gitsigns, fugitive, lazygit.nvim, blink-cmp-git commit completions
-- WSL2 clipboard integration via `clip.exe`
+- **Native LSP, deferred everything** — `vim.lsp.config` + `vim.lsp.enable` directly; Mason install runs on `VimEnter`; idle servers GC'd after 15 min (garbage-day.nvim). Most plugins lazy via `VeryLazy` / `cmd` / `keys` / `ft`
+- **Completion & diagnostics** — blink.cmp (Rust fuzzy), inlay hints suppressed during insert, tiny-inline-diagnostic on cursor line with `<leader>cl` to toggle native `virtual_lines`
+- **Treesitter** — nvim-treesitter `main` + textobjects, sticky context, ts-autotag (HTML/JSX), ts-context-commentstring
+- **Pickers** — fff.nvim (Rust-backed file finder, sub-10ms on huge repos) + snacks.picker for grep / buffers / help / recent
+- **Editor** — neo-tree, flash, trouble, which-key, todo-comments, dropbar (winbar breadcrumb), markview (markdown/typst preview), persistence (sessions), hex view via `xxd`
+- **snacks.nvim** — picker, profiler, terminal, dashboard, statuscolumn, notifier, indent, scroll, dim, image, bigfile, scope, words
+- **Tooling** — conform (format-on-save), nvim-lint, mason-tool-installer, DAP for Rust / C-C++ / Python
+- **UI** — Cyberdream theme + lualine + smear-cursor + modicator + fidget + undo-glow
+- **Git** — gitsigns, fugitive, lazygit.nvim, blink-cmp-git commit completions
+- **WSL2** clipboard bridge via `clip.exe`
 
 ## Language Support
 
