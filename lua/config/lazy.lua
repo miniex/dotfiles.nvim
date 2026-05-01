@@ -25,9 +25,20 @@ end
 
 require("lazy").setup({
     spec = spec,
+    -- Skip scanning the cwd for project-local `.lazy.lua` specs; we don't
+    -- use them, so this avoids a per-startup filesystem stat.
+    local_spec = false,
+    -- Don't notify on plugin file changes during the session.
+    change_detection = { notify = false },
+    -- Don't fetch READMEs.
+    readme = { enabled = false },
     performance = {
         cache = { enabled = true },
+        reset_packpath = true,
         rtp = {
+            -- Reduce rtp to $VIMRUNTIME + this config only. Plugin paths are
+            -- prepended on demand by lazy.nvim itself.
+            reset = true,
             disabled_plugins = {
                 "gzip",
                 "matchit",
@@ -37,6 +48,11 @@ require("lazy").setup({
                 "tohtml",
                 "tutor",
                 "zipPlugin",
+                "rplugin",
+                "spellfile_plugin",
+                "man",
+                "editorconfig",
+                "health",
             },
         },
     },

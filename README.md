@@ -259,6 +259,7 @@ Full details in [CONTRIBUTING.md](CONTRIBUTING.md).
 | `<leader>ff` not working | fff.nvim's binary failed to download/build; run `:Lazy build fff.nvim` (Rust toolchain on `$PATH`) |
 | Sessions not loading | `:lua require('persistence').list()` to inspect; `<leader>qS` to pick |
 | Profiling startup | `PROF=1 nvim`, then `<leader>pp` to toggle, `<leader>pf` to pick captured frames |
+| Vim plugin needs python3/ruby/perl/node provider | All four are disabled by default in `lua/config/globals.lua` for startup speed — remove the `loaded_*_provider` line for the one you need |
 | Treesitter errors | `:checkhealth nvim-treesitter`; `tree-sitter --version` ≥ 0.26.1 (not the npm build) |
 
 > The `master` branch of nvim-treesitter is archived and incompatible with Neovim 0.12; this config is pinned to `main`.
