@@ -38,6 +38,7 @@ Sorted by language category, then family, then first-appeared.
 | JavaScript/TS   | vtsls                   | prettierd        | eslint_d      | -        |
 | SQL             | -                       | sqlfluff         | -             | -        |
 | JSON / YAML     | jsonls / yamlls         | prettierd        | -             | -        |
+| Protobuf        | buf_ls                  | buf              | -             | -        |
 | TOML            | taplo                   | taplo            | -             | -        |
 | RON             | -                       | rustfmt          | -             | -        |
 | Markdown        | marksman                | prettierd        | markdownlint  | -        |
@@ -45,6 +46,7 @@ Sorted by language category, then family, then first-appeared.
 | CMake           | neocmake                | cmake_format     | -             | -        |
 | Nix             | nil_ls                  | nixfmt           | statix        | -        |
 | Dockerfile      | dockerls                | -                | hadolint      | -        |
+| Just            | just (just-lsp)         | -                | -             | -        |
 
 ## Setup
 
@@ -57,6 +59,7 @@ Sorted by language category, then family, then first-appeared.
 - Python 3 + pip — required by debugpy and sqlfluff
 - Go toolchain — required by Mason to install gopls and goimports
 - Rust toolchain — required for rustfmt (rust-analyzer is Mason-installed)
+- [`just`](https://github.com/casey/just) — optional, runner for Justfile recipes (Mason only ships `just-lsp`, not the CLI)
 - [lazygit](https://github.com/jesseduffield/lazygit) — optional, for `<leader>gg`
 
 ### Install

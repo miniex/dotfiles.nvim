@@ -64,6 +64,7 @@ return {
                 json = { "prettierd", "prettier", stop_after_first = true },
                 jsonc = { "prettierd", "prettier", stop_after_first = true },
                 yaml = { "prettierd", "prettier", stop_after_first = true },
+                proto = { "buf" },
                 toml = { "taplo" },
                 ron = { "rustfmt" },
                 -- Markup

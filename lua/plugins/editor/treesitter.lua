@@ -29,6 +29,7 @@ return {
                 "json",
                 "json5",
                 "yaml",
+                "proto",
                 "toml",
                 "ron",
                 -- Markup
@@ -38,6 +39,7 @@ return {
                 "cmake",
                 "nix",
                 "dockerfile",
+                "just",
                 -- Editor
                 "vim",
                 "vimdoc",
