@@ -8,11 +8,13 @@ return {
     },
     {
         "williamboman/mason-lspconfig.nvim",
+        dependencies = { "williamboman/mason.nvim" },
         cmd = { "LspInstall", "LspUninstall" },
     },
     {
         "WhoIsSethDaniel/mason-tool-installer.nvim",
         dependencies = { "williamboman/mason.nvim" },
+        event = "VeryLazy",
         cmd = { "MasonToolsInstall", "MasonToolsUpdate", "MasonToolsClean" },
         opts = {
             ensure_installed = {},

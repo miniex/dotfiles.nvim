@@ -29,14 +29,25 @@ return {
                 dependencies = "mason.nvim",
                 cmd = { "DapInstall", "DapUninstall" },
                 opts = {
-                    automatic_installation = true,
+                    -- Installs are owned by mason-tool-installer (single
+                    -- sequential queue) to avoid racing the LSP/formatter
+                    -- install batches on first launch, which surfaced as
+                    -- ENOTCONN on the larger downloads (codelldb).
+                    automatic_installation = false,
                     handlers = {},
-                    ensure_installed = {
+                    ensure_installed = {},
+                },
+            },
+            {
+                "WhoIsSethDaniel/mason-tool-installer.nvim",
+                opts = function(_, opts)
+                    opts.ensure_installed = opts.ensure_installed or {}
+                    vim.list_extend(opts.ensure_installed, {
                         "codelldb",
                         "cpptools",
                         "debugpy",
-                    },
-                },
+                    })
+                end,
             },
         },
         keys = {
