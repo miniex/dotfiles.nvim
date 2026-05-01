@@ -1,0 +1,31 @@
+Copyright Notice — assets/dashboard_sticker.ansi
+==================================================
+
+The file `dashboard_sticker.ansi` in this directory is derived from a
+copyrighted emoji of a copyrighted character. It is **NOT** covered by
+the MIT license that applies to the rest of this repository.
+
+All rights reserved by:
+
+    Han Damin <miniex@daminstudio.net>
+
+Restrictions
+------------
+
+You may NOT:
+  - Include this file in any fork, mirror, or derivative repository
+  - Redistribute this file in any form, modified or unmodified
+  - Use this file in any project other than this personal Neovim
+    configuration owned by the copyright holder above
+
+Forking / Redistributing
+------------------------
+
+If you fork or redistribute this repository, you MUST remove
+`dashboard_sticker.ansi` (and replace the dashboard image reference
+in `lua/plugins/ui/snacks.lua`) before publishing.
+
+Unauthorized use, copying, or distribution of this artwork is
+prohibited and may result in legal action.
+
+For licensing inquiries, contact the copyright holder.

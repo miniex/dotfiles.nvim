@@ -38,6 +38,7 @@ Before every commit:
 - Update `README.md` when behavior, keymaps, or prerequisites change.
 - Match the existing module layout (`lua/config/`, `lua/plugins/{coding,editor,lang,lsp,ui}/`).
 - Don't commit `lazy-lock.json` churn unless the PR is explicitly a plugin bump.
+- Do **not** add, modify, or copy files under `assets/` — that directory is licensed separately (`assets/LICENSE`) and contributions there are not accepted.
 
 ## Commit messages
 

@@ -67,6 +67,32 @@ vim.api.nvim_create_autocmd("WinClosed", {
     end,
 })
 
+-- Dashboard's chafa ANSI output fights with snacks.dim/indent overlays when
+-- another window (e.g., neo-tree) takes focus, glitching the image. Disable
+-- those features for the dashboard buffer.
+vim.api.nvim_create_autocmd("FileType", {
+    pattern = "snacks_dashboard",
+    group = vim.api.nvim_create_augroup("SnacksDashboardOverlay", { clear = true }),
+    callback = function(args)
+        vim.b[args.buf].snacks_dim = false
+        vim.b[args.buf].snacks_indent = false
+        vim.b[args.buf].snacks_scroll = false
+    end,
+})
+
+-- 5-step gradient (sky blue → light pink) for the NEOVIM header.
+local header_gradient = { "#87CEEB", "#A5C8E1", "#C3C2D7", "#E1BCCC", "#FFB6C1" }
+local function set_header_hl()
+    for i, color in ipairs(header_gradient) do
+        vim.api.nvim_set_hl(0, "DashHeader" .. i, { fg = color, bold = true })
+    end
+end
+set_header_hl()
+vim.api.nvim_create_autocmd("ColorScheme", {
+    group = vim.api.nvim_create_augroup("DashHeaderGradient", { clear = true }),
+    callback = set_header_hl,
+})
+
 return {
     "folke/snacks.nvim",
     priority = 1000,
@@ -78,35 +104,98 @@ return {
         dashboard = {
             enabled = true,
             preset = {
-                header = table.concat({
-                    [[        ███╗   ██╗███████╗ ██████╗ ██╗   ██╗██╗███╗   ███╗       ]],
-                    [[        ████╗  ██║██╔════╝██╔═══██╗██║   ██║██║████╗ ████║       ]],
-                    [[        ██╔██╗ ██║█████╗  ██║   ██║██║   ██║██║██╔████╔██║       ]],
-                    [[        ██║╚██╗██║██╔══╝  ██║   ██║╚██╗ ██╔╝██║██║╚██╔╝██║       ]],
-                    [[        ██║ ╚████║███████╗╚██████╔╝ ╚████╔╝ ██║██║ ╚═╝ ██║       ]],
-                    [[        ╚═╝  ╚═══╝╚══════╝ ╚═════╝   ╚═══╝  ╚═╝╚═╝     ╚═╝       ]],
-                }, "\n"),
                 keys = {
-                    { icon = " ", key = "f", desc = "Find File", action = ":Telescope find_files" },
-                    { icon = " ", key = "n", desc = "New File", action = ":ene | startinsert" },
-                    { icon = " ", key = "g", desc = "Find Text", action = ":Telescope live_grep" },
-                    { icon = " ", key = "r", desc = "Recent Files", action = ":Telescope oldfiles" },
+                    { icon = " ", key = "f", desc = "Find", action = ":Telescope find_files", hidden = true },
+                    { icon = " ", key = "g", desc = "Grep", action = ":Telescope live_grep", hidden = true },
+                    { icon = " ", key = "r", desc = "Recent", action = ":Telescope oldfiles", hidden = true },
                     {
                         icon = " ",
                         key = "c",
                         desc = "Config",
                         action = ":lua Snacks.dashboard.pick('files', { cwd = vim.fn.stdpath('config') })",
+                        hidden = true,
                     },
-                    { icon = "󰒲 ", key = "L", desc = "Lazy", action = ":Lazy" },
-                    { icon = " ", key = "q", desc = "Quit", action = ":qa" },
+                    { icon = " ", key = "q", desc = "Quit", action = ":qa", hidden = true },
                 },
             },
-            sections = {
-                { section = "header" },
-                { section = "keys", gap = 1, padding = 1 },
-                { icon = " ", title = "Recent Files", section = "recent_files", limit = 5, padding = 1 },
-                { section = "startup" },
-            },
+            -- Responsive: when window height is tight, drop the NEOVIM header
+            -- first, then the recent files. Image + menu + startup always stay.
+            -- Re-evaluated on WinResized/VimResized via snacks's update().
+            sections = function(self)
+                local h = self:size().height
+                local result = {
+                    {
+                        section = "terminal",
+                        cmd = "cat " .. vim.fn.stdpath("config") .. "/assets/dashboard_sticker.ansi",
+                        height = 24,
+                        width = 60,
+                        padding = 1,
+                        align = "center",
+                    },
+                }
+
+                if h >= 40 then
+                    table.insert(result, {
+                        text = { [[ _   _  _____   ___  __     __ ___  __  __ ]], hl = "DashHeader1" },
+                        align = "center",
+                        padding = 0,
+                    })
+                    table.insert(result, {
+                        text = { [[| \ | || ____| / _ \ \ \   / /|_ _||  \/  |]], hl = "DashHeader2" },
+                        align = "center",
+                        padding = 0,
+                    })
+                    table.insert(result, {
+                        text = { [[|  \| ||  _|  | | | | \ \ / /  | | | |\/| |]], hl = "DashHeader3" },
+                        align = "center",
+                        padding = 0,
+                    })
+                    table.insert(result, {
+                        text = { [[| |\  || |___ | |_| |  \ V /   | | | |  | |]], hl = "DashHeader4" },
+                        align = "center",
+                        padding = 0,
+                    })
+                    table.insert(result, {
+                        text = { [[|_| \_||_____| \___/    \_/   |___||_|  |_|]], hl = "DashHeader5" },
+                        align = "center",
+                        padding = 1,
+                    })
+                end
+
+                -- keys section still emits keymaps (f/g/r/c/q stay bound) but
+                -- items are hidden; show a compact icon strip instead.
+                table.insert(result, { section = "keys", padding = 0 })
+                table.insert(result, {
+                    text = {
+                        { "\u{F002}  ", hl = "Function" },
+                        { "f", hl = "SnacksDashboardKey" },
+                        { "      " },
+                        { "\u{F00E}  ", hl = "String" },
+                        { "g", hl = "SnacksDashboardKey" },
+                        { "      " },
+                        { "\u{F1DA}  ", hl = "Constant" },
+                        { "r", hl = "SnacksDashboardKey" },
+                        { "      " },
+                        { "\u{F013}  ", hl = "Special" },
+                        { "c", hl = "SnacksDashboardKey" },
+                        { "      " },
+                        { "\u{F011}  ", hl = "ErrorMsg" },
+                        { "q", hl = "SnacksDashboardKey" },
+                    },
+                    align = "center",
+                    padding = 1,
+                })
+
+                if h >= 34 then
+                    table.insert(
+                        result,
+                        { icon = " ", title = "Recent Files", section = "recent_files", limit = 5, padding = 1 }
+                    )
+                end
+
+                table.insert(result, { section = "startup" })
+                return result
+            end,
         },
         dim = { enabled = true },
         image = { enabled = vim.env.TERM == "xterm-kitty" or vim.env.KITTY_WINDOW_ID ~= nil },

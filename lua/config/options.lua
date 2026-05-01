@@ -23,6 +23,9 @@ opt.signcolumn = "yes:2"
 -- etc
 opt.encoding = "UTF-8"
 opt.cmdheight = 1
+-- Match lualine's globalstatus before any plugin loads so the dashboard's
+-- initial height calc doesn't shift by one row when lualine flips it later.
+opt.laststatus = 3
 opt.scrolloff = 10
 opt.mouse:append("a")
 opt.autoread = true

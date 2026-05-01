@@ -54,6 +54,7 @@ Sorted by language category, then family, then first-appeared.
 
 - **Neovim ≥ 0.12.0**
 - `git`, `tar`, `curl`, `xxd`, C compiler, `make`, ripgrep, a [Nerd Font](https://www.nerdfonts.com/)
+- [`chafa`](https://hpjansson.org/chafa/) + [ImageMagick](https://imagemagick.org/) — optional, only to regenerate `assets/dashboard_sticker.ansi` from a source PNG
 - [`tree-sitter-cli`](https://github.com/tree-sitter/tree-sitter) **≥ 0.26.1** — `cargo install tree-sitter-cli` or OS package manager. **Not npm.**
 - Node.js + npm — runtime for npm-based Mason packages (vtsls, prettierd, eslint_d, marksman, dockerls, tailwindcss-language-server, …)
 - Python 3 + pip — required by debugpy and sqlfluff
@@ -189,4 +190,6 @@ Full details in [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 
-[MIT](LICENSE) © 2026 Han Damin.
+[MIT](LICENSE) © 2026 Han Damin — applies to all code in this repository.
+
+**Exception:** `assets/dashboard_sticker.ansi` is derived from a copyrighted emoji of a copyrighted character. It is **not** covered by the MIT license. All rights reserved by Han Damin <miniex@daminstudio.net>. If you fork or redistribute this repo, you must remove that file before publishing. See [`assets/LICENSE`](assets/LICENSE) for full terms.
