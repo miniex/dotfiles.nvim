@@ -1,29 +1,31 @@
 return {
     {
         "williamboman/mason.nvim",
-        cmd = "Mason",
+        cmd = { "Mason", "MasonInstall", "MasonUninstall", "MasonUpdate", "MasonLog" },
         keys = { { "<leader>cm", "<cmd>Mason<cr>", desc = "Mason" } },
         build = ":MasonUpdate",
         opts = {},
     },
     {
         "williamboman/mason-lspconfig.nvim",
-        dependencies = { "mason.nvim" },
+        cmd = { "LspInstall", "LspUninstall" },
     },
     {
         "neovim/nvim-lspconfig",
         event = { "BufReadPre", "BufNewFile" },
-        dependencies = {
-            "mason.nvim",
-            "mason-lspconfig.nvim",
-        },
         opts = {
             inlay_hints = { enabled = true },
             servers = {},
         },
         config = function(_, opts)
+            vim.lsp.config("*", {
+                root_markers = { ".git" },
+            })
+
+            local group = vim.api.nvim_create_augroup("lsp-attach-keys", { clear = true })
+
             vim.api.nvim_create_autocmd("LspAttach", {
-                group = vim.api.nvim_create_augroup("lsp-attach-keys", { clear = true }),
+                group = group,
                 callback = function(args)
                     local bufnr = args.buf
                     local function map(mode, lhs, rhs, desc)
@@ -56,30 +58,45 @@ return {
                 end,
             })
 
-            -- blink.cmp self-registers capabilities via its plugin/blink-cmp.lua
-            -- when it loads on InsertEnter; Neovim 0.11+ merges them with any
-            -- prior vim.lsp.config('*') call. No manual merge needed here.
+            -- Disable inlay hints during insert mode to reduce LSP traffic;
+            -- restore them on exit if the buffer had them enabled before.
+            local hint_group = vim.api.nvim_create_augroup("lsp-inlay-hint-insert", { clear = true })
+            vim.api.nvim_create_autocmd("InsertEnter", {
+                group = hint_group,
+                callback = function(args)
+                    if vim.lsp.inlay_hint.is_enabled({ bufnr = args.buf }) then
+                        vim.lsp.inlay_hint.enable(false, { bufnr = args.buf })
+                        vim.b[args.buf]._inlay_hint_was_on = true
+                    end
+                end,
+            })
+            vim.api.nvim_create_autocmd("InsertLeave", {
+                group = hint_group,
+                callback = function(args)
+                    if vim.b[args.buf]._inlay_hint_was_on then
+                        vim.lsp.inlay_hint.enable(true, { bufnr = args.buf })
+                        vim.b[args.buf]._inlay_hint_was_on = nil
+                    end
+                end,
+            })
 
-            local ensure_installed = {}
+            local to_install = {}
             for server, server_opts in pairs(opts.servers) do
                 if server_opts then
                     if server_opts == true then
-                        ensure_installed[#ensure_installed + 1] = server
+                        vim.lsp.enable(server)
+                        to_install[#to_install + 1] = server
                     elseif server_opts.enabled ~= false then
                         vim.lsp.config(server, server_opts)
-                        ensure_installed[#ensure_installed + 1] = server
+                        vim.lsp.enable(server)
+                        to_install[#to_install + 1] = server
                     end
                 end
             end
 
-            require("mason-lspconfig").setup({
-                ensure_installed = ensure_installed,
-                automatic_enable = { exclude = { "rust_analyzer" } },
-            })
-
-            -- automatic_enable's FileType autocmd is registered after files
-            -- already triggered FileType during startup. Re-fire for loaded
-            -- buffers so LSP attaches to them too.
+            -- Buffers loaded before this config function ran (e.g., when
+            -- nvim opens with multiple file args) may have already passed
+            -- their FileType event. Re-fire so the LSP client attaches.
             vim.schedule(function()
                 for _, buf in ipairs(vim.api.nvim_list_bufs()) do
                     if vim.api.nvim_buf_is_loaded(buf) and vim.bo[buf].buftype == "" then
@@ -90,6 +107,21 @@ return {
                     end
                 end
             end)
+
+            -- Defer mason install setup until after UI is ready. We do not
+            -- rely on mason-lspconfig's automatic_enable because we've
+            -- already enabled servers natively above.
+            vim.api.nvim_create_autocmd("VimEnter", {
+                once = true,
+                callback = function()
+                    vim.schedule(function()
+                        require("mason-lspconfig").setup({
+                            ensure_installed = to_install,
+                            automatic_enable = false,
+                        })
+                    end)
+                end,
+            })
         end,
     },
 }

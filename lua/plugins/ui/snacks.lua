@@ -105,9 +105,27 @@ return {
             enabled = true,
             preset = {
                 keys = {
-                    { icon = " ", key = "f", desc = "Find", action = ":Telescope find_files", hidden = true },
-                    { icon = " ", key = "g", desc = "Grep", action = ":Telescope live_grep", hidden = true },
-                    { icon = " ", key = "r", desc = "Recent", action = ":Telescope oldfiles", hidden = true },
+                    {
+                        icon = " ",
+                        key = "f",
+                        desc = "Find",
+                        action = ":lua Snacks.dashboard.pick('files')",
+                        hidden = true,
+                    },
+                    {
+                        icon = " ",
+                        key = "g",
+                        desc = "Grep",
+                        action = ":lua Snacks.dashboard.pick('grep')",
+                        hidden = true,
+                    },
+                    {
+                        icon = " ",
+                        key = "r",
+                        desc = "Recent",
+                        action = ":lua Snacks.dashboard.pick('recent')",
+                        hidden = true,
+                    },
                     {
                         icon = " ",
                         key = "c",
@@ -205,6 +223,17 @@ return {
             enabled = true,
             timeout = 3000,
         },
+        picker = {
+            enabled = true,
+            ui_select = true,
+            win = {
+                input = {
+                    keys = {
+                        ["<Esc>"] = { "close", mode = { "n", "i" } },
+                    },
+                },
+            },
+        },
         quickfile = { enabled = true },
         scope = { enabled = true },
         scroll = { enabled = true },
@@ -224,6 +253,41 @@ return {
         words = { enabled = true },
     },
     keys = {
+        {
+            "<leader>ff",
+            function()
+                Snacks.picker.files()
+            end,
+            desc = "Find Files",
+        },
+        {
+            "<leader>fg",
+            function()
+                Snacks.picker.grep()
+            end,
+            desc = "Live Grep",
+        },
+        {
+            "<leader>fr",
+            function()
+                Snacks.picker.recent()
+            end,
+            desc = "Recent Files",
+        },
+        {
+            "<leader>fb",
+            function()
+                Snacks.picker.buffers()
+            end,
+            desc = "Buffers",
+        },
+        {
+            "<leader>fh",
+            function()
+                Snacks.picker.help()
+            end,
+            desc = "Help Tags",
+        },
         {
             "<leader>bd",
             function()

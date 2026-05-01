@@ -1,7 +1,7 @@
 return {
     "folke/todo-comments.nvim",
     event = { "BufReadPost", "BufNewFile" },
-    cmd = { "TodoTrouble", "TodoTelescope" },
+    cmd = { "TodoTrouble" },
     dependencies = { "nvim-lua/plenary.nvim" },
     opts = {},
     keys = {
@@ -21,6 +21,12 @@ return {
         },
         { "<leader>xt", "<cmd>TodoTrouble<cr>", desc = "Todo (Trouble)" },
         { "<leader>xT", "<cmd>TodoTrouble keywords=TODO,FIX,FIXME<cr>", desc = "Todo/Fix/Fixme (Trouble)" },
-        { "<leader>ft", "<cmd>TodoTelescope<cr>", desc = "Todo (Telescope)" },
+        {
+            "<leader>ft",
+            function()
+                Snacks.picker.todo_comments()
+            end,
+            desc = "Todo (Picker)",
+        },
     },
 }

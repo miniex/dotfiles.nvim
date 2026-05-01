@@ -9,13 +9,13 @@ Lean, fast, easy on the eyes. Native LSP (`vim.lsp.config`), Rust-backed complet
 ## Highlights
 
 - **Aggressive lazy-loading** — most plugins deferred via `VeryLazy` / `cmd` / `keys`; only colorscheme, treesitter, and snacks.nvim load eagerly. Treesitter parser installs deferred via `vim.schedule` so they never block startup
-- **Native LSP** — `vim.lsp.config` + `mason-lspconfig.automatic_enable` (no lspconfig framework overhead)
-- LSP + completion (blink.cmp, Rust backend; lazydev for Lua), inlay hints auto-enabled per buffer
+- **Native LSP** — `vim.lsp.config` + `vim.lsp.enable` (no lspconfig framework overhead, no `automatic_enable` shim). Mason install runs deferred on `VimEnter`
+- LSP + completion (blink.cmp, Rust backend; lazydev for Lua), inlay hints auto-enabled per buffer and auto-suppressed during insert mode
 - Treesitter highlighting via nvim-treesitter `main` + built-in `vim.treesitter`
 - DAP debugging (Rust / C-C++ / Python)
-- Telescope, neo-tree, which-key, flash, trouble, todo-comments
+- snacks.picker, neo-tree, which-key, flash, trouble, todo-comments
 - Binary file hex view/edit via `xxd` (hex.nvim) — `:HexToggle`, `:HexDump`, `:HexAssemble`, or `nvim -b <file>`
-- snacks.nvim bundle: terminal (anchored to file window), dashboard, statuscolumn, notifier, scroll, dim, image, bufdelete, words, bigfile, indent, input, quickfile, scope
+- snacks.nvim bundle: picker (replaces Telescope), terminal (anchored to file window), dashboard, statuscolumn, notifier, scroll, dim, image, bufdelete, words, bigfile, indent, input, quickfile, scope
 - Cyberdream theme + lualine + smear-cursor + modicator + fidget + undo-glow
 - Format-on-save (conform.nvim), async lint (nvim-lint)
 - Git: gitsigns, fugitive, lazygit.nvim, blink-cmp-git commit completions
@@ -111,8 +111,8 @@ Leader: `<Space>`
 ### Find & Navigate
 | Key | Description |
 |---|---|
-| `<leader>ff` / `fg` / `fr` / `fb` / `fh` | Telescope: files / grep / recent / buffers / help |
-| `<leader>ft` | TODO comments (Telescope) |
+| `<leader>ff` / `fg` / `fr` / `fb` / `fh` | snacks.picker: files / grep / recent / buffers / help |
+| `<leader>ft` | TODO comments (snacks.picker) |
 | `<leader>e` / `<leader>o` | Neo-tree: toggle / reveal current file |
 | `s` / `S` (n/x/o) | Flash: jump / treesitter jump |
 | `<leader>?` | which-key: buffer-local keymaps |
