@@ -67,7 +67,7 @@ Sorted by language category, then family, then first-appeared.
 ```bash
 mv ~/.config/nvim ~/.config/nvim.backup
 mv ~/.local/share/nvim ~/.local/share/nvim.backup
-git clone <repo> ~/.config/nvim
+git clone https://github.com/miniex/dotfiles.nvim.git ~/.config/nvim
 nvim
 ```
 
