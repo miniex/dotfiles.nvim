@@ -4,6 +4,7 @@
 -- See `lua/config/langs_local.lua.example` for a template.
 
 local defaults = {
+    asm = true,
     ["c-cpp"] = true,
     cmake = true,
     dockerfile = true,

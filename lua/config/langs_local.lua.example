@@ -2,6 +2,7 @@
 -- languages you do not want loaded. Anything omitted falls through to the
 -- defaults in `langs.lua` (all enabled).
 return {
+    -- asm         = false,
     -- ["c-cpp"]   = false,
     -- cmake       = false,
     -- dockerfile  = false,

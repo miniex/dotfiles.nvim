@@ -30,6 +30,7 @@ Sorted by language category, then family, then first-appeared.
 | Shell (sh/bash) | -                       | shfmt            | shellcheck    | -        |
 | Zsh             | -                       | -                | zsh -n        | -        |
 | Fish            | -                       | fish_indent      | fish -n       | -        |
+| Assembly        | asm-lsp                 | -                | -             | -        |
 | C/C++           | clangd                  | clang-format     | -             | cpptools |
 | Go              | gopls                   | goimports        | -             | -        |
 | Rust            | rust-analyzer           | rustfmt          | -             | CodeLLDB |
