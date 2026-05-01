@@ -119,15 +119,47 @@ return {
                 end,
             })
 
+            -- mason.setup() prepends its bin dir to PATH, but it runs lazily
+            -- (only when mason-lspconfig is required). This config function
+            -- runs first (BufReadPre/BufNewFile), so vim.fn.executable would
+            -- miss tools that mason has already installed but hasn't yet
+            -- exposed. Prepend now so cmd_executable below sees them.
+            local mason_bin = vim.fn.stdpath("data") .. "/mason/bin"
+            if not vim.env.PATH:find(mason_bin, 1, true) then
+                vim.env.PATH = mason_bin .. ":" .. vim.env.PATH
+            end
+
+            -- A server's cmd may be a list, string, or function. List/string
+            -- forms expose the binary directly so we can check $PATH. Function
+            -- forms (used by many lspconfig defaults like tailwindcss, jsonls,
+            -- yamlls) hide the binary inside a closure -- we can't cheaply
+            -- inspect them, so treat as not-yet-executable and let
+            -- mason-lspconfig's automatic_enable wire them up after install.
+            local function cmd_executable(cmd)
+                if type(cmd) == "table" and cmd[1] then
+                    return vim.fn.executable(cmd[1]) == 1
+                elseif type(cmd) == "string" then
+                    return vim.fn.executable(cmd) == 1
+                end
+                return false
+            end
+
             local to_install = {}
             for server, server_opts in pairs(opts.servers) do
                 if server_opts then
-                    if server_opts == true then
-                        vim.lsp.enable(server)
-                        to_install[#to_install + 1] = server
-                    elseif server_opts.enabled ~= false then
-                        vim.lsp.config(server, server_opts)
-                        vim.lsp.enable(server)
+                    local enabled = (server_opts == true) or (server_opts.enabled ~= false)
+                    if enabled then
+                        if server_opts ~= true then
+                            vim.lsp.config(server, server_opts)
+                        end
+                        -- Only enable now if the binary is already on $PATH.
+                        -- Otherwise mason-lspconfig's automatic_enable picks
+                        -- it up after install, avoiding noisy spawn errors
+                        -- on first launch when mason hasn't caught up yet.
+                        local cfg = vim.lsp.config[server]
+                        if cfg and cmd_executable(cfg.cmd) then
+                            vim.lsp.enable(server)
+                        end
                         to_install[#to_install + 1] = server
                     end
                 end
@@ -147,16 +179,19 @@ return {
                 end
             end)
 
-            -- Defer mason install setup until after UI is ready. We do not
-            -- rely on mason-lspconfig's automatic_enable because we've
-            -- already enabled servers natively above.
+            -- Defer mason install setup until after UI is ready. We rely on
+            -- mason-lspconfig's automatic_enable to wire up LSPs that mason
+            -- installs after this point (it listens for install:success and
+            -- calls vim.lsp.enable then). Servers already on $PATH were
+            -- enabled eagerly above; vim.lsp.enable is idempotent so a
+            -- duplicate from automatic_enable is harmless.
             vim.api.nvim_create_autocmd("VimEnter", {
                 once = true,
                 callback = function()
                     vim.schedule(function()
                         require("mason-lspconfig").setup({
                             ensure_installed = to_install,
-                            automatic_enable = false,
+                            automatic_enable = true,
                         })
                     end)
                 end,
