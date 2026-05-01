@@ -34,6 +34,31 @@ return {
                 root_markers = { ".git" },
             })
 
+            -- Diagnostic config moved here so the cost is paid only when the
+            -- first buffer triggers nvim-lspconfig load (BufReadPre/BufNewFile),
+            -- not at startup.
+            local diagnostic = vim.diagnostic
+            diagnostic.config({
+                virtual_text = false,
+                signs = {
+                    text = {
+                        [diagnostic.severity.ERROR] = "󰅚 ",
+                        [diagnostic.severity.WARN] = "󰀪 ",
+                        [diagnostic.severity.HINT] = "󰌶 ",
+                        [diagnostic.severity.INFO] = "󰋽 ",
+                    },
+                },
+                update_in_insert = false,
+                underline = true,
+                severity_sort = true,
+                float = {
+                    border = "rounded",
+                    source = "always",
+                    header = "",
+                    prefix = "",
+                },
+            })
+
             local group = vim.api.nvim_create_augroup("lsp-attach-keys", { clear = true })
 
             vim.api.nvim_create_autocmd("LspAttach", {

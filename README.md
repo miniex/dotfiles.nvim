@@ -16,9 +16,13 @@ Lean, fast, easy on the eyes. Native LSP (`vim.lsp.config`), Rust-backed complet
 - **Winbar breadcrumb** — dropbar.nvim shows current scope path; `<leader>uw` to pick a segment
 - Treesitter highlighting via nvim-treesitter `main` + textobjects (`af`/`if`/`ac`/`ic`/`aa`/`ia`/`ai`/`ii`/`al`/`il`/`a/`/`i/` + `]f`/`[f`/`]c`/`[c`), context (sticky function header), nvim-ts-autotag (HTML/JSX), ts-context-commentstring (embedded JSX/Vue comments)
 - DAP debugging (Rust / C-C++ / Python)
+- **fff.nvim** for file finding — Rust-backed, sub-10ms even on 500k-file repos. snacks.picker handles grep / buffers / help / recent
 - snacks.picker, neo-tree, which-key, flash, trouble, todo-comments
+- **markview.nvim** — hybrid editing & split preview for markdown / typst / mdx
+- **persistence.nvim** — auto session save / restore per cwd
+- **snacks.profiler** — runtime + startup profiling (`PROF=1 nvim`, `<leader>pp` to toggle)
 - Binary file hex view/edit via `xxd` (hex.nvim) — `:HexToggle`, `:HexDump`, `:HexAssemble`, or `nvim -b <file>`
-- snacks.nvim bundle: picker (replaces Telescope), terminal (anchored to file window), dashboard, statuscolumn, notifier, scroll, dim, image, bufdelete, words, bigfile, indent, input, quickfile, scope
+- snacks.nvim bundle: picker (replaces Telescope), profiler, terminal (anchored to file window), dashboard, statuscolumn, notifier, scroll, dim, image, bufdelete, words, bigfile, indent, input, quickfile, scope
 - Cyberdream theme + lualine + smear-cursor + modicator + fidget + undo-glow
 - Format-on-save (conform.nvim), async lint (nvim-lint)
 - Git: gitsigns, fugitive, lazygit.nvim, blink-cmp-git commit completions
@@ -125,11 +129,30 @@ Leader: `<Space>`
 ### Find & Navigate
 | Key | Description |
 |---|---|
-| `<leader>ff` / `fg` / `fr` / `fb` / `fh` | snacks.picker: files / grep / recent / buffers / help |
+| `<leader>ff` | fff.nvim: find files (Rust-backed, sub-10ms on huge codebases) |
+| `<leader>fF` | fff.nvim: find files in current directory |
+| `<leader>fg` / `fr` / `fb` / `fh` | snacks.picker: grep / recent / buffers / help |
 | `<leader>ft` | TODO comments (snacks.picker) |
 | `<leader>e` / `<leader>o` | Neo-tree: toggle / reveal current file |
 | `s` / `S` (n/x/o) | Flash: jump / treesitter jump |
 | `<leader>?` | which-key: buffer-local keymaps |
+
+### Session (persistence.nvim)
+| Key | Description |
+|---|---|
+| `<leader>qs` | Restore session for cwd |
+| `<leader>qS` | Select session from list |
+| `<leader>ql` | Restore last session |
+| `<leader>qd` | Don't save current session on exit |
+
+### Profiler (snacks.nvim)
+Use `PROF=1 nvim` to profile startup, or these runtime keys:
+| Key | Description |
+|---|---|
+| `<leader>pp` | Toggle profiler |
+| `<leader>ps` | Open profiler scratch buffer |
+| `<leader>pf` | Pick from captured profile |
+| `<leader>ph` | Toggle profiler highlights |
 
 ### LSP / Diagnostics
 | Key | Description |
@@ -167,6 +190,12 @@ Leader: `<Space>`
 |---|---|
 | `<leader>uw` | Pick segment to jump to |
 | `[w` / `]w` | Jump to context start / next context |
+
+### Markview (markdown / typst / mdx rendering)
+| Key | Description |
+|---|---|
+| `<leader>um` | Toggle Markview |
+| `<leader>uM` | Toggle Markview split-preview |
 
 ### Git
 | Key | Description |
@@ -215,6 +244,7 @@ Leader: `<Space>`
 - **Theme** — `lua/plugins/ui/themes.lua`.
 - **Keymaps** — `lua/config/keymaps.lua`, helper `map(lhs, rhs, mode, desc)`.
 - **Autocmds** — `lua/config/autocmds.lua` (treesitter attach, WSL2 clipboard, file reload).
+- **Diagnostic styling** — `lua/plugins/lsp/init.lua` `config()` (signs, virtual_text, float border). Loaded only on first buffer (`BufReadPre`) so it doesn't cost startup time.
 - **Contributor tools** — `tools/format.sh` (stylua + shfmt) and `tools/lint.sh` (stylua check, lua-language-server diagnostics, shfmt diff, shellcheck). See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Contributing
@@ -235,6 +265,9 @@ Full details in [CONTRIBUTING.md](CONTRIBUTING.md).
 | Lint not running | linter on `$PATH`, see `lua/plugins/lsp/lint.lua` |
 | Mason tools missing | `:MasonToolsUpdate`, then `:Mason` to confirm |
 | LSP killed unexpectedly | `garbage-day.nvim` GC'd it after 15 min idle — just resume the buffer; tweak `grace_period` in `lua/plugins/lsp/garbage-day.lua` |
+| `<leader>ff` not working | fff.nvim's binary failed to download/build; run `:Lazy build fff.nvim` (Rust toolchain on `$PATH`) |
+| Sessions not loading | `:lua require('persistence').list()` to inspect; `<leader>qS` to pick |
+| Profiling startup | `PROF=1 nvim`, then `<leader>pp` to toggle, `<leader>pf` to pick captured frames |
 | Treesitter errors | `:checkhealth nvim-treesitter`; `tree-sitter --version` ≥ 0.26.1 (not the npm build) |
 
 > The `master` branch of nvim-treesitter is archived and incompatible with Neovim 0.12; this config is pinned to `main`.

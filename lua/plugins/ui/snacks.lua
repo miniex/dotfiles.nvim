@@ -109,7 +109,7 @@ return {
                         icon = " ",
                         key = "f",
                         desc = "Find",
-                        action = ":lua Snacks.dashboard.pick('files')",
+                        action = ":lua require('fff').find_files()",
                         hidden = true,
                     },
                     {
@@ -234,6 +234,11 @@ return {
                 },
             },
         },
+        profiler = {
+            -- Enable the module so Snacks.profiler.* APIs are available.
+            -- Use `PROF=1 nvim` to capture startup; toggle at runtime via the
+            -- keymaps below.
+        },
         quickfile = { enabled = true },
         scope = { enabled = true },
         scroll = { enabled = true },
@@ -253,13 +258,6 @@ return {
         words = { enabled = true },
     },
     keys = {
-        {
-            "<leader>ff",
-            function()
-                Snacks.picker.files()
-            end,
-            desc = "Find Files",
-        },
         {
             "<leader>fg",
             function()
@@ -314,6 +312,34 @@ return {
                 Snacks.notifier.show_history()
             end,
             desc = "Notification History",
+        },
+        {
+            "<leader>pp",
+            function()
+                Snacks.profiler.toggle()
+            end,
+            desc = "Profiler Toggle",
+        },
+        {
+            "<leader>ps",
+            function()
+                Snacks.profiler.scratch()
+            end,
+            desc = "Profiler Scratch Buffer",
+        },
+        {
+            "<leader>pf",
+            function()
+                Snacks.profiler.pick()
+            end,
+            desc = "Profiler Pick",
+        },
+        {
+            "<leader>ph",
+            function()
+                Snacks.profiler.highlights()
+            end,
+            desc = "Profiler Highlights",
         },
         {
             "]]",

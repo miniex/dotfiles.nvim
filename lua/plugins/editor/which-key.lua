@@ -9,6 +9,8 @@ return {
             { "<leader>g", group = "git" },
             { "<leader>gh", group = "hunk" },
             { "<leader>gt", group = "toggle" },
+            { "<leader>p", group = "profiler", mode = "n" },
+            { "<leader>q", group = "session" },
             { "<leader>x", group = "diagnostics/quickfix" },
             { "<leader>r", group = "rename" },
         },
