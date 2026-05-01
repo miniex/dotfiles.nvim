@@ -65,10 +65,19 @@ Sorted by language category, then family, then first-appeared.
 
 ### Install
 
+**Recommended** — one-shot installer (backs up existing `~/.config/nvim` and `~/.local/share/nvim`, clones the repo, optionally launches the language picker):
+
+```bash
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/miniex/dotfiles.nvim/main/install.sh)"
+```
+
+**Manual** — if you'd rather wire it up yourself:
+
 ```bash
 mv ~/.config/nvim ~/.config/nvim.backup
 mv ~/.local/share/nvim ~/.local/share/nvim.backup
 git clone https://github.com/miniex/dotfiles.nvim.git ~/.config/nvim
+sh ~/.config/nvim/set-lang.sh   # optional — pick which language plugins to load
 nvim
 ```
 
@@ -162,11 +171,12 @@ Leader: `<Space>`
 
 ## Customization
 
-- **New language** — add a file under `lua/plugins/lang/` extending `nvim-lspconfig` `servers` (auto-installs via Mason). Formatters live in `lua/plugins/lsp/conform.lua`, linters in `lua/plugins/lsp/lint.lua`, treesitter parsers in `lua/plugins/editor/treesitter.lua`. `python.lua` shows the LSP + DAP wiring.
+- **Disable languages you don't use** — run `sh ~/.config/nvim/set-lang.sh` for an interactive picker (↑/↓, space to toggle, enter to save), or hand-edit `lua/config/langs_local.lua` (gitignored) directly. Either way it overrides the defaults in `lua/config/langs.lua` per-machine without polluting upstream.
+- **New language** — add a file under `lua/plugins/lang/` extending `nvim-lspconfig` `servers` (auto-installs via Mason), then add the module name to `lua/config/langs.lua` so it gets imported. Formatters live in `lua/plugins/lsp/conform.lua`, linters in `lua/plugins/lsp/lint.lua`, treesitter parsers in `lua/plugins/editor/treesitter.lua`. `python.lua` shows the LSP + DAP wiring.
 - **Theme** — `lua/plugins/ui/themes.lua`.
 - **Keymaps** — `lua/config/keymaps.lua`, helper `map(lhs, rhs, mode, desc)`.
 - **Autocmds** — `lua/config/autocmds.lua` (treesitter attach, WSL2 clipboard, file reload).
-- **Contributor tools** — `tools/format.sh` (stylua) and `tools/lint.sh` (stylua check + lua-language-server diagnostics). See [CONTRIBUTING.md](CONTRIBUTING.md).
+- **Contributor tools** — `tools/format.sh` (stylua + shfmt) and `tools/lint.sh` (stylua check, lua-language-server diagnostics, shfmt diff, shellcheck). See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Contributing
 

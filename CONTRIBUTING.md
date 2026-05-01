@@ -6,14 +6,16 @@ Thanks for sending changes. The bar is small but firm: every commit and PR must 
 
 Install on your `$PATH` before working on this repo:
 
-- [`stylua`](https://github.com/JohnnyMorganz/StyLua) — formatter
-- [`lua-language-server`](https://github.com/LuaLS/lua-language-server) — diagnostics (matches what nvim shows)
+- [`stylua`](https://github.com/JohnnyMorganz/StyLua) — Lua formatter
+- [`lua-language-server`](https://github.com/LuaLS/lua-language-server) — Lua diagnostics (matches what nvim shows)
+- [`shfmt`](https://github.com/mvdan/sh) — shell script formatter
+- [`shellcheck`](https://www.shellcheck.net/) — shell script linter
 
 Examples:
 
 ```bash
 # macOS
-brew install stylua lua-language-server
+brew install stylua lua-language-server shfmt shellcheck
 
 # cargo
 cargo install stylua

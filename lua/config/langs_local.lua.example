@@ -1,0 +1,21 @@
+-- Copy this file to `langs_local.lua` (gitignored) and uncomment lines for
+-- languages you do not want loaded. Anything omitted falls through to the
+-- defaults in `langs.lua` (all enabled).
+return {
+    -- ["c-cpp"]   = false,
+    -- cmake       = false,
+    -- dockerfile  = false,
+    -- go          = false,
+    -- json        = false,
+    -- just        = false,
+    -- lua         = false,
+    -- markdown    = false,
+    -- nix         = false,
+    -- protobuf    = false,
+    -- python      = false,
+    -- ron         = false,
+    -- rust        = false,
+    -- toml        = false,
+    -- web         = false,
+    -- yaml        = false,
+}

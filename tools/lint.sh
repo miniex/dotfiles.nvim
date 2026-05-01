@@ -1,12 +1,13 @@
 #!/bin/sh
-# Lint Lua: stylua format check + lua-language-server diagnostics.
-# Contributor/maintainer tool — both binaries must be on PATH.
+# Lint Lua (stylua check + lua-language-server) and shell scripts
+# (shfmt --diff + shellcheck). Contributor/maintainer tool — every binary
+# below must be on PATH.
 set -e
 
 cd "$(dirname "$0")/.."
 
 missing=
-for tool in stylua lua-language-server; do
+for tool in stylua lua-language-server shfmt shellcheck; do
     if ! command -v "$tool" >/dev/null 2>&1; then
         missing="$missing $tool"
     fi
@@ -19,5 +20,7 @@ if [ -n "$missing" ]; then
 fi
 
 stylua --check .
-
 lua-language-server --check . --logpath /tmp/lua-ls-check
+
+shfmt -d -i 4 -ci -bn -s install.sh set-lang.sh tools/format.sh tools/lint.sh
+shellcheck install.sh set-lang.sh tools/format.sh tools/lint.sh

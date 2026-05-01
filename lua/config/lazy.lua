@@ -11,14 +11,20 @@ if not (vim.uv or vim.loop).fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 
+local spec = {
+    { import = "plugins.coding" },
+    { import = "plugins.editor" },
+    { import = "plugins.lsp" },
+    { import = "plugins.ui" },
+}
+for name, enabled in pairs(require("config.langs")) do
+    if enabled then
+        table.insert(spec, { import = "plugins.lang." .. name })
+    end
+end
+
 require("lazy").setup({
-    spec = {
-        { import = "plugins.coding" },
-        { import = "plugins.editor" },
-        { import = "plugins.lsp" },
-        { import = "plugins.lang" },
-        { import = "plugins.ui" },
-    },
+    spec = spec,
     performance = {
         cache = { enabled = true },
         rtp = {
