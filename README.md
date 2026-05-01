@@ -21,23 +21,30 @@ Lean, fast, easy on the eyes. Native LSP (`vim.lsp.config`), Rust-backed complet
 
 ## Language Support
 
+Sorted by language category, then family, then first-appeared.
+
 | Language        | LSP                     | Formatter        | Linter        | Debugger |
 |-----------------|-------------------------|------------------|---------------|----------|
 | Shell (sh/bash) | -                       | shfmt            | shellcheck    | -        |
 | Zsh             | -                       | -                | zsh -n        | -        |
 | Fish            | -                       | fish_indent      | fish -n       | -        |
-| Rust            | rust-analyzer           | rustfmt          | -             | CodeLLDB |
 | C/C++           | clangd                  | clang-format     | -             | cpptools |
-| JavaScript/TS   | vtsls                   | prettierd        | eslint_d      | -        |
+| Go              | gopls                   | goimports        | -             | -        |
+| Rust            | rust-analyzer           | rustfmt          | -             | CodeLLDB |
 | Python          | basedpyright + ruff     | ruff (via LSP)   | ruff (LSP)    | debugpy  |
 | Lua             | lua_ls                  | stylua           | -             | -        |
+| CSS / HTML      | cssls / html+emmet      | prettierd        | -             | -        |
+| Tailwind CSS    | tailwindcss             | prettierd        | -             | -        |
+| JavaScript/TS   | vtsls                   | prettierd        | eslint_d      | -        |
+| SQL             | -                       | sqlfluff         | -             | -        |
 | JSON / YAML     | jsonls / yamlls         | prettierd        | -             | -        |
+| TOML            | taplo                   | taplo            | -             | -        |
+| RON             | -                       | rustfmt          | -             | -        |
 | Markdown        | marksman                | prettierd        | markdownlint  | -        |
 | MDX             | marksman + mdx_analyzer | prettierd        | -             | -        |
 | CMake           | neocmake                | cmake_format     | -             | -        |
-| TOML            | taplo                   | taplo            | -             | -        |
-| CSS / HTML      | cssls / html+emmet      | prettierd        | -             | -        |
-| RON             | -                       | rustfmt          | -             | -        |
+| Nix             | nil_ls                  | nixfmt           | statix        | -        |
+| Dockerfile      | dockerls                | -                | hadolint      | -        |
 
 ## Setup
 
@@ -46,8 +53,9 @@ Lean, fast, easy on the eyes. Native LSP (`vim.lsp.config`), Rust-backed complet
 - **Neovim ≥ 0.12.0**
 - `git`, `tar`, `curl`, `xxd`, C compiler, `make`, ripgrep, a [Nerd Font](https://www.nerdfonts.com/)
 - [`tree-sitter-cli`](https://github.com/tree-sitter/tree-sitter) **≥ 0.26.1** — `cargo install tree-sitter-cli` or OS package manager. **Not npm.**
-- Node.js + npm — runtime for npm-based Mason packages (vtsls, prettierd, eslint_d, marksman, …)
-- Python 3 — required by debugpy
+- Node.js + npm — runtime for npm-based Mason packages (vtsls, prettierd, eslint_d, marksman, dockerls, tailwindcss-language-server, …)
+- Python 3 + pip — required by debugpy and sqlfluff
+- Go toolchain — required by Mason to install gopls and goimports
 - Rust toolchain — required for rustfmt (rust-analyzer is Mason-installed)
 - [lazygit](https://github.com/jesseduffield/lazygit) — optional, for `<leader>gg`
 

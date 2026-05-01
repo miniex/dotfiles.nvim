@@ -25,6 +25,7 @@ return {
                         "typescriptreact",
                     },
                 },
+                tailwindcss = {},
             },
         },
     },

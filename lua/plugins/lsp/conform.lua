@@ -2,12 +2,22 @@ return {
     {
         "williamboman/mason.nvim",
         opts = {
+            -- Sorted by language category.
             ensure_installed = {
-                "stylua",
-                "prettierd",
-                "clang-format",
-                "cmakelang",
+                -- Shell
                 "shfmt",
+                -- Systems
+                "clang-format",
+                "goimports",
+                -- Scripting
+                "stylua",
+                -- Web
+                "prettierd",
+                -- Database
+                "sqlfluff",
+                -- Build / Infra
+                "cmakelang",
+                "nixfmt",
             },
         },
     },
@@ -26,30 +36,42 @@ return {
             },
         },
         opts = {
+            -- Sorted by language category, then family, then first-appeared.
             formatters_by_ft = {
+                -- Shell
                 sh = { "shfmt" },
                 bash = { "shfmt" },
                 fish = { "fish_indent" },
+                -- Systems
                 c = { "clang-format" },
-                cmake = { "cmake_format" },
                 cpp = { "clang-format" },
+                go = { "goimports" },
+                rust = { "rustfmt" },
+                -- Scripting
+                -- python format handled by ruff LSP via conform's lsp_format fallback
+                lua = { "stylua" },
+                -- Web
+                html = { "prettierd", "prettier", stop_after_first = true },
                 css = { "prettierd", "prettier", stop_after_first = true },
                 scss = { "prettierd", "prettier", stop_after_first = true },
-                html = { "prettierd", "prettier", stop_after_first = true },
                 javascript = { "prettierd", "prettier", stop_after_first = true },
-                typescript = { "prettierd", "prettier", stop_after_first = true },
                 javascriptreact = { "prettierd", "prettier", stop_after_first = true },
+                typescript = { "prettierd", "prettier", stop_after_first = true },
                 typescriptreact = { "prettierd", "prettier", stop_after_first = true },
+                -- Database
+                sql = { "sqlfluff" },
+                -- Data / Config
                 json = { "prettierd", "prettier", stop_after_first = true },
                 jsonc = { "prettierd", "prettier", stop_after_first = true },
-                lua = { "stylua" },
+                yaml = { "prettierd", "prettier", stop_after_first = true },
+                toml = { "taplo" },
+                ron = { "rustfmt" },
+                -- Markup
                 markdown = { "prettierd", "prettier", stop_after_first = true },
                 mdx = { "prettierd", "prettier", stop_after_first = true },
-                -- python format handled by ruff LSP via conform's lsp_format fallback
-                ron = { "rustfmt" },
-                rust = { "rustfmt" },
-                toml = { "taplo" },
-                yaml = { "prettierd", "prettier", stop_after_first = true },
+                -- Build / Infra
+                cmake = { "cmake_format" },
+                nix = { "nixfmt" },
             },
             default_format_opts = {
                 lsp_format = "fallback",

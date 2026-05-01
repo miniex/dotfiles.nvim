@@ -5,28 +5,42 @@ return {
         lazy = false,
         build = ":TSUpdate",
         opts = {
+            -- Sorted by language category, then family, then first-appeared.
             ensure_installed = {
+                -- Shell
                 "bash",
+                "fish",
+                -- Systems
                 "c",
                 "cpp",
-                "cmake",
-                "css",
-                "fish",
+                "go",
+                "rust",
+                -- Scripting
+                "python",
+                "lua",
+                -- Web
                 "html",
+                "css",
                 "javascript",
                 "typescript",
+                -- Database
+                "sql",
+                -- Data / Config
                 "json",
                 "json5",
-                "lua",
+                "yaml",
+                "toml",
+                "ron",
+                -- Markup
                 "markdown",
                 "markdown_inline",
-                "python",
-                "rust",
-                "ron",
-                "toml",
+                -- Build / Infra
+                "cmake",
+                "nix",
+                "dockerfile",
+                -- Editor
                 "vim",
                 "vimdoc",
-                "yaml",
             },
         },
         config = function(_, opts)
