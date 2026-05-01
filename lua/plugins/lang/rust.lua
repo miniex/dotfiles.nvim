@@ -1,6 +1,6 @@
 return {
     {
-        "williamboman/mason.nvim",
+        "WhoIsSethDaniel/mason-tool-installer.nvim",
         opts = { ensure_installed = { "rust-analyzer" } },
     },
     {

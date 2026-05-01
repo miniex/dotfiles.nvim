@@ -1,6 +1,6 @@
 return {
     {
-        "williamboman/mason.nvim",
+        "WhoIsSethDaniel/mason-tool-installer.nvim",
         opts = {
             -- Sorted by language category.
             ensure_installed = {

@@ -1,6 +1,6 @@
 return {
     {
-        "williamboman/mason.nvim",
+        "WhoIsSethDaniel/mason-tool-installer.nvim",
         opts = {
             -- Sorted by language category.
             ensure_installed = {
@@ -19,11 +19,9 @@ return {
     {
         "mfussenegger/nvim-lint",
         event = { "BufReadPost", "BufWritePost" },
-        config = function()
-            local lint = require("lint")
-
+        opts = {
             -- Sorted by language category, then family, then first-appeared.
-            lint.linters_by_ft = {
+            linters_by_ft = {
                 -- Shell
                 sh = { "shellcheck" },
                 bash = { "shellcheck" },
@@ -40,7 +38,11 @@ return {
                 -- Build / Infra
                 nix = { "statix" },
                 dockerfile = { "hadolint" },
-            }
+            },
+        },
+        config = function(_, opts)
+            local lint = require("lint")
+            lint.linters_by_ft = opts.linters_by_ft
 
             vim.api.nvim_create_autocmd({ "BufWritePost", "BufReadPost", "InsertLeave" }, {
                 group = vim.api.nvim_create_augroup("nvim-lint", { clear = true }),

@@ -11,6 +11,18 @@ return {
         cmd = { "LspInstall", "LspUninstall" },
     },
     {
+        "WhoIsSethDaniel/mason-tool-installer.nvim",
+        dependencies = { "williamboman/mason.nvim" },
+        cmd = { "MasonToolsInstall", "MasonToolsUpdate", "MasonToolsClean" },
+        opts = {
+            ensure_installed = {},
+            auto_update = false,
+            run_on_start = true,
+            start_delay = 3000,
+            debounce_hours = 24,
+        },
+    },
+    {
         "neovim/nvim-lspconfig",
         event = { "BufReadPre", "BufNewFile" },
         opts = {
