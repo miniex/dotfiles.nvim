@@ -1,9 +1,13 @@
-Copyright Notice — assets/dashboard_sticker.ansi
-==================================================
+Copyright Notice — assets/dashboard_sticker.ansi, assets/preview.png
+====================================================================
 
-The file `dashboard_sticker.ansi` in this directory is derived from a
-copyrighted emoji of a copyrighted character. It is **NOT** covered by
-the MIT license that applies to the rest of this repository.
+The following files in this directory are derived from a copyrighted
+emoji of a copyrighted character. They are **NOT** covered by the MIT
+license that applies to the rest of this repository:
+
+  - `dashboard_sticker.ansi` — the rendered ANSI artwork itself
+  - `preview.png` — a screenshot that visually embeds the artwork
+    above as part of the Neovim dashboard
 
 All rights reserved by:
 
@@ -13,17 +17,18 @@ Restrictions
 ------------
 
 You may NOT:
-  - Include this file in any fork, mirror, or derivative repository
-  - Redistribute this file in any form, modified or unmodified
-  - Use this file in any project other than this personal Neovim
+  - Include these files in any fork, mirror, or derivative repository
+  - Redistribute these files in any form, modified or unmodified
+  - Use these files in any project other than this personal Neovim
     configuration owned by the copyright holder above
 
 Forking / Redistributing
 ------------------------
 
-If you fork or redistribute this repository, you MUST remove
-`dashboard_sticker.ansi` (and replace the dashboard image reference
-in `lua/plugins/ui/snacks.lua`) before publishing.
+If you fork or redistribute this repository, you MUST remove both
+`dashboard_sticker.ansi` and `preview.png` (and replace the dashboard
+image reference in `lua/plugins/ui/snacks.lua`, plus the preview image
+reference in `README.md`) before publishing.
 
 Unauthorized use, copying, or distribution of this artwork is
 prohibited and may result in legal action.

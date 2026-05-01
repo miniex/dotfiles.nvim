@@ -4,6 +4,8 @@ Lean, fast, easy on the eyes. Native LSP (`vim.lsp.config`), Rust-backed complet
 
 > **Targets Linux and macOS, in [Kitty](https://sw.kovidgoyal.net/kitty/) terminal.** WSL2 is supported (clipboard bridges to Windows via `clip.exe`). Other terminals work for everything except inline image / GIF / video previews and the Material Design Icons font fallback, which both rely on Kitty.
 
+![Preview](assets/preview.png)
+
 ## Highlights
 
 - **Aggressive lazy-loading** — most plugins deferred via `VeryLazy` / `cmd` / `keys`; only colorscheme, treesitter, and snacks.nvim load eagerly. Treesitter parser installs deferred via `vim.schedule` so they never block startup
@@ -202,4 +204,4 @@ Full details in [CONTRIBUTING.md](CONTRIBUTING.md).
 
 [MIT](LICENSE) © 2026 Han Damin — applies to all code in this repository.
 
-**Exception:** `assets/dashboard_sticker.ansi` is derived from a copyrighted emoji of a copyrighted character. It is **not** covered by the MIT license. All rights reserved by Han Damin <miniex@daminstudio.net>. If you fork or redistribute this repo, you must remove that file before publishing. See [`assets/LICENSE`](assets/LICENSE) for full terms.
+**Exception:** `assets/dashboard_sticker.ansi` and `assets/preview.png` are derived from a copyrighted emoji of a copyrighted character (the screenshot visually embeds the same artwork). They are **not** covered by the MIT license. All rights reserved by Han Damin <miniex@daminstudio.net>. If you fork or redistribute this repo, you must remove both files before publishing. See [`assets/LICENSE`](assets/LICENSE) for full terms.
