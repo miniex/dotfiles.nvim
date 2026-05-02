@@ -62,7 +62,8 @@ Sorted by language category, then family, then first-appeared.
 ### Prerequisites
 
 - **Neovim ≥ 0.12.0**
-- `git`, `tar`, `curl`, `xxd`, C compiler, `make`, ripgrep, a [Nerd Font](https://www.nerdfonts.com/)
+- `git`, `tar`, `curl`, `xxd`, C compiler, `make`, ripgrep
+- A [Nerd Font](https://www.nerdfonts.com/) **plus** [`Symbols Nerd Font Mono`](https://github.com/ryanoasis/nerd-fonts/releases/latest/download/NerdFontsSymbolsOnly.zip) installed as a fallback — many devicons here are Material Design Icons in the Supplementary PUA (U+F0001–U+F1FFF), which most patched Nerd Fonts don't ship. In Kitty, add `symbol_map U+E000-U+F8FF,U+F0000-U+10FFFD Symbols Nerd Font Mono` to `kitty.conf`
 - [`chafa`](https://hpjansson.org/chafa/) + [ImageMagick](https://imagemagick.org/) — optional, only to regenerate `assets/dashboard_sticker.ansi` from a source PNG
 - [`tree-sitter-cli`](https://github.com/tree-sitter/tree-sitter) **≥ 0.26.1** — `cargo install tree-sitter-cli` or OS package manager. **Not npm.**
 - Node.js + npm — runtime for npm-based Mason packages (vtsls, prettierd, eslint_d, marksman, dockerls, tailwindcss-language-server, …)
