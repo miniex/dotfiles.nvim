@@ -19,6 +19,7 @@ opt.number = true
 opt.relativenumber = true
 opt.termguicolors = true
 opt.signcolumn = "yes:2"
+opt.fillchars:append({ eob = " " })
 
 -- etc
 opt.encoding = "UTF-8"
