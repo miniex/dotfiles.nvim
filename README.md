@@ -3,6 +3,8 @@
 Lean, fast, easy on the eyes. Native LSP (`vim.lsp.config`), Rust-backed completion (blink.cmp), aggressive lazy-loading. Lazy.nvim manages plugins, Mason handles the LSP/DAP toolchain.
 
 > **Targets Linux and macOS, in [Kitty](https://sw.kovidgoyal.net/kitty/) terminal.** WSL2 is supported (clipboard bridges to Windows via `clip.exe`). Other terminals work for everything except inline image / GIF / video previews and the Material Design Icons font fallback, which both rely on Kitty.
+>
+> Pairs well with the companion Kitty config at [`miniex/dotfiles.kitty`](https://github.com/miniex/dotfiles.kitty) — drop it into `~/.config/kitty` for the matching font fallback, theme, and keymaps this setup is tuned against.
 
 ![Preview](assets/preview.png)
 
