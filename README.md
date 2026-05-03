@@ -12,9 +12,9 @@ Lean, fast, easy on the eyes. Native LSP (`vim.lsp.config`), Rust-backed complet
 - **Completion & diagnostics** — blink.cmp (Rust fuzzy), inlay hints suppressed during insert, tiny-inline-diagnostic on cursor line with `<leader>cl` to toggle native `virtual_lines`
 - **Treesitter** — nvim-treesitter `main` + textobjects, sticky context, ts-autotag (HTML/JSX), ts-context-commentstring
 - **Pickers** — fff.nvim (Rust-backed file finder, sub-10ms on huge repos) + snacks.picker for grep / buffers / help / recent
-- **Editor** — neo-tree, flash, trouble, which-key, todo-comments, dropbar (winbar breadcrumb), markview (markdown/typst preview), persistence (sessions), hex view via `xxd`
+- **Editor** — neo-tree, flash, trouble, which-key, todo-comments, dropbar (winbar breadcrumb), persistence (sessions), hex view via `xxd`
 - **snacks.nvim** — picker, profiler, terminal, dashboard, statuscolumn, notifier, indent, scroll, dim, image, bigfile, scope, words
-- **Tooling** — conform (format-on-save), nvim-lint, mason-tool-installer, DAP for Rust / C-C++ / Python
+- **Tooling** — nvim-lint, mason-tool-installer, DAP for Rust / C-C++ / Python (formatting is opt-in via `tools/format.sh`, not on save)
 - **UI** — Cyberdream theme + lualine + smear-cursor + modicator + fidget + undo-glow
 - **Git** — gitsigns, fugitive, lazygit.nvim, blink-cmp-git commit completions
 - **WSL2** clipboard bridge via `clip.exe`
@@ -23,39 +23,41 @@ Lean, fast, easy on the eyes. Native LSP (`vim.lsp.config`), Rust-backed complet
 
 Sorted by language category, then family, then first-appeared.
 
-| Language          | LSP                     | Formatter        | Linter        | Debugger |
-|-------------------|-------------------------|------------------|---------------|----------|
-| Shell (sh/bash)   | bashls                  | shfmt            | shellcheck    | -        |
-| Zsh               | -                       | -                | zsh -n        | -        |
-| Fish              | -                       | fish_indent      | fish -n       | -        |
-| Assembly          | asm-lsp                 | -                | -             | -        |
-| C/C++             | clangd                  | clang-format     | -             | cpptools |
-| Go                | gopls                   | goimports        | -             | -        |
-| Rust              | rust-analyzer           | rustfmt          | -             | CodeLLDB |
-| Zig               | zls                     | (zig fmt)        | -             | -        |
-| OCaml             | ocamllsp                | (ocamlformat)    | -             | -        |
-| Elixir            | elixirls                | (mix format)     | -             | -        |
-| Python            | basedpyright + ruff     | ruff (via LSP)   | ruff (LSP)    | debugpy  |
-| Lua               | lua_ls                  | stylua           | -             | -        |
-| CSS / HTML        | cssls / html+emmet      | prettierd        | -             | -        |
-| Tailwind CSS      | tailwindcss             | prettierd        | -             | -        |
-| JavaScript/TS     | vtsls                   | prettierd        | eslint_d      | -        |
-| GraphQL           | graphql                 | prettierd        | -             | -        |
-| SQL               | sqls                    | sqlfluff         | -             | -        |
-| JSON / YAML       | jsonls / yamlls         | prettierd        | -             | -        |
-| Protobuf          | buf_ls                  | buf              | -             | -        |
-| TOML              | taplo                   | taplo            | -             | -        |
-| RON               | -                       | rustfmt          | -             | -        |
-| Typst             | tinymist                | typstyle (LSP)   | -             | -        |
-| Markdown          | marksman                | prettierd        | markdownlint  | -        |
-| MDX               | marksman + mdx_analyzer | prettierd        | -             | -        |
-| CMake             | neocmake                | cmake_format     | -             | -        |
-| Nix               | nil_ls                  | nixfmt           | statix        | -        |
-| Dockerfile        | dockerls                | -                | hadolint      | -        |
-| Helm              | helm_ls                 | -                | -             | -        |
-| Terraform / HCL   | terraformls             | -                | tflint        | -        |
-| Shaders (WGSL/GLSL) | wgsl-analyzer / glsl_analyzer | -          | -             | -        |
-| Just              | just (just-lsp)         | -                | -             | -        |
+| Language            | LSP                           | Linter        | Debugger |
+|---------------------|-------------------------------|---------------|----------|
+| Shell (sh/bash)     | bashls                        | shellcheck    | -        |
+| Zsh                 | -                             | zsh -n        | -        |
+| Fish                | -                             | fish -n       | -        |
+| Assembly            | asm-lsp                       | -             | -        |
+| C/C++               | clangd                        | -             | cpptools |
+| Go                  | gopls                         | -             | -        |
+| Rust                | rust-analyzer                 | -             | CodeLLDB |
+| Zig                 | zls                           | -             | -        |
+| OCaml               | ocamllsp                      | -             | -        |
+| Elixir              | elixirls                      | -             | -        |
+| Python              | basedpyright + ruff           | ruff (LSP)    | debugpy  |
+| Lua                 | lua_ls                        | -             | -        |
+| CSS / HTML          | cssls / html+emmet            | -             | -        |
+| Tailwind CSS        | tailwindcss                   | -             | -        |
+| JavaScript/TS       | vtsls                         | eslint_d      | -        |
+| GraphQL             | graphql                       | -             | -        |
+| SQL                 | sqls                          | -             | -        |
+| JSON / YAML         | jsonls / yamlls               | -             | -        |
+| Protobuf            | buf_ls                        | -             | -        |
+| TOML                | taplo                         | -             | -        |
+| RON                 | -                             | -             | -        |
+| Typst               | tinymist                      | -             | -        |
+| Markdown            | marksman                      | markdownlint  | -        |
+| MDX                 | marksman + mdx_analyzer       | -             | -        |
+| CMake               | neocmake                      | -             | -        |
+| Nix                 | nil_ls                        | statix        | -        |
+| Dockerfile          | dockerls                      | hadolint      | -        |
+| Helm                | helm_ls                       | -             | -        |
+| Terraform / HCL     | terraformls                   | tflint        | -        |
+| Shaders (WGSL/GLSL) | wgsl-analyzer / glsl_analyzer | -             | -        |
+| Just                | just (just-lsp)               | -             | -        |
+
+> Formatting is intentionally not wired into the editor. Run `tools/format.sh` (stylua + shfmt) for the repo's own files; per-language formatting is left to whatever each contributor prefers.
 
 ## Setup
 
@@ -65,10 +67,10 @@ Sorted by language category, then family, then first-appeared.
 - `git`, `tar`, `curl`, `xxd`, C compiler, `make`, ripgrep
 - A [Nerd Font](https://www.nerdfonts.com/) **plus** [`Symbols Nerd Font Mono`](https://github.com/ryanoasis/nerd-fonts/releases/latest/download/NerdFontsSymbolsOnly.zip) installed as a fallback — many devicons here are Material Design Icons in the Supplementary PUA (U+F0001–U+F1FFF), which most patched Nerd Fonts don't ship. In Kitty, add `symbol_map U+E000-U+F8FF,U+F0000-U+10FFFD Symbols Nerd Font Mono` to `kitty.conf`
 - [`tree-sitter-cli`](https://github.com/tree-sitter/tree-sitter) **≥ 0.26.1** — `cargo install tree-sitter-cli` or OS package manager. **Not npm.**
-- Node.js + npm — runtime for npm-based Mason packages (vtsls, prettierd, eslint_d, marksman, dockerls, tailwindcss-language-server, …)
-- Python 3 + pip — required by debugpy and sqlfluff
-- Go toolchain — required by Mason to install gopls, goimports, helm_ls, sqls, terraformls, tflint
-- Rust toolchain — required for rustfmt (rust-analyzer, tinymist, wgsl-analyzer, glsl_analyzer are Mason-installed)
+- Node.js + npm — runtime for npm-based Mason packages (vtsls, eslint_d, marksman, dockerls, tailwindcss-language-server, …)
+- Python 3 + pip — required by debugpy
+- Go toolchain — required by Mason to install gopls, helm_ls, sqls, terraformls, tflint
+- Rust toolchain — required for fff.nvim's binary build (rust-analyzer, tinymist, wgsl-analyzer, glsl_analyzer are Mason-installed)
 - Zig toolchain — optional, only if `zig = true`; Mason builds zls from source
 - OCaml + opam — optional, only if `ocaml = true`; ocamllsp installs through opam (`opam install ocaml-lsp-server`) rather than Mason
 - Erlang + Elixir + mix — optional, only if `elixir = true`; required for elixirls
@@ -93,7 +95,7 @@ sh ~/.config/nvim/set-lang.sh   # optional — pick which language plugins to lo
 nvim
 ```
 
-Plugins, LSP servers, formatters, linters, and DAP adapters install via Mason on first launch. Treesitter parsers download/build asynchronously — re-open files if highlight is briefly missing.
+Plugins, LSP servers, linters, and DAP adapters install via Mason on first launch. Treesitter parsers download/build asynchronously — re-open files if highlight is briefly missing.
 
 > **If something breaks after `git pull`** — Lazy's compiled spec cache or a stale plugin version is the usual culprit. Nuke local nvim state and restart:
 >
@@ -154,7 +156,6 @@ Use `PROF=1 nvim` to profile startup, or these runtime keys:
 | `<leader>cc` / `<leader>ca` | Diagnostics float / code action |
 | `<leader>ci` | Toggle inlay hints |
 | `<leader>cd` / `<leader>cl` | Toggle inline diagnostic / multi-line `virtual_lines` |
-| `<leader>cf` | Format buffer |
 | `<leader>cm` | Open Mason |
 | `<leader>xx/xd/xs/xq/xl` | Trouble: diagnostics / buf only / symbols / qf / loclist |
 | `<leader>xt` / `<leader>xT` | Trouble: TODOs / TODO+FIX+FIXME |
@@ -181,12 +182,6 @@ Use `PROF=1 nvim` to profile startup, or these runtime keys:
 |---|---|
 | `<leader>uw` | Pick segment to jump to |
 | `[w` / `]w` | Jump to context start / next context |
-
-### Markview (markdown / typst / mdx rendering)
-| Key | Description |
-|---|---|
-| `<leader>um` | Toggle Markview |
-| `<leader>uM` | Toggle Markview split-preview |
 
 ### Git
 | Key | Description |
@@ -231,7 +226,7 @@ Use `PROF=1 nvim` to profile startup, or these runtime keys:
 ## Customization
 
 - **Disable languages you don't use** — run `sh ~/.config/nvim/set-lang.sh` for an interactive picker (↑/↓, space to toggle, enter to save), or hand-edit `lua/config/langs_local.lua` (gitignored) directly. Either way it overrides the defaults in `lua/config/langs.lua` per-machine without polluting upstream.
-- **New language** — add a file under `lua/plugins/lang/` extending `nvim-lspconfig` `servers` (auto-installed via mason-lspconfig's `ensure_installed`, populated dynamically), then add the module name to `lua/config/langs.lua` so it gets imported. Formatters live in `lua/plugins/lsp/conform.lua`, linters in `lua/plugins/lsp/lint.lua` (extend `opts.linters_by_ft`), treesitter parsers in `lua/plugins/editor/treesitter.lua`. Non-LSP tools (linters, formatters, DAP adapters) install through `WhoIsSethDaniel/mason-tool-installer.nvim` — extend its `opts.ensure_installed`. `python.lua` shows the LSP + DAP wiring.
+- **New language** — add a file under `lua/plugins/lang/` extending `nvim-lspconfig` `servers` (auto-installed via mason-lspconfig's `ensure_installed`, populated dynamically), then add the module name to `lua/config/langs.lua` so it gets imported. Linters live in `lua/plugins/lsp/lint.lua` (extend `opts.linters_by_ft`), treesitter parsers in `lua/plugins/editor/treesitter.lua`. Non-LSP tools (linters, DAP adapters) install through `WhoIsSethDaniel/mason-tool-installer.nvim` — extend its `opts.ensure_installed`. `python.lua` shows the LSP + DAP wiring.
 - **Theme** — `lua/plugins/ui/themes.lua`.
 - **Keymaps** — `lua/config/keymaps.lua`, helper `map(lhs, rhs, mode, desc)`.
 - **Autocmds** — `lua/config/autocmds.lua` (treesitter attach, WSL2 clipboard, file reload, end-of-buffer tilde hide).
@@ -252,7 +247,6 @@ Full details in [CONTRIBUTING.md](CONTRIBUTING.md).
 | Issue | Check |
 |---|---|
 | LSP not attaching | `:Mason`, `:LspInfo`, `:LspLog` |
-| Format not running | `:ConformInfo`, formatter on `$PATH` |
 | Lint not running | linter on `$PATH`, see `lua/plugins/lsp/lint.lua` |
 | Mason tools missing | `:MasonToolsUpdate`, then `:Mason` to confirm |
 | LSP killed unexpectedly | `garbage-day.nvim` GC'd it after 15 min idle — just resume the buffer; tweak `grace_period` in `lua/plugins/lsp/garbage-day.lua` |

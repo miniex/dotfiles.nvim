@@ -16,6 +16,11 @@ return {
         dependencies = { "williamboman/mason.nvim" },
         event = "VeryLazy",
         cmd = { "MasonToolsInstall", "MasonToolsUpdate", "MasonToolsClean" },
+        -- lazy.nvim's default opts merge replaces arrays rather than concatenating
+        -- them, so every spec contributing to ensure_installed (lint, dap, lang)
+        -- would clobber the previous one. opts_extend tells lazy to list-append
+        -- this specific key across specs.
+        opts_extend = { "ensure_installed" },
         opts = {
             ensure_installed = {},
             auto_update = false,
