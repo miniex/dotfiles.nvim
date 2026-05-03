@@ -4,6 +4,22 @@ vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter" }, {
     command = "checktime",
 })
 
+-- Hide end-of-buffer tildes even where plugins override winhighlight or set
+-- their own local fillchars. fillchars eob=" " covers the global default;
+-- matching EndOfBuffer fg to Normal bg covers the rest.
+local function hide_eob()
+    local normal = vim.api.nvim_get_hl(0, { name = "Normal" })
+    local bg = normal and normal.bg
+    if bg then
+        vim.api.nvim_set_hl(0, "EndOfBuffer", { fg = bg })
+    end
+end
+vim.api.nvim_create_autocmd("ColorScheme", {
+    group = vim.api.nvim_create_augroup("hide-eob", { clear = true }),
+    callback = hide_eob,
+})
+hide_eob()
+
 -- WSL2 clipboard sync via clip.exe
 local clip = "/mnt/c/Windows/System32/clip.exe"
 if vim.fn.executable(clip) == 1 then
