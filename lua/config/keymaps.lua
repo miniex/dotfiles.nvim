@@ -7,6 +7,10 @@ map("<C-h>", "<C-w>h", "n", "Move to left pane")
 map("<C-j>", "<C-w>j", "n", "Move to bottom pane")
 map("<C-k>", "<C-w>k", "n", "Move to top pane")
 map("<C-l>", "<C-w>l", "n", "Move to right pane")
+map("<C-h>", [[<C-\><C-n><C-w>h]], "t", "Move to left pane (term)")
+map("<C-j>", [[<C-\><C-n><C-w>j]], "t", "Move to bottom pane (term)")
+map("<C-k>", [[<C-\><C-n><C-w>k]], "t", "Move to top pane (term)")
+map("<C-l>", [[<C-\><C-n><C-w>l]], "t", "Move to right pane (term)")
 
 -- clear search highlight
 map("<leader>h", ":nohlsearch<CR>", "n", "Clear search highlight")
