@@ -114,7 +114,7 @@ Leader: `<Space>`
 ### Global
 | Key | Mode | Description |
 |---|---|---|
-| `<C-h/j/k/l>` | N/T | Pane navigation with tmux-style return-to-last (works from terminal mode too) |
+| `<C-h/j/k/l>` | N/T | Pane navigation with tmux-style return-to-last (works from terminal mode too; smear animation pulses on entering a terminal pane, then disables itself so typing stays jitter-free) |
 | `<leader>h` | N | Clear search highlight |
 | `<leader>s` | N | Save |
 | `<leader>d` | N/V | Delete without yank |
