@@ -10,15 +10,40 @@ local function any_term_visible()
     return false
 end
 
+local SIDEBAR_FT = {
+    ["neo-tree"] = true,
+    ["neo-tree-popup"] = true,
+}
+
+local function is_main_area(win)
+    local buf = vim.api.nvim_win_get_buf(win)
+    if vim.bo[buf].buftype == "terminal" then
+        return false
+    end
+    return not SIDEBAR_FT[vim.bo[buf].filetype]
+end
+
 local function toggle_terminal()
-    if not any_term_visible() and vim.bo.filetype == "neo-tree" then
-        restore_win = vim.api.nvim_get_current_win()
+    if not is_main_area(0) then
+        local cur = vim.api.nvim_get_current_win()
         for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
-            local buf = vim.api.nvim_win_get_buf(win)
-            local ft = vim.api.nvim_get_option_value("filetype", { buf = buf })
-            if ft ~= "neo-tree" then
+            if win ~= cur and is_main_area(win) then
+                if not any_term_visible() then
+                    restore_win = cur
+                end
                 vim.api.nvim_set_current_win(win)
                 break
+            end
+        end
+    end
+    -- Snacks caches `opts.win` at terminal creation, so a terminal first opened
+    -- from neo-tree stays anchored there forever. Re-point every snacks
+    -- terminal at the (now-focused) code window before each toggle.
+    if Snacks.terminal.list then
+        local target = vim.api.nvim_get_current_win()
+        for _, t in ipairs(Snacks.terminal.list()) do
+            if t.opts and t.opts.win then
+                t.opts.win = target
             end
         end
     end
