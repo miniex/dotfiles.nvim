@@ -10,7 +10,7 @@ Lean, fast, easy on the eyes. Native LSP (`vim.lsp.config`), Rust-backed complet
 
 ## Highlights
 
-- **Native LSP, deferred everything** — `vim.lsp.config` + `vim.lsp.enable` directly; Mason install runs on `VimEnter`; idle servers GC'd after 15 min (garbage-day.nvim). Most plugins lazy via `VeryLazy` / `cmd` / `keys` / `ft`
+- **Native LSP, deferred everything** — `vim.lsp.config` + `vim.lsp.enable` directly; Mason install runs on `VimEnter`. Most plugins lazy via `VeryLazy` / `cmd` / `keys` / `ft`
 - **Completion & diagnostics** — blink.cmp (Rust fuzzy), inlay hints suppressed during insert, tiny-inline-diagnostic on cursor line with `<leader>cl` to toggle native `virtual_lines`
 - **Treesitter** — nvim-treesitter `main` + textobjects, sticky context, ts-autotag (HTML/JSX), ts-context-commentstring
 - **Pickers** — fff.nvim (Rust-backed file finder, sub-10ms on huge repos) + snacks.picker for grep / buffers / help / recent
@@ -251,7 +251,6 @@ Full details in [CONTRIBUTING.md](CONTRIBUTING.md).
 | LSP not attaching | `:Mason`, `:LspInfo`, `:LspLog` |
 | Lint not running | linter on `$PATH`, see `lua/plugins/lsp/lint.lua` |
 | Mason tools missing | `:MasonToolsUpdate`, then `:Mason` to confirm |
-| LSP killed unexpectedly | `garbage-day.nvim` GC'd it after 15 min idle — just resume the buffer; tweak `grace_period` in `lua/plugins/lsp/garbage-day.lua` |
 | `<leader>ff` not working | fff.nvim's binary failed to download/build; run `:Lazy build fff.nvim` (Rust toolchain on `$PATH`) |
 | Sessions not loading | `:lua require('persistence').list()` to inspect; `<leader>qS` to pick |
 | Profiling startup | `PROF=1 nvim`, then `<leader>pp` to toggle, `<leader>pf` to pick captured frames |
