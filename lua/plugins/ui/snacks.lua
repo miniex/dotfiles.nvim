@@ -346,7 +346,7 @@ return {
             desc = "Help Tags",
         },
         {
-            "<leader>bd",
+            "<leader>w",
             function()
                 Snacks.bufdelete()
             end,

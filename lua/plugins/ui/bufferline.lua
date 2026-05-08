@@ -46,21 +46,17 @@ return {
             sort_by = function(buf_a, buf_b)
                 return (order[buf_a.id] or math.huge) < (order[buf_b.id] or math.huge)
             end,
+            -- Hide the startup `[No Name]` buffer (and any other unnamed
+            -- empty buffer) so it doesn't sit at the head of the bufferline.
+            custom_filter = function(buf)
+                return vim.api.nvim_buf_get_name(buf) ~= ""
+            end,
             always_show_bufferline = true,
             show_buffer_close_icons = true,
             show_close_icon = false,
             separator_style = "thin",
             indicator = { style = "underline" },
             diagnostics = "nvim_lsp",
-            offsets = {
-                {
-                    filetype = "neo-tree",
-                    text = "  Explorer",
-                    text_align = "left",
-                    separator = true,
-                    highlight = "Directory",
-                },
-            },
         },
     },
 }
