@@ -17,7 +17,7 @@ Lean, fast, easy on the eyes. Native LSP (`vim.lsp.config`), Rust-backed complet
 - **Editor** — neo-tree (VS Code-style preview slot: `<cr>`/`l` opens transient, `t` pins), flash, trouble, which-key, todo-comments, dropbar (winbar breadcrumb), persistence (sessions), hex view via `xxd`
 - **snacks.nvim** — picker, profiler, terminal, dashboard (auto-reopens when the last file buffer is closed), statuscolumn, notifier, indent, scroll, dim, image, bigfile, scope, words
 - **Tooling** — nvim-lint, mason-tool-installer, DAP for Rust / C-C++ / Python (formatting is opt-in via `tools/format.sh`, not on save)
-- **UI** — Cyberdream theme + lualine + bufferline (buffer mode, neo-tree offset) + smear-cursor + modicator + fidget
+- **UI** — Cyberdream theme + lualine + bufferline (buffer mode, open-order sort, neo-tree offset) + smear-cursor + modicator + fidget
 - **Git** — gitsigns, fugitive, lazygit.nvim, blink-cmp-git commit completions
 - **WSL2** clipboard bridge via `clip.exe`
 
@@ -213,7 +213,7 @@ Use `PROF=1 nvim` to profile startup, or these runtime keys:
 | `<C-x>` | Hide terminal |
 | `<leader>bd` | Smart buffer delete (closing the last file buffer drops you back to the dashboard) |
 | `<leader>1` … `<leader>9` | Jump to buffer by bufferline position |
-| `[b` / `]b` | Previous / next buffer (bufferline order) |
+| `[b` / `]b` | Previous / next buffer (bufferline order — open order) |
 | `<leader>cn` / `<leader>un` | Notification history / dismiss all |
 | `]]` / `[[` | LSP word: next / previous reference |
 
