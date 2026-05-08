@@ -307,7 +307,7 @@ return {
             win = {
                 relative = "win",
                 position = "bottom",
-                height = 0.45,
+                height = 0.3,
                 wo = { winbar = "" },
                 keys = {
                     term_close = { "<C-x>", "hide", mode = { "n", "t" }, desc = "Hide Terminal" },

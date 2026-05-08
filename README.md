@@ -208,7 +208,7 @@ Use `PROF=1 nvim` to profile startup, or these runtime keys:
 ### Terminal & Buffers (snacks.nvim + bufferline)
 | Key | Description |
 |---|---|
-| `<leader>t` (n/t) | Toggle terminal (45% bottom split, anchored below main window — auto-skips neo-tree) |
+| `<leader>t` (n/t) | Toggle terminal (30% bottom split, anchored below main window — auto-skips neo-tree) |
 | `<C-x>` | Hide terminal |
 | `<leader>w` | Smart buffer delete (closing the last file buffer drops you back to the dashboard) |
 | `<leader>1` … `<leader>9` | Jump to buffer by bufferline position |
