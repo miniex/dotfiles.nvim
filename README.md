@@ -213,7 +213,7 @@ Use `PROF=1 nvim` to profile startup, or these runtime keys:
 | `<C-x>` | Hide terminal |
 | `<leader>bd` | Smart buffer delete (closing the last file buffer drops you back to the dashboard) |
 | `<leader>1` … `<leader>9` | Jump to buffer by bufferline position |
-| `[b` / `]b` | Previous / next buffer (bufferline order — open order) |
+| `[b` / `]b` | Previous / next buffer (bufferline order — open order; reopened buffers append to the end) |
 | `<leader>cn` / `<leader>un` | Notification history / dismiss all |
 | `]]` / `[[` | LSP word: next / previous reference |
 
