@@ -17,7 +17,7 @@ Lean, fast, easy on the eyes. Native LSP (`vim.lsp.config`), Rust-backed complet
 - **Editor** — neo-tree (floating popup: `<cr>`/`l` open file in a new tabpage), flash, trouble, which-key, todo-comments, dropbar (winbar breadcrumb), persistence (sessions), hex view via `xxd`
 - **snacks.nvim** — picker, profiler, terminal, dashboard (auto-reopens when the last file buffer is closed), statuscolumn, notifier, indent, scroll, dim, image, bigfile, scope, words
 - **Tooling** — nvim-lint, mason-tool-installer, DAP for Rust / C-C++ / Python (formatting is opt-in via `tools/format.sh`, not on save)
-- **UI** — Cyberdream theme + lualine + bufferline (buffer mode, open-order sort, hides `[No Name]`) + smear-cursor + modicator + fidget
+- **UI** — Cyberdream theme + lualine + bufferline (buffer mode, open-order sort, hides `[No Name]` and tabpage indicators) + smear-cursor + modicator + fidget
 - **Git** — gitsigns, fugitive, lazygit.nvim, blink-cmp-git commit completions
 - **WSL2** clipboard bridge via `clip.exe`
 
