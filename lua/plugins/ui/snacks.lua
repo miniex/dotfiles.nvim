@@ -311,6 +311,22 @@ return {
                 wo = { winbar = "" },
                 keys = {
                     term_close = { "<C-x>", "hide", mode = { "n", "t" }, desc = "Hide Terminal" },
+                    term_grow = {
+                        "<C-S-k>",
+                        function()
+                            vim.cmd("resize +3")
+                        end,
+                        mode = { "n", "t" },
+                        desc = "Grow Terminal",
+                    },
+                    term_shrink = {
+                        "<C-S-j>",
+                        function()
+                            vim.cmd("resize -3")
+                        end,
+                        mode = { "n", "t" },
+                        desc = "Shrink Terminal",
+                    },
                 },
             },
         },
