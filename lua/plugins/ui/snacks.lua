@@ -312,7 +312,7 @@ return {
                 keys = {
                     term_close = { "<C-x>", "hide", mode = { "n", "t" }, desc = "Hide Terminal" },
                     term_grow = {
-                        "<C-S-k>",
+                        "<M-k>",
                         function()
                             vim.cmd("resize +3")
                         end,
@@ -320,7 +320,7 @@ return {
                         desc = "Grow Terminal",
                     },
                     term_shrink = {
-                        "<C-S-j>",
+                        "<M-j>",
                         function()
                             vim.cmd("resize -3")
                         end,

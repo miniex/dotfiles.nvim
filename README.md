@@ -210,7 +210,7 @@ Use `PROF=1 nvim` to profile startup, or these runtime keys:
 |---|---|
 | `<leader>t` (n/t) | Toggle terminal (30% bottom split, anchored below main window — auto-skips neo-tree) |
 | `<C-x>` | Hide terminal |
-| `<C-S-k>` / `<C-S-j>` (n/t) | Grow / shrink terminal height by 3 rows |
+| `<M-k>` / `<M-j>` (n/t) | Grow / shrink terminal height by 3 rows |
 | `<leader>w` | Smart buffer delete (closing the last file buffer drops you back to the dashboard) |
 | `<leader>1` … `<leader>9` | Jump to buffer by bufferline position |
 | `[b` / `]b` | Previous / next buffer (bufferline order — open order; reopened buffers append to the end) |
