@@ -14,10 +14,10 @@ Lean, fast, easy on the eyes. Native LSP (`vim.lsp.config`), Rust-backed complet
 - **Completion & diagnostics** — blink.cmp (Rust fuzzy), inlay hints suppressed during insert, tiny-inline-diagnostic on cursor line with `<leader>cl` to toggle native `virtual_lines`
 - **Treesitter** — nvim-treesitter `main` + textobjects, sticky context, ts-autotag (HTML/JSX), ts-context-commentstring
 - **Pickers** — fff.nvim (Rust-backed file finder, sub-10ms on huge repos) + snacks.picker for grep / buffers / help / recent
-- **Editor** — neo-tree, flash, trouble, which-key, todo-comments, dropbar (winbar breadcrumb), persistence (sessions), hex view via `xxd`
-- **snacks.nvim** — picker, profiler, terminal, dashboard, statuscolumn, notifier, indent, scroll, dim, image, bigfile, scope, words
+- **Editor** — neo-tree (VS Code-style preview slot: `<cr>`/`l` opens transient, `t` pins), flash, trouble, which-key, todo-comments, dropbar (winbar breadcrumb), persistence (sessions), hex view via `xxd`
+- **snacks.nvim** — picker, profiler, terminal, dashboard (auto-reopens when the last file buffer is closed), statuscolumn, notifier, indent, scroll, dim, image, bigfile, scope, words
 - **Tooling** — nvim-lint, mason-tool-installer, DAP for Rust / C-C++ / Python (formatting is opt-in via `tools/format.sh`, not on save)
-- **UI** — Cyberdream theme + lualine + smear-cursor + modicator + fidget
+- **UI** — Cyberdream theme + lualine + bufferline (buffer mode, neo-tree offset) + smear-cursor + modicator + fidget
 - **Git** — gitsigns, fugitive, lazygit.nvim, blink-cmp-git commit completions
 - **WSL2** clipboard bridge via `clip.exe`
 
@@ -129,6 +129,8 @@ Leader: `<Space>`
 | `<leader>fg` / `fr` / `fb` / `fh` | snacks.picker: grep / recent / buffers / help |
 | `<leader>ft` | TODO comments (snacks.picker) |
 | `<leader>e` / `<leader>o` | Neo-tree: toggle / reveal current file |
+| `<cr>` / `l` (in neo-tree) | Open file in **preview slot** — replaces previous preview buffer; folder expand/collapse |
+| `t` (in neo-tree) | **Pin** file as a permanent buffer (won't be replaced by next preview); editing a preview also auto-promotes it |
 | `s` / `S` (n/x/o) | Flash: jump / treesitter jump |
 | `<leader>?` | which-key: buffer-local keymaps |
 
@@ -204,12 +206,14 @@ Use `PROF=1 nvim` to profile startup, or these runtime keys:
 | `<leader>dl/dr/dp/dt/ds/du` | Last / REPL / pause / terminate / session / toggle UI |
 | `<leader>dPt` / `<leader>dPc` | Python: debug test method / class |
 
-### Terminal & Buffers (snacks.nvim)
+### Terminal & Buffers (snacks.nvim + bufferline)
 | Key | Description |
 |---|---|
 | `<leader>t` (n/t) | Toggle terminal (45% bottom split, anchored below main window — auto-skips neo-tree) |
 | `<C-x>` | Hide terminal |
-| `<leader>bd` | Smart buffer delete |
+| `<leader>bd` | Smart buffer delete (closing the last file buffer drops you back to the dashboard) |
+| `<leader>1` … `<leader>9` | Jump to buffer by bufferline position |
+| `[b` / `]b` | Previous / next buffer (bufferline order) |
 | `<leader>cn` / `<leader>un` | Notification history / dismiss all |
 | `]]` / `[[` | LSP word: next / previous reference |
 

@@ -105,6 +105,40 @@ vim.api.nvim_create_autocmd("FileType", {
     end,
 })
 
+-- When the last real file buffer is removed, drop the dashboard into the
+-- main-area window instead of leaving an empty `[No Name]` buffer.
+local function open_dashboard_if_empty(closing)
+    for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+        if
+            buf ~= closing
+            and vim.api.nvim_buf_is_valid(buf)
+            and vim.bo[buf].buflisted
+            and vim.bo[buf].buftype == ""
+            and vim.api.nvim_buf_get_name(buf) ~= ""
+        then
+            return
+        end
+    end
+    for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+        local b = vim.api.nvim_win_get_buf(win)
+        if vim.bo[b].buftype ~= "terminal" and not SIDEBAR_FT[vim.bo[b].filetype] then
+            vim.api.nvim_set_current_win(win)
+            break
+        end
+    end
+    Snacks.dashboard.open()
+end
+
+vim.api.nvim_create_autocmd("BufDelete", {
+    group = vim.api.nvim_create_augroup("SnacksDashboardOnLastClose", { clear = true }),
+    callback = function(args)
+        local closing = args.buf
+        vim.schedule(function()
+            open_dashboard_if_empty(closing)
+        end)
+    end,
+})
+
 -- 5-step gradient (sky blue → light pink) for the NEOVIM header.
 local header_gradient = { "#87CEEB", "#A5C8E1", "#C3C2D7", "#E1BCCC", "#FFB6C1" }
 local function set_header_hl()

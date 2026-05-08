@@ -69,3 +69,10 @@ map("<leader>d", '"_d', "x", "Delete (no yank)")
 
 -- paste without yank
 map("<leader>p", '"_dP', "x", "Paste over (no yank)")
+
+-- buffer navigation (bufferline order)
+for i = 1, 9 do
+    map("<leader>" .. i, ":BufferLineGoToBuffer " .. i .. "<CR>", "n", "Go to buffer " .. i)
+end
+map("[b", ":BufferLineCyclePrev<CR>", "n", "Previous buffer")
+map("]b", ":BufferLineCycleNext<CR>", "n", "Next buffer")
