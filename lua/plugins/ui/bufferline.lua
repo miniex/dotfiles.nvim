@@ -54,6 +54,7 @@ return {
             always_show_bufferline = true,
             show_buffer_close_icons = true,
             show_close_icon = false,
+            show_tab_indicators = false,
             separator_style = "thin",
             indicator = { style = "underline" },
             diagnostics = "nvim_lsp",
