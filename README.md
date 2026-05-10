@@ -13,7 +13,7 @@ Lean, fast, easy on the eyes. Native LSP (`vim.lsp.config`), Rust-backed complet
 - **Native LSP, deferred everything** — `vim.lsp.config` + `vim.lsp.enable` directly; Mason install runs on `VimEnter`. Most plugins lazy via `VeryLazy` / `cmd` / `keys` / `ft`
 - **Completion & diagnostics** — blink.cmp (Rust fuzzy), inlay hints suppressed during insert, tiny-inline-diagnostic on cursor line with `<leader>cl` to toggle native `virtual_lines`
 - **Treesitter** — nvim-treesitter `main` + textobjects, sticky context, ts-autotag (HTML/JSX), ts-context-commentstring
-- **Pickers** — fff.nvim (Rust-backed file finder, sub-10ms on huge repos) + snacks.picker for grep / buffers / help / recent
+- **Pickers** — fff.nvim (Rust-backed file finder, sub-10ms on huge repos) + snacks.picker for grep / buffers / help / recent + fzf-lua for git / lsp / lines / registers (native `fzf` binary)
 - **Editor** — neo-tree (floating popup: `<cr>`/`l` open file in a new tabpage), flash, trouble, which-key, todo-comments, dropbar (winbar breadcrumb), persistence (sessions), hex view via `xxd`
 - **snacks.nvim** — picker, profiler, terminal, dashboard (auto-reopens when the last file buffer is closed), statuscolumn, notifier, indent, scroll, dim, image, bigfile, scope, words
 - **Tooling** — nvim-lint, mason-tool-installer, DAP for Rust / C-C++ / Python (formatting is opt-in via `tools/format.sh`, not on save)
@@ -78,6 +78,7 @@ Sorted by language category, then family, then first-appeared.
 - Erlang + Elixir + mix — optional, only if `elixir = true`; required for elixirls
 - [`just`](https://github.com/casey/just) — optional, runner for Justfile recipes (Mason only ships `just-lsp`, not the CLI)
 - [lazygit](https://github.com/jesseduffield/lazygit) — optional, for `<leader>gg`
+- [`fzf`](https://github.com/junegunn/fzf) — optional, required by fzf-lua (`<leader>z*`)
 
 ### Install
 
@@ -128,10 +129,22 @@ Leader: `<Space>`
 | `<leader>fF` | fff.nvim: find files in current directory |
 | `<leader>fg` / `fr` / `fb` / `fh` | snacks.picker: grep / recent / buffers / help |
 | `<leader>ft` | TODO comments (snacks.picker) |
+| `<leader>z` / `z'` | fzf-lua: builtin menu / resume last picker |
 | `<leader>e` / `<leader>o` | Neo-tree: toggle / reveal current file |
 | `<cr>` / `l` (in neo-tree) | Open file in a new tabpage (`:tabnew`); folder expand/collapse |
 | `s` / `S` (n/x/o) | Flash: jump / treesitter jump |
 | `<leader>?` | which-key: buffer-local keymaps |
+
+### fzf-lua (`<leader>z*`)
+Native `fzf` binary; complements snacks.picker. `<C-q>` selects all → quickfix; `<C-d>` / `<C-u>` page preview.
+| Key | Description |
+|---|---|
+| `<leader>z` / `z'` | Builtin picker menu / resume last |
+| `<leader>zg` / `zc` / `zC` / `zb` | Git: status / buffer commits / project commits / branches |
+| `<leader>zs` / `zS` | LSP: document / live workspace symbols |
+| `<leader>zd` / `zD` | Diagnostics: buffer / workspace |
+| `<leader>zl` / `zk` / `zm` / `zr` | blines / keymaps / marks / registers |
+| `<leader>z:` / `z/` | Command / search history |
 
 ### Session (persistence.nvim)
 | Key | Description |

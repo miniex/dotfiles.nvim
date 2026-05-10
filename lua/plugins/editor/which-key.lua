@@ -13,6 +13,7 @@ return {
             { "<leader>q", group = "session" },
             { "<leader>x", group = "diagnostics/quickfix" },
             { "<leader>r", group = "rename" },
+            { "<leader>z", group = "fzf" },
         },
     },
     keys = {
