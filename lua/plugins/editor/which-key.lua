@@ -14,6 +14,7 @@ return {
             { "<leader>gh", group = "hunk" },
             { "<leader>gt", group = "toggle" },
             { "<leader>gv", group = "diffview" },
+            { "<leader>gx", group = "conflict" },
             { "<leader>p", group = "profiler", mode = "n" },
             { "<leader>q", group = "session" },
             { "<leader>m", group = "harpoon" },
