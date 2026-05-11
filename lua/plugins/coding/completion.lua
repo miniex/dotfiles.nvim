@@ -10,7 +10,13 @@ return {
                 version = "v2.*",
                 build = "make install_jsregexp",
                 config = function()
+                    -- friendly-snippets ships VSCode JSON; user-authored
+                    -- snippets live in ~/.config/nvim/snippets as Lua so they
+                    -- can compute dynamic content (date, filename, etc.).
                     require("luasnip.loaders.from_vscode").lazy_load()
+                    require("luasnip.loaders.from_lua").lazy_load({
+                        paths = { vim.fn.stdpath("config") .. "/snippets" },
+                    })
                 end,
             },
         },
