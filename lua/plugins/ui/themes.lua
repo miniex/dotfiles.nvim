@@ -6,6 +6,10 @@ return {
         priority = 1000,
         config = function()
             require("cyberdream").setup({
+                -- Compile highlights to ~/.cache/nvim/cyberdream_cache.json so
+                -- subsequent starts skip theme.setup(). Cyberdream auto-rebuilds
+                -- the cache when this file changes.
+                cache = true,
                 transparent = true,
                 italic_comments = false,
                 hide_fillchars = false,
