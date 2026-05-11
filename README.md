@@ -16,7 +16,7 @@ Lean, fast, easy on the eyes. Native LSP (`vim.lsp.config`), Rust-backed complet
 - **Pickers** — fff.nvim (Rust-backed file finder, sub-10ms on huge repos) + snacks.picker for grep / buffers / help / recent + fzf-lua for git / lsp / lines / registers (native `fzf` binary)
 - **Editor** — neo-tree (floating popup: `<cr>`/`l` open file in a new tabpage), flash, trouble, which-key, todo-comments, dropbar (winbar breadcrumb with rounded picker + preview), mini.surround (`gs*` prefix to coexist with flash's `s`), persistence (sessions), hex view via `xxd`
 - **snacks.nvim** — picker, profiler, terminal, dashboard (auto-reopens when the last file buffer is closed), statuscolumn, notifier, indent, scroll, dim, image, bigfile, scope, words
-- **Tooling** — nvim-lint, mason-tool-installer, DAP for Rust / C-C++ / Python / Go, neotest with Python / Go / Elixir adapters (Rust tests run via `:RustLsp testables`); formatting is opt-in via `tools/format.sh`, not on save
+- **Tooling** — nvim-lint, mason-tool-installer, DAP for Rust / C-C++ / Python / Go, neotest with Python / Go / Elixir / C-C++ adapters (Rust tests run via `:RustLsp testables`); formatting is opt-in via `tools/format.sh`, not on save
 - **UI** — Cyberdream theme + lualine (LSP symbol breadcrumb via nvim-navic in `lualine_c`) + bufferline (buffer mode, open-order sort, hides `[No Name]` and tabpage indicators) + smear-cursor (tuned to smooth-follow without a trail; the smear pulses only on terminal pane entry) + modicator + fidget
 - **Git** — gitsigns, fugitive, lazygit.nvim, diffview (multi-file diff + per-file history), blink-cmp-git commit completions
 - **WSL2** clipboard bridge via `clip.exe`
@@ -32,13 +32,13 @@ Sorted by language category, then family, then first-appeared.
 | Fish                | -                             | fish -n       | -        |
 | Assembly            | asm-lsp                       | -             | -        |
 | C/C++               | clangd                        | -             | cpptools |
-| Go                  | gopls                         | -             | delve    |
+| Go                  | gopls                         | golangci-lint | delve    |
 | Rust                | rust-analyzer                 | -             | CodeLLDB |
 | Zig                 | zls                           | -             | -        |
 | OCaml               | ocamllsp                      | -             | -        |
 | Elixir              | elixirls                      | -             | -        |
 | Python              | basedpyright + ruff           | ruff (LSP)    | debugpy  |
-| Lua                 | lua_ls                        | -             | -        |
+| Lua                 | lua_ls                        | selene        | -        |
 | CSS / HTML          | cssls / html+emmet            | -             | -        |
 | Tailwind CSS        | tailwindcss                   | -             | -        |
 | JavaScript/TS       | vtsls                         | eslint_d      | -        |
@@ -230,7 +230,7 @@ Picker uses rounded border + preview-on-cursor. Inside the picker: `q`/`<Esc>` c
 | `<leader>dPt` / `<leader>dPc` | Python: debug test method / class |
 
 ### Test (neotest)
-Adapters: Python (pytest), Go (gotestsum), Elixir (mix). Rust tests are handled by `:RustLsp testables` (rustaceanvim). Uses `<leader>n*` because `<leader>t` is the terminal toggle.
+Adapters: Python (pytest), Go (gotestsum), Elixir (mix), C/C++ (gtest). Rust tests are handled by `:RustLsp testables` (rustaceanvim). Uses `<leader>n*` because `<leader>t` is the terminal toggle.
 | Key | Description |
 |---|---|
 | `<leader>nr` / `nf` / `nA` | Run nearest / file / all (cwd) |
@@ -277,7 +277,7 @@ Uses `gs*` because flash owns `s` in normal/visual/operator-pending modes.
 - **Disable languages you don't use** — run `sh ~/.config/nvim/set-lang.sh` for an interactive picker (↑/↓, space to toggle, enter to save), or hand-edit `lua/config/langs_local.lua` (gitignored) directly. Either way it overrides the defaults in `lua/config/langs.lua` per-machine without polluting upstream.
 - **New language** — add a file under `lua/plugins/lang/` extending `nvim-lspconfig` `servers` (auto-installed via mason-lspconfig's `ensure_installed`, populated dynamically), then add the module name to `lua/config/langs.lua` so it gets imported. Linters live in `lua/plugins/lsp/lint.lua` (extend `opts.linters_by_ft`), treesitter parsers in `lua/plugins/editor/treesitter.lua`. Non-LSP tools (linters, DAP adapters) install through `WhoIsSethDaniel/mason-tool-installer.nvim` — extend its `opts.ensure_installed`. `python.lua` shows the LSP + DAP wiring.
 - **User snippets** — drop Lua snippet files in `~/.config/nvim/snippets/` (loaded via `luasnip.loaders.from_lua`). `all.lua` applies to every filetype; `<filetype>.lua` is filetype-scoped. friendly-snippets continues to load VSCode JSON in parallel. Shipped templates: `all.lua` (`date`, `datetime`), `lua.lua` (`req`, `preq`, `lf`, `mod`), `python.lua` (`main`, `dcls`, `deft`, `bp`), `rust.lua` (`der`, `tst`, `mt`, `imp`).
-- **Test adapters** — `lua/plugins/lsp/neotest.lua` registers neotest-python, neotest-golang, neotest-elixir; add new adapters to its `dependencies` and `setup({ adapters = ... })` list.
+- **Test adapters** — `lua/plugins/lsp/neotest.lua` registers neotest-python, neotest-golang, neotest-elixir, neotest-gtest; add new adapters to its `dependencies` and `setup({ adapters = ... })` list.
 - **Theme** — `lua/plugins/ui/themes.lua`. Cyberdream highlights are compiled to `~/.cache/nvim/cyberdream_cache.json` (`cache = true`); the cache rebuilds automatically when this file is saved, so colour tweaks just work.
 - **Keymaps** — `lua/config/keymaps.lua`, helper `map(lhs, rhs, mode, desc)`.
 - **Autocmds** — `lua/config/autocmds.lua` (treesitter attach, WSL2 clipboard, file reload, end-of-buffer tilde hide).

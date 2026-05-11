@@ -13,6 +13,7 @@ return {
             "nvim-neotest/neotest-python",
             "fredrikaverpil/neotest-golang",
             "jfpedroza/neotest-elixir",
+            "alfaix/neotest-gtest",
         },
         keys = {
             {
@@ -130,6 +131,7 @@ return {
                         dap_go_enabled = true,
                     }),
                     require("neotest-elixir"),
+                    require("neotest-gtest").setup({}),
                 },
                 status = { virtual_text = true },
                 output = { open_on_run = false },

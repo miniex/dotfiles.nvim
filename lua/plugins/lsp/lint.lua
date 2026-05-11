@@ -2,16 +2,20 @@ return {
     {
         "WhoIsSethDaniel/mason-tool-installer.nvim",
         opts = {
-            -- Sorted by language category.
             ensure_installed = {
                 -- Shell
                 "shellcheck",
-                -- Web
+                -- Go
+                "golangci-lint",
+                -- Lua
+                "selene",
+                -- JavaScript/TS
                 "eslint_d",
-                -- Markup
+                -- Markdown
                 "markdownlint",
-                -- Build / Infra
+                -- Nix
                 "statix",
+                -- Dockerfile
                 "hadolint",
             },
         },
@@ -20,23 +24,29 @@ return {
         "mfussenegger/nvim-lint",
         event = { "BufReadPost", "BufWritePost" },
         opts = {
-            -- Sorted by language category, then family, then first-appeared.
             linters_by_ft = {
                 -- Shell
                 sh = { "shellcheck" },
                 bash = { "shellcheck" },
+                -- Zsh
                 zsh = { "zsh" },
+                -- Fish
                 fish = { "fish" },
-                -- Web
+                -- Go
+                go = { "golangcilint" },
+                -- python lint handled by ruff LSP (see lang/python.lua)
+                -- Lua
+                lua = { "selene" },
+                -- JavaScript/TS
                 javascript = { "eslint_d" },
                 javascriptreact = { "eslint_d" },
                 typescript = { "eslint_d" },
                 typescriptreact = { "eslint_d" },
-                -- python lint handled by ruff LSP (see lang/python.lua)
-                -- Markup
+                -- Markdown
                 markdown = { "markdownlint" },
-                -- Build / Infra
+                -- Nix
                 nix = { "statix" },
+                -- Dockerfile
                 dockerfile = { "hadolint" },
             },
         },
