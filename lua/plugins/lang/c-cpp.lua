@@ -2,20 +2,14 @@ return {
     {
         "p00f/clangd_extensions.nvim",
         ft = { "c", "cpp" },
-        init = function()
-            vim.api.nvim_create_autocmd("LspAttach", {
-                group = vim.api.nvim_create_augroup("clangd-keys", { clear = true }),
-                callback = function(args)
-                    local client = vim.lsp.get_client_by_id(args.data.client_id)
-                    if client and client.name == "clangd" then
-                        vim.keymap.set("n", "<leader>ch", "<cmd>ClangdSwitchSourceHeader<cr>", {
-                            buffer = args.buf,
-                            desc = "Switch Source/Header (C/C++)",
-                        })
-                    end
-                end,
-            })
-        end,
+        keys = {
+            {
+                "<leader>ch",
+                "<cmd>ClangdSwitchSourceHeader<cr>",
+                desc = "Switch Source/Header (C/C++)",
+                ft = { "c", "cpp" },
+            },
+        },
         opts = {
             inlay_hints = {
                 inline = false,

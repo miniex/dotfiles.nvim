@@ -23,16 +23,28 @@ return {
     {
         "mrcjkb/rustaceanvim",
         ft = { "rust" },
+        keys = {
+            {
+                "<leader>cR",
+                function()
+                    vim.cmd.RustLsp("codeAction")
+                end,
+                desc = "Rust Code Action",
+                ft = "rust",
+            },
+            {
+                "<leader>cD",
+                function()
+                    vim.cmd.RustLsp("debuggables")
+                end,
+                desc = "Rust Debuggables",
+                ft = "rust",
+            },
+        },
         opts = {
             server = {
-                on_attach = function(client, bufnr)
+                on_attach = function(client, _)
                     client.server_capabilities.didChangeWatchedFilesDynamicRegistration = true
-                    vim.keymap.set("n", "<leader>cR", function()
-                        vim.cmd.RustLsp("codeAction")
-                    end, { desc = "Code Action", buffer = bufnr })
-                    vim.keymap.set("n", "<leader>cD", function()
-                        vim.cmd.RustLsp("debuggables")
-                    end, { desc = "Rust Debuggables", buffer = bufnr })
                 end,
                 default_settings = {
                     ["rust-analyzer"] = {

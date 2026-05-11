@@ -188,9 +188,15 @@ Use `PROF=1 nvim` to profile startup, or these runtime keys:
 | `ai` / `ii` | x/o | Conditional (outer / inner) |
 | `al` / `il` | x/o | Loop (outer / inner) |
 | `a/` / `i/` | x/o | Comment (outer / inner) |
+| `a=` / `i=` | x/o | Assignment (outer / inner) |
+| `am` / `im` | x/o | Call (outer / inner) |
+| `aB` / `iB` | x/o | Block (outer / inner) — capital `B` because `b` is the word-back motion |
+| `aS` | x/o | Statement (outer) |
 | `]f` / `[f` | n/x/o | Next / prev function start |
 | `]F` / `[F` | n/x/o | Next / prev function end |
 | `]c` / `[c` | n/x/o | Next / prev class start |
+| `]a` / `[a` | n/x/o | Next / prev parameter |
+| `<leader>a` / `<leader>A` | n | Swap parameter with next / prev |
 | `<leader>uc` | n | Toggle treesitter context (sticky function header) |
 | `[x` | n | Jump to context start |
 
@@ -270,7 +276,7 @@ Uses `gs*` because flash owns `s` in normal/visual/operator-pending modes.
 
 - **Disable languages you don't use** — run `sh ~/.config/nvim/set-lang.sh` for an interactive picker (↑/↓, space to toggle, enter to save), or hand-edit `lua/config/langs_local.lua` (gitignored) directly. Either way it overrides the defaults in `lua/config/langs.lua` per-machine without polluting upstream.
 - **New language** — add a file under `lua/plugins/lang/` extending `nvim-lspconfig` `servers` (auto-installed via mason-lspconfig's `ensure_installed`, populated dynamically), then add the module name to `lua/config/langs.lua` so it gets imported. Linters live in `lua/plugins/lsp/lint.lua` (extend `opts.linters_by_ft`), treesitter parsers in `lua/plugins/editor/treesitter.lua`. Non-LSP tools (linters, DAP adapters) install through `WhoIsSethDaniel/mason-tool-installer.nvim` — extend its `opts.ensure_installed`. `python.lua` shows the LSP + DAP wiring.
-- **User snippets** — drop Lua snippet files in `~/.config/nvim/snippets/` (loaded via `luasnip.loaders.from_lua`). `all.lua` applies to every filetype; `<filetype>.lua` is filetype-scoped. friendly-snippets continues to load VSCode JSON in parallel. The shipped `all.lua` exposes `date` / `datetime` as a starting template.
+- **User snippets** — drop Lua snippet files in `~/.config/nvim/snippets/` (loaded via `luasnip.loaders.from_lua`). `all.lua` applies to every filetype; `<filetype>.lua` is filetype-scoped. friendly-snippets continues to load VSCode JSON in parallel. Shipped templates: `all.lua` (`date`, `datetime`), `lua.lua` (`req`, `preq`, `lf`, `mod`), `python.lua` (`main`, `dcls`, `deft`, `bp`), `rust.lua` (`der`, `tst`, `mt`, `imp`).
 - **Test adapters** — `lua/plugins/lsp/neotest.lua` registers neotest-python, neotest-golang, neotest-elixir; add new adapters to its `dependencies` and `setup({ adapters = ... })` list.
 - **Theme** — `lua/plugins/ui/themes.lua`. Cyberdream highlights are compiled to `~/.cache/nvim/cyberdream_cache.json` (`cache = true`); the cache rebuilds automatically when this file is saved, so colour tweaks just work.
 - **Keymaps** — `lua/config/keymaps.lua`, helper `map(lhs, rhs, mode, desc)`.
