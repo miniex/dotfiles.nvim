@@ -14,11 +14,11 @@ Lean, fast, easy on the eyes. Native LSP (`vim.lsp.config`), Rust-backed complet
 - **Completion & diagnostics** — blink.cmp (Rust fuzzy), inlay hints suppressed during insert, tiny-inline-diagnostic on cursor line with `<leader>cl` to toggle native `virtual_lines`
 - **Treesitter** — nvim-treesitter `main` + textobjects, sticky context, ts-autotag (HTML/JSX), ts-context-commentstring
 - **Pickers** — fff.nvim (Rust-backed file finder, sub-10ms on huge repos) + snacks.picker for grep / buffers / help / recent + fzf-lua for git / lsp / lines / registers (native `fzf` binary)
-- **Editor** — neo-tree (floating popup: `<cr>`/`l` open file in a new tabpage), flash, trouble, which-key, todo-comments, dropbar (winbar breadcrumb), persistence (sessions), hex view via `xxd`
+- **Editor** — neo-tree (floating popup: `<cr>`/`l` open file in a new tabpage), flash, trouble, which-key, todo-comments, dropbar (winbar breadcrumb with rounded picker + preview), mini.surround (`gs*` prefix to coexist with flash's `s`), persistence (sessions), hex view via `xxd`
 - **snacks.nvim** — picker, profiler, terminal, dashboard (auto-reopens when the last file buffer is closed), statuscolumn, notifier, indent, scroll, dim, image, bigfile, scope, words
-- **Tooling** — nvim-lint, mason-tool-installer, DAP for Rust / C-C++ / Python (formatting is opt-in via `tools/format.sh`, not on save)
-- **UI** — Cyberdream theme + lualine + bufferline (buffer mode, open-order sort, hides `[No Name]` and tabpage indicators) + smear-cursor + modicator + fidget
-- **Git** — gitsigns, fugitive, lazygit.nvim, blink-cmp-git commit completions
+- **Tooling** — nvim-lint, mason-tool-installer, DAP for Rust / C-C++ / Python, neotest with Python / Go / Elixir adapters (Rust tests run via `:RustLsp testables`); formatting is opt-in via `tools/format.sh`, not on save
+- **UI** — Cyberdream theme + lualine (LSP symbol breadcrumb via nvim-navic in `lualine_c`) + bufferline (buffer mode, open-order sort, hides `[No Name]` and tabpage indicators) + smear-cursor + modicator + fidget
+- **Git** — gitsigns, fugitive, lazygit.nvim, diffview (multi-file diff + per-file history), blink-cmp-git commit completions
 - **WSL2** clipboard bridge via `clip.exe`
 
 ## Language Support
@@ -172,6 +172,7 @@ Use `PROF=1 nvim` to profile startup, or these runtime keys:
 | `<leader>cc` / `<leader>ca` | Diagnostics float / code action |
 | `<leader>ci` | Toggle inlay hints |
 | `<leader>cd` / `<leader>cl` | Toggle inline diagnostic / multi-line `virtual_lines` |
+| `<leader>cL` | Run CodeLens (auto-enabled where the server supports it: rust-analyzer, gopls, jdtls, …) |
 | `<leader>cm` | Open Mason |
 | `<leader>xx/xd/xs/xq/xl` | Trouble: diagnostics / buf only / symbols / qf / loclist |
 | `<leader>xt` / `<leader>xT` | Trouble: TODOs / TODO+FIX+FIXME |
@@ -194,6 +195,7 @@ Use `PROF=1 nvim` to profile startup, or these runtime keys:
 | `[x` | n | Jump to context start |
 
 ### Winbar Breadcrumb (dropbar)
+Picker uses rounded border + preview-on-cursor. Inside the picker: `q`/`<Esc>` close, `h` go to parent menu, `l` open the entry under the cursor.
 | Key | Description |
 |---|---|
 | `<leader>uw` | Pick segment to jump to |
@@ -204,6 +206,8 @@ Use `PROF=1 nvim` to profile startup, or these runtime keys:
 |---|---|
 | `<leader>gs/gb/gd/gl/gc/gp/gP` | Fugitive: status/blame/diff/log/commit/push/pull |
 | `<leader>gg` / `gf` / `gF` / `gL` | LazyGit: full / current file / filter file / filter all |
+| `<leader>gvo` / `gvc` / `gvr` | Diffview: open / close / refresh |
+| `<leader>gvf` / `gvF` / `gvh` | Diffview file history: current file / repo / stash |
 | `[h` / `]h` | Prev / next hunk |
 | `<leader>ghs/r/S/u/R/p/i/b/d/D` | Stage / reset / stage-buf / undo-stage / reset-buf / preview / inline-preview / blame-line / diff / diff~ |
 | `<leader>gtb` / `<leader>gtd` | Toggle line blame / show deleted |
@@ -217,6 +221,26 @@ Use `PROF=1 nvim` to profile startup, or these runtime keys:
 | `<leader>dg` / `dj` / `dk` | Go to line (no execute) / Down / Up frame |
 | `<leader>dl/dr/dp/dt/ds/du` | Last / REPL / pause / terminate / session / toggle UI |
 | `<leader>dPt` / `<leader>dPc` | Python: debug test method / class |
+
+### Test (neotest)
+Adapters: Python (pytest), Go (gotestsum), Elixir (mix). Rust tests are handled by `:RustLsp testables` (rustaceanvim). Uses `<leader>n*` because `<leader>t` is the terminal toggle.
+| Key | Description |
+|---|---|
+| `<leader>nr` / `nf` / `nA` | Run nearest / file / all (cwd) |
+| `<leader>nl` / `nd` / `nx` | Run last / debug nearest (DAP) / stop |
+| `<leader>ns` / `no` / `nO` / `nw` | Toggle summary / show output / output panel / watch file |
+| `]T` / `[T` | Next / prev failed test (capital `T` to coexist with todo-comments' `]t`/`[t`) |
+
+### Surround (mini.surround)
+Uses `gs*` because flash owns `s` in normal/visual/operator-pending modes.
+| Key | Description | Example |
+|---|---|---|
+| `gsa{motion}{char}` | Add surrounding | `gsaiw"` → wrap inner word in `"` |
+| `gsd{char}` | Delete surrounding | `gsd"` → strip `"` |
+| `gsr{old}{new}` | Replace surrounding | `gsr"'` → swap `"` for `'` |
+| `gsf{char}` / `gsF{char}` | Find right / left surrounding | |
+| `gsh{char}` | Highlight surrounding | |
+| `gsn` | Update `n_lines` (search range) | |
 
 ### Terminal & Buffers (snacks.nvim + bufferline)
 | Key | Description |
@@ -245,6 +269,8 @@ Use `PROF=1 nvim` to profile startup, or these runtime keys:
 
 - **Disable languages you don't use** — run `sh ~/.config/nvim/set-lang.sh` for an interactive picker (↑/↓, space to toggle, enter to save), or hand-edit `lua/config/langs_local.lua` (gitignored) directly. Either way it overrides the defaults in `lua/config/langs.lua` per-machine without polluting upstream.
 - **New language** — add a file under `lua/plugins/lang/` extending `nvim-lspconfig` `servers` (auto-installed via mason-lspconfig's `ensure_installed`, populated dynamically), then add the module name to `lua/config/langs.lua` so it gets imported. Linters live in `lua/plugins/lsp/lint.lua` (extend `opts.linters_by_ft`), treesitter parsers in `lua/plugins/editor/treesitter.lua`. Non-LSP tools (linters, DAP adapters) install through `WhoIsSethDaniel/mason-tool-installer.nvim` — extend its `opts.ensure_installed`. `python.lua` shows the LSP + DAP wiring.
+- **User snippets** — drop Lua snippet files in `~/.config/nvim/snippets/` (loaded via `luasnip.loaders.from_lua`). `all.lua` applies to every filetype; `<filetype>.lua` is filetype-scoped. friendly-snippets continues to load VSCode JSON in parallel. The shipped `all.lua` exposes `date` / `datetime` as a starting template.
+- **Test adapters** — `lua/plugins/lsp/neotest.lua` registers neotest-python, neotest-golang, neotest-elixir; add new adapters to its `dependencies` and `setup({ adapters = ... })` list.
 - **Theme** — `lua/plugins/ui/themes.lua`.
 - **Keymaps** — `lua/config/keymaps.lua`, helper `map(lhs, rhs, mode, desc)`.
 - **Autocmds** — `lua/config/autocmds.lua` (treesitter attach, WSL2 clipboard, file reload, end-of-buffer tilde hide).
