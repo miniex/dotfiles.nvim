@@ -15,6 +15,7 @@ return {
             { "<leader>gv", group = "diffview" },
             { "<leader>p", group = "profiler", mode = "n" },
             { "<leader>q", group = "session" },
+            { "<leader>m", group = "harpoon" },
             { "<leader>n", group = "neotest" },
             { "<leader>u", group = "toggle/ui" },
             { "<leader>x", group = "diagnostics/quickfix" },
