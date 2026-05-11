@@ -17,6 +17,18 @@ return {
                     require("luasnip.loaders.from_lua").lazy_load({
                         paths = { vim.fn.stdpath("config") .. "/snippets" },
                     })
+
+                    -- Share snippets across related filetypes. luasnip's loader
+                    -- keys by exact filetype, so tsx/jsx and bash/zsh wouldn't
+                    -- pick up snippets/typescript.lua / snippets/sh.lua without
+                    -- this. Extending preserves filetype-specific snippets if
+                    -- we ever add a tsx.lua / bash.lua later.
+                    local ls = require("luasnip")
+                    ls.filetype_extend("typescriptreact", { "typescript", "javascript" })
+                    ls.filetype_extend("javascriptreact", { "javascript" })
+                    ls.filetype_extend("typescript", { "javascript" })
+                    ls.filetype_extend("bash", { "sh" })
+                    ls.filetype_extend("zsh", { "sh" })
                 end,
             },
         },
