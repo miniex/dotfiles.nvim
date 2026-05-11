@@ -50,21 +50,38 @@ return {
                     })
                 end,
             },
+            {
+                "Weissle/persistent-breakpoints.nvim",
+                opts = {
+                    -- Auto-load saved breakpoints when a buffer is read; the
+                    -- file lives under stdpath('data') keyed by cwd, so each
+                    -- project keeps its own set.
+                    load_breakpoints_event = { "BufReadPost" },
+                    perf_record = false,
+                },
+            },
         },
         keys = {
             {
                 "<leader>dB",
                 function()
-                    require("dap").set_breakpoint(vim.fn.input("Breakpoint condition: "))
+                    require("persistent-breakpoints.api").set_conditional_breakpoint()
                 end,
                 desc = "Breakpoint Condition",
             },
             {
                 "<leader>db",
                 function()
-                    require("dap").toggle_breakpoint()
+                    require("persistent-breakpoints.api").toggle_breakpoint()
                 end,
                 desc = "Toggle Breakpoint",
+            },
+            {
+                "<leader>dX",
+                function()
+                    require("persistent-breakpoints.api").clear_all_breakpoints()
+                end,
+                desc = "Clear All Breakpoints",
             },
             {
                 "<leader>dc",
