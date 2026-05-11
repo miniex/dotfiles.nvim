@@ -1,9 +1,10 @@
 return {
     "nvim-lualine/lualine.nvim",
     event = "VeryLazy",
-    dependencies = { "nvim-tree/nvim-web-devicons" },
+    dependencies = { "nvim-tree/nvim-web-devicons", "SmiteshP/nvim-navic" },
     config = function()
         local colors = require("cyberdream.colors").default
+        local navic = require("nvim-navic")
 
         require("lualine").setup({
             options = {
@@ -40,6 +41,10 @@ return {
                     {
                         "filename",
                         symbols = { modified = "   ", readonly = "", unnamed = "" },
+                    },
+                    {
+                        navic.get_location,
+                        cond = navic.is_available,
                     },
                 },
                 lualine_x = {
