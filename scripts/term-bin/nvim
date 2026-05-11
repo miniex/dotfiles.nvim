@@ -1,0 +1,8 @@
+#!/bin/sh
+# $EDITOR for Neovim's embedded terminals. When nested ($NVIM set by parent),
+# forward to the running instance via --remote-wait instead of nesting.
+REAL_NVIM=/opt/homebrew/bin/nvim
+if [ -n "$NVIM" ]; then
+    exec "$REAL_NVIM" --server "$NVIM" --remote-wait "$@"
+fi
+exec "$REAL_NVIM" "$@"

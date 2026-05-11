@@ -274,6 +274,8 @@ Uses `gs*` because flash owns `s` in normal/visual/operator-pending modes.
 | `gsn` | Update `n_lines` (search range) | |
 
 ### Terminal & Buffers (snacks.nvim + bufferline)
+Inside the toggle terminal, `$EDITOR` / `$VISUAL` / `$GIT_EDITOR` resolve to `scripts/term-bin/nvim`, which forwards to the parent Neovim via `--server $NVIM --remote-wait` — so `git commit` and other editor-invoking tools open a split in the outer instance instead of spawning a nested Neovim.
+
 | Key | Description |
 |---|---|
 | `<leader>t` (n/t) | Toggle terminal (centered floating window, 85% × 85%) |

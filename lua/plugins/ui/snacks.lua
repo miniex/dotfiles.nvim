@@ -3,6 +3,17 @@ local SIDEBAR_FT = {
     ["neo-tree-popup"] = true,
 }
 
+-- Route $EDITOR (e.g. `git commit`) to the parent Neovim, avoiding nested editors.
+-- Must be passed at toggle() time, not via opts.terminal: Snacks computes the
+-- terminal id from un-merged opts in M.get and merged opts in M.open — env in
+-- opts produces mismatched ids and a "Terminal was not created" assert.
+local TERM_WRAPPER = vim.fn.stdpath("config") .. "/scripts/term-bin/nvim"
+local TERM_ENV = {
+    EDITOR = TERM_WRAPPER,
+    VISUAL = TERM_WRAPPER,
+    GIT_EDITOR = TERM_WRAPPER,
+}
+
 -- Dashboard's chafa ANSI output fights with snacks.dim/indent overlays when
 -- another window (e.g., neo-tree) takes focus, glitching the image. Disable
 -- those features for the dashboard buffer.
@@ -270,7 +281,7 @@ return {
         {
             "<leader>t",
             function()
-                Snacks.terminal.toggle()
+                Snacks.terminal.toggle(nil, { env = TERM_ENV })
             end,
             mode = { "n", "t" },
             desc = "Toggle Terminal",
