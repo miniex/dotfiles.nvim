@@ -271,7 +271,7 @@ Uses `gs*` because flash owns `s` in normal/visual/operator-pending modes.
 - **New language** — add a file under `lua/plugins/lang/` extending `nvim-lspconfig` `servers` (auto-installed via mason-lspconfig's `ensure_installed`, populated dynamically), then add the module name to `lua/config/langs.lua` so it gets imported. Linters live in `lua/plugins/lsp/lint.lua` (extend `opts.linters_by_ft`), treesitter parsers in `lua/plugins/editor/treesitter.lua`. Non-LSP tools (linters, DAP adapters) install through `WhoIsSethDaniel/mason-tool-installer.nvim` — extend its `opts.ensure_installed`. `python.lua` shows the LSP + DAP wiring.
 - **User snippets** — drop Lua snippet files in `~/.config/nvim/snippets/` (loaded via `luasnip.loaders.from_lua`). `all.lua` applies to every filetype; `<filetype>.lua` is filetype-scoped. friendly-snippets continues to load VSCode JSON in parallel. The shipped `all.lua` exposes `date` / `datetime` as a starting template.
 - **Test adapters** — `lua/plugins/lsp/neotest.lua` registers neotest-python, neotest-golang, neotest-elixir; add new adapters to its `dependencies` and `setup({ adapters = ... })` list.
-- **Theme** — `lua/plugins/ui/themes.lua`.
+- **Theme** — `lua/plugins/ui/themes.lua`. Cyberdream highlights are compiled to `~/.cache/nvim/cyberdream_cache.json` (`cache = true`); the cache rebuilds automatically when this file is saved, so colour tweaks just work.
 - **Keymaps** — `lua/config/keymaps.lua`, helper `map(lhs, rhs, mode, desc)`.
 - **Autocmds** — `lua/config/autocmds.lua` (treesitter attach, WSL2 clipboard, file reload, end-of-buffer tilde hide).
 - **Diagnostic styling** — `lua/plugins/lsp/init.lua` `config()` (signs, virtual_text, float border). Loaded only on first buffer (`BufReadPre`) so it doesn't cost startup time.
@@ -298,6 +298,7 @@ Full details in [CONTRIBUTING.md](CONTRIBUTING.md).
 | Profiling startup | `PROF=1 nvim`, then `<leader>pp` to toggle, `<leader>pf` to pick captured frames |
 | Vim plugin needs python3/ruby/perl/node provider | All four are disabled by default in `lua/config/globals.lua` for startup speed — remove the `loaded_*_provider` line for the one you need |
 | Treesitter errors | `:checkhealth nvim-treesitter`; `tree-sitter --version` ≥ 0.26.1 (not the npm build) |
+| Theme tweaks not showing up | `rm ~/.cache/nvim/cyberdream_cache.json` and restart — the autocmd usually invalidates it on save, but a stale cache from before the option was enabled needs a one-shot wipe |
 
 > The `master` branch of nvim-treesitter is archived and incompatible with Neovim 0.12; this config is pinned to `main`.
 
