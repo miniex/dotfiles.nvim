@@ -4,6 +4,7 @@ return {
     opts = {
         preset = "modern",
         spec = {
+            { "<leader>b", group = "buffer" },
             { "<leader>c", group = "code" },
             { "<leader>d", group = "debug" },
             { "<leader>dG", group = "go" },
