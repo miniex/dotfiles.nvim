@@ -5,6 +5,9 @@ return {
         preset = "modern",
         spec = {
             { "<leader>c", group = "code" },
+            { "<leader>d", group = "debug" },
+            { "<leader>dG", group = "go" },
+            { "<leader>dP", group = "python" },
             { "<leader>f", group = "find" },
             { "<leader>g", group = "git" },
             { "<leader>gh", group = "hunk" },
@@ -13,6 +16,7 @@ return {
             { "<leader>p", group = "profiler", mode = "n" },
             { "<leader>q", group = "session" },
             { "<leader>n", group = "neotest" },
+            { "<leader>u", group = "toggle/ui" },
             { "<leader>x", group = "diagnostics/quickfix" },
             { "<leader>r", group = "rename" },
             { "<leader>z", group = "fzf" },

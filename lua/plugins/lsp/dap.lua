@@ -46,6 +46,7 @@ return {
                         "codelldb",
                         "cpptools",
                         "debugpy",
+                        "delve",
                     })
                 end,
             },

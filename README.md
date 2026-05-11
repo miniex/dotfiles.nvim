@@ -16,7 +16,7 @@ Lean, fast, easy on the eyes. Native LSP (`vim.lsp.config`), Rust-backed complet
 - **Pickers** — fff.nvim (Rust-backed file finder, sub-10ms on huge repos) + snacks.picker for grep / buffers / help / recent + fzf-lua for git / lsp / lines / registers (native `fzf` binary)
 - **Editor** — neo-tree (floating popup: `<cr>`/`l` open file in a new tabpage), flash, trouble, which-key, todo-comments, dropbar (winbar breadcrumb with rounded picker + preview), mini.surround (`gs*` prefix to coexist with flash's `s`), persistence (sessions), hex view via `xxd`
 - **snacks.nvim** — picker, profiler, terminal, dashboard (auto-reopens when the last file buffer is closed), statuscolumn, notifier, indent, scroll, dim, image, bigfile, scope, words
-- **Tooling** — nvim-lint, mason-tool-installer, DAP for Rust / C-C++ / Python, neotest with Python / Go / Elixir adapters (Rust tests run via `:RustLsp testables`); formatting is opt-in via `tools/format.sh`, not on save
+- **Tooling** — nvim-lint, mason-tool-installer, DAP for Rust / C-C++ / Python / Go, neotest with Python / Go / Elixir adapters (Rust tests run via `:RustLsp testables`); formatting is opt-in via `tools/format.sh`, not on save
 - **UI** — Cyberdream theme + lualine (LSP symbol breadcrumb via nvim-navic in `lualine_c`) + bufferline (buffer mode, open-order sort, hides `[No Name]` and tabpage indicators) + smear-cursor (tuned to smooth-follow without a trail; the smear pulses only on terminal pane entry) + modicator + fidget
 - **Git** — gitsigns, fugitive, lazygit.nvim, diffview (multi-file diff + per-file history), blink-cmp-git commit completions
 - **WSL2** clipboard bridge via `clip.exe`
@@ -32,7 +32,7 @@ Sorted by language category, then family, then first-appeared.
 | Fish                | -                             | fish -n       | -        |
 | Assembly            | asm-lsp                       | -             | -        |
 | C/C++               | clangd                        | -             | cpptools |
-| Go                  | gopls                         | -             | -        |
+| Go                  | gopls                         | -             | delve    |
 | Rust                | rust-analyzer                 | -             | CodeLLDB |
 | Zig                 | zls                           | -             | -        |
 | OCaml               | ocamllsp                      | -             | -        |
@@ -172,7 +172,7 @@ Use `PROF=1 nvim` to profile startup, or these runtime keys:
 | `<leader>cc` / `<leader>ca` | Diagnostics float / code action |
 | `<leader>ci` | Toggle inlay hints |
 | `<leader>cd` / `<leader>cl` | Toggle inline diagnostic / multi-line `virtual_lines` |
-| `<leader>cL` | Run CodeLens (auto-enabled where the server supports it: rust-analyzer, gopls, jdtls, …) |
+| `<leader>cL` | Run CodeLens (auto-enabled where the server supports it: rust-analyzer, gopls, elixir-ls, ocamllsp, jdtls, …) |
 | `<leader>cm` | Open Mason |
 | `<leader>xx/xd/xs/xq/xl` | Trouble: diagnostics / buf only / symbols / qf / loclist |
 | `<leader>xt` / `<leader>xT` | Trouble: TODOs / TODO+FIX+FIXME |
@@ -220,6 +220,7 @@ Picker uses rounded border + preview-on-cursor. Inside the picker: `q`/`<Esc>` c
 | `<leader>di` / `dO` / `do` | Step into / over / out |
 | `<leader>dg` / `dj` / `dk` | Go to line (no execute) / Down / Up frame |
 | `<leader>dl/dr/dp/dt/ds/du` | Last / REPL / pause / terminate / session / toggle UI |
+| `<leader>dGt` / `<leader>dGl` | Go: debug nearest test / debug last test (nvim-dap-go) |
 | `<leader>dPt` / `<leader>dPc` | Python: debug test method / class |
 
 ### Test (neotest)
