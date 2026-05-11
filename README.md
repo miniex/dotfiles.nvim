@@ -14,9 +14,9 @@ Lean, fast, easy on the eyes. Native LSP (`vim.lsp.config`), Rust-backed complet
 - **Completion & diagnostics** — blink.cmp (Rust fuzzy), inlay hints suppressed during insert, tiny-inline-diagnostic on cursor line with `<leader>cl` to toggle native `virtual_lines`
 - **Treesitter** — nvim-treesitter `main` + textobjects, sticky context, ts-autotag (HTML/JSX), ts-context-commentstring
 - **Pickers** — fff.nvim (Rust-backed file finder, sub-10ms on huge repos) + snacks.picker for grep / buffers / help / recent + fzf-lua for git / lsp / lines / registers (native `fzf` binary)
-- **Editor** — neo-tree (floating popup: `<cr>`/`l` open file in a new tabpage), flash, trouble, which-key, todo-comments, dropbar (winbar breadcrumb with rounded picker + preview), mini.surround (`gs*` prefix to coexist with flash's `s`), persistence (sessions), hex view via `xxd`
+- **Editor** — neo-tree (floating popup: `<cr>`/`l` open file in a new tabpage), flash, trouble, which-key, todo-comments, dropbar (winbar breadcrumb with rounded picker + preview), mini.surround (`gs*` prefix to coexist with flash's `s`), persistence (sessions), hex view via `xxd`, aerial (symbols outline panel, LSP + treesitter backed), harpoon v2 (per-project file slots), grug-far (multi-file search/replace with live preview), nvim-bqf (quickfix preview & fzf filter), mini.bufremove (smart buffer close with modified prompt), nvim-colorizer (inline color swatches), git-conflict (merge-conflict navigation)
 - **snacks.nvim** — picker, profiler, terminal, dashboard (auto-reopens when the last file buffer is closed), statuscolumn, notifier, indent, scroll, dim, image, bigfile, scope, words
-- **Tooling** — nvim-lint, mason-tool-installer, DAP for Rust / C-C++ / Python / Go, neotest with Python / Go / Elixir / C-C++ adapters (Rust tests run via `:RustLsp testables`); formatting is opt-in via `tools/format.sh`, not on save
+- **Tooling** — nvim-lint, mason-tool-installer, DAP for Rust / C-C++ / Python / Go with `persistent-breakpoints.nvim` (per-cwd breakpoint state survives restarts), neotest with Python / Go / Elixir / C-C++ adapters (Rust tests run via `:RustLsp testables`); formatting is opt-in via `tools/format.sh`, not on save
 - **UI** — Cyberdream theme + lualine (LSP symbol breadcrumb via nvim-navic in `lualine_c`) + bufferline (buffer mode, open-order sort, hides `[No Name]` and tabpage indicators) + smear-cursor (tuned to smooth-follow without a trail; the smear pulses only on terminal pane entry) + modicator + fidget
 - **Git** — gitsigns, fugitive, lazygit.nvim, diffview (multi-file diff + per-file history), blink-cmp-git commit completions
 - **WSL2** clipboard bridge via `clip.exe`
@@ -146,6 +146,22 @@ Native `fzf` binary; complements snacks.picker. `<C-q>` selects all → quickfix
 | `<leader>zl` / `zk` / `zm` / `zr` | blines / keymaps / marks / registers |
 | `<leader>z:` / `z/` | Command / search history |
 
+### Marks (harpoon v2)
+Per-project file slots stored under `~/.local/share/nvim/harpoon/`. `<leader>m1`–`<leader>m5` are intentional gaps between buffer-jump `<leader>1`–`<leader>9` (bufferline order) and harpoon slots (manually pinned).
+| Key | Description |
+|---|---|
+| `<leader>ma` / `<leader>mm` | Add current file to harpoon list / toggle quick menu |
+| `<leader>mn` / `<leader>mp` | Jump to next / previous slot |
+| `<leader>m1` … `<leader>m5` | Jump directly to slot 1–5 |
+
+### Search & Replace (grug-far)
+Two-pane buffer with live preview. Inside the grug-far window: `<localleader>r` replace, `<localleader>s` sync edits to disk, `<localleader>q` send results to quickfix.
+| Key | Mode | Description |
+|---|---|---|
+| `<leader>S` | n | Open grug-far at project root |
+| `<leader>S` | v | Open grug-far prefilled with the visual selection |
+| `<leader>cs` | n | Open grug-far scoped to the current file |
+
 ### Session (persistence.nvim)
 | Key | Description |
 |---|---|
@@ -173,6 +189,8 @@ Use `PROF=1 nvim` to profile startup, or these runtime keys:
 | `<leader>ci` | Toggle inlay hints |
 | `<leader>cd` / `<leader>cl` | Toggle inline diagnostic / multi-line `virtual_lines` |
 | `<leader>cL` | Run CodeLens (auto-enabled where the server supports it: rust-analyzer, gopls, elixir-ls, ocamllsp, jdtls, …) |
+| `<leader>cO` / `<leader>cN` | Aerial: toggle symbols outline / toggle outline nav window |
+| `[o` / `]o` | Aerial: previous / next symbol in current buffer |
 | `<leader>cm` | Open Mason |
 | `<leader>xx/xd/xs/xq/xl` | Trouble: diagnostics / buf only / symbols / qf / loclist |
 | `<leader>xt` / `<leader>xT` | Trouble: TODOs / TODO+FIX+FIXME |
@@ -197,7 +215,10 @@ Use `PROF=1 nvim` to profile startup, or these runtime keys:
 | `]c` / `[c` | n/x/o | Next / prev class start |
 | `]a` / `[a` | n/x/o | Next / prev parameter |
 | `<leader>a` / `<leader>A` | n | Swap parameter with next / prev |
+| `gnn` | n | Incremental selection: select current treesitter node |
+| `gnm` / `gnM` | x | Expand to parent node / shrink back through the expansion stack |
 | `<leader>uc` | n | Toggle treesitter context (sticky function header) |
+| `<leader>uC` | n | Toggle nvim-colorizer (inline color swatches) |
 | `[x` | n | Jump to context start |
 
 ### Winbar Breadcrumb (dropbar)
@@ -217,11 +238,14 @@ Picker uses rounded border + preview-on-cursor. Inside the picker: `q`/`<Esc>` c
 | `[h` / `]h` | Prev / next hunk |
 | `<leader>ghs/r/S/u/R/p/i/b/d/D` | Stage / reset / stage-buf / undo-stage / reset-buf / preview / inline-preview / blame-line / diff / diff~ |
 | `<leader>gtb` / `<leader>gtd` | Toggle line blame / show deleted |
+| `<leader>gxq` | git-conflict: send all conflicts to quickfix |
+| `[X` / `]X` | Previous / next merge conflict (git-conflict.nvim) |
+| `co` / `ct` / `cb` / `c0` | Inside a conflict block: choose ours / theirs / both / none |
 
 ### Debugger (DAP)
 | Key | Description |
 |---|---|
-| `<leader>db` / `dB` | Toggle / conditional breakpoint |
+| `<leader>db` / `dB` / `dX` | Toggle / conditional / clear-all breakpoint (persisted per-cwd via persistent-breakpoints.nvim) |
 | `<leader>dc` / `dC` | Continue / run-to-cursor |
 | `<leader>di` / `dO` / `do` | Step into / over / out |
 | `<leader>dg` / `dj` / `dk` | Go to line (no execute) / Down / Up frame |
@@ -255,6 +279,7 @@ Uses `gs*` because flash owns `s` in normal/visual/operator-pending modes.
 | `<leader>t` (n/t) | Toggle terminal (centered floating window, 85% × 85%) |
 | `<C-x>` | Hide terminal |
 | `<leader>w` | Smart buffer delete (closing the last file buffer drops you back to the dashboard) |
+| `<leader>bd` / `<leader>bD` | mini.bufremove: delete buffer preserving layout (prompts on modified) / force-delete |
 | `<leader>1` … `<leader>9` | Jump to buffer by bufferline position |
 | `[b` / `]b` | Previous / next buffer (bufferline order — open order; reopened buffers append to the end) |
 | `<leader>cn` / `<leader>un` | Notification history / dismiss all |
@@ -276,7 +301,7 @@ Uses `gs*` because flash owns `s` in normal/visual/operator-pending modes.
 
 - **Disable languages you don't use** — run `sh ~/.config/nvim/set-lang.sh` for an interactive picker (↑/↓, space to toggle, enter to save), or hand-edit `lua/config/langs_local.lua` (gitignored) directly. Either way it overrides the defaults in `lua/config/langs.lua` per-machine without polluting upstream.
 - **New language** — add a file under `lua/plugins/lang/` extending `nvim-lspconfig` `servers` (auto-installed via mason-lspconfig's `ensure_installed`, populated dynamically), then add the module name to `lua/config/langs.lua` so it gets imported. Linters live in `lua/plugins/lsp/lint.lua` (extend `opts.linters_by_ft`), treesitter parsers in `lua/plugins/editor/treesitter.lua`. Non-LSP tools (linters, DAP adapters) install through `WhoIsSethDaniel/mason-tool-installer.nvim` — extend its `opts.ensure_installed`. `python.lua` shows the LSP + DAP wiring.
-- **User snippets** — drop Lua snippet files in `~/.config/nvim/snippets/` (loaded via `luasnip.loaders.from_lua`). `all.lua` applies to every filetype; `<filetype>.lua` is filetype-scoped. friendly-snippets continues to load VSCode JSON in parallel. Shipped templates: `all.lua` (`date`, `datetime`), `lua.lua` (`req`, `preq`, `lf`, `mod`), `python.lua` (`main`, `dcls`, `deft`, `bp`), `rust.lua` (`der`, `tst`, `mt`, `imp`).
+- **User snippets** — drop Lua snippet files in `~/.config/nvim/snippets/` (loaded via `luasnip.loaders.from_lua`). `all.lua` applies to every filetype; `<filetype>.lua` is filetype-scoped. friendly-snippets continues to load VSCode JSON in parallel. Shipped templates: `all.lua` (`date`, `datetime`), `lua.lua` (`req`, `preq`, `lf`, `mod`), `python.lua` (`main`, `dcls`, `deft`, `bp`), `rust.lua` (`der`, `tst`, `mt`, `imp`), `typescript.lua` (`imp`, `impd`, `ecf`, `intf`, `tya`, `afn`, `desc`, `cl`), `javascript.lua` (`imp`, `impd`, `req`, `ecf`, `afn`, `desc`, `cl`), `go.lua` (`main`, `iferr`, `iferrf`, `fn`, `meth`, `st`, `intf`, `tst`, `tstt`), `sh.lua` (`sh`, `fn`, `if`, `for`, `case`, `die`), `c.lua` (`inc`, `incl`, `guard`, `main`, `fn`, `ts`, `for`), `cpp.lua` (`inc`, `incl`, `main`, `cls`, `ns`, `for`, `mu`, `ms`), `markdown.lua` (`code`, `link`, `img`, `tbl`, `fm`, `task`, `det`), `yaml.lua` (`gha`, `step`, `svc`, `anc`). `tsx`/`jsx` inherit from `typescript`/`javascript`; `bash`/`zsh` inherit from `sh`.
 - **Test adapters** — `lua/plugins/lsp/neotest.lua` registers neotest-python, neotest-golang, neotest-elixir, neotest-gtest; add new adapters to its `dependencies` and `setup({ adapters = ... })` list.
 - **Theme** — `lua/plugins/ui/themes.lua`. Cyberdream highlights are compiled to `~/.cache/nvim/cyberdream_cache.json` (`cache = true`); the cache rebuilds automatically when this file is saved, so colour tweaks just work.
 - **Keymaps** — `lua/config/keymaps.lua`, helper `map(lhs, rhs, mode, desc)`.
