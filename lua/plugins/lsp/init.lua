@@ -88,15 +88,24 @@ return {
                         local enabled = vim.lsp.inlay_hint.is_enabled({ bufnr = bufnr })
                         vim.lsp.inlay_hint.enable(not enabled, { bufnr = bufnr })
                     end, "Toggle Inlay Hints")
+                    map("n", "<leader>cL", vim.lsp.codelens.run, "Run CodeLens")
                     map("n", "<leader>rn", vim.lsp.buf.rename, "Rename")
                     map("i", "<C-k>", function()
                         vim.lsp.buf.signature_help({ border = "rounded" })
                     end, "Signature Help")
 
-                    if opts.inlay_hints.enabled then
-                        local client = vim.lsp.get_client_by_id(args.data.client_id)
-                        if client and client:supports_method("textDocument/inlayHint") then
+                    local client = vim.lsp.get_client_by_id(args.data.client_id)
+                    if client then
+                        if opts.inlay_hints.enabled and client:supports_method("textDocument/inlayHint") then
                             vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+                        end
+
+                        -- CodeLens (test/run/debug actions for rust-analyzer,
+                        -- gopls, jdtls, etc.). enable() registers nvim's
+                        -- internal autocmds that keep the lenses fresh, so
+                        -- no manual refresh loop is needed here.
+                        if client:supports_method("textDocument/codeLens") then
+                            vim.lsp.codelens.enable(true, { bufnr = bufnr })
                         end
                     end
                 end,
