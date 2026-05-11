@@ -121,6 +121,7 @@ return {
         winopts = {
             height = 0.85,
             width = 0.85,
+            border = "rounded",
             preview = {
                 default = "bat",
                 layout = "flex",

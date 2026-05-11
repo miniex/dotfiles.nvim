@@ -1,96 +1,7 @@
-local restore_win = nil
-
-local function any_term_visible()
-    for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
-        local buf = vim.api.nvim_win_get_buf(win)
-        if vim.bo[buf].buftype == "terminal" then
-            return true
-        end
-    end
-    return false
-end
-
 local SIDEBAR_FT = {
     ["neo-tree"] = true,
     ["neo-tree-popup"] = true,
 }
-
-local function is_main_area(win)
-    local buf = vim.api.nvim_win_get_buf(win)
-    if vim.bo[buf].buftype == "terminal" then
-        return false
-    end
-    return not SIDEBAR_FT[vim.bo[buf].filetype]
-end
-
-local function toggle_terminal()
-    if not is_main_area(0) then
-        local cur = vim.api.nvim_get_current_win()
-        for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
-            if win ~= cur and is_main_area(win) then
-                if not any_term_visible() then
-                    restore_win = cur
-                end
-                vim.api.nvim_set_current_win(win)
-                break
-            end
-        end
-    end
-    -- Snacks caches `opts.win` at terminal creation, so a terminal first opened
-    -- from neo-tree stays anchored there forever. Re-point every snacks
-    -- terminal at the (now-focused) code window before each toggle.
-    if Snacks.terminal.list then
-        local target = vim.api.nvim_get_current_win()
-        for _, t in ipairs(Snacks.terminal.list()) do
-            if t.opts and t.opts.win then
-                t.opts.win = target
-            end
-        end
-    end
-    Snacks.terminal.toggle()
-end
-
-local restore_group = vim.api.nvim_create_augroup("SnacksTerminalRestore", { clear = true })
-
-local function do_restore()
-    if not restore_win then
-        return
-    end
-    local target = restore_win
-    restore_win = nil
-    vim.schedule(function()
-        if vim.api.nvim_win_is_valid(target) then
-            vim.api.nvim_set_current_win(target)
-        end
-    end)
-end
-
-vim.api.nvim_create_autocmd("TermClose", {
-    group = restore_group,
-    callback = do_restore,
-})
-
-vim.api.nvim_create_autocmd("WinClosed", {
-    group = restore_group,
-    callback = function(args)
-        if not restore_win then
-            return
-        end
-        local win = tonumber(args.match)
-        if not win then
-            return
-        end
-        local ok, buf = pcall(vim.api.nvim_win_get_buf, win)
-        if not ok then
-            return
-        end
-        local bt_ok, bt = pcall(vim.api.nvim_get_option_value, "buftype", { buf = buf })
-        if not bt_ok or bt ~= "terminal" then
-            return
-        end
-        do_restore()
-    end,
-})
 
 -- Dashboard's chafa ANSI output fights with snacks.dim/indent overlays when
 -- another window (e.g., neo-tree) takes focus, glitching the image. Disable
@@ -287,10 +198,13 @@ return {
             ui_select = true,
             win = {
                 input = {
+                    border = "rounded",
                     keys = {
                         ["<Esc>"] = { "close", mode = { "n", "i" } },
                     },
                 },
+                list = { border = "rounded" },
+                preview = { border = "rounded" },
             },
         },
         profiler = {
@@ -305,28 +219,13 @@ return {
         terminal = {
             enabled = true,
             win = {
-                relative = "win",
-                position = "bottom",
-                height = 0.3,
-                wo = { winbar = "" },
+                position = "float",
+                width = 0.85,
+                height = 0.85,
+                border = "rounded",
+                wo = { winbar = "", winblend = 0 },
                 keys = {
                     term_close = { "<C-x>", "hide", mode = { "n", "t" }, desc = "Hide Terminal" },
-                    term_grow = {
-                        "<C-S-Up>",
-                        function()
-                            vim.cmd("resize +3")
-                        end,
-                        mode = { "n", "t" },
-                        desc = "Grow Terminal",
-                    },
-                    term_shrink = {
-                        "<C-S-Down>",
-                        function()
-                            vim.cmd("resize -3")
-                        end,
-                        mode = { "n", "t" },
-                        desc = "Shrink Terminal",
-                    },
                 },
             },
         },
@@ -370,7 +269,9 @@ return {
         },
         {
             "<leader>t",
-            toggle_terminal,
+            function()
+                Snacks.terminal.toggle()
+            end,
             mode = { "n", "t" },
             desc = "Toggle Terminal",
         },
