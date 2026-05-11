@@ -48,6 +48,7 @@ return {
                 end
                 return true
             end,
+            padding = { left = 1, right = 1 },
         },
         icons = {
             ui = {
@@ -55,6 +56,54 @@ return {
                     separator = "  ",
                     extends = "…",
                 },
+            },
+        },
+        menu = {
+            -- Match the rounded borders used by completion / signature / hover
+            -- so the picker visually belongs to the same UI family.
+            win_configs = {
+                border = "rounded",
+                col = function(menu)
+                    return menu.prev_menu and menu.prev_menu._win_configs.width + 1 or 0
+                end,
+            },
+            preview = true,
+            quick_navigation = true,
+            keymaps = {
+                ["q"] = function()
+                    local menu = require("dropbar.api").get_current_dropbar_menu()
+                    if menu then
+                        menu:close()
+                    end
+                end,
+                ["<Esc>"] = function()
+                    local menu = require("dropbar.api").get_current_dropbar_menu()
+                    if menu then
+                        menu:close()
+                    end
+                end,
+                ["h"] = "<C-w>q",
+                ["l"] = function()
+                    local menu = require("dropbar.api").get_current_dropbar_menu()
+                    if not menu then
+                        return
+                    end
+                    local row = vim.api.nvim_win_get_cursor(menu.win)[1]
+                    local component = menu.entries[row]:first_clickable()
+                    if component then
+                        menu:click_on(component, nil, 1, "l")
+                    end
+                end,
+            },
+        },
+        sources = {
+            path = {
+                relative_to = function(_, win)
+                    if not vim.api.nvim_win_is_valid(win) then
+                        return vim.fn.getcwd()
+                    end
+                    return vim.fn.getcwd(vim.api.nvim_win_get_number(win))
+                end,
             },
         },
     },
