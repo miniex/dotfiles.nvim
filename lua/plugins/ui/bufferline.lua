@@ -58,6 +58,8 @@ return {
             separator_style = "thin",
             indicator = { style = "underline" },
             diagnostics = "nvim_lsp",
+            modified_icon = "✿",
+            buffer_close_icon = "✗",
         },
     },
 }

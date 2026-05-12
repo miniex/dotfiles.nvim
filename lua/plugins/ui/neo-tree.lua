@@ -38,20 +38,22 @@ return {
                 highlight = "NeoTreeFileIcon",
             },
             modified = {
-                symbol = "●",
+                symbol = "✿",
                 highlight = "NeoTreeModified",
             },
+            -- Mirror fish-theme-damin's git glyphs (Dingbats only, no nerd-font
+            -- dependency): ✓ staged, ✗ modified/deleted, ? untracked, ⇣ unstaged.
             git_status = {
                 symbols = {
-                    added = "✚",
-                    modified = "",
-                    deleted = "✖",
-                    renamed = "󰁕",
-                    untracked = "",
-                    ignored = "",
-                    unstaged = "󰄱",
-                    staged = "",
-                    conflict = "",
+                    added = "✓",
+                    modified = "✗",
+                    deleted = "✗",
+                    renamed = "→",
+                    untracked = "?",
+                    ignored = "·",
+                    unstaged = "⇣",
+                    staged = "✓",
+                    conflict = "✦",
                 },
             },
         },

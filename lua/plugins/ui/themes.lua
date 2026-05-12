@@ -1,48 +1,66 @@
+-- Two-color identity, matching fish-theme-damin:
+--   #98ABCC cool blue  → branch / cwd / mode-normal / strings & types accent
+--   #E890B0 warm pink  → modified / heart bullet / mode-insert / WinSeparator
+local damin_blue = "#98ABCC"
+local damin_pink = "#E890B0"
+
 return {
     {
-        "scottmckendry/cyberdream.nvim",
-        name = "cyberdream",
+        "catppuccin/nvim",
+        name = "catppuccin",
         lazy = false,
         priority = 1000,
         config = function()
-            require("cyberdream").setup({
-                -- Compile highlights to ~/.cache/nvim/cyberdream_cache.json so
-                -- subsequent starts skip theme.setup(). Cyberdream auto-rebuilds
-                -- the cache when this file changes.
-                cache = true,
-                transparent = true,
-                italic_comments = false,
-                hide_fillchars = false,
-                theme = {
-                    colors = {
-                        bg = "#111213",
-                        bgAlt = "#1a1c1e",
-                        bgHighlight = "#32363c",
-                        fg = "#dddddd",
-
-                        grey = "#8c8c8c",
-                        blue = "#82a7e3",
-                        green = "#84e082",
-                        cyan = "#82e3e3",
-                        red = "#e38482",
-                        yellow = "#e3e382",
-                        magenta = "#e382e3",
-                        pink = "#ffb6c1",
-                        orange = "#ffcc99",
-                        purple = "#b784e3",
+            require("catppuccin").setup({
+                flavour = "mocha",
+                transparent_background = true,
+                term_colors = true,
+                no_italic = false,
+                color_overrides = {
+                    mocha = {
+                        -- Collapse the cool-blue family onto the single damin blue.
+                        blue = damin_blue,
+                        sapphire = damin_blue,
+                        sky = damin_blue,
+                        teal = damin_blue,
+                        -- Collapse the warm-pink family onto the single damin pink.
+                        pink = damin_pink,
+                        flamingo = damin_pink,
+                        mauve = damin_pink,
+                        rosewater = damin_pink,
                     },
+                },
+                custom_highlights = function(_)
+                    return {
+                        WinSeparator = { fg = damin_pink, bg = "NONE" },
+                        VertSplit = { fg = damin_pink, bg = "NONE" },
+                        FloatBorder = { fg = damin_pink, bg = "NONE" },
+                    }
+                end,
+                integrations = {
+                    aerial = true,
+                    bufferline = true,
+                    cmp = true,
+                    fidget = true,
+                    flash = true,
+                    gitsigns = true,
+                    grug_far = true,
+                    harpoon = true,
+                    indent_blankline = { enabled = true },
+                    mason = true,
+                    native_lsp = { enabled = true },
+                    navic = { enabled = true, custom_bg = "NONE" },
+                    neotree = true,
+                    notify = true,
+                    snacks = { enabled = true },
+                    telescope = { enabled = false },
+                    treesitter = true,
+                    treesitter_context = true,
+                    which_key = true,
                 },
             })
 
-            vim.cmd([[colorscheme cyberdream]])
-
-            local function set_separator()
-                vim.api.nvim_set_hl(0, "WinSeparator", { fg = "#ffb6c1", bg = "NONE" })
-            end
-            set_separator()
-            vim.api.nvim_create_autocmd("ColorScheme", {
-                callback = set_separator,
-            })
+            vim.cmd([[colorscheme catppuccin]])
         end,
     },
 }

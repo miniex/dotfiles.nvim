@@ -61,8 +61,9 @@ vim.api.nvim_create_autocmd("BufDelete", {
     end,
 })
 
--- 5-step gradient (sky blue → light pink) for the NEOVIM header.
-local header_gradient = { "#87CEEB", "#A5C8E1", "#C3C2D7", "#E1BCCC", "#FFB6C1" }
+-- 5-step gradient between the two damin anchor colors (#98ABCC → #E890B0),
+-- mirroring fish-theme-damin's tone-on-tone identity for the NEOVIM header.
+local header_gradient = { "#98ABCC", "#ACA4C5", "#C09DBE", "#D496B7", "#E890B0" }
 local function set_header_hl()
     for i, color in ipairs(header_gradient) do
         vim.api.nvim_set_hl(0, "DashHeader" .. i, { fg = color, bold = true })
