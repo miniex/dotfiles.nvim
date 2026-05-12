@@ -2,7 +2,7 @@
 
 Lean, fast, easy on the eyes. Native LSP (`vim.lsp.config`), Rust-backed completion (blink.cmp), aggressive lazy-loading. Lazy.nvim manages plugins, Mason handles the LSP/DAP toolchain.
 
-> **Targets Linux and macOS, in [Kitty](https://sw.kovidgoyal.net/kitty/) terminal.** WSL2 is supported (clipboard bridges to Windows via `clip.exe`). Other terminals work for everything except inline image / GIF / video previews and the Material Design Icons font fallback, which both rely on Kitty.
+> **Targets Linux and macOS, in [Kitty](https://sw.kovidgoyal.net/kitty/) terminal.** WSL2 is supported (clipboard bridges to Windows via `clip.exe`). Other terminals work for everything except inline image / GIF / video previews (which rely on Kitty + ImageMagick) and the Material Design Icons font fallback (which relies on Kitty).
 >
 > Pairs well with the companion Kitty config at [`miniex/dotfiles.kitty`](https://github.com/miniex/dotfiles.kitty) — drop it into `~/.config/kitty` for the matching font fallback, theme, and keymaps this setup is tuned against.
 
@@ -79,6 +79,7 @@ Sorted by language category, then family, then first-appeared.
 - [`just`](https://github.com/casey/just) — optional, runner for Justfile recipes (Mason only ships `just-lsp`, not the CLI)
 - [lazygit](https://github.com/jesseduffield/lazygit) — optional, for `<leader>gg`
 - [`fzf`](https://github.com/junegunn/fzf) — optional, required by fzf-lua (`<leader>z*`)
+- [ImageMagick](https://imagemagick.org/) (`magick` CLI) — optional, required by fff.nvim and markdown inline previews to render non-PNG images (GIF / JPEG / WebP …); without it, only PNG renders. Animated GIFs show first frame only — the Kitty graphics protocol doesn't animate
 
 ### Install
 
