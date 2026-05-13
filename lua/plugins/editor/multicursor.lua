@@ -133,12 +133,19 @@ return {
         local mc = require("multicursor-nvim")
         mc.setup()
 
-        -- Esc: 1st clears cursors, 2nd does nohlsearch.
+        -- Esc: 1st clears cursors; otherwise exit visual / nohlsearch in normal.
         vim.keymap.set({ "n", "x" }, "<esc>", function()
             if not mc.cursorsEnabled() then
                 mc.enableCursors()
-            elseif mc.hasCursors() then
+                return
+            end
+            if mc.hasCursors() then
                 mc.clearCursors()
+                return
+            end
+            local m = vim.fn.mode()
+            if m:match("^[vV\22sS\19]") then
+                vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-\\><C-N>", true, false, true), "n", false)
             else
                 vim.cmd("nohlsearch")
             end
