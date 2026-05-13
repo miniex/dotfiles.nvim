@@ -183,18 +183,19 @@ return {
                     )
                 end
 
-                -- ❥ footer: uptime · plugins loaded / total.
+                -- ❥ footer: uptime · plugins loaded / total. snacks's text
+                -- field only accepts static segment tables (or plain strings),
+                -- so stats are evaluated here per render and the segments are
+                -- emitted statically.
+                local stats = require("lazy").stats()
+                local ms = math.floor(stats.startuptime + 0.5)
                 table.insert(result, {
-                    text = function()
-                        local stats = require("lazy").stats()
-                        local ms = math.floor(stats.startuptime + 0.5)
-                        return {
-                            { "❥ ", hl = "DashHeader5" },
-                            { ("%d ms"):format(ms), hl = "Comment" },
-                            { "  ·  ", hl = "DashHeader3" },
-                            { ("✿ %d/%d plugins"):format(stats.loaded, stats.count), hl = "Comment" },
-                        }
-                    end,
+                    text = {
+                        { "❥ ", hl = "DashHeader5" },
+                        { ("%d ms"):format(ms), hl = "Comment" },
+                        { "  ·  ", hl = "DashHeader3" },
+                        { ("✿ %d/%d plugins"):format(stats.loaded, stats.count), hl = "Comment" },
+                    },
                     align = "center",
                     padding = 1,
                 })
