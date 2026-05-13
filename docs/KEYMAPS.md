@@ -54,7 +54,7 @@ Per-project file slots under `~/.local/share/nvim/harpoon/`.
 
 ## Multi-Cursors (multicursor.nvim)
 
-`<Esc>` clears the cursor set; second press does `nohlsearch`.
+`<Esc>` priority: clear cursor set → exit visual (if any) → `nohlsearch`. Visual mode `<Esc>` works normally when no multi-cursors are active.
 
 | Key                         | Mode | Description                              |
 | --------------------------- | ---- | ---------------------------------------- |

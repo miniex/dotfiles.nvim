@@ -183,7 +183,21 @@ return {
                     )
                 end
 
-                table.insert(result, { section = "startup" })
+                -- ❥ footer: uptime · plugins loaded / total.
+                table.insert(result, {
+                    text = function()
+                        local stats = require("lazy").stats()
+                        local ms = math.floor(stats.startuptime + 0.5)
+                        return {
+                            { "❥ ", hl = "DashHeader5" },
+                            { ("%d ms"):format(ms), hl = "Comment" },
+                            { "  ·  ", hl = "DashHeader3" },
+                            { ("✿ %d/%d plugins"):format(stats.loaded, stats.count), hl = "Comment" },
+                        }
+                    end,
+                    align = "center",
+                    padding = 1,
+                })
                 return result
             end,
         },

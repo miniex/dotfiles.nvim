@@ -19,7 +19,7 @@ Lean, fast, easy on the eyes. Native LSP via `lsp/<server>.lua` discovery, Rust-
 - **snacks.nvim** — picker, profiler, terminal, dashboard, statuscolumn, notifier, indent, scroll, dim, image, bigfile
 - **Markdown** — render-markdown.nvim inline rendering of headings / lists / tables / code
 - **Tooling** — nvim-lint, mason-tool-installer, DAP (Rust/C-C++/Python/Go) with persistent breakpoints, neotest (Python/Go/Elixir/C++)
-- **UI** — Catppuccin Mocha retoned to a 2-color damin palette (`#98ABCC` / `#E890B0`) mirroring [`fish-theme-damin`](https://github.com/miniex/fish-theme-damin). Custom text-on-transparent lualine (`✿` glyph = mode), incline (per-window filename), edgy (sidebar layout), bufferline, smear-cursor, modicator, fidget
+- **UI** — Catppuccin Mocha retoned to a 2-color damin palette (`#98ABCC` / `#E890B0`) mirroring [`fish-theme-damin`](https://github.com/miniex/fish-theme-damin) + [`dotfiles.kitty`](https://github.com/miniex/dotfiles.kitty) + [`dotfiles.tmux`](https://github.com/miniex/dotfiles.tmux). lualine: `✧ … ⋆` sparkle bookends, `✿` mode glyph (swaps to `✎` in visual / operator-pending, briefly `✦` on mode change). bufferline: pink → mid → blue 3-stop gradient, `♡` on harpoon-pinned. incline: `⌬` when window is zoomed (alone in tabpage). modicator: `✿` sign on the current line in mode color. LSP hover / signature / diagnostic floats use a flower-cornered border (`✿─✿│✿─✿│`). flash labels in damin pink. Plus edgy (sidebar layout), smear-cursor, fidget
 - **Git** — gitsigns, fugitive, lazygit, diffview, **gitgraph.nvim** (in-buffer branch graph)
 - **WSL2** clipboard bridge via `clip.exe`
 

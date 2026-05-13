@@ -43,6 +43,43 @@ return {
             },
         }
 
+        -- Mode → glyph map. ✎ for visual/operator (echoes tmux copy-mode).
+        local mode_glyph = {
+            n = "✿",
+            i = "✿",
+            v = "✎",
+            V = "✎",
+            ["\22"] = "✎", -- visual-block
+            s = "✎",
+            S = "✎",
+            ["\19"] = "✎", -- select-block
+            no = "✎", -- operator-pending
+            R = "✿",
+            c = "✿",
+            t = "✿",
+        }
+
+        -- Sparkle pulse on ModeChanged: glyph briefly swaps to ✦.
+        local sparkle = { active = false }
+        vim.api.nvim_create_autocmd("ModeChanged", {
+            group = vim.api.nvim_create_augroup("LualineSparklePulse", { clear = true }),
+            callback = function()
+                sparkle.active = true
+                vim.defer_fn(function()
+                    sparkle.active = false
+                    pcall(vim.cmd.redrawstatus)
+                end, 180)
+                pcall(vim.cmd.redrawstatus)
+            end,
+        })
+
+        local function current_glyph()
+            if sparkle.active then
+                return "✦"
+            end
+            return mode_glyph[vim.fn.mode()] or "✿"
+        end
+
         require("lualine").setup({
             options = {
                 theme = damin_theme,
@@ -54,11 +91,19 @@ return {
             },
             sections = {
                 lualine_a = {
+                    -- ✧ sparkle bookend (tmux statusline echo).
+                    {
+                        function()
+                            return "✧"
+                        end,
+                        padding = { left = 1, right = 0 },
+                        color = { fg = damin_blue },
+                    },
                     {
                         "mode",
                         icons_enabled = false,
                         fmt = function(str)
-                            return "✿ " .. str:lower()
+                            return current_glyph() .. " " .. str:lower()
                         end,
                     },
                 },
@@ -113,6 +158,14 @@ return {
                         function()
                             return "❥ " .. os.date("%H:%M")
                         end,
+                        color = { fg = damin_pink },
+                    },
+                    -- ⋆ sparkle bookend (right).
+                    {
+                        function()
+                            return "⋆"
+                        end,
+                        padding = { left = 0, right = 1 },
                         color = { fg = damin_pink },
                     },
                 },

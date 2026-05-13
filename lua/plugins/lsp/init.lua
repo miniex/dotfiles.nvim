@@ -52,6 +52,14 @@ return {
         config = function(_, opts)
             vim.lsp.config("*", { root_markers = { ".git" } })
 
+            -- ◆ corner-flowered rounded border (damin echo).
+            local flower_border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" }
+            flower_border[1] = "✿"
+            flower_border[3] = "✿"
+            flower_border[5] = "✿"
+            flower_border[7] = "✿"
+            vim.g.flower_border = flower_border
+
             local diagnostic = vim.diagnostic
             diagnostic.config({
                 virtual_text = false,
@@ -66,7 +74,7 @@ return {
                 update_in_insert = false,
                 underline = true,
                 severity_sort = true,
-                float = { border = "rounded", source = "always", header = "", prefix = "" },
+                float = { border = flower_border, source = "always", header = "", prefix = "" },
             })
 
             local group = vim.api.nvim_create_augroup("lsp-attach-keys", { clear = true })
@@ -79,7 +87,7 @@ return {
                     end
 
                     map("n", "K", function()
-                        vim.lsp.buf.hover({ border = "rounded" })
+                        vim.lsp.buf.hover({ border = vim.g.flower_border })
                     end, "Hover")
                     map("n", "gd", vim.lsp.buf.definition, "Goto Definition")
                     map("n", "gr", vim.lsp.buf.references, "References")
@@ -93,7 +101,7 @@ return {
                     map("n", "<leader>cL", vim.lsp.codelens.run, "Run CodeLens")
                     map("n", "<leader>rn", vim.lsp.buf.rename, "Rename")
                     map("i", "<C-k>", function()
-                        vim.lsp.buf.signature_help({ border = "rounded" })
+                        vim.lsp.buf.signature_help({ border = vim.g.flower_border })
                     end, "Signature Help")
 
                     local client = vim.lsp.get_client_by_id(args.data.client_id)

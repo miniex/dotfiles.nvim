@@ -52,10 +52,13 @@ return {
                 local ft_icon, ft_color = require("nvim-web-devicons").get_icon_color(filename)
                 local modified = vim.bo[props.buf].modified
                 local readonly = vim.bo[props.buf].readonly
+                -- ⌬ = "zoom": this window owns its tabpage alone.
+                local zoomed = #vim.api.nvim_tabpage_list_wins(0) == 1
 
                 local accent = props.focused and damin_pink or p.overlay1
 
                 return {
+                    zoomed and { "⌬ ", guifg = damin_pink } or "",
                     ft_icon and { ft_icon, " ", guifg = ft_color } or "",
                     {
                         filename,
