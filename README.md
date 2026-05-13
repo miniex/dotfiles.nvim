@@ -312,6 +312,13 @@ Inside the toggle terminal, `$EDITOR` / `$VISUAL` / `$GIT_EDITOR` resolve to `sc
 - **Diagnostic styling** — `lua/plugins/lsp/init.lua` `config()` (signs, virtual_text, float border). Loaded only on first buffer (`BufReadPre`) so it doesn't cost startup time.
 - **Contributor tools** — `tools/format.sh` (stylua + shfmt) and `tools/lint.sh` (stylua check, lua-language-server diagnostics, shfmt diff, shellcheck). See [CONTRIBUTING.md](CONTRIBUTING.md).
 
+## Companion repos
+
+- [btop-theme-damin](https://github.com/miniex/btop-theme-damin) — btop theme
+- [fish-theme-damin](https://github.com/miniex/fish-theme-damin) — fish prompt
+- [dotfiles.tmux](https://github.com/miniex/dotfiles.tmux) — tmux config
+- [dotfiles.kitty](https://github.com/miniex/dotfiles.kitty) — kitty terminal config
+
 ## Contributing
 
 PRs welcome. Before opening one:
