@@ -2,10 +2,7 @@ return {
     "sphamba/smear-cursor.nvim",
     event = "VeryLazy",
     opts = {
-        -- "Faster" spring dynamics + "Smooth caret" no-trail look.
-        -- Matching stiffness / trailing_stiffness keeps the head and tail
-        -- moving together (no smear stretch); matrix_pixel_threshold drops
-        -- the sub-pixel residue that would otherwise leak through.
+        -- Fast spring + no-trail. Matching stiffness/trailing = no smear stretch.
         stiffness = 0.5,
         trailing_stiffness = 0.5,
         stiffness_insert_mode = 0.4,
@@ -20,9 +17,7 @@ return {
     config = function(_, opts)
         require("smear_cursor").setup(opts)
 
-        -- Pulse smear_terminal_mode on entering a terminal window so pane-jump
-        -- gets the smear animation, but typing inside the terminal does not
-        -- (which causes the cursor to jitter and drop keystrokes).
+        -- Pulse smear on terminal enter only; persistent mode jitters keystrokes.
         local sc = require("smear_cursor.config")
         local gen = 0
         vim.api.nvim_create_autocmd("WinEnter", {

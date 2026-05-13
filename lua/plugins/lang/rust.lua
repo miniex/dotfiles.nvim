@@ -94,12 +94,4 @@ return {
             vim.g.rustaceanvim = vim.tbl_deep_extend("keep", vim.g.rustaceanvim or {}, opts or {})
         end,
     },
-    {
-        "neovim/nvim-lspconfig",
-        opts = {
-            servers = {
-                rust_analyzer = { enabled = false },
-            },
-        },
-    },
 }

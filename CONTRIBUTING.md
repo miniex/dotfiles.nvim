@@ -1,60 +1,48 @@
 # Contributing
 
-Thanks for sending changes. The bar is small but firm: every commit and PR must pass `tools/format.sh` and `tools/lint.sh` cleanly.
+Every commit must pass `tools/format.sh` + `tools/lint.sh` clean.
 
-## Required tools
+## Tools
 
-Install on your `$PATH` before working on this repo:
+Install on `$PATH`:
 
 - [`stylua`](https://github.com/JohnnyMorganz/StyLua) — Lua formatter
-- [`lua-language-server`](https://github.com/LuaLS/lua-language-server) — Lua diagnostics (matches what nvim shows)
-- [`shfmt`](https://github.com/mvdan/sh) — shell script formatter
-- [`shellcheck`](https://www.shellcheck.net/) — shell script linter
-
-Examples:
+- [`lua-language-server`](https://github.com/LuaLS/lua-language-server) — Lua diagnostics
+- [`shfmt`](https://github.com/mvdan/sh) — shell formatter
+- [`shellcheck`](https://www.shellcheck.net/) — shell linter
 
 ```bash
-# macOS
-brew install stylua lua-language-server shfmt shellcheck
-
-# cargo
-cargo install stylua
-
-# Linux: prefer your distro package, otherwise grab a release tarball.
+brew install stylua lua-language-server shfmt shellcheck   # macOS
+cargo install stylua                                       # cargo
+# Linux: distro package or release tarball
 ```
 
 ## Workflow
 
-Before every commit:
-
 ```bash
-./tools/format.sh   # rewrites Lua files via stylua
-./tools/lint.sh     # stylua --check + lua-language-server --check
+./tools/format.sh   # stylua rewrite
+./tools/lint.sh     # stylua --check + lua-language-server + shfmt diff + shellcheck
 ```
 
-`lint.sh` exits non-zero on any formatting drift or LSP diagnostic. CI / reviewers expect a clean run.
+`lint.sh` exits non-zero on drift or diagnostic. CI expects clean.
 
-## PR expectations
+## PR rules
 
-- Keep changes scoped — one concern per PR.
-- Update `README.md` when behavior, keymaps, or prerequisites change.
-- Match the existing module layout (`lua/config/`, `lua/plugins/{coding,editor,lang,lsp,ui}/`).
-- Don't commit `lazy-lock.json` churn unless the PR is explicitly a plugin bump.
-- Do **not** add, modify, or copy files under `assets/` — that directory is licensed separately (`assets/LICENSE`) and contributions there are not accepted.
+- One concern per PR.
+- Update `README.md` / `docs/KEYMAPS.md` when behavior, keymaps, or prereqs change.
+- Module layout:
+  - `lua/config/` — global config
+  - `lua/plugins/{coding,editor,lang,lsp,ui}/` — plugin specs
+  - `lsp/<server>.lua` at repo root — per-server settings (0.11+ native discovery)
+  - `lua/config/lang_servers.lua` — lang ↔ server wiring
+- Don't commit `lazy-lock.json` churn unless it's a plugin bump.
+- **Don't** touch `assets/` — separate license, contributions not accepted.
 
-## Commit messages
+## Commits
 
-Follow the prefixes already in `git log`. Shape: `prefix(scope?): description`.
+Shape: `prefix(scope?): description`. Prefixes: `feat`, `fix`, `refactor`, `perf`, `docs`, `chore`, `tools`.
 
-Common prefixes: `feat`, `fix`, `refactor`, `perf`, `docs`, `chore`, `tools`.
-
-Rules:
-
-- **Prefix is always lowercase** — `feat:` not `Feat:`.
-- **First word after the prefix is always lowercase** — `fix: handle empty buffer`, not `fix: Handle empty buffer`.
-- The rest of the description follows no strict case rule, but prefer lowercase. Reserve uppercase for proper nouns, acronyms, or genuine emphasis.
-
-Examples:
+- Prefix lowercase. First word after prefix lowercase. Imperative mood. No trailing period.
 
 ```
 feat: add inlay hint toggle
@@ -62,5 +50,3 @@ fix(treesitter): retry attach on BufEnter
 refactor(lsp): migrate to vim.lsp.config
 docs: clarify language wiring
 ```
-
-Single-line, imperative mood. No trailing period.

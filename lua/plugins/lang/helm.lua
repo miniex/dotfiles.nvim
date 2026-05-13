@@ -14,27 +14,4 @@ return {
             vim.list_extend(opts.ensure_installed, { "helm" })
         end,
     },
-    {
-        "neovim/nvim-lspconfig",
-        opts = {
-            servers = {
-                helm_ls = {
-                    filetypes = { "helm" },
-                    settings = {
-                        ["helm-ls"] = {
-                            yamlls = {
-                                path = "yaml-language-server",
-                            },
-                        },
-                    },
-                },
-                -- yamlls is invalid for helm templates because of go-template
-                -- syntax injection. Disable yamlls for helm filetype to keep
-                -- diagnostics clean.
-                yamlls = {
-                    filetypes = { "yaml" },
-                },
-            },
-        },
-    },
 }

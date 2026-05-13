@@ -1,7 +1,5 @@
 #!/bin/sh
-# Lint Lua (stylua check + lua-language-server) and shell scripts
-# (shfmt --diff + shellcheck). Contributor/maintainer tool — every binary
-# below must be on PATH.
+# Lint Lua (stylua + lua-language-server) and shell (shfmt + shellcheck).
 set -e
 
 cd "$(dirname "$0")/.."

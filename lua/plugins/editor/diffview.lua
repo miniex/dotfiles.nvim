@@ -1,7 +1,4 @@
--- Diffview: side-by-side diff + file history viewer.
--- Complements gitsigns (hunk-level) and fugitive (porcelain) by adding a
--- proper multi-file diff UI for reviewing branches, merge conflicts, and
--- per-file history.
+-- Multi-file diff UI for branches/merges/history. Complements gitsigns + fugitive.
 return {
     "sindrets/diffview.nvim",
     dependencies = { "nvim-lua/plenary.nvim" },

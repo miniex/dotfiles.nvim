@@ -10,19 +10,13 @@ return {
                 version = "v2.*",
                 build = "make install_jsregexp",
                 config = function()
-                    -- friendly-snippets ships VSCode JSON; user-authored
-                    -- snippets live in ~/.config/nvim/snippets as Lua so they
-                    -- can compute dynamic content (date, filename, etc.).
+                    -- VSCode JSON (friendly-snippets) + user Lua snippets (dynamic).
                     require("luasnip.loaders.from_vscode").lazy_load()
                     require("luasnip.loaders.from_lua").lazy_load({
                         paths = { vim.fn.stdpath("config") .. "/snippets" },
                     })
 
-                    -- Share snippets across related filetypes. luasnip's loader
-                    -- keys by exact filetype, so tsx/jsx and bash/zsh wouldn't
-                    -- pick up snippets/typescript.lua / snippets/sh.lua without
-                    -- this. Extending preserves filetype-specific snippets if
-                    -- we ever add a tsx.lua / bash.lua later.
+                    -- luasnip keys by exact filetype; extend to share across variants.
                     local ls = require("luasnip")
                     ls.filetype_extend("typescriptreact", { "typescript", "javascript" })
                     ls.filetype_extend("javascriptreact", { "javascript" })

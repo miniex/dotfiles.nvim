@@ -3,10 +3,7 @@ local SIDEBAR_FT = {
     ["neo-tree-popup"] = true,
 }
 
--- Route $EDITOR (e.g. `git commit`) to the parent Neovim, avoiding nested editors.
--- Must be passed at toggle() time, not via opts.terminal: Snacks computes the
--- terminal id from un-merged opts in M.get and merged opts in M.open — env in
--- opts produces mismatched ids and a "Terminal was not created" assert.
+-- $EDITOR → parent nvim. Pass at toggle(), not opts.terminal (snacks id mismatch).
 local TERM_WRAPPER = vim.fn.stdpath("config") .. "/scripts/term-bin/nvim"
 local TERM_ENV = {
     EDITOR = TERM_WRAPPER,
@@ -14,9 +11,7 @@ local TERM_ENV = {
     GIT_EDITOR = TERM_WRAPPER,
 }
 
--- Dashboard's chafa ANSI output fights with snacks.dim/indent overlays when
--- another window (e.g., neo-tree) takes focus, glitching the image. Disable
--- those features for the dashboard buffer.
+-- Disable overlays on dashboard: chafa ANSI conflicts with dim/indent/scroll.
 vim.api.nvim_create_autocmd("FileType", {
     pattern = "snacks_dashboard",
     group = vim.api.nvim_create_augroup("SnacksDashboardOverlay", { clear = true }),
@@ -27,8 +22,7 @@ vim.api.nvim_create_autocmd("FileType", {
     end,
 })
 
--- When the last real file buffer is removed, drop the dashboard into the
--- main-area window instead of leaving an empty `[No Name]` buffer.
+-- On last file buffer close → dashboard in main window (avoid [No Name]).
 local function open_dashboard_if_empty(closing)
     for _, buf in ipairs(vim.api.nvim_list_bufs()) do
         if
@@ -61,8 +55,7 @@ vim.api.nvim_create_autocmd("BufDelete", {
     end,
 })
 
--- 5-step gradient between the two damin anchor colors (#98ABCC → #E890B0),
--- mirroring fish-theme-damin's tone-on-tone identity for the NEOVIM header.
+-- damin 5-step gradient (#98ABCC → #E890B0) for the NEOVIM header.
 local header_gradient = { "#98ABCC", "#ACA4C5", "#C09DBE", "#D496B7", "#E890B0" }
 local function set_header_hl()
     for i, color in ipairs(header_gradient) do
@@ -118,9 +111,7 @@ return {
                     { icon = " ", key = "q", desc = "Quit", action = ":qa", hidden = true },
                 },
             },
-            -- Responsive: when window height is tight, drop the NEOVIM header
-            -- first, then the recent files. Image + menu + startup always stay.
-            -- Re-evaluated on WinResized/VimResized via snacks's update().
+            -- Responsive: drop header → recent on small heights. Image/menu/startup always.
             sections = function(self)
                 local h = self:size().height
                 local result = {
@@ -162,8 +153,7 @@ return {
                     })
                 end
 
-                -- keys section still emits keymaps (f/g/r/c/q stay bound) but
-                -- items are hidden; show a compact icon strip instead.
+                -- keys section keeps bindings live; render as compact icon strip.
                 table.insert(result, { section = "keys", padding = 0 })
                 table.insert(result, {
                     text = {
@@ -220,9 +210,7 @@ return {
             },
         },
         profiler = {
-            -- Enable the module so Snacks.profiler.* APIs are available.
-            -- Use `PROF=1 nvim` to capture startup; toggle at runtime via the
-            -- keymaps below.
+            -- `PROF=1 nvim` for startup; keymaps below for runtime toggle.
         },
         quickfile = { enabled = true },
         scope = { enabled = true },

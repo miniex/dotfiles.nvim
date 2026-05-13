@@ -24,10 +24,20 @@ opt.fillchars:append({ eob = " " })
 -- etc
 opt.encoding = "UTF-8"
 opt.cmdheight = 1
--- Match lualine's globalstatus before any plugin loads so the dashboard's
--- initial height calc doesn't shift by one row when lualine flips it later.
+-- Set before lualine to avoid dashboard height shift on startup.
 opt.laststatus = 3
 opt.scrolloff = 10
 opt.mouse:append("a")
 opt.autoread = true
 opt.undofile = true
+
+-- ui2: native floating cmdline/msg (0.12+). `vim.g.disable_ui2=true` to opt out.
+if not vim.g.disable_ui2 then
+    local ok, ui2 = pcall(require, "vim._core.ui2")
+    if ok and ui2.enable then
+        ui2.enable({
+            enable = true,
+            msg = { target = "cmd", timeout = 4000 },
+        })
+    end
+end

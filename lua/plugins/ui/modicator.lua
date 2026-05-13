@@ -2,9 +2,7 @@ return {
     "mawkler/modicator.nvim",
     event = "VeryLazy",
     init = function()
-        -- modicator highlights only the line-number column, not the whole line.
-        -- The remaining requirements (cursorline, number, termguicolors) are
-        -- already set in lua/config/options.lua.
+        -- Highlight only line-number column. Other requirements in options.lua.
         vim.o.cursorlineopt = "number"
     end,
     opts = {

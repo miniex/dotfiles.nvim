@@ -1,6 +1,4 @@
--- Two-color identity, matching fish-theme-damin:
---   #98ABCC cool blue  → branch / cwd / mode-normal / strings & types accent
---   #E890B0 warm pink  → modified / heart bullet / mode-insert / WinSeparator
+-- damin 2-color: blue (#98ABCC) cool, pink (#E890B0) warm.
 local damin_blue = "#98ABCC"
 local damin_pink = "#E890B0"
 

@@ -52,11 +52,7 @@ return {
             vim.treesitter.language.register("json", "jsonc")
             vim.treesitter.language.register("bash", { "sh", "zsh" })
 
-            -- Incremental selection. nvim-treesitter's `main` branch dropped
-            -- the old `incremental_selection` module, so we drive it from
-            -- vim.treesitter.get_node() + parent walks. The stack lets `gnM`
-            -- shrink back through exactly the nodes `gnm` expanded into,
-            -- which is more predictable than recomputing a child each time.
+            -- Incremental selection (main branch dropped the module). Stack drives gnM shrink.
             local function node_to_range(node)
                 local srow, scol, erow, ecol = node:range()
                 return srow, scol, erow, ecol

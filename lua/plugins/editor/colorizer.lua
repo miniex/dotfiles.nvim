@@ -11,9 +11,7 @@ return {
             "!lazy",
             css = { rgb_fn = true, hsl_fn = true, css = true, css_fn = true },
             html = { names = false },
-            -- Lua/TOML/JSON: only hex + named CSS colors to avoid noisy
-            -- false positives on numeric literals that happen to look like
-            -- rgb() calls.
+            -- hex only for code files (avoid rgb()-shaped numeric false positives).
             lua = { names = false },
             toml = { names = false },
             json = { names = false },

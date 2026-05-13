@@ -1,10 +1,4 @@
--- Nerd Font glyphs are in the Private Use Area.
--- Use \u{XXXXX} escapes so the source file stays plain ASCII and survives
--- any tooling that doesn't preserve PUA codepoints.
--- Codepoints verified against ryanoasis/nerd-fonts/glyphnames.json (v3.4.0).
--- Material Design Icons (md-*) live in the Supplementary Private Use Area
--- (U+F0001-U+F1FFF); kitty.conf is configured to render those via
--- Symbols Nerd Font Mono fallback.
+-- Nerd Font v3.4 PUA glyphs via \u{}. md-* needs SupplementaryPUA fallback in kitty.conf.
 local g = {
     -- Languages (md-language_* — proper brand logos)
     rust = "\u{f1617}", -- md-language_rust (the crab)

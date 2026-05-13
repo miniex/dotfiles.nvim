@@ -29,10 +29,7 @@ return {
                 dependencies = "mason.nvim",
                 cmd = { "DapInstall", "DapUninstall" },
                 opts = {
-                    -- Installs are owned by mason-tool-installer (single
-                    -- sequential queue) to avoid racing the LSP/formatter
-                    -- install batches on first launch, which surfaced as
-                    -- ENOTCONN on the larger downloads (codelldb).
+                    -- mason-tool-installer owns installs (avoids ENOTCONN race on codelldb).
                     automatic_installation = false,
                     handlers = {},
                     ensure_installed = {},
@@ -53,9 +50,7 @@ return {
             {
                 "Weissle/persistent-breakpoints.nvim",
                 opts = {
-                    -- Auto-load saved breakpoints when a buffer is read; the
-                    -- file lives under stdpath('data') keyed by cwd, so each
-                    -- project keeps its own set.
+                    -- Auto-load saved breakpoints (keyed by cwd in stdpath('data')).
                     load_breakpoints_event = { "BufReadPost" },
                     perf_record = false,
                 },

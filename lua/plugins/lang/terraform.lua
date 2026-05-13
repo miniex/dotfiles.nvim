@@ -11,16 +11,6 @@ return {
         opts = { ensure_installed = { "tflint" } },
     },
     {
-        "neovim/nvim-lspconfig",
-        opts = {
-            servers = {
-                terraformls = {
-                    filetypes = { "terraform", "terraform-vars", "tf" },
-                },
-            },
-        },
-    },
-    {
         "mfussenegger/nvim-lint",
         opts = function(_, opts)
             opts.linters_by_ft = opts.linters_by_ft or {}

@@ -1,6 +1,4 @@
--- mini.surround: add / delete / replace surrounding pairs (quotes, brackets,
--- tags). Uses a `gs*` prefix because flash.nvim already owns `s` in normal,
--- visual, and operator-pending modes.
+-- Surround pairs. `gs*` prefix (flash.nvim owns `s`).
 return {
     "echasnovski/mini.surround",
     keys = function(_, keys)

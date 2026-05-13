@@ -40,10 +40,7 @@ return {
         ft = { "c", "cpp" },
         config = function()
             local dap = require("dap")
-            -- codelldb is installed by mason-tool-installer via dap.lua. We
-            -- skip registration if it isn't on disk yet (first launch) — the
-            -- adapter is re-resolved on each session start, so users only need
-            -- to relaunch after the install completes.
+            -- Skip codelldb if not installed yet; re-resolved on next session.
             local mason_ok, mason_registry = pcall(require, "mason-registry")
             if mason_ok and mason_registry.is_installed("codelldb") then
                 local pkg = vim.fn.expand("$MASON/packages/codelldb")
@@ -82,49 +79,5 @@ return {
             dap.configurations.c = cpp_config
             dap.configurations.cpp = cpp_config
         end,
-    },
-    {
-        "neovim/nvim-lspconfig",
-        opts = {
-            servers = {
-                clangd = {
-                    root_dir = function(bufnr, on_dir)
-                        local fname = vim.api.nvim_buf_get_name(bufnr)
-                        local primary = vim.fs.root(fname, {
-                            "Makefile",
-                            "configure.ac",
-                            "configure.in",
-                            "config.h.in",
-                            "meson.build",
-                            "meson_options.txt",
-                            "build.ninja",
-                        })
-                        local secondary = vim.fs.root(fname, {
-                            "compile_commands.json",
-                            "compile_flags.txt",
-                        })
-                        local fallback = vim.fs.root(fname, ".git")
-                        on_dir(primary or secondary or fallback)
-                    end,
-                    capabilities = {
-                        offsetEncoding = { "utf-16" },
-                    },
-                    cmd = {
-                        "clangd",
-                        "--background-index",
-                        "--clang-tidy",
-                        "--header-insertion=iwyu",
-                        "--completion-style=detailed",
-                        "--function-arg-placeholders",
-                        "--fallback-style=llvm",
-                    },
-                    init_options = {
-                        usePlaceholders = true,
-                        completeUnimported = true,
-                        clangdFileStatus = true,
-                    },
-                },
-            },
-        },
     },
 }

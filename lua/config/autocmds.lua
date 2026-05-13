@@ -4,9 +4,7 @@ vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter" }, {
     command = "checktime",
 })
 
--- Hide end-of-buffer tildes even where plugins override winhighlight or set
--- their own local fillchars. fillchars eob=" " covers the global default;
--- matching EndOfBuffer fg to Normal bg covers the rest.
+-- Hide ~ at EOB (covers plugins that override winhighlight/fillchars).
 local function hide_eob()
     local normal = vim.api.nvim_get_hl(0, { name = "Normal" })
     local bg = normal and normal.bg
@@ -32,10 +30,8 @@ if vim.fn.executable(clip) == 1 then
     })
 end
 
--- Treesitter attach. Registered before plugins so it fires for files opened
--- during startup. vim.treesitter is a builtin; only the parser .so on rtp is
--- required. Canonical pattern: resolve lang via get_lang (handles ft/parser
--- naming mismatches like typescriptreact -> tsx), skip if no parser maps.
+-- Treesitter attach. Pre-plugin so startup-loaded files get highlighted.
+-- get_lang() handles ft↔parser mismatches (e.g. typescriptreact → tsx).
 vim.api.nvim_create_autocmd("FileType", {
     group = vim.api.nvim_create_augroup("ts-attach", { clear = true }),
     callback = function(args)
@@ -49,7 +45,7 @@ vim.api.nvim_create_autocmd("FileType", {
         if not pcall(vim.treesitter.start, args.buf) then
             return
         end
-        -- Defer indentexpr so we override the default ftplugin indent.
+        -- Defer indentexpr to override default ftplugin indent.
         vim.schedule(function()
             if package.loaded["nvim-treesitter"] and vim.api.nvim_buf_is_valid(args.buf) then
                 vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"

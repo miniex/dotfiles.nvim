@@ -1,10 +1,1 @@
-return {
-    {
-        "neovim/nvim-lspconfig",
-        opts = {
-            servers = {
-                dockerls = {},
-            },
-        },
-    },
-}
+return {}

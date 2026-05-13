@@ -88,8 +88,7 @@ return {
         },
         keys = {
             { "<leader>gxq", "<cmd>GitConflictListQf<cr>", desc = "Conflicts to Quickfix" },
-            -- Capital X to coexist with treesitter-context's [x ("Jump to
-            -- context start"); lowercase ]x is otherwise unused.
+            -- ]X/[X: lowercase [x owned by treesitter-context.
             { "]X", "<cmd>GitConflictNextConflict<cr>", desc = "Next Git Conflict" },
             { "[X", "<cmd>GitConflictPrevConflict<cr>", desc = "Prev Git Conflict" },
         },

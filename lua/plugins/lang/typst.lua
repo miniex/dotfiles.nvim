@@ -8,18 +8,4 @@ return {
             vim.list_extend(opts.ensure_installed, { "typst" })
         end,
     },
-    {
-        "neovim/nvim-lspconfig",
-        opts = {
-            servers = {
-                tinymist = {
-                    settings = {
-                        formatterMode = "typstyle",
-                        exportPdf = "onSave",
-                        semanticTokens = "enable",
-                    },
-                },
-            },
-        },
-    },
 }

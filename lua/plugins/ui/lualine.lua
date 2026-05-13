@@ -9,10 +9,7 @@ return {
         local damin_blue = "#98ABCC"
         local damin_pink = "#E890B0"
 
-        -- fish-theme-damin is text-on-transparent: no filled badges, no bright
-        -- block backgrounds. Mode is signaled by the accent color of the ✿
-        -- glyph alone — blue=normal, pink=insert/visual, red=replace, dim
-        -- overlay=command/inactive.
+        -- damin: text-on-transparent. ✿ glyph color = mode (blue/pink/red/dim).
         local damin_theme = {
             normal = {
                 a = { fg = damin_blue, bg = "NONE", gui = "bold" },

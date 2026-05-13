@@ -1,7 +1,4 @@
--- nvim-navic: LSP symbol breadcrumb consumed by lualine for an inline,
--- glance-able symbol path. Complements dropbar (clickable winbar) by putting
--- the same context in the statusline so it's visible even when winbar is
--- hidden (e.g. dashboard, neo-tree, terminals).
+-- LSP symbol breadcrumb for lualine. Stays visible when winbar (dropbar) is hidden.
 return {
     "SmiteshP/nvim-navic",
     lazy = true,

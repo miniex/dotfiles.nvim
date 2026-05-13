@@ -1,8 +1,4 @@
--- Per-user language toggle. To disable some languages without diverging
--- from upstream, create `lua/config/langs_local.lua` (gitignored) and return
--- a table of overrides, e.g. `return { rust = false, go = false }`.
--- See `lua/config/langs_local.lua.example` for a template.
-
+-- Lang toggle. Override via gitignored `lua/config/langs_local.lua` (see *.example).
 local defaults = {
     asm = true,
     bash = true,

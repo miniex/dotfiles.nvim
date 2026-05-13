@@ -33,9 +33,7 @@ return {
             },
         },
         config = function(_, opts)
-            -- tiny-inline renders diagnostics; keep native virtual_text off
-            -- (already set in config/diagnostic.lua) and let virtual_lines
-            -- be a toggle alternative.
+            -- tiny-inline owns rendering; native virtual_text stays off.
             require("tiny-inline-diagnostic").setup(opts)
             vim.diagnostic.config({ virtual_text = false })
         end,

@@ -31,13 +31,4 @@ return {
             vim.list_extend(opts.ensure_installed, { "wgsl", "glsl", "hlsl" })
         end,
     },
-    {
-        "neovim/nvim-lspconfig",
-        opts = {
-            servers = {
-                wgsl_analyzer = {},
-                glsl_analyzer = {},
-            },
-        },
-    },
 }

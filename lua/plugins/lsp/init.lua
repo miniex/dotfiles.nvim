@@ -1,3 +1,21 @@
+-- LSP: native discovery (lsp/<server>.lua) gated by langs × lang_servers.
+local function enabled_servers()
+    local langs = require("config.langs")
+    local map = require("config.lang_servers")
+    local out, seen = {}, {}
+    for lang, on in pairs(langs) do
+        if on then
+            for _, s in ipairs(map[lang] or {}) do
+                if not seen[s] then
+                    seen[s] = true
+                    out[#out + 1] = s
+                end
+            end
+        end
+    end
+    return out
+end
+
 return {
     {
         "williamboman/mason.nvim",
@@ -16,13 +34,9 @@ return {
         dependencies = { "williamboman/mason.nvim" },
         event = "VeryLazy",
         cmd = { "MasonToolsInstall", "MasonToolsUpdate", "MasonToolsClean" },
-        -- lazy.nvim's default opts merge replaces arrays rather than concatenating
-        -- them, so every spec contributing to ensure_installed (lint, dap, lang)
-        -- would clobber the previous one. opts_extend tells lazy to list-append
-        -- this specific key across specs.
         opts_extend = { "ensure_installed" },
         opts = {
-            ensure_installed = {},
+            ensure_installed = enabled_servers(),
             auto_update = false,
             run_on_start = true,
             start_delay = 3000,
@@ -32,18 +46,12 @@ return {
     {
         "neovim/nvim-lspconfig",
         event = { "BufReadPre", "BufNewFile" },
-        opts = {
-            inlay_hints = { enabled = true },
-            servers = {},
-        },
+        -- SchemaStore: required by lsp/jsonls.lua + lsp/yamlls.lua before_init.
+        dependencies = { "b0o/SchemaStore.nvim" },
+        opts = { inlay_hints = { enabled = true } },
         config = function(_, opts)
-            vim.lsp.config("*", {
-                root_markers = { ".git" },
-            })
+            vim.lsp.config("*", { root_markers = { ".git" } })
 
-            -- Diagnostic config moved here so the cost is paid only when the
-            -- first buffer triggers nvim-lspconfig load (BufReadPre/BufNewFile),
-            -- not at startup.
             local diagnostic = vim.diagnostic
             diagnostic.config({
                 virtual_text = false,
@@ -58,16 +66,10 @@ return {
                 update_in_insert = false,
                 underline = true,
                 severity_sort = true,
-                float = {
-                    border = "rounded",
-                    source = "always",
-                    header = "",
-                    prefix = "",
-                },
+                float = { border = "rounded", source = "always", header = "", prefix = "" },
             })
 
             local group = vim.api.nvim_create_augroup("lsp-attach-keys", { clear = true })
-
             vim.api.nvim_create_autocmd("LspAttach", {
                 group = group,
                 callback = function(args)
@@ -85,8 +87,8 @@ return {
                     map("n", "<leader>cc", vim.diagnostic.open_float, "Line Diagnostics")
                     map("n", "<leader>ca", vim.lsp.buf.code_action, "Code Action")
                     map("n", "<leader>ci", function()
-                        local enabled = vim.lsp.inlay_hint.is_enabled({ bufnr = bufnr })
-                        vim.lsp.inlay_hint.enable(not enabled, { bufnr = bufnr })
+                        local on = vim.lsp.inlay_hint.is_enabled({ bufnr = bufnr })
+                        vim.lsp.inlay_hint.enable(not on, { bufnr = bufnr })
                     end, "Toggle Inlay Hints")
                     map("n", "<leader>cL", vim.lsp.codelens.run, "Run CodeLens")
                     map("n", "<leader>rn", vim.lsp.buf.rename, "Rename")
@@ -99,11 +101,6 @@ return {
                         if opts.inlay_hints.enabled and client:supports_method("textDocument/inlayHint") then
                             vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
                         end
-
-                        -- CodeLens (test/run/debug actions for rust-analyzer,
-                        -- gopls, jdtls, etc.). enable() registers nvim's
-                        -- internal autocmds that keep the lenses fresh, so
-                        -- no manual refresh loop is needed here.
                         if client:supports_method("textDocument/codeLens") then
                             vim.lsp.codelens.enable(true, { bufnr = bufnr })
                         end
@@ -111,8 +108,7 @@ return {
                 end,
             })
 
-            -- Disable inlay hints during insert mode to reduce LSP traffic;
-            -- restore them on exit if the buffer had them enabled before.
+            -- Drop inlay hints during insert to reduce LSP traffic.
             local hint_group = vim.api.nvim_create_augroup("lsp-inlay-hint-insert", { clear = true })
             vim.api.nvim_create_autocmd("InsertEnter", {
                 group = hint_group,
@@ -133,22 +129,12 @@ return {
                 end,
             })
 
-            -- mason.setup() prepends its bin dir to PATH, but it runs lazily
-            -- (only when mason-lspconfig is required). This config function
-            -- runs first (BufReadPre/BufNewFile), so vim.fn.executable would
-            -- miss tools that mason has already installed but hasn't yet
-            -- exposed. Prepend now so cmd_executable below sees them.
+            -- mason bin → PATH before checking executable (mason loads lazy).
             local mason_bin = vim.fn.stdpath("data") .. "/mason/bin"
             if not vim.env.PATH:find(mason_bin, 1, true) then
                 vim.env.PATH = mason_bin .. ":" .. vim.env.PATH
             end
 
-            -- A server's cmd may be a list, string, or function. List/string
-            -- forms expose the binary directly so we can check $PATH. Function
-            -- forms (used by many lspconfig defaults like tailwindcss, jsonls,
-            -- yamlls) hide the binary inside a closure -- we can't cheaply
-            -- inspect them, so treat as not-yet-executable and let
-            -- mason-lspconfig's automatic_enable wire them up after install.
             local function cmd_executable(cmd)
                 if type(cmd) == "table" and cmd[1] then
                     return vim.fn.executable(cmd[1]) == 1
@@ -158,30 +144,16 @@ return {
                 return false
             end
 
-            local to_install = {}
-            for server, server_opts in pairs(opts.servers) do
-                if server_opts then
-                    local enabled = (server_opts == true) or (server_opts.enabled ~= false)
-                    if enabled then
-                        if server_opts ~= true then
-                            vim.lsp.config(server, server_opts)
-                        end
-                        -- Only enable now if the binary is already on $PATH.
-                        -- Otherwise mason-lspconfig's automatic_enable picks
-                        -- it up after install, avoiding noisy spawn errors
-                        -- on first launch when mason hasn't caught up yet.
-                        local cfg = vim.lsp.config[server]
-                        if cfg and cmd_executable(cfg.cmd) then
-                            vim.lsp.enable(server)
-                        end
-                        to_install[#to_install + 1] = server
-                    end
+            -- Enable now if binary on PATH; rest via mason-lspconfig automatic_enable.
+            local servers = enabled_servers()
+            for _, name in ipairs(servers) do
+                local cfg = vim.lsp.config[name]
+                if cfg and cmd_executable(cfg.cmd) then
+                    vim.lsp.enable(name)
                 end
             end
 
-            -- Buffers loaded before this config function ran (e.g., when
-            -- nvim opens with multiple file args) may have already passed
-            -- their FileType event. Re-fire so the LSP client attaches.
+            -- Re-fire FileType for buffers loaded before config ran.
             vim.schedule(function()
                 for _, buf in ipairs(vim.api.nvim_list_bufs()) do
                     if vim.api.nvim_buf_is_loaded(buf) and vim.bo[buf].buftype == "" then
@@ -193,18 +165,12 @@ return {
                 end
             end)
 
-            -- Defer mason install setup until after UI is ready. We rely on
-            -- mason-lspconfig's automatic_enable to wire up LSPs that mason
-            -- installs after this point (it listens for install:success and
-            -- calls vim.lsp.enable then). Servers already on $PATH were
-            -- enabled eagerly above; vim.lsp.enable is idempotent so a
-            -- duplicate from automatic_enable is harmless.
             vim.api.nvim_create_autocmd("VimEnter", {
                 once = true,
                 callback = function()
                     vim.schedule(function()
                         require("mason-lspconfig").setup({
-                            ensure_installed = to_install,
+                            ensure_installed = servers,
                             automatic_enable = true,
                         })
                     end)

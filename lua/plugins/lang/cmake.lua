@@ -22,12 +22,4 @@ return {
         end,
         opts = {},
     },
-    {
-        "neovim/nvim-lspconfig",
-        opts = {
-            servers = {
-                neocmake = {},
-            },
-        },
-    },
 }

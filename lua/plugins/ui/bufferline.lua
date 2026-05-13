@@ -1,6 +1,4 @@
--- Track each buffer's open order so reopened buffers (vim reuses their bufnr
--- after :bdelete) get a fresh slot at the end instead of snapping back to
--- their original id-based position.
+-- Track open order so reopened buffers (reused bufnr) get a fresh tail slot.
 local order_counter = 0
 local order = {}
 

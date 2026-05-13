@@ -1,7 +1,4 @@
--- Neotest: unified test runner UI.
--- Adapters are loaded only when neotest itself loads (via <leader>t* keys).
--- Rust tests are handled by rustaceanvim's :RustLsp testables, so no adapter
--- is registered here for it.
+-- Neotest: unified runner. Rust handled by rustaceanvim :RustLsp testables.
 return {
     {
         "nvim-neotest/neotest",
@@ -102,8 +99,6 @@ return {
             },
         },
         config = function()
-            -- Diagnostic icons; reuse the LSP severity glyphs from init.lua so
-            -- the test status column reads consistently with diagnostics.
             local icons = {
                 passed = " ",
                 running = " ",
@@ -156,9 +151,7 @@ return {
         "WhoIsSethDaniel/mason-tool-installer.nvim",
         opts = function(_, opts)
             opts.ensure_installed = opts.ensure_installed or {}
-            -- Adapters either bundle their runners or expect project-local
-            -- installs (pytest, mix). gotestsum is optional but improves
-            -- neotest-golang's parsing speed.
+            -- gotestsum: optional, improves neotest-golang parsing speed.
             vim.list_extend(opts.ensure_installed, { "gotestsum" })
         end,
     },
