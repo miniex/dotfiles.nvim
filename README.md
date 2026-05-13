@@ -69,11 +69,19 @@ Lean, fast, easy on the eyes. Native LSP via `lsp/<server>.lua` discovery, Rust-
 
 ### Install
 
-```bash
-# Recommended — one-shot installer (backs up existing config, optionally picks langs)
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/miniex/dotfiles.nvim/main/install.sh)"
+Mason auto-installs plugins, LSPs, linters, DAP adapters on first launch.
 
-# Manual
+#### One-shot installer
+
+Backs up existing config, optionally picks langs:
+
+```bash
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/miniex/dotfiles.nvim/main/install.sh)"
+```
+
+#### Manual
+
+```bash
 mv ~/.config/nvim ~/.config/nvim.backup
 mv ~/.local/share/nvim ~/.local/share/nvim.backup
 git clone https://github.com/miniex/dotfiles.nvim.git ~/.config/nvim
@@ -81,12 +89,13 @@ sh ~/.config/nvim/set-lang.sh   # optional
 nvim
 ```
 
-Mason auto-installs plugins, LSPs, linters, DAP adapters on first launch.
+#### Recovery
 
-> **Broken after `git pull`?** Nuke caches and restart:
-> ```bash
-> rm -rf ~/.local/share/nvim ~/.local/state/nvim ~/.cache/nvim
-> ```
+Broken after `git pull`? Nuke caches and restart:
+
+```bash
+rm -rf ~/.local/share/nvim ~/.local/state/nvim ~/.cache/nvim
+```
 
 ## Essential Keymaps
 
