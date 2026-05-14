@@ -17,6 +17,8 @@ local OWNER = {
     lazy_backdrop = "lazy",
     mason = "mason",
     mason_backdrop = "mason",
+    ["neo-tree"] = "neo-tree",
+    ["neo-tree-popup"] = "neo-tree",
 }
 
 local function is_floating(win)
