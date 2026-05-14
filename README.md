@@ -25,32 +25,32 @@ Lean, fast, easy on the eyes. Native LSP via `lsp/<server>.lua` discovery, Rust-
 
 ## Language Support
 
-| Language              | LSP                             | Linter           | Debugger   |
-| --------------------- | ------------------------------- | ---------------- | ---------- |
-| Shell (sh/bash)       | bashls                          | shellcheck       | -          |
-| Zsh / Fish            | -                               | zsh -n / fish -n | -          |
-| Assembly              | asm-lsp                         | -                | -          |
-| C/C++                 | clangd                          | -                | cpptools   |
-| Go                    | gopls                           | golangci-lint    | delve      |
-| Rust                  | rust-analyzer (rustaceanvim)    | -                | CodeLLDB   |
-| Zig                   | zls                             | -                | -          |
-| OCaml                 | ocamllsp                        | -                | -          |
-| Elixir                | elixirls                        | -                | -          |
-| Python                | basedpyright + ruff             | ruff (LSP)       | debugpy    |
-| Lua                   | lua_ls                          | selene           | -          |
-| CSS / HTML            | cssls / html+emmet              | -                | -          |
-| Tailwind / JS-TS      | tailwindcss / vtsls             | eslint_d         | -          |
-| GraphQL / SQL         | graphql / sqls                  | -                | -          |
-| JSON / YAML           | jsonls / yamlls                 | -                | -          |
-| Protobuf / TOML       | buf_ls / taplo                  | -                | -          |
-| RON                   | -                               | -                | -          |
-| Typst                 | tinymist                        | -                | -          |
-| Markdown / MDX        | marksman / + mdx_analyzer       | markdownlint     | -          |
-| CMake / Nix           | neocmake / nil_ls               | - / statix       | -          |
-| Dockerfile / Helm     | dockerls / helm_ls              | hadolint         | -          |
-| Terraform / HCL       | terraformls                     | tflint           | -          |
-| Shaders (WGSL/GLSL)   | wgsl-analyzer / glsl_analyzer   | -                | -          |
-| Just                  | just-lsp                        | -                | -          |
+| Language            | LSP                           | Linter           | Debugger |
+| ------------------- | ----------------------------- | ---------------- | -------- |
+| Shell (sh/bash)     | bashls                        | shellcheck       | -        |
+| Zsh / Fish          | -                             | zsh -n / fish -n | -        |
+| Assembly            | asm-lsp                       | -                | -        |
+| C/C++               | clangd                        | -                | cpptools |
+| Go                  | gopls                         | golangci-lint    | delve    |
+| Rust                | rust-analyzer (rustaceanvim)  | -                | CodeLLDB |
+| Zig                 | zls                           | -                | -        |
+| OCaml               | ocamllsp                      | -                | -        |
+| Elixir              | elixirls                      | -                | -        |
+| Python              | basedpyright + ruff           | ruff (LSP)       | debugpy  |
+| Lua                 | lua_ls                        | selene           | -        |
+| CSS / HTML          | cssls / html+emmet            | -                | -        |
+| Tailwind / JS-TS    | tailwindcss / vtsls           | eslint_d         | -        |
+| GraphQL / SQL       | graphql / sqls                | -                | -        |
+| JSON / YAML         | jsonls / yamlls               | -                | -        |
+| Protobuf / TOML     | buf_ls / taplo                | -                | -        |
+| RON                 | -                             | -                | -        |
+| Typst               | tinymist                      | -                | -        |
+| Markdown / MDX      | marksman / + mdx_analyzer     | markdownlint     | -        |
+| CMake / Nix         | neocmake / nil_ls             | - / statix       | -        |
+| Dockerfile / Helm   | dockerls / helm_ls            | hadolint         | -        |
+| Terraform / HCL     | terraformls                   | tflint           | -        |
+| Shaders (WGSL/GLSL) | wgsl-analyzer / glsl_analyzer | -                | -        |
+| Just                | just-lsp                      | -                | -        |
 
 > Formatting is opt-in via `tools/format.sh`, not on save.
 

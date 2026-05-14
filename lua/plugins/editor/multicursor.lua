@@ -101,22 +101,30 @@ return {
                 end,
                 desc = "MC: add cursor at mouse",
             },
-            -- Focus prev/next cursor.
+            -- Focus prev/next cursor (only when extra cursors exist; otherwise fall through).
             {
                 "<left>",
                 function()
-                    mc.prevCursor()
+                    if mc.hasCursors() then
+                        mc.prevCursor()
+                    else
+                        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Left>", true, false, true), "n", false)
+                    end
                 end,
                 mode = { "n", "x" },
-                desc = "MC: focus prev cursor",
+                desc = "MC: focus prev cursor (or move left)",
             },
             {
                 "<right>",
                 function()
-                    mc.nextCursor()
+                    if mc.hasCursors() then
+                        mc.nextCursor()
+                    else
+                        vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Right>", true, false, true), "n", false)
+                    end
                 end,
                 mode = { "n", "x" },
-                desc = "MC: focus next cursor",
+                desc = "MC: focus next cursor (or move right)",
             },
             -- Delete focused cursor.
             {

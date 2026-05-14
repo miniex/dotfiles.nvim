@@ -56,18 +56,18 @@ Per-project file slots under `~/.local/share/nvim/harpoon/`.
 
 `<Esc>` priority: clear cursor set → exit visual (if any) → `nohlsearch`. Visual mode `<Esc>` works normally when no multi-cursors are active.
 
-| Key                         | Mode | Description                              |
-| --------------------------- | ---- | ---------------------------------------- |
-| `<leader>mn` / `<leader>mN` | n/x  | Add cursor + jump to next/prev `<cword>` |
-| `<leader>ms` / `<leader>mS` | n/x  | Skip current match forward / backward    |
-| `<leader>mA`                | n/x  | Cursor on every match in buffer          |
-| `<leader>m/`                | x    | Split visual selection by regex          |
-| `<C-Up>` / `<C-Down>`       | n/x  | Add cursor above / below                 |
-| `<leader>ma`                | n/x  | Align cursors with spaces                |
-| `<leader>mu`                | n    | Restore last cursor set                  |
-| `<leader>mx`                | n/x  | Delete focused cursor                    |
-| `<left>` / `<right>`        | n/x  | Focus prev / next cursor                 |
-| `<c-leftmouse>`             | n    | Add cursor at click                      |
+| Key                         | Mode | Description                                                                     |
+| --------------------------- | ---- | ------------------------------------------------------------------------------- |
+| `<leader>mn` / `<leader>mN` | n/x  | Add cursor + jump to next/prev `<cword>`                                        |
+| `<leader>ms` / `<leader>mS` | n/x  | Skip current match forward / backward                                           |
+| `<leader>mA`                | n/x  | Cursor on every match in buffer                                                 |
+| `<leader>m/`                | x    | Split visual selection by regex                                                 |
+| `<C-Up>` / `<C-Down>`       | n/x  | Add cursor above / below                                                        |
+| `<leader>ma`                | n/x  | Align cursors with spaces                                                       |
+| `<leader>mu`                | n    | Restore last cursor set                                                         |
+| `<leader>mx`                | n/x  | Delete focused cursor                                                           |
+| `<left>` / `<right>`        | n/x  | Focus prev / next cursor (falls through to normal motion when no extra cursors) |
+| `<c-leftmouse>`             | n    | Add cursor at click                                                             |
 
 ## Undo History (undotree)
 
