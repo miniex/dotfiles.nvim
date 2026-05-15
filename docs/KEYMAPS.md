@@ -70,11 +70,11 @@ Under `<leader>M` (capital); `<leader>m` belongs to harpoon.
 | `<left>` / `<right>`        | n/x  | Focus prev / next cursor (falls through to normal motion when no extra cursors) |
 | `<c-leftmouse>`             | n    | Add cursor at click                                                             |
 
-## Undo History (undotree)
+## Undo History (`:Undotree`, 0.12 built-in)
 
-| Key          | Description                                            |
-| ------------ | ------------------------------------------------------ |
-| `<leader>uU` | Toggle undotree (j/k navigate, p preview, `<cr>` jump) |
+| Key          | Description                                  |
+| ------------ | -------------------------------------------- |
+| `<leader>uU` | Open undo tree; j/k to step through history. |
 
 ## Search & Replace (grug-far)
 

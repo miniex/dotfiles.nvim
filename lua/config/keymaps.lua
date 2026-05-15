@@ -70,6 +70,12 @@ map("<leader>D", '"_d', "x", "Delete (no yank)")
 -- paste without yank
 map("<leader>p", '"_dP', "x", "Paste over (no yank)")
 
+-- 0.12 built-in undo tree (opt package, needs packadd before first use).
+map("<leader>uU", function()
+    vim.cmd("packadd nvim.undotree")
+    vim.cmd("Undotree")
+end, "n", "Toggle undotree")
+
 -- buffer navigation (bufferline order)
 for i = 1, 9 do
     map("<leader>" .. i, ":BufferLineGoToBuffer " .. i .. "<CR>", "n", "Go to buffer " .. i)

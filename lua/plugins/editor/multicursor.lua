@@ -50,7 +50,7 @@ return {
                 mode = { "n", "x" },
                 desc = "MC: cursor on every match",
             },
-            -- Add cursor above/below.
+            -- Add cursor above/below. Edgy uses same chord but scoped to edge windows.
             {
                 "<C-Up>",
                 function()
