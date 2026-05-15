@@ -3,6 +3,19 @@ return {
     event = "VeryLazy",
     opts = {
         preset = "modern",
+        -- Bigger window + tighter spacing → fewer pages to flip through.
+        win = {
+            height = { min = 4, max = math.floor(vim.o.lines * 0.7) },
+            padding = { 1, 2 },
+        },
+        layout = {
+            width = { min = 18 },
+            spacing = 2,
+        },
+        keys = {
+            scroll_down = "<C-d>",
+            scroll_up = "<C-u>",
+        },
         spec = {
             { "<leader>b", group = "buffer" },
             { "<leader>c", group = "code" },

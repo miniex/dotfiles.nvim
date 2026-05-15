@@ -173,6 +173,19 @@ return {
                         { "q", hl = "SnacksDashboardKey" },
                     },
                     align = "center",
+                    padding = 0,
+                })
+                table.insert(result, {
+                    text = {
+                        { "press ", hl = "Comment" },
+                        { "<leader>?", hl = "SnacksDashboardKey" },
+                        { " for keymaps  (", hl = "Comment" },
+                        { "<C-d>", hl = "SnacksDashboardKey" },
+                        { "/", hl = "Comment" },
+                        { "<C-u>", hl = "SnacksDashboardKey" },
+                        { " to flip pages)", hl = "Comment" },
+                    },
+                    align = "center",
                     padding = 1,
                 })
 

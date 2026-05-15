@@ -27,7 +27,7 @@ Leader: `<Space>`. `<localleader>` also `<Space>` (most localleader bindings liv
 | `<leader>e` / `<leader>o`         | Neo-tree: toggle / reveal                                      |
 | `<cr>` / `l` (in neo-tree)        | Open file in new tabpage; folder expand/collapse               |
 | `s` / `S` (n/x/o)                 | Flash: jump / treesitter jump                                  |
-| `<leader>?`                       | which-key: buffer-local keymaps                                |
+| `<leader>?`                       | which-key: buffer-local keymaps (`<C-d>`/`<C-u>` flip pages)   |
 
 ## fzf-lua (`<leader>z*`)
 
