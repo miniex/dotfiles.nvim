@@ -18,6 +18,7 @@ return {
             { "<leader>p", group = "profiler", mode = "n" },
             { "<leader>q", group = "session" },
             { "<leader>m", group = "harpoon" },
+            { "<leader>M", group = "multicursor" },
             { "<leader>n", group = "neotest" },
             { "<leader>u", group = "toggle/ui" },
             { "<leader>x", group = "diagnostics/quickfix" },

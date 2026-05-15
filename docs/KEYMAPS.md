@@ -9,7 +9,7 @@ Leader: `<Space>`. `<localleader>` also `<Space>` (most localleader bindings liv
 | `<C-h/j/k/l>` | N/T  | Pane navigation with tmux-style return-to-last |
 | `<leader>h`   | N    | Clear search highlight                         |
 | `<leader>s`   | N    | Save                                           |
-| `<leader>d`   | N/V  | Delete without yank                            |
+| `<leader>D`   | N/V  | Delete without yank (`<leader>d` reserved for dap)             |
 | `<leader>p`   | V    | Paste without overwriting register             |
 | `<` / `>`     | V    | Indent / outdent (keep selection)              |
 
@@ -52,22 +52,21 @@ Per-project file slots under `~/.local/share/nvim/harpoon/`.
 | `<leader>mn` / `<leader>mp` | Next / previous slot         |
 | `<leader>m1` … `<leader>m5` | Jump to slot 1–5             |
 
-> **Conflict:** multicursor.nvim also binds `<leader>mn`/`mN`/`ms`/`mS`/`mA`/`ma`/`mu`/`mx`. Harpoon's `mn`/`mp` wins on first registration; redefine in `multicursor.lua` if you need both.
-
 ## Multi-Cursors (multicursor.nvim)
 
+Under `<leader>M` (capital); `<leader>m` belongs to harpoon.
 `<Esc>` priority: clear cursor set → exit visual (if any) → `nohlsearch`. Visual mode `<Esc>` works normally when no multi-cursors are active.
 
 | Key                         | Mode | Description                                                                     |
 | --------------------------- | ---- | ------------------------------------------------------------------------------- |
-| `<leader>mn` / `<leader>mN` | n/x  | Add cursor + jump to next/prev `<cword>`                                        |
-| `<leader>ms` / `<leader>mS` | n/x  | Skip current match forward / backward                                           |
-| `<leader>mA`                | n/x  | Cursor on every match in buffer                                                 |
-| `<leader>m/`                | x    | Split visual selection by regex                                                 |
+| `<leader>Mn` / `<leader>MN` | n/x  | Add cursor + jump to next/prev `<cword>`                                        |
+| `<leader>Ms` / `<leader>MS` | n/x  | Skip current match forward / backward                                           |
+| `<leader>MA`                | n/x  | Cursor on every match in buffer                                                 |
+| `<leader>M/`                | x    | Split visual selection by regex                                                 |
 | `<C-Up>` / `<C-Down>`       | n/x  | Add cursor above / below                                                        |
-| `<leader>ma`                | n/x  | Align cursors with spaces                                                       |
-| `<leader>mu`                | n    | Restore last cursor set                                                         |
-| `<leader>mx`                | n/x  | Delete focused cursor                                                           |
+| `<leader>Ma`                | n/x  | Align cursors with spaces                                                       |
+| `<leader>Mu`                | n    | Restore last cursor set                                                         |
+| `<leader>Mx`                | n/x  | Delete focused cursor                                                           |
 | `<left>` / `<right>`        | n/x  | Focus prev / next cursor (falls through to normal motion when no extra cursors) |
 | `<c-leftmouse>`             | n    | Add cursor at click                                                             |
 

@@ -1,5 +1,5 @@
--- Sublime-style multi-cursors. Triggers under <leader>m + Ctrl-Up/Down.
--- <C-n>/<C-p> kept for blink.cmp.
+-- Sublime-style multi-cursors. Triggers under <leader>M + Ctrl-Up/Down.
+-- <leader>m is the harpoon group; <C-n>/<C-p> stay with blink.cmp.
 return {
     "jake-stewart/multicursor.nvim",
     branch = "1.0",
@@ -9,7 +9,7 @@ return {
         return {
             -- Add cursor + jump to next/prev match of <cword>.
             {
-                "<leader>mn",
+                "<leader>Mn",
                 function()
                     mc.matchAddCursor(1)
                 end,
@@ -17,7 +17,7 @@ return {
                 desc = "MC: add cursor + next match",
             },
             {
-                "<leader>mN",
+                "<leader>MN",
                 function()
                     mc.matchAddCursor(-1)
                 end,
@@ -26,7 +26,7 @@ return {
             },
             -- Skip current match without adding a cursor.
             {
-                "<leader>ms",
+                "<leader>Ms",
                 function()
                     mc.matchSkipCursor(1)
                 end,
@@ -34,7 +34,7 @@ return {
                 desc = "MC: skip match (forward)",
             },
             {
-                "<leader>mS",
+                "<leader>MS",
                 function()
                     mc.matchSkipCursor(-1)
                 end,
@@ -43,7 +43,7 @@ return {
             },
             -- Cursor on every match in buffer.
             {
-                "<leader>mA",
+                "<leader>MA",
                 function()
                     mc.matchAllAddCursors()
                 end,
@@ -69,7 +69,7 @@ return {
             },
             -- Restore last cursor set.
             {
-                "<leader>mu",
+                "<leader>Mu",
                 function()
                     mc.restoreCursors()
                 end,
@@ -77,7 +77,7 @@ return {
             },
             -- Align cursors with spaces.
             {
-                "<leader>ma",
+                "<leader>Ma",
                 function()
                     mc.alignCursors()
                 end,
@@ -86,7 +86,7 @@ return {
             },
             -- Split visual selection by regex → one cursor per match.
             {
-                "<leader>m/",
+                "<leader>M/",
                 function()
                     mc.splitCursors()
                 end,
@@ -128,7 +128,7 @@ return {
             },
             -- Delete focused cursor.
             {
-                "<leader>mx",
+                "<leader>Mx",
                 function()
                     mc.deleteCursor()
                 end,
