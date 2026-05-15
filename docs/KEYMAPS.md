@@ -108,6 +108,8 @@ Inside the grug-far buffer: `<localleader>r` replace, `<localleader>s` sync to d
 
 ## LSP / Diagnostics
 
+> Neovim 0.11+ also auto-binds `grr`/`gri`/`grn`/`gra`/`gK`/`gO` on `LspAttach`.
+
 | Key                         | Description                                                        |
 | --------------------------- | ------------------------------------------------------------------ |
 | `K` / `<C-k>` (i)           | Hover / signature help                                             |
@@ -239,4 +241,4 @@ In the toggle terminal, `$EDITOR`/`$VISUAL`/`$GIT_EDITOR` forward to the parent 
 ## Misc
 
 - **Hex** (`xxd`): `:HexToggle`, `:HexDump`, `:HexAssemble`, or `nvim -b <file>`.
-- **Completion** (insert): `<Tab>`/`<S-Tab>` next/prev · `<C-Space>` trigger · `<CR>` confirm · `<C-e>` close · `<C-f>`/`<C-S-f>` scroll docs.
+- **Completion** (insert): `<Tab>`/`<S-Tab>` next/prev · `<C-Space>` trigger · `<CR>` confirm · `<C-e>` close · `<C-f>`/`<C-S-f>` scroll docs. Menu columns: `label · source · kind`.

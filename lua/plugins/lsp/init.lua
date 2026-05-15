@@ -86,6 +86,8 @@ return {
                         vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, silent = true, desc = desc })
                     end
 
+                    -- Intentional aliases over 0.11+ defaults (grr/gri/grn/gra/gK)
+                    -- for muscle memory and which-key discovery.
                     map("n", "K", function()
                         vim.lsp.buf.hover({ border = vim.g.flower_border })
                     end, "Hover")
