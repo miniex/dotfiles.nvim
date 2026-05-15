@@ -129,7 +129,10 @@ return {
                     },
                     {
                         navic.get_location,
-                        cond = navic.is_available,
+                        -- Narrow windows: dropbar already owns the breadcrumb.
+                        cond = function()
+                            return navic.is_available() and vim.o.columns > 140
+                        end,
                         color = { fg = p.overlay0 },
                     },
                 },
