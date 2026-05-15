@@ -108,6 +108,7 @@ Leader: `<Space>`. Full reference: [docs/KEYMAPS.md](docs/KEYMAPS.md).
 | `<leader>e`                 | Toggle file tree (neo-tree)     |
 | `s` / `S`                   | Flash jump / treesitter jump    |
 | `<leader>w`                 | Smart buffer delete             |
+| `<S-h>` / `<S-l>`           | Previous / next buffer          |
 | `<leader>t`                 | Toggle terminal                 |
 | `<leader>S`                 | Search & replace (grug-far)     |
 | `K` / `gd` / `gr`           | Hover / definition / references |

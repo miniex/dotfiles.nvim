@@ -4,14 +4,14 @@ Leader: `<Space>`. `<localleader>` also `<Space>` (most localleader bindings liv
 
 ## Global
 
-| Key           | Mode | Description                                    |
-| ------------- | ---- | ---------------------------------------------- |
-| `<C-h/j/k/l>` | N/T  | Pane navigation with tmux-style return-to-last |
-| `<leader>h`   | N    | Clear search highlight                         |
-| `<leader>s`   | N    | Save                                           |
-| `<leader>D`   | N/V  | Delete without yank (`<leader>d` reserved for dap)             |
-| `<leader>p`   | V    | Paste without overwriting register             |
-| `<` / `>`     | V    | Indent / outdent (keep selection)              |
+| Key           | Mode | Description                                        |
+| ------------- | ---- | -------------------------------------------------- |
+| `<C-h/j/k/l>` | N/T  | Pane navigation with tmux-style return-to-last     |
+| `<leader>h`   | N    | Clear search highlight                             |
+| `<leader>s`   | N    | Save                                               |
+| `<leader>D`   | N/V  | Delete without yank (`<leader>d` reserved for dap) |
+| `<leader>p`   | V    | Paste without overwriting register                 |
+| `<` / `>`     | V    | Indent / outdent (keep selection)                  |
 
 ## Find & Navigate
 
@@ -220,16 +220,16 @@ Python (pytest), Go (gotestsum), Elixir (mix), C/C++ (gtest). Rust uses `:RustLs
 
 In the toggle terminal, `$EDITOR`/`$VISUAL`/`$GIT_EDITOR` forward to the parent Neovim via `scripts/term-bin/nvim` — `git commit` opens a split in the outer instance.
 
-| Key                         | Description                                 |
-| --------------------------- | ------------------------------------------- |
-| `<leader>t` (n/t)           | Toggle terminal (centered float)            |
-| `<C-x>`                     | Hide terminal                               |
-| `<leader>w`                 | Smart buffer delete (last file → dashboard) |
-| `<leader>bd` / `<leader>bD` | mini.bufremove: delete / force-delete       |
-| `<leader>1` … `<leader>9`   | Jump to bufferline position                 |
-| `[b` / `]b`                 | Prev / next buffer (open-order)             |
-| `<leader>cn` / `<leader>un` | Notification history / dismiss all          |
-| `]]` / `[[`                 | LSP word: next / previous reference         |
+| Key                             | Description                                 |
+| ------------------------------- | ------------------------------------------- |
+| `<leader>t` (n/t)               | Toggle terminal (centered float)            |
+| `<C-x>`                         | Hide terminal                               |
+| `<leader>w`                     | Smart buffer delete (last file → dashboard) |
+| `<leader>bd` / `<leader>bD`     | mini.bufremove: delete / force-delete       |
+| `<leader>1` … `<leader>9`       | Jump to bufferline position                 |
+| `[b` / `]b` · `<S-h>` / `<S-l>` | Prev / next buffer (open-order)             |
+| `<leader>cn` / `<leader>un`     | Notification history / dismiss all          |
+| `]]` / `[[`                     | LSP word: next / previous reference         |
 
 ## Language-specific
 

@@ -82,3 +82,6 @@ for i = 1, 9 do
 end
 map("[b", ":BufferLineCyclePrev<CR>", "n", "Previous buffer")
 map("]b", ":BufferLineCycleNext<CR>", "n", "Next buffer")
+-- Shift-h/l for tab-style buffer nav (overrides vim's H/L screen jumps).
+map("<S-h>", ":BufferLineCyclePrev<CR>", "n", "Previous buffer")
+map("<S-l>", ":BufferLineCycleNext<CR>", "n", "Next buffer")
