@@ -1,6 +1,27 @@
 return {
     "folke/persistence.nvim",
     event = "BufReadPre",
+    init = function()
+        -- Auto-restore session when `nvim` opens with no file args and no stdin.
+        local group = vim.api.nvim_create_augroup("PersistenceAutoload", { clear = true })
+        vim.api.nvim_create_autocmd("StdinReadPre", {
+            group = group,
+            callback = function()
+                vim.g.started_with_stdin = true
+            end,
+        })
+        vim.api.nvim_create_autocmd("VimEnter", {
+            group = group,
+            nested = true,
+            once = true,
+            callback = function()
+                if vim.fn.argc(-1) > 0 or vim.g.started_with_stdin then
+                    return
+                end
+                require("persistence").load()
+            end,
+        })
+    end,
     keys = {
         {
             "<leader>qs",

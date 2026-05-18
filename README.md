@@ -15,7 +15,7 @@ Lean, fast, easy on the eyes. Native LSP via `lsp/<server>.lua` discovery, Rust-
 - **Completion** — blink.cmp (Rust fuzzy), inlay hints suppressed during insert, tiny-inline-diagnostic
 - **Treesitter** — `main` branch + textobjects, sticky context, ts-autotag, ts-context-commentstring
 - **Pickers** — fff.nvim (Rust file finder) + snacks.picker (grep/buffers/recent) + fzf-lua (git/lsp/lines)
-- **Editor** — neo-tree (floating), flash, trouble, which-key, todo-comments, dropbar, mini.surround, persistence, aerial, harpoon v2, grug-far, **quicker.nvim** (editable quickfix), **multicursor.nvim**, 0.12 built-in `:Undotree`, nvim-bqf, nvim-colorizer, git-conflict
+- **Editor** — neo-tree (floating), flash, trouble, which-key, todo-comments, dropbar, mini.surround, persistence (auto-restores on bare `nvim`), aerial, harpoon v2, grug-far, **quicker.nvim** (editable quickfix), **multicursor.nvim**, 0.12 built-in `:Undotree`, nvim-bqf, nvim-colorizer, git-conflict
 - **Modal floats** — big floating UIs (pickers / terminal / lazy / mason / harpoon / neo-tree) are mutually exclusive; hover, completion, signature, and notifications stack freely on top
 - **snacks.nvim** — picker, profiler, terminal, dashboard, statuscolumn, notifier, indent, scroll, dim, image, bigfile
 - **Markdown** — render-markdown.nvim inline rendering of headings / lists / tables / code
@@ -120,10 +120,10 @@ Leader: `<Space>`. Full reference: [docs/KEYMAPS.md](docs/KEYMAPS.md).
 
 - **Disable languages** — `sh ~/.config/nvim/set-lang.sh` (interactive) or hand-edit `lua/config/langs_local.lua` (gitignored). Overrides `lua/config/langs.lua` per-machine.
 - **Add a language**:
-  1. `lsp/<server>.lua` — server settings table (nvim-lspconfig provides `cmd`/`root_markers`/`filetypes` defaults)
-  2. `lua/config/lang_servers.lua` — map `lang = { "server" }`. Empty list = no LSP, or owned by a per-lang plugin (e.g. rust → rustaceanvim)
-  3. `lua/plugins/lang/<name>.lua` — DAP, treesitter parsers, lang-specific plugins. Register the module name in `lua/config/langs.lua`
-  - Linters → `lua/plugins/lsp/lint.lua`. Non-LSP tools → `mason-tool-installer.nvim` ensure_installed.
+    1. `lsp/<server>.lua` — server settings table (nvim-lspconfig provides `cmd`/`root_markers`/`filetypes` defaults)
+    2. `lua/config/lang_servers.lua` — map `lang = { "server" }`. Empty list = no LSP, or owned by a per-lang plugin (e.g. rust → rustaceanvim)
+    3. `lua/plugins/lang/<name>.lua` — DAP, treesitter parsers, lang-specific plugins. Register the module name in `lua/config/langs.lua`
+    - Linters → `lua/plugins/lsp/lint.lua`. Non-LSP tools → `mason-tool-installer.nvim` ensure_installed.
 - **Snippets** — drop Lua files in `~/.config/nvim/snippets/` (filetype-scoped, plus `all.lua`). VSCode JSON via friendly-snippets in parallel.
 - **Theme** — `lua/plugins/ui/themes.lua`. Change `damin_blue` / `damin_pink` anchors at the top; the whole UI retones.
 - **ui2** — toggle via `vim.g.disable_ui2 = true` in `globals.lua`.

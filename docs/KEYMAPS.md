@@ -88,6 +88,8 @@ Inside the grug-far buffer: `<localleader>r` replace, `<localleader>s` sync to d
 
 ## Session (persistence.nvim)
 
+Bare `nvim` (no args, no stdin) auto-restores cwd session.
+
 | Key          | Description              |
 | ------------ | ------------------------ |
 | `<leader>qs` | Restore session for cwd  |
@@ -109,6 +111,8 @@ Inside the grug-far buffer: `<localleader>r` replace, `<localleader>s` sync to d
 ## LSP / Diagnostics
 
 > Neovim 0.11+ also auto-binds `grr`/`gri`/`grn`/`gra`/`gK`/`gO` on `LspAttach`.
+>
+> Severity-sorted; gutter signs `✗`/`!`/`i`/`?` mirror lualine. Floats: rounded border, source when ambiguous.
 
 | Key                         | Description                                                        |
 | --------------------------- | ------------------------------------------------------------------ |
