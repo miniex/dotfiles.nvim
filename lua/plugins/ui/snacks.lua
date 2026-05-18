@@ -216,6 +216,7 @@ return {
             end,
         },
         dim = { enabled = true },
+        gitbrowse = { enabled = true },
         image = { enabled = vim.env.TERM == "xterm-kitty" or vim.env.KITTY_WINDOW_ID ~= nil },
         indent = { enabled = true },
         input = { enabled = true },
@@ -242,6 +243,7 @@ return {
         },
         quickfile = { enabled = true },
         scope = { enabled = true },
+        scratch = { enabled = true },
         scroll = { enabled = true },
         statuscolumn = { enabled = true },
         terminal = {
@@ -258,6 +260,7 @@ return {
             },
         },
         words = { enabled = true },
+        zen = { enabled = true },
     },
     keys = {
         {
@@ -360,6 +363,49 @@ return {
             end,
             mode = { "n", "t" },
             desc = "Prev Reference",
+        },
+        {
+            "<leader>.",
+            function()
+                Snacks.scratch()
+            end,
+            desc = "Toggle Scratch Buffer",
+        },
+        {
+            "<leader>bS",
+            function()
+                Snacks.scratch.select()
+            end,
+            desc = "Select Scratch Buffer",
+        },
+        {
+            "<leader>uz",
+            function()
+                Snacks.zen()
+            end,
+            desc = "Toggle Zen Mode",
+        },
+        {
+            "<leader>uZ",
+            function()
+                Snacks.zen.zoom()
+            end,
+            desc = "Toggle Zen Zoom",
+        },
+        {
+            "<leader>fR",
+            function()
+                Snacks.rename.rename_file()
+            end,
+            desc = "Rename File (LSP-aware)",
+        },
+        {
+            "<leader>gB",
+            function()
+                Snacks.gitbrowse()
+            end,
+            mode = { "n", "v" },
+            desc = "Git Browse (open in browser)",
         },
     },
 }

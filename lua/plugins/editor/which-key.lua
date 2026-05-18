@@ -44,9 +44,9 @@ return {
         {
             "<leader>?",
             function()
-                require("which-key").show({ global = false })
+                require("which-key").show()
             end,
-            desc = "Buffer Local Keymaps (which-key)",
+            desc = "Show All Keymaps (which-key)",
         },
     },
 }

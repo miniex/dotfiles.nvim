@@ -23,11 +23,12 @@ Leader: `<Space>`. `<localleader>` also `<Space>` (most localleader bindings liv
 | `<leader>fF`                      | fff.nvim: find files in current directory                      |
 | `<leader>fg` / `fr` / `fb` / `fh` | snacks.picker: grep / recent / buffers / help                  |
 | `<leader>ft`                      | TODO comments                                                  |
+| `<leader>fR`                      | Rename current file (LSP-aware)                                |
 | `<leader>z` / `z'`                | fzf-lua: builtin menu / resume last picker                     |
 | `<leader>e` / `<leader>o`         | Neo-tree: toggle / reveal                                      |
 | `<cr>` / `l` (in neo-tree)        | Open file in new tabpage; folder expand/collapse               |
 | `s` / `S` (n/x/o)                 | Flash: jump / treesitter jump                                  |
-| `<leader>?`                       | which-key: buffer-local keymaps (`<C-d>`/`<C-u>` flip pages)   |
+| `<leader>?`                       | which-key: all keymaps (`<C-d>`/`<C-u>` flip pages)            |
 
 ## fzf-lua (`<leader>z*`)
 
@@ -134,30 +135,31 @@ Bare `nvim` (no args, no stdin) auto-restores cwd session.
 
 ## Treesitter Textobjects & Context
 
-| Key                       | Mode  | Description                        |
-| ------------------------- | ----- | ---------------------------------- |
-| `af` / `if`               | x/o   | Function (outer / inner)           |
-| `ac` / `ic`               | x/o   | Class                              |
-| `aa` / `ia`               | x/o   | Parameter / argument               |
-| `ai` / `ii`               | x/o   | Conditional                        |
-| `al` / `il`               | x/o   | Loop                               |
-| `a/` / `i/`               | x/o   | Comment                            |
-| `a=` / `i=`               | x/o   | Assignment                         |
-| `am` / `im`               | x/o   | Call                               |
-| `aB` / `iB`               | x/o   | Block (capital — `b` is word-back) |
-| `aS`                      | x/o   | Statement                          |
-| `]f` / `[f`               | n/x/o | Next / prev function start         |
-| `]F` / `[F`               | n/x/o | Next / prev function end           |
-| `]c` / `[c`               | n/x/o | Next / prev class start            |
-| `]a` / `[a`               | n/x/o | Next / prev parameter              |
-| `<leader>a` / `<leader>A` | n     | Swap parameter with next / prev    |
-| `gnn`                     | n     | Init incremental selection         |
-| `gnm` / `gnM`             | x     | Expand / shrink node               |
-| `<leader>uc`              | n     | Toggle treesitter context          |
-| `<leader>uC`              | n     | Toggle nvim-colorizer              |
-| `<leader>um`              | n     | Toggle render-markdown             |
-| `<leader>uU`              | n     | Toggle undotree                    |
-| `[x`                      | n     | Jump to context start              |
+| Key                         | Mode  | Description                        |
+| --------------------------- | ----- | ---------------------------------- |
+| `af` / `if`                 | x/o   | Function (outer / inner)           |
+| `ac` / `ic`                 | x/o   | Class                              |
+| `aa` / `ia`                 | x/o   | Parameter / argument               |
+| `ai` / `ii`                 | x/o   | Conditional                        |
+| `al` / `il`                 | x/o   | Loop                               |
+| `a/` / `i/`                 | x/o   | Comment                            |
+| `a=` / `i=`                 | x/o   | Assignment                         |
+| `am` / `im`                 | x/o   | Call                               |
+| `aB` / `iB`                 | x/o   | Block (capital — `b` is word-back) |
+| `aS`                        | x/o   | Statement                          |
+| `]f` / `[f`                 | n/x/o | Next / prev function start         |
+| `]F` / `[F`                 | n/x/o | Next / prev function end           |
+| `]c` / `[c`                 | n/x/o | Next / prev class start            |
+| `]a` / `[a`                 | n/x/o | Next / prev parameter              |
+| `<leader>a` / `<leader>A`   | n     | Swap parameter with next / prev    |
+| `gnn`                       | n     | Init incremental selection         |
+| `gnm` / `gnM`               | x     | Expand / shrink node               |
+| `<leader>uc`                | n     | Toggle treesitter context          |
+| `<leader>uC`                | n     | Toggle nvim-colorizer              |
+| `<leader>um`                | n     | Toggle render-markdown             |
+| `<leader>uU`                | n     | Toggle undotree                    |
+| `<leader>uz` / `<leader>uZ` | n     | Snacks zen / zen zoom              |
+| `[x`                        | n     | Jump to context start              |
 
 ## Winbar Breadcrumb (dropbar)
 
@@ -174,6 +176,7 @@ Picker uses rounded border + preview. Inside: `q`/`<Esc>` close, `h` parent menu
 | ------------------------------- | -------------------------------------------------------------------------------------------- |
 | `<leader>gs/gb/gd/gl/gc/gp/gP`  | Fugitive: status/blame/diff/log/commit/push/pull                                             |
 | `<leader>gg/gf/gF/gL`           | LazyGit: full / current file / filter file / filter all                                      |
+| `<leader>gB`                    | gitbrowse: open current line in browser (n/v)                                                |
 | `<leader>gvo/gvc/gvr`           | Diffview: open / close / refresh                                                             |
 | `<leader>gvf/gvF/gvh`           | Diffview file history: current / repo / stash                                                |
 | `<leader>gvg` / `<leader>gvG`   | gitgraph.nvim: all branches / current (`<cr>` → diffview)                                    |
@@ -230,6 +233,7 @@ In the toggle terminal, `$EDITOR`/`$VISUAL`/`$GIT_EDITOR` forward to the parent 
 | `<C-x>`                         | Hide terminal                               |
 | `<leader>w`                     | Smart buffer delete (last file → dashboard) |
 | `<leader>bd` / `<leader>bD`     | mini.bufremove: delete / force-delete       |
+| `<leader>.` / `<leader>bS`      | Snacks scratch: toggle / select buffer      |
 | `<leader>1` … `<leader>9`       | Jump to bufferline position                 |
 | `[b` / `]b` · `<S-h>` / `<S-l>` | Prev / next buffer (open-order)             |
 | `<leader>cn` / `<leader>un`     | Notification history / dismiss all          |

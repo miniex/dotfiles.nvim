@@ -17,7 +17,7 @@ Lean, fast, easy on the eyes. Native LSP via `lsp/<server>.lua` discovery, Rust-
 - **Pickers** — fff.nvim (Rust file finder) + snacks.picker (grep/buffers/recent) + fzf-lua (git/lsp/lines)
 - **Editor** — neo-tree (floating), flash, trouble, which-key, todo-comments, dropbar, mini.surround, persistence (auto-restores on bare `nvim`), aerial, harpoon v2, grug-far, **quicker.nvim** (editable quickfix), **multicursor.nvim**, 0.12 built-in `:Undotree`, nvim-bqf, nvim-colorizer, git-conflict
 - **Modal floats** — big floating UIs (pickers / terminal / lazy / mason / harpoon / neo-tree) are mutually exclusive; hover, completion, signature, and notifications stack freely on top
-- **snacks.nvim** — picker, profiler, terminal, dashboard, statuscolumn, notifier, indent, scroll, dim, image, bigfile
+- **snacks.nvim** — picker, profiler, terminal, dashboard, statuscolumn, notifier, indent, scroll, dim, image, bigfile, scratch, zen, gitbrowse, rename (LSP-aware)
 - **Markdown** — render-markdown.nvim inline rendering of headings / lists / tables / code
 - **Tooling** — nvim-lint, mason-tool-installer, DAP (Rust/C-C++/Python/Go) with persistent breakpoints, neotest (Python/Go/Elixir/C++)
 - **UI** — Catppuccin Mocha retoned to a 2-color damin palette (`#98ABCC` / `#E890B0`) mirroring [`fish-theme-damin`](https://github.com/miniex/fish-theme-damin) + [`dotfiles.kitty`](https://github.com/miniex/dotfiles.kitty) + [`dotfiles.tmux`](https://github.com/miniex/dotfiles.tmux). lualine: `✧ … ⋆` sparkle bookends, `✿` mode glyph (swaps to `✎` in visual / operator-pending, briefly `✦` on mode change). bufferline: pink → mid → blue 3-stop gradient, `♡` on harpoon-pinned. incline: `⌬` when window is zoomed (alone in tabpage). modicator: `✿` sign on the current line in mode color. LSP hover / signature / diagnostic floats use a flower-cornered border (`✿─✿│✿─✿│`). flash labels in damin pink. Plus edgy (sidebar layout), smear-cursor, fidget
@@ -114,7 +114,7 @@ Leader: `<Space>`. Full reference: [docs/KEYMAPS.md](docs/KEYMAPS.md).
 | `K` / `gd` / `gr`           | Hover / definition / references |
 | `<leader>ca` / `<leader>rn` | Code action / rename            |
 | `<leader>gg`                | LazyGit                         |
-| `<leader>?`                 | which-key (buffer-local keys)   |
+| `<leader>?`                 | which-key (all keymaps)         |
 
 ## Customization
 
