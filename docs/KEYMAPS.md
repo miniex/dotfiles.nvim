@@ -24,6 +24,7 @@ Leader: `<Space>`. `<localleader>` also `<Space>` (most localleader bindings liv
 | `<leader>fg` / `fr` / `fb` / `fh` | snacks.picker: grep / recent / buffers / help                  |
 | `<leader>ft`                      | TODO comments                                                  |
 | `<leader>fR`                      | Rename current file (LSP-aware)                                |
+| `<leader>fs`                      | Snippets (LuaSnip, current ft + all)                           |
 | `<leader>z` / `z'`                | fzf-lua: builtin menu / resume last picker                     |
 | `<leader>e` / `<leader>o`         | Neo-tree: toggle / reveal                                      |
 | `<cr>` / `l` (in neo-tree)        | Open file in new tabpage; folder expand/collapse               |

@@ -115,6 +115,50 @@ return {
             end,
             desc = "Search History",
         },
+        {
+            "<leader>fs",
+            function()
+                local ls = require("luasnip")
+                local ft = vim.bo.filetype
+                local lookup, items = {}, {}
+                local function collect(scope)
+                    for _, snip in ipairs(ls.get_snippets(scope) or {}) do
+                        local id = tostring(#items + 1)
+                        lookup[id] = snip
+                        local desc = snip.name or snip.dscr or ""
+                        if type(desc) == "table" then
+                            desc = table.concat(desc, " ")
+                        end
+                        table.insert(items, string.format("%-4s [%s] %s\t%s", id, scope, snip.trigger, desc))
+                    end
+                end
+                collect(ft)
+                if ft ~= "all" then
+                    collect("all")
+                end
+                if #items == 0 then
+                    vim.notify("No snippets for filetype: " .. ft, vim.log.levels.INFO)
+                    return
+                end
+                require("fzf-lua").fzf_exec(items, {
+                    prompt = "Snippets❯ ",
+                    actions = {
+                        ["default"] = function(selected)
+                            local id = selected[1]:match("^(%S+)")
+                            local snip = id and lookup[id]
+                            if not snip then
+                                return
+                            end
+                            vim.cmd("startinsert")
+                            vim.schedule(function()
+                                ls.snip_expand(snip)
+                            end)
+                        end,
+                    },
+                })
+            end,
+            desc = "Snippets (LuaSnip)",
+        },
     },
     opts = {
         "default-title",
