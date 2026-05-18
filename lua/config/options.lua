@@ -23,7 +23,8 @@ opt.fillchars:append({ eob = " " })
 
 -- etc
 opt.encoding = "UTF-8"
-opt.cmdheight = 1
+-- ui2 owns cmdline; reclaim the row.
+opt.cmdheight = 0
 -- Set before lualine to avoid dashboard height shift on startup.
 opt.laststatus = 3
 opt.scrolloff = 10

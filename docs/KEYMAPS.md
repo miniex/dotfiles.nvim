@@ -124,13 +124,14 @@ Bare `nvim` (no args, no stdin) auto-restores cwd session.
 | `gd` / `gr` / `gi`          | Definition / references / implementation                           |
 | `<leader>rn`                | Rename                                                             |
 | `<leader>cc` / `<leader>ca` | Diagnostics float / code action                                    |
-| `<leader>ci`                | Toggle inlay hints                                                 |
+| `<leader>ci` / `<leader>uh` | Toggle inlay hints (alias)                                         |
 | `<leader>cd` / `<leader>cl` | Toggle inline diagnostic / `virtual_lines`                         |
+| `<leader>cM`                | Toggle multi-diagnostic on cursorline                              |
 | `<leader>cL`                | Run CodeLens (rust-analyzer, gopls, elixir-ls, ocamllsp, jdtls, …) |
 | `<leader>cO` / `<leader>cN` | Aerial: outline / outline nav                                      |
 | `[o` / `]o`                 | Aerial: previous / next symbol                                     |
 | `<leader>cm`                | Open Mason                                                         |
-| `<leader>xx/xd/xs/xq/xl`    | Trouble: diagnostics / buf / symbols / qf / loclist                |
+| `<leader>xx/xd/xq/xl`       | Trouble: diagnostics / buf / qf / loclist                          |
 | `<leader>xQ` / `<leader>xL` | quicker.nvim: editable quickfix / loclist (`>`/`<` expand context) |
 | `<leader>xt` / `<leader>xT` | Trouble: TODOs / TODO+FIX+FIXME                                    |
 | `[q` / `]q`                 | Prev / next item (Trouble + qf fallback)                           |
@@ -266,5 +267,6 @@ In the toggle terminal, `$EDITOR`/`$VISUAL`/`$GIT_EDITOR` forward to the parent 
 
 ## Misc
 
+- **Open URL** (`gx`, n/v): `vim.ui.open()` on link / path under cursor.
 - **Hex** (`xxd`): `:HexToggle`, `:HexDump`, `:HexAssemble`, or `nvim -b <file>`.
 - **Completion** (insert): `<Tab>`/`<S-Tab>` next/prev · `<C-Space>` trigger · `<CR>` confirm · `<C-e>` close · `<C-f>`/`<C-S-f>` scroll docs. Menu columns: `label · source · kind`.

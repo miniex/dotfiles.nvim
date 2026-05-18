@@ -1,37 +1,40 @@
+-- Mutable for the <leader>cM toggle.
+local tiny_opts = {
+    preset = "modern",
+    transparent_bg = true,
+    options = {
+        show_source = { enabled = true, if_many = true },
+        use_icons_from_diagnostic = true,
+        multilines = {
+            enabled = true,
+            always_show = false,
+        },
+        show_all_diags_on_cursorline = false,
+        enable_on_insert = false,
+        overflow = { mode = "wrap" },
+        break_line = { enabled = true, after = 100 },
+        virt_texts = { priority = 2048 },
+    },
+    signs = {
+        left = "",
+        right = "",
+        diag = "●",
+        arrow = "    ",
+        up_arrow = "    ",
+        vertical = " │",
+        vertical_end = " └",
+    },
+    blend = {
+        factor = 0.22,
+    },
+}
+
 return {
     {
         "rachartier/tiny-inline-diagnostic.nvim",
         event = "LspAttach",
         priority = 1000,
-        opts = {
-            preset = "modern",
-            transparent_bg = true,
-            options = {
-                show_source = { enabled = true, if_many = true },
-                use_icons_from_diagnostic = true,
-                multilines = {
-                    enabled = true,
-                    always_show = false,
-                },
-                show_all_diags_on_cursorline = false,
-                enable_on_insert = false,
-                overflow = { mode = "wrap" },
-                break_line = { enabled = true, after = 100 },
-                virt_texts = { priority = 2048 },
-            },
-            signs = {
-                left = "",
-                right = "",
-                diag = "●",
-                arrow = "    ",
-                up_arrow = "    ",
-                vertical = " │",
-                vertical_end = " └",
-            },
-            blend = {
-                factor = 0.22,
-            },
-        },
+        opts = tiny_opts,
         config = function(_, opts)
             -- tiny-inline owns rendering; native virtual_text stays off.
             require("tiny-inline-diagnostic").setup(opts)
@@ -65,6 +68,17 @@ return {
                     vim.diagnostic.config({ virtual_lines = not enabled })
                 end,
                 desc = "Toggle Virtual Lines (multi-line diagnostics)",
+            },
+            {
+                "<leader>cM",
+                function()
+                    tiny_opts.options.show_all_diags_on_cursorline = not tiny_opts.options.show_all_diags_on_cursorline
+                    require("tiny-inline-diagnostic").setup(tiny_opts)
+                    vim.notify(
+                        "All diagnostics on cursorline: " .. tostring(tiny_opts.options.show_all_diags_on_cursorline)
+                    )
+                end,
+                desc = "Toggle multi-diagnostic on cursorline",
             },
             -- Severity-filtered jumps. ]d/[d still cycles all severities.
             {
