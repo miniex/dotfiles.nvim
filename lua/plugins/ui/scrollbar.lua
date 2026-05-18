@@ -12,13 +12,14 @@ return {
                 blend = 50,
             },
             marks = {
+                -- Diagnostic/Search/Misc handlers index text[1] — wrap in array.
                 Cursor = { text = "♥", color = "#E890B0" },
-                Search = { text = "★", color = "#E890B0" },
-                Error = { text = "●", color = "#E890B0" },
-                Warn = { text = "◆", color = "#E890B0" },
-                Info = { text = "•", color = "#98ABCC" },
-                Hint = { text = "·", color = "#98ABCC" },
-                Misc = { text = "•", color = "#98ABCC" },
+                Search = { text = { "★" }, color = "#E890B0" },
+                Error = { text = { "●" }, color = "#E890B0" },
+                Warn = { text = { "◆" }, color = "#E890B0" },
+                Info = { text = { "•" }, color = "#98ABCC" },
+                Hint = { text = { "·" }, color = "#98ABCC" },
+                Misc = { text = { "•" }, color = "#98ABCC" },
                 GitAdd = { text = "▐", color = "#A8DBB6" }, -- mint
                 GitChange = { text = "▐", color = "#E890B0" }, -- pink
                 GitDelete = { text = "▁", color = "#D8788C" }, -- rose

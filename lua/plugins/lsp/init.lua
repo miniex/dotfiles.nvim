@@ -42,6 +42,11 @@ return {
             start_delay = 3000,
             debounce_hours = 24,
         },
+        -- Plugin's VimEnter autocmd fires before VeryLazy loads us; kick off install manually.
+        config = function(_, opts)
+            require("mason-tool-installer").setup(opts)
+            require("mason-tool-installer").run_on_start()
+        end,
     },
     {
         "neovim/nvim-lspconfig",
