@@ -69,10 +69,25 @@ return {
             mapping_options = { noremap = true, nowait = true },
             mappings = {
                 ["<space>"] = "none",
-                ["<cr>"] = "open_tabnew",
-                ["l"] = "open_tabnew",
+                ["<cr>"] = "open_tabnew_float",
+                ["l"] = "open_tabnew_float",
                 ["h"] = "close_node",
             },
+        },
+
+        -- Workaround for neo-tree utils/init.lua:854 invalid-winid in float mode.
+        commands = {
+            open_tabnew_float = function(state)
+                local node = state.tree:get_node()
+                if require("neo-tree.utils").is_expandable(node) then
+                    return require("neo-tree.sources.common.commands").toggle_node(
+                        state,
+                        require("neo-tree.sources.filesystem").toggle_directory
+                    )
+                end
+                require("neo-tree.command").execute({ action = "close" })
+                vim.cmd("tabnew " .. vim.fn.fnameescape(node:get_id()))
+            end,
         },
 
         filesystem = {
