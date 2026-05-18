@@ -299,6 +299,31 @@ return {
             desc = "Delete Buffer",
         },
         {
+            "<leader>bd",
+            function()
+                if vim.bo.modified then
+                    local choice =
+                        vim.fn.confirm(("Save changes to %q?"):format(vim.fn.bufname()), "&Yes\n&No\n&Cancel")
+                    if choice == 1 then
+                        vim.cmd.write()
+                        Snacks.bufdelete()
+                    elseif choice == 2 then
+                        Snacks.bufdelete({ force = true })
+                    end
+                else
+                    Snacks.bufdelete()
+                end
+            end,
+            desc = "Delete Buffer (confirm if modified)",
+        },
+        {
+            "<leader>bD",
+            function()
+                Snacks.bufdelete({ force = true })
+            end,
+            desc = "Delete Buffer (force)",
+        },
+        {
             "<leader>t",
             function()
                 Snacks.terminal.toggle(nil, { env = TERM_ENV })
@@ -320,29 +345,30 @@ return {
             end,
             desc = "Notification History",
         },
+        -- Profiler under <leader>P* to free <leader>p (paste in visual).
         {
-            "<leader>pp",
+            "<leader>Pp",
             function()
                 Snacks.profiler.toggle()
             end,
             desc = "Profiler Toggle",
         },
         {
-            "<leader>ps",
+            "<leader>Ps",
             function()
                 Snacks.profiler.scratch()
             end,
             desc = "Profiler Scratch Buffer",
         },
         {
-            "<leader>pf",
+            "<leader>Pf",
             function()
                 Snacks.profiler.pick()
             end,
             desc = "Profiler Pick",
         },
         {
-            "<leader>ph",
+            "<leader>Ph",
             function()
                 Snacks.profiler.highlights()
             end,

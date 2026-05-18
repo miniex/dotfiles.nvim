@@ -84,20 +84,21 @@ Inside the grug-far buffer: `<localleader>r` replace, `<localleader>s` sync to d
 
 | Key          | Mode | Description                          |
 | ------------ | ---- | ------------------------------------ |
-| `<leader>S`  | n    | Open at project root                 |
-| `<leader>S`  | v    | Open with visual selection prefilled |
-| `<leader>cs` | n    | Scoped to current file               |
+| `<leader>rr` | n    | Open at project root                 |
+| `<leader>rR` | v    | Open with visual selection prefilled |
+| `<leader>rf` | n    | Scoped to current file               |
 
 ## Session (persistence.nvim)
 
 Bare `nvim` (no args, no stdin) auto-restores cwd session.
 
-| Key          | Description              |
-| ------------ | ------------------------ |
-| `<leader>qs` | Restore session for cwd  |
-| `<leader>qS` | Select session from list |
-| `<leader>ql` | Restore last session     |
-| `<leader>qd` | Don't save on exit       |
+| Key          | Description                 |
+| ------------ | --------------------------- |
+| `<leader>qs` | Restore session for cwd     |
+| `<leader>qS` | Select session from list    |
+| `<leader>ql` | Restore last session        |
+| `<leader>qd` | Don't save on exit          |
+| `<leader>qR` | Restart Neovim (`:restart`) |
 
 ## Profiler (snacks.nvim)
 
@@ -105,16 +106,17 @@ Bare `nvim` (no args, no stdin) auto-restores cwd session.
 
 | Key          | Description                |
 | ------------ | -------------------------- |
-| `<leader>pp` | Toggle profiler            |
-| `<leader>ps` | Profiler scratch buffer    |
-| `<leader>pf` | Pick captured frame        |
-| `<leader>ph` | Toggle profiler highlights |
+| `<leader>Pp` | Toggle profiler            |
+| `<leader>Ps` | Profiler scratch buffer    |
+| `<leader>Pf` | Pick captured frame        |
+| `<leader>Ph` | Toggle profiler highlights |
 
 ## LSP / Diagnostics
 
 > Neovim 0.11+ also auto-binds `grr`/`gri`/`grn`/`gra`/`gK`/`gO` on `LspAttach`.
 >
 > Severity-sorted; gutter signs `✗`/`!`/`i`/`?` mirror lualine. Floats: rounded border, source when ambiguous.
+> nvim-lightbulb: `❋` sign when a code action is available.
 
 | Key                         | Description                                                        |
 | --------------------------- | ------------------------------------------------------------------ |
@@ -132,6 +134,9 @@ Bare `nvim` (no args, no stdin) auto-restores cwd session.
 | `<leader>xQ` / `<leader>xL` | quicker.nvim: editable quickfix / loclist (`>`/`<` expand context) |
 | `<leader>xt` / `<leader>xT` | Trouble: TODOs / TODO+FIX+FIXME                                    |
 | `[q` / `]q`                 | Prev / next item (Trouble + qf fallback)                           |
+| `[d` / `]d`                 | Prev / next diagnostic (any severity)                              |
+| `[e` / `]e`                 | Prev / next **error** only                                         |
+| `[W` / `]W`                 | Prev / next **warning** only                                       |
 | `[t` / `]t`                 | Prev / next TODO comment                                           |
 
 ## Treesitter Textobjects & Context
@@ -161,6 +166,18 @@ Bare `nvim` (no args, no stdin) auto-restores cwd session.
 | `<leader>uU`                | n     | Toggle undotree                    |
 | `<leader>uz` / `<leader>uZ` | n     | Snacks zen / zen zoom              |
 | `[x`                        | n     | Jump to context start              |
+
+## Folding (treesitter)
+
+`foldexpr = vim.treesitter.foldexpr()`, `foldlevelstart = 99` — files open fully unfolded; fold on demand.
+
+| Key         | Description                    |
+| ----------- | ------------------------------ |
+| `zc` / `zo` | Close / open fold under cursor |
+| `zC` / `zO` | Close / open recursively       |
+| `za`        | Toggle fold                    |
+| `zR` / `zM` | Open / close **all** folds     |
+| `zj` / `zk` | Move to next / prev fold       |
 
 ## Winbar Breadcrumb (dropbar)
 
@@ -228,17 +245,17 @@ Python (pytest), Go (gotestsum), Elixir (mix), C/C++ (gtest). Rust uses `:RustLs
 
 In the toggle terminal, `$EDITOR`/`$VISUAL`/`$GIT_EDITOR` forward to the parent Neovim via `scripts/term-bin/nvim` — `git commit` opens a split in the outer instance.
 
-| Key                             | Description                                 |
-| ------------------------------- | ------------------------------------------- |
-| `<leader>t` (n/t)               | Toggle terminal (centered float)            |
-| `<C-x>`                         | Hide terminal                               |
-| `<leader>w`                     | Smart buffer delete (last file → dashboard) |
-| `<leader>bd` / `<leader>bD`     | mini.bufremove: delete / force-delete       |
-| `<leader>.` / `<leader>bS`      | Snacks scratch: toggle / select buffer      |
-| `<leader>1` … `<leader>9`       | Jump to bufferline position                 |
-| `[b` / `]b` · `<S-h>` / `<S-l>` | Prev / next buffer (open-order)             |
-| `<leader>cn` / `<leader>un`     | Notification history / dismiss all          |
-| `]]` / `[[`                     | LSP word: next / previous reference         |
+| Key                             | Description                                   |
+| ------------------------------- | --------------------------------------------- |
+| `<leader>t` (n/t)               | Toggle terminal (centered float)              |
+| `<C-x>`                         | Hide terminal                                 |
+| `<leader>w`                     | Smart buffer delete (last file → dashboard)   |
+| `<leader>bd` / `<leader>bD`     | Snacks.bufdelete: confirm-on-modified / force |
+| `<leader>.` / `<leader>bS`      | Snacks scratch: toggle / select buffer        |
+| `<leader>1` … `<leader>9`       | Jump to bufferline position                   |
+| `[b` / `]b` · `<S-h>` / `<S-l>` | Prev / next buffer (open-order)               |
+| `<leader>cn` / `<leader>un`     | Notification history / dismiss all            |
+| `]]` / `[[`                     | LSP word: next / previous reference           |
 
 ## Language-specific
 

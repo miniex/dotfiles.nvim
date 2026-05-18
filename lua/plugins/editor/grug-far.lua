@@ -3,14 +3,14 @@ return {
     cmd = { "GrugFar", "GrugFarWithin" },
     keys = {
         {
-            "<leader>S",
+            "<leader>rr",
             function()
                 require("grug-far").open()
             end,
             desc = "Search & Replace (grug-far)",
         },
         {
-            "<leader>S",
+            "<leader>rR",
             function()
                 require("grug-far").with_visual_selection()
             end,
@@ -18,7 +18,7 @@ return {
             desc = "Search & Replace selection (grug-far)",
         },
         {
-            "<leader>cs",
+            "<leader>rf",
             function()
                 require("grug-far").open({ prefills = { paths = vim.fn.expand("%") } })
             end,

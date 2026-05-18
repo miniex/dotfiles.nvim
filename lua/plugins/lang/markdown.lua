@@ -19,8 +19,13 @@ return {
             "nvim-tree/nvim-web-devicons",
         },
         opts = {
+            -- Hover/docs popups inherit markdown filetype; rendering picks them up.
             file_types = { "markdown", "mdx" },
             render_modes = { "n", "c", "t" },
+            completions = {
+                lsp = { enabled = true },
+                blink = { enabled = true },
+            },
             anti_conceal = { enabled = true },
             heading = {
                 sign = false,

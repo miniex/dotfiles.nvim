@@ -60,17 +60,10 @@ return {
             flower_border[7] = "✿"
             vim.g.flower_border = flower_border
 
+            -- Sign/virtual_text owned by diagnostic-ui.lua (tiny-inline).
             local diagnostic = vim.diagnostic
             diagnostic.config({
                 virtual_text = false,
-                signs = {
-                    text = {
-                        [diagnostic.severity.ERROR] = "󰅚 ",
-                        [diagnostic.severity.WARN] = "󰀪 ",
-                        [diagnostic.severity.HINT] = "󰌶 ",
-                        [diagnostic.severity.INFO] = "󰋽 ",
-                    },
-                },
                 update_in_insert = false,
                 underline = true,
                 severity_sort = true,

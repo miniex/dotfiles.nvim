@@ -15,7 +15,7 @@ Lean, fast, easy on the eyes. Native LSP via `lsp/<server>.lua` discovery, Rust-
 - **Completion** — blink.cmp (Rust fuzzy), inlay hints suppressed during insert, tiny-inline-diagnostic
 - **Treesitter** — `main` branch + textobjects, sticky context, ts-autotag, ts-context-commentstring
 - **Pickers** — fff.nvim (Rust file finder) + snacks.picker (grep/buffers/recent) + fzf-lua (git/lsp/lines/snippets)
-- **Editor** — neo-tree (floating), flash, trouble, which-key, todo-comments, dropbar, mini.surround, persistence (auto-restores on bare `nvim`), aerial, harpoon v2, grug-far, **quicker.nvim** (editable quickfix), **multicursor.nvim**, 0.12 built-in `:Undotree`, nvim-bqf, nvim-colorizer, git-conflict
+- **Editor** — neo-tree (floating), flash, trouble, which-key, todo-comments, dropbar, mini.surround, persistence (auto-restores on bare `nvim`), aerial, harpoon v2, grug-far, **quicker.nvim** (editable quickfix), **multicursor.nvim**, 0.12 built-in `:Undotree`, nvim-bqf, nvim-colorizer, git-conflict, nvim-lightbulb (code-action sign)
 - **Modal floats** — big floating UIs (pickers / terminal / lazy / mason / harpoon / neo-tree) are mutually exclusive; hover, completion, signature, and notifications stack freely on top
 - **snacks.nvim** — picker, profiler, terminal, dashboard, statuscolumn, notifier, indent, scroll, dim, image, bigfile, scratch, zen, gitbrowse, rename (LSP-aware)
 - **Markdown** — render-markdown.nvim inline rendering of headings / lists / tables / code
@@ -110,7 +110,7 @@ Leader: `<Space>`. Full reference: [docs/KEYMAPS.md](docs/KEYMAPS.md).
 | `<leader>w`                 | Smart buffer delete             |
 | `<S-h>` / `<S-l>`           | Previous / next buffer          |
 | `<leader>t`                 | Toggle terminal                 |
-| `<leader>S`                 | Search & replace (grug-far)     |
+| `<leader>rr`                | Search & replace (grug-far)     |
 | `K` / `gd` / `gr`           | Hover / definition / references |
 | `<leader>ca` / `<leader>rn` | Code action / rename            |
 | `<leader>gg`                | LazyGit                         |
@@ -152,7 +152,7 @@ PRs welcome. Before opening: `./tools/format.sh` + `./tools/lint.sh` must pass c
 | Mason tools missing      | `:MasonToolsUpdate`, then `:Mason`                                               |
 | `<leader>ff` not working | `:Lazy build fff.nvim` (Rust toolchain)                                          |
 | ui2 cmdline glitches     | `vim.g.disable_ui2 = true` in `globals.lua`                                      |
-| Profiling startup        | `PROF=1 nvim`, then `<leader>pp` / `<leader>pf`                                  |
+| Profiling startup        | `PROF=1 nvim`, then `<leader>Pp` / `<leader>Pf`                                  |
 | Treesitter errors        | `:checkhealth nvim-treesitter`; `tree-sitter --version` ≥ 0.26.1 (not npm)       |
 | Theme not updating       | `rm -rf ~/.cache/nvim/catppuccin` and restart                                    |
 

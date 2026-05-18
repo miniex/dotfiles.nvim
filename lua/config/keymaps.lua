@@ -76,6 +76,8 @@ map("<leader>uU", function()
     vim.cmd("Undotree")
 end, "n", "Toggle undotree")
 
+map("<leader>qR", "<cmd>restart<cr>", "n", "Restart Neovim")
+
 -- buffer navigation (bufferline order)
 for i = 1, 9 do
     map("<leader>" .. i, ":BufferLineGoToBuffer " .. i .. "<CR>", "n", "Go to buffer " .. i)

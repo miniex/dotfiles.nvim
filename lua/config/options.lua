@@ -31,6 +31,14 @@ opt.mouse:append("a")
 opt.autoread = true
 opt.undofile = true
 
+-- folding: treesitter expr, start fully expanded (zc/zo to fold/unfold).
+opt.foldmethod = "expr"
+opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
+opt.foldtext = ""
+opt.foldlevel = 99
+opt.foldlevelstart = 99
+opt.foldenable = true
+
 -- ui2: native floating cmdline/msg (0.12+). `vim.g.disable_ui2=true` to opt out.
 if not vim.g.disable_ui2 then
     local ok, ui2 = pcall(require, "vim._core.ui2")

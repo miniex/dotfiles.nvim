@@ -66,6 +66,35 @@ return {
                 end,
                 desc = "Toggle Virtual Lines (multi-line diagnostics)",
             },
+            -- Severity-filtered jumps. ]d/[d still cycles all severities.
+            {
+                "]e",
+                function()
+                    vim.diagnostic.jump({ count = 1, severity = vim.diagnostic.severity.ERROR })
+                end,
+                desc = "Next Error",
+            },
+            {
+                "[e",
+                function()
+                    vim.diagnostic.jump({ count = -1, severity = vim.diagnostic.severity.ERROR })
+                end,
+                desc = "Prev Error",
+            },
+            {
+                "]W",
+                function()
+                    vim.diagnostic.jump({ count = 1, severity = vim.diagnostic.severity.WARN })
+                end,
+                desc = "Next Warning",
+            },
+            {
+                "[W",
+                function()
+                    vim.diagnostic.jump({ count = -1, severity = vim.diagnostic.severity.WARN })
+                end,
+                desc = "Prev Warning",
+            },
         },
     },
 }
