@@ -41,8 +41,7 @@ return {
                 symbol = "✿",
                 highlight = "NeoTreeModified",
             },
-            -- Mirror fish-theme-damin's git glyphs (Dingbats only, no nerd-font
-            -- dependency): ✓ staged, ✗ modified/deleted, ? untracked, ⇣ unstaged.
+            -- Dingbats only — mirrors fish-theme-damin, no nerd-font dependency.
             git_status = {
                 symbols = {
                     added = "✓",
@@ -58,8 +57,6 @@ return {
             },
         },
 
-        -- Floating window: opens centered as a popup, auto-closes on file
-        -- open. No sidebar, no bufferline offset, no main-window juggling.
         window = {
             position = "float",
             popup = {
@@ -75,14 +72,16 @@ return {
             },
         },
 
-        -- Workaround for neo-tree utils/init.lua:854 invalid-winid in float mode.
+        -- Float mode: neo-tree's open commands hit invalid winid; close + tabnew instead.
         commands = {
             open_tabnew_float = function(state)
+                local utils = require("neo-tree.utils")
                 local node = state.tree:get_node()
-                if require("neo-tree.utils").is_expandable(node) then
+                if utils.is_expandable(node) then
+                    local fs = require("neo-tree.sources.filesystem")
                     return require("neo-tree.sources.common.commands").toggle_node(
                         state,
-                        require("neo-tree.sources.filesystem").toggle_directory
+                        utils.wrap(fs.toggle_directory, state)
                     )
                 end
                 require("neo-tree.command").execute({ action = "close" })
