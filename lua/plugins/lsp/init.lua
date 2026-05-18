@@ -158,19 +158,6 @@ return {
                 end
             end
 
-            -- Re-fire FileType for buffers loaded before config ran.
-            -- pcall: runtime ftplugins (e.g. markdown) may assert before parsers install.
-            vim.schedule(function()
-                for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-                    if vim.api.nvim_buf_is_loaded(buf) and vim.bo[buf].buftype == "" then
-                        local ft = vim.bo[buf].filetype
-                        if ft and ft ~= "" then
-                            pcall(vim.api.nvim_exec_autocmds, "FileType", { buffer = buf, modeline = false })
-                        end
-                    end
-                end
-            end)
-
             vim.api.nvim_create_autocmd("VimEnter", {
                 once = true,
                 callback = function()

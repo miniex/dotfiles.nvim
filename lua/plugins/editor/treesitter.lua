@@ -134,10 +134,17 @@ return {
                 end
             end
 
+            -- Only fire when the parser is loadable; runtime markdown ftplugin asserts otherwise.
             local function attach_all()
                 for _, buf in ipairs(vim.api.nvim_list_bufs()) do
                     if vim.api.nvim_buf_is_loaded(buf) then
-                        pcall(vim.api.nvim_exec_autocmds, "FileType", { buffer = buf, modeline = false })
+                        local ft = vim.bo[buf].filetype
+                        if ft and ft ~= "" then
+                            local lang = vim.treesitter.language.get_lang(ft) or ft
+                            if pcall(vim.treesitter.language.add, lang) then
+                                pcall(vim.api.nvim_exec_autocmds, "FileType", { buffer = buf, modeline = false })
+                            end
+                        end
                     end
                 end
             end
