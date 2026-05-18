@@ -28,6 +28,7 @@ opt.cmdheight = 0
 -- Set before lualine to avoid dashboard height shift on startup.
 opt.laststatus = 3
 opt.scrolloff = 10
+opt.smoothscroll = true
 opt.mouse:append("a")
 opt.autoread = true
 opt.undofile = true
