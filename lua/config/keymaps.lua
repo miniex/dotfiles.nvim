@@ -64,8 +64,7 @@ map(">", ">gv", "v", "Indent (keep selection)")
 map("<leader>s", ":w<CR>", "n", "Save file")
 
 -- delete without yank (D, not d: <leader>d is dap)
-map("<leader>D", '"_d', "n", "Delete (no yank)")
-map("<leader>D", '"_d', "x", "Delete (no yank)")
+map("<leader>D", '"_d', { "n", "x" }, "Delete (no yank)")
 
 -- paste without yank
 map("<leader>p", '"_dP', "x", "Paste over (no yank)")

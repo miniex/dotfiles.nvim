@@ -33,7 +33,6 @@ return {
     {
         "rachartier/tiny-inline-diagnostic.nvim",
         event = "LspAttach",
-        priority = 1000,
         opts = tiny_opts,
         config = function(_, opts)
             -- tiny-inline owns rendering; native virtual_text stays off.

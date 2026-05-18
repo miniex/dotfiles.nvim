@@ -155,8 +155,16 @@ return {
             return math.min(1, bump(0.15, 0.06) + 0.7 * bump(0.40, 0.07))
         end
 
+        -- Plugin reload would stack pulse writers on ScrollbarCursor; stop the prior timer first.
+        if _G._scrollbar_pulse_timer then
+            pcall(function()
+                _G._scrollbar_pulse_timer:stop()
+                _G._scrollbar_pulse_timer:close()
+            end)
+        end
         local pulse_start = vim.uv.hrtime() / 1e6
         local pulse_timer = vim.uv.new_timer()
+        _G._scrollbar_pulse_timer = pulse_timer
         pulse_timer:start(
             0,
             pulse_frame_ms,
@@ -259,7 +267,10 @@ return {
         set_handle(idle_color)
         apply_mark_hl()
 
+        local scrollbar_group = vim.api.nvim_create_augroup("ScrollbarDaminEvents", { clear = true })
+
         vim.api.nvim_create_autocmd("CursorMoved", {
+            group = scrollbar_group,
             callback = function(event)
                 poke_handle()
                 animate_cursor(event.buf, vim.fn.line(".") - 1)
@@ -268,6 +279,7 @@ return {
 
         -- Insert mode fires per keystroke; skip animation to keep typing snappy.
         vim.api.nvim_create_autocmd("CursorMovedI", {
+            group = scrollbar_group,
             callback = function(event)
                 poke_handle()
                 snap_cursor(event.buf, vim.fn.line(".") - 1)
@@ -275,6 +287,7 @@ return {
         })
 
         vim.api.nvim_create_autocmd("WinScrolled", {
+            group = scrollbar_group,
             callback = function()
                 poke_handle()
             end,
@@ -282,6 +295,7 @@ return {
 
         -- Snap on context switch — no animation continuity across buffers/windows.
         vim.api.nvim_create_autocmd({ "BufEnter", "WinEnter" }, {
+            group = scrollbar_group,
             callback = function(event)
                 if vim.api.nvim_buf_is_valid(event.buf) then
                     snap_cursor(event.buf, vim.fn.line(".") - 1)
@@ -290,12 +304,14 @@ return {
         })
 
         vim.api.nvim_create_autocmd("BufWipeout", {
+            group = scrollbar_group,
             callback = function(event)
                 displayed_lines[event.buf] = nil
             end,
         })
 
         vim.api.nvim_create_autocmd("ColorScheme", {
+            group = scrollbar_group,
             callback = function()
                 set_handle(current_color)
                 apply_mark_hl()

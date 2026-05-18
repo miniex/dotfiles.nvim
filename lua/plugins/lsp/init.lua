@@ -38,11 +38,11 @@ return {
         opts = {
             ensure_installed = enabled_servers(),
             auto_update = false,
-            run_on_start = true,
+            -- VeryLazy is post-VimEnter; we trigger run_on_start() manually below.
+            run_on_start = false,
             start_delay = 3000,
             debounce_hours = 24,
         },
-        -- Plugin's VimEnter autocmd fires before VeryLazy loads us; kick off install manually.
         config = function(_, opts)
             require("mason-tool-installer").setup(opts)
             require("mason-tool-installer").run_on_start()
@@ -141,8 +141,9 @@ return {
 
             -- mason bin → PATH before checking executable (mason loads lazy).
             local mason_bin = vim.fn.stdpath("data") .. "/mason/bin"
-            if not vim.env.PATH:find(mason_bin, 1, true) then
-                vim.env.PATH = mason_bin .. ":" .. vim.env.PATH
+            local current_path = vim.env.PATH or ""
+            if not current_path:find(mason_bin, 1, true) then
+                vim.env.PATH = mason_bin .. ":" .. current_path
             end
 
             local function cmd_executable(cmd)
@@ -164,6 +165,7 @@ return {
             end
 
             vim.api.nvim_create_autocmd("VimEnter", {
+                group = vim.api.nvim_create_augroup("MasonLspconfigBootstrap", { clear = true }),
                 once = true,
                 callback = function()
                     vim.schedule(function()

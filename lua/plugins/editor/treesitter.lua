@@ -165,7 +165,7 @@ return {
             if #missing > 0 then
                 vim.schedule(function()
                     ts.install(missing)
-                    -- Re-fire FileType for loaded buffers as parsers finish installing
+                    -- Re-fire FileType as parsers finish installing; pcall so a throw can't leak the timer.
                     local attempts = 0
                     local timer = assert(vim.uv.new_timer())
                     timer:start(
@@ -173,7 +173,7 @@ return {
                         2000,
                         vim.schedule_wrap(function()
                             attempts = attempts + 1
-                            attach_all()
+                            pcall(attach_all)
                             if attempts >= 15 then
                                 timer:stop()
                                 timer:close()

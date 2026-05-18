@@ -13,6 +13,7 @@ return {
             end
             check()
             vim.api.nvim_create_autocmd("DirChanged", {
+                group = vim.api.nvim_create_augroup("CmakeToolsLazyLoad", { clear = true }),
                 callback = function()
                     if not loaded then
                         check()
