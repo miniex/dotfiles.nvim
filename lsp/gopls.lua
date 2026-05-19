@@ -13,16 +13,18 @@ return {
                 vendor = true,
             },
             hints = {
-                assignVariableTypes = true,
-                compositeLiteralFields = true,
-                compositeLiteralTypes = true,
+                -- Noisy in dense files; <leader>ci toggles all inlay hints.
+                assignVariableTypes = false,
+                compositeLiteralFields = false,
+                compositeLiteralTypes = false,
                 constantValues = true,
                 functionTypeParameters = true,
                 parameterNames = true,
-                rangeVariableTypes = true,
+                rangeVariableTypes = false,
             },
             analyses = {
-                fieldalignment = true,
+                -- Multi-second on large repos; use code-action on demand.
+                fieldalignment = false,
                 nilness = true,
                 unusedparams = true,
                 unusedwrite = true,

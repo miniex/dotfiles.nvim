@@ -19,8 +19,8 @@ Lean, fast, easy on the eyes. Native LSP via `lsp/<server>.lua` discovery, Rust-
 - **Modal floats** — big floating UIs (pickers / terminal / lazy / mason / harpoon / neo-tree) are mutually exclusive; hover, completion, signature, and notifications stack freely on top
 - **snacks.nvim** — picker, profiler, terminal, dashboard, statuscolumn, notifier, indent, scroll, dim, image, bigfile, scratch, zen, gitbrowse, rename (LSP-aware)
 - **Markdown** — render-markdown.nvim inline rendering of headings / lists / tables / code
-- **Tooling** — nvim-lint (250ms debounced), mason-tool-installer, DAP (Rust/C-C++/Python/Go) with persistent breakpoints, neotest (Python/Go/Elixir/C++)
-- **UI** — Catppuccin Mocha retoned to a 2-color damin palette (`#98ABCC` / `#E890B0`) mirroring [`fish-theme-damin`](https://github.com/miniex/fish-theme-damin) + [`dotfiles.kitty`](https://github.com/miniex/dotfiles.kitty) + [`dotfiles.tmux`](https://github.com/miniex/dotfiles.tmux). lualine: `✧ … ⋆` sparkle bookends, `✿` mode glyph (swaps to `✎` in visual / operator-pending, briefly `✦` on mode change). bufferline: pink → mid → blue 3-stop gradient, `♡` on harpoon-pinned. incline: `⌬` when window is zoomed (alone in tabpage). modicator: `✿` sign on the current line in mode color. LSP hover / signature / diagnostic floats use a flower-cornered border (`✿─✿│✿─✿│`). flash labels in damin pink. nvim-scrollbar: ♥ cursor mark slides smoothly between rows on jumps and continuously heartbeat-pulses, handle fades vivid → muted after idle, git triad in mint/pink/rose. Plus edgy (sidebar layout), smear-cursor, fidget
+- **Tooling** — nvim-lint (per-buffer 250ms debounce, skips run if you switched away), mason-tool-installer, DAP (Rust/C-C++/Python/Go) with persistent breakpoints, neotest (Python/Go/Elixir/C++)
+- **UI** — Catppuccin Mocha retoned to a 2-color damin palette (`#98ABCC` / `#E890B0`) mirroring [`fish-theme-damin`](https://github.com/miniex/fish-theme-damin) + [`dotfiles.kitty`](https://github.com/miniex/dotfiles.kitty) + [`dotfiles.tmux`](https://github.com/miniex/dotfiles.tmux). lualine: `✧ … ⋆` sparkle bookends, `✿` mode glyph (swaps to `✎` in visual / operator-pending, briefly `✦` on mode change). bufferline: pink → mid → blue 3-stop gradient, `♡` on harpoon-pinned. incline: `⌬` when window is zoomed (alone in tabpage). modicator: `✿` sign on the current line in mode color. LSP hover / signature / diagnostic floats use a flower-cornered border (`✿─✿│✿─✿│`). flash labels in damin pink. nvim-scrollbar: ♥ cursor mark slides smoothly between rows on jumps and heartbeat-pulses while focused (paused on `FocusLost` to save ~20Hz of `nvim_set_hl`), handle fades vivid → muted after idle, git triad in mint/pink/rose. Plus edgy (sidebar layout), smear-cursor, fidget
 - **Git** — gitsigns, fugitive, lazygit, diffview, **gitgraph.nvim** (in-buffer branch graph)
 - **WSL2** clipboard bridge via `clip.exe`
 
@@ -148,8 +148,9 @@ PRs welcome. Before opening: `./tools/format.sh` + `./tools/lint.sh` must pass c
 | ------------------------ | -------------------------------------------------------------------------------- |
 | LSP not attaching        | `:Mason`, `:LspInfo`, `:LspLog`                                                  |
 | LSP settings not applied | `lsp/<server>.lua` exists; server is in `lang_servers.lua` under an enabled lang |
-| Lint not running         | linter on `$PATH`, see `lua/plugins/lsp/lint.lua` (250ms debounced)              |
+| Lint not running         | linter on `$PATH`, see `lua/plugins/lsp/lint.lua` (per-buffer 250ms debounce)    |
 | Mason tools missing      | `:MasonToolsUpdate`, then `:Mason`                                               |
+| Python debug fails       | `:MasonInstall debugpy` — `nvim-dap-python` warns and skips setup if missing     |
 | `<leader>ff` not working | `:Lazy build fff.nvim` (Rust toolchain)                                          |
 | ui2 cmdline glitches     | `vim.g.disable_ui2 = true` in `globals.lua`                                      |
 | Profiling startup        | `PROF=1 nvim`, then `<leader>Pp` / `<leader>Pf`                                  |

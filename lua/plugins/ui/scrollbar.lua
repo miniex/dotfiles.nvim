@@ -161,21 +161,36 @@ return {
                 _G._scrollbar_pulse_timer:stop()
                 _G._scrollbar_pulse_timer:close()
             end)
+            _G._scrollbar_pulse_timer = nil
         end
+
         local pulse_start = vim.uv.hrtime() / 1e6
-        local pulse_timer = vim.uv.new_timer()
-        _G._scrollbar_pulse_timer = pulse_timer
-        pulse_timer:start(
-            0,
-            pulse_frame_ms,
-            vim.schedule_wrap(function()
-                local now = vim.uv.hrtime() / 1e6
-                local t = ((now - pulse_start) % heart_period_ms) / heart_period_ms
-                local c = lerp_color(heart_dim, heart_bright, heartbeat_curve(t))
-                vim.api.nvim_set_hl(0, "ScrollbarCursor", { fg = c })
-                vim.api.nvim_set_hl(0, "ScrollbarCursorHandle", { fg = c })
-            end)
-        )
+        local pulse_timer
+        local function pulse_tick()
+            local now = vim.uv.hrtime() / 1e6
+            local t = ((now - pulse_start) % heart_period_ms) / heart_period_ms
+            local c = lerp_color(heart_dim, heart_bright, heartbeat_curve(t))
+            vim.api.nvim_set_hl(0, "ScrollbarCursor", { fg = c })
+            vim.api.nvim_set_hl(0, "ScrollbarCursorHandle", { fg = c })
+        end
+        local function start_pulse()
+            if pulse_timer then
+                return
+            end
+            pulse_start = vim.uv.hrtime() / 1e6 -- reset phase
+            pulse_timer = vim.uv.new_timer()
+            _G._scrollbar_pulse_timer = pulse_timer
+            pulse_timer:start(0, pulse_frame_ms, vim.schedule_wrap(pulse_tick))
+        end
+        local function stop_pulse()
+            if pulse_timer then
+                pulse_timer:stop()
+                pulse_timer:close()
+                pulse_timer = nil
+                _G._scrollbar_pulse_timer = nil
+            end
+        end
+        start_pulse()
 
         -- Cursor mark: lerps line position so the heart slides instead of teleporting.
         local scrollbar = require("scrollbar")
@@ -243,11 +258,18 @@ return {
             )
         end
 
+        -- 50ms throttle: avoid stop/new uv timer per keystroke.
+        local last_idle_arm_ms = 0
         local function poke_handle()
             fade_timer = stop(fade_timer)
             if current_color ~= active_color then
                 set_handle(active_color)
             end
+            local now = vim.uv.hrtime() / 1e6
+            if now - last_idle_arm_ms < 50 then
+                return
+            end
+            last_idle_arm_ms = now
             idle_timer = stop(idle_timer)
             local my_timer = vim.uv.new_timer()
             idle_timer = my_timer
@@ -315,6 +337,25 @@ return {
             callback = function()
                 set_handle(current_color)
                 apply_mark_hl()
+            end,
+        })
+
+        -- Pause pulse when unfocused (saves 20Hz of nvim_set_hl).
+        vim.api.nvim_create_autocmd("FocusLost", {
+            group = scrollbar_group,
+            callback = stop_pulse,
+        })
+        vim.api.nvim_create_autocmd("FocusGained", {
+            group = scrollbar_group,
+            callback = start_pulse,
+        })
+        vim.api.nvim_create_autocmd("VimLeavePre", {
+            group = scrollbar_group,
+            callback = function()
+                stop_pulse()
+                stop(fade_timer)
+                stop(idle_timer)
+                stop(move_timer)
             end,
         })
 

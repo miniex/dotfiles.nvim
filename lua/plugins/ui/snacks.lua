@@ -36,13 +36,24 @@ local function open_dashboard_if_empty(closing)
         end
     end
     for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
-        local b = vim.api.nvim_win_get_buf(win)
-        if vim.bo[b].buftype ~= "terminal" and not SIDEBAR_FT[vim.bo[b].filetype] then
-            vim.api.nvim_set_current_win(win)
-            break
+        if vim.api.nvim_win_is_valid(win) then
+            local b = vim.api.nvim_win_get_buf(win)
+            if
+                vim.api.nvim_buf_is_valid(b)
+                and vim.bo[b].buftype ~= "terminal"
+                and not SIDEBAR_FT[vim.bo[b].filetype]
+            then
+                vim.api.nvim_set_current_win(win)
+                break
+            end
         end
     end
-    Snacks.dashboard.open()
+    -- Guard in case Snacks setup failed.
+    ---@diagnostic disable-next-line: undefined-field
+    local S = _G.Snacks
+    if S and S.dashboard then
+        pcall(S.dashboard.open)
+    end
 end
 
 vim.api.nvim_create_autocmd("BufDelete", {

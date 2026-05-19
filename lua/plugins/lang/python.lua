@@ -5,6 +5,16 @@ return {
         dependencies = { "mfussenegger/nvim-dap" },
         config = function()
             local mason_path = vim.fn.stdpath("data") .. "/mason/packages/debugpy/venv/bin/python"
+            if vim.fn.executable(mason_path) ~= 1 then
+                vim.schedule(function()
+                    vim.notify(
+                        "debugpy not found at " .. mason_path .. "\nRun :MasonInstall debugpy",
+                        vim.log.levels.WARN,
+                        { title = "nvim-dap-python" }
+                    )
+                end)
+                return
+            end
             require("dap-python").setup(mason_path)
         end,
         keys = {

@@ -54,23 +54,40 @@ return {
             local lint = require("lint")
             lint.linters_by_ft = opts.linters_by_ft
 
-            -- Coalesce InsertLeave bursts into a single linter run.
-            local pending
+            -- Coalesce bursts, keyed per buffer.
+            local pending = {}
+            local group = vim.api.nvim_create_augroup("nvim-lint", { clear = true })
             vim.api.nvim_create_autocmd({ "BufWritePost", "BufReadPost", "InsertLeave" }, {
-                group = vim.api.nvim_create_augroup("nvim-lint", { clear = true }),
-                callback = function()
-                    -- Skip special buffers (neo-tree, dashboard, terminals, etc.)
-                    if vim.bo.buftype ~= "" then
+                group = group,
+                callback = function(args)
+                    local bufnr = args.buf
+                    if vim.bo[bufnr].buftype ~= "" then
                         return
                     end
-                    if pending and not pending:is_closing() then
-                        pending:stop()
-                        pending:close()
+                    local t = pending[bufnr]
+                    if t and not t:is_closing() then
+                        t:stop()
+                        t:close()
                     end
-                    pending = vim.defer_fn(function()
-                        pending = nil
-                        lint.try_lint()
+                    pending[bufnr] = vim.defer_fn(function()
+                        pending[bufnr] = nil
+                        -- try_lint targets the current buffer; skip if we've moved.
+                        if vim.api.nvim_buf_is_valid(bufnr) and vim.api.nvim_get_current_buf() == bufnr then
+                            lint.try_lint()
+                        end
                     end, 250)
+                end,
+            })
+
+            vim.api.nvim_create_autocmd("BufWipeout", {
+                group = group,
+                callback = function(args)
+                    local t = pending[args.buf]
+                    if t and not t:is_closing() then
+                        t:stop()
+                        t:close()
+                    end
+                    pending[args.buf] = nil
                 end,
             })
         end,

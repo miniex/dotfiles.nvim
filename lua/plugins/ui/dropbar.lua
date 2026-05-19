@@ -85,11 +85,12 @@ return {
                 ["h"] = "<C-w>q",
                 ["l"] = function()
                     local menu = require("dropbar.api").get_current_dropbar_menu()
-                    if not menu then
+                    if not menu or not menu.win or not vim.api.nvim_win_is_valid(menu.win) then
                         return
                     end
                     local row = vim.api.nvim_win_get_cursor(menu.win)[1]
-                    local component = menu.entries[row]:first_clickable()
+                    local entry = menu.entries and menu.entries[row]
+                    local component = entry and entry:first_clickable()
                     if component then
                         menu:click_on(component, nil, 1, "l")
                     end
