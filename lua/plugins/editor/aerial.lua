@@ -19,7 +19,7 @@ return {
             min_width = 28,
             default_direction = "right",
         },
-        attach_mode = "global",
+        attach_mode = "window",
         show_guides = true,
         guides = {
             mid_item = "├─",

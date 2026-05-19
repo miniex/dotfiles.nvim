@@ -1,6 +1,6 @@
 return {
     "catgoose/nvim-colorizer.lua",
-    event = { "BufReadPre", "BufNewFile" },
+    event = { "BufReadPost", "BufNewFile" },
     cmd = { "ColorizerToggle", "ColorizerAttachToBuffer", "ColorizerReloadAllBuffers" },
     keys = {
         { "<leader>uC", "<cmd>ColorizerToggle<cr>", desc = "Toggle Colorizer" },

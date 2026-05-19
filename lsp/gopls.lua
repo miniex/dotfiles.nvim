@@ -3,7 +3,7 @@ return {
         gopls = {
             gofumpt = true,
             codelenses = {
-                gc_details = false,
+                gcDetails = false,
                 generate = true,
                 regenerate_cgo = true,
                 run_govulncheck = true,

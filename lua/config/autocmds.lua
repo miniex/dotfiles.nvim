@@ -1,7 +1,11 @@
--- Auto reload file when changed externally
+-- Skip non-file buffers; checktime would stat them on every BufEnter.
 vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter" }, {
     group = vim.api.nvim_create_augroup("auto-checktime", { clear = true }),
-    command = "checktime",
+    callback = function(args)
+        if vim.bo[args.buf].buftype == "" then
+            vim.cmd("checktime")
+        end
+    end,
 })
 
 -- Hide ~ at EOB (covers plugins that override winhighlight/fillchars).
