@@ -2,7 +2,7 @@
 -- non-focused splits since lualine uses laststatus=3 (global).
 return {
     "b0o/incline.nvim",
-    dependencies = { "nvim-tree/nvim-web-devicons", "catppuccin/nvim" },
+    dependencies = { "nvim-tree/nvim-web-devicons", "catppuccin" },
     event = "VeryLazy",
     config = function()
         local p = require("catppuccin.palettes").get_palette("mocha")

@@ -80,7 +80,7 @@ return {
     "akinsho/bufferline.nvim",
     version = "*",
     event = "VeryLazy",
-    dependencies = { "nvim-tree/nvim-web-devicons", "catppuccin/nvim" },
+    dependencies = { "nvim-tree/nvim-web-devicons", "catppuccin" },
     keys = vim.list_extend(buf_jump_keys, {
         { "[b", "<cmd>BufferLineCyclePrev<cr>", desc = "Previous buffer" },
         { "]b", "<cmd>BufferLineCycleNext<cr>", desc = "Next buffer" },
