@@ -4,8 +4,8 @@ local i = ls.insert_node
 local f = ls.function_node
 local fmt = require("luasnip.extras.fmt").fmt
 
+math.randomseed(os.time() + math.floor((os.clock() or 0) * 1e6))
 local function uuid_v4()
-    math.randomseed(os.time() + math.floor((os.clock() or 0) * 1e6))
     return (
         string.gsub("xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx", "[xy]", function(c)
             local r = math.random(0, 15)
