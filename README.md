@@ -15,7 +15,7 @@ Lean, fast, easy on the eyes. Native LSP via `lsp/<server>.lua` discovery, Rust-
 - **Completion** — blink.cmp (Rust fuzzy), inlay hints suppressed during insert, tiny-inline-diagnostic
 - **Treesitter** — `main` branch + textobjects, sticky context, ts-autotag, ts-context-commentstring
 - **Pickers** — fff.nvim (Rust file finder) + snacks.picker (grep/buffers/recent) + fzf-lua (git/lsp/lines/snippets)
-- **Editor** — neo-tree (floating), flash, trouble, which-key, todo-comments, dropbar, mini.surround, persistence (auto-restores on bare `nvim`, re-attaches highlighter / LSP / linter on restored buffers), aerial, harpoon v2, grug-far, **quicker.nvim** (editable quickfix), **multicursor.nvim**, 0.12 built-in `:Undotree`, nvim-bqf, nvim-colorizer, git-conflict, nvim-lightbulb (code-action sign)
+- **Editor** — neo-tree (floating), flash, trouble, which-key, todo-comments, dropbar, mini.surround / mini.move (`<A-hjkl>` line shuffle), persistence (auto-restores on bare `nvim`, re-attaches highlighter / LSP / linter on restored buffers), aerial, harpoon v2, grug-far, **quicker.nvim** (editable quickfix), **multicursor.nvim**, **dial.nvim** (smart `<C-a>/<C-x>` for bools / dates / semver / `&&↔||`), 0.12 built-in `:Undotree`, nvim-bqf, nvim-colorizer, git-conflict, nvim-lightbulb (code-action sign)
 - **Modal floats** — big floating UIs (pickers / terminal / lazy / mason / harpoon / neo-tree) are mutually exclusive; hover, completion, signature, and notifications stack freely on top
 - **snacks.nvim** — picker, profiler, terminal, dashboard, statuscolumn, notifier, indent, scroll, dim, image, bigfile, scratch, zen, gitbrowse, rename (LSP-aware)
 - **Markdown** — render-markdown.nvim inline rendering of headings / lists / tables / code
@@ -124,7 +124,7 @@ Leader: `<Space>`. Full reference: [docs/KEYMAPS.md](docs/KEYMAPS.md).
     2. `lua/config/lang_servers.lua` — map `lang = { "server" }`. Empty list = no LSP, or owned by a per-lang plugin (e.g. rust → rustaceanvim)
     3. `lua/plugins/lang/<name>.lua` — DAP, treesitter parsers, lang-specific plugins. Register the module name in `lua/config/langs.lua`
     - Linters → `lua/plugins/lsp/lint.lua`. Non-LSP tools → `mason-tool-installer.nvim` ensure_installed.
-- **Snippets** — drop Lua files in `~/.config/nvim/snippets/` (filetype-scoped, plus `all.lua`). VSCode JSON via friendly-snippets in parallel.
+- **Snippets** — drop Lua files in `~/.config/nvim/snippets/` (filetype-scoped, plus `all.lua` with `uuid` / `iso` / `todo` / `fixme` / `note`). VSCode JSON via friendly-snippets in parallel.
 - **Theme** — `lua/plugins/ui/themes.lua`. Change `damin_blue` / `damin_pink` anchors at the top; the whole UI retones.
 - **ui2** — toggle via `vim.g.disable_ui2 = true` in `globals.lua`.
 - **Sidebar layout** — `lua/plugins/ui/edgy.lua` pins aerial → right, trouble/qf/dap → bottom.

@@ -34,6 +34,33 @@ if vim.fn.executable(clip) == 1 then
     })
 end
 
+-- mkdir parent dir on save (so :e new/path/file works).
+vim.api.nvim_create_autocmd("BufWritePre", {
+    group = vim.api.nvim_create_augroup("auto-mkdir", { clear = true }),
+    callback = function(args)
+        if args.match:match("^%w%w+:[\\/][\\/]") then
+            return
+        end
+        vim.fn.mkdir(vim.fn.fnamemodify(args.file, ":p:h"), "p")
+    end,
+})
+
+-- Restore last cursor position via the `"` mark (persisted by shada).
+vim.api.nvim_create_autocmd("BufReadPost", {
+    group = vim.api.nvim_create_augroup("restore-cursor", { clear = true }),
+    callback = function(args)
+        local ft = vim.bo[args.buf].filetype
+        if ft == "gitcommit" or ft == "gitrebase" then
+            return
+        end
+        local mark = vim.api.nvim_buf_get_mark(args.buf, '"')
+        local last = vim.api.nvim_buf_line_count(args.buf)
+        if mark[1] > 0 and mark[1] <= last then
+            pcall(vim.api.nvim_win_set_cursor, 0, mark)
+        end
+    end,
+})
+
 -- Treesitter attach. Pre-plugin so startup-loaded files get highlighted.
 -- get_lang() handles ft↔parser mismatches (e.g. typescriptreact → tsx).
 vim.api.nvim_create_autocmd("FileType", {

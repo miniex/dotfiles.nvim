@@ -21,9 +21,9 @@ return {
                 require("persistence").load()
             end,
         })
-        -- Session restore opens buffers before lazy-loaded BufRead listeners
-        -- (nvim-lint, nvim-lspconfig, ts-attach) register, so re-fire on LoadPost.
-        -- Each listener guards against double-attach.
+        -- Re-fire BufRead listeners (lint, lspconfig, ts-attach) on restored buffers.
+        -- nvim_buf_call sets current-buf so runtime ftplugins that use `0` (e.g.
+        -- ftplugin/lua.lua → treesitter.start()) target the right buf.
         vim.api.nvim_create_autocmd("User", {
             group = group,
             pattern = "PersistenceLoadPost",
@@ -31,8 +31,10 @@ return {
                 vim.schedule(function()
                     for _, buf in ipairs(vim.api.nvim_list_bufs()) do
                         if vim.api.nvim_buf_is_loaded(buf) and vim.bo[buf].buftype == "" then
-                            pcall(vim.api.nvim_exec_autocmds, "FileType", { buffer = buf, modeline = false })
-                            pcall(vim.api.nvim_exec_autocmds, "BufReadPost", { buffer = buf, modeline = false })
+                            pcall(vim.api.nvim_buf_call, buf, function()
+                                vim.api.nvim_exec_autocmds("FileType", { buffer = buf, modeline = false })
+                                vim.api.nvim_exec_autocmds("BufReadPost", { buffer = buf, modeline = false })
+                            end)
                         end
                     end
                 end)

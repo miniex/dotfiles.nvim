@@ -4,14 +4,17 @@ Leader: `<Space>`. `<localleader>` also `<Space>` (most localleader bindings liv
 
 ## Global
 
-| Key           | Mode | Description                                        |
-| ------------- | ---- | -------------------------------------------------- |
-| `<C-h/j/k/l>` | N/T  | Pane navigation with tmux-style return-to-last     |
-| `<leader>h`   | N    | Clear search highlight                             |
-| `<leader>s`   | N    | Save                                               |
-| `<leader>D`   | N/V  | Delete without yank (`<leader>d` reserved for dap) |
-| `<leader>p`   | V    | Paste without overwriting register                 |
-| `<` / `>`     | V    | Indent / outdent (keep selection)                  |
+| Key                 | Mode | Description                                         |
+| ------------------- | ---- | --------------------------------------------------- |
+| `<C-h/j/k/l>`       | N/T  | Pane navigation with tmux-style return-to-last      |
+| `<A-h/j/k/l>`       | N/V  | mini.move: shuffle line / block (reindents on h/l)  |
+| `<C-a>` / `<C-x>`   | N/V  | dial: smart inc/dec (bools, dates, semver, &&↔\|\|) |
+| `g<C-a>` / `g<C-x>` | V    | dial: cumulative inc/dec across selection           |
+| `<leader>h`         | N    | Clear search highlight                              |
+| `<leader>s`         | N    | Save (writes auto-mkdir parent dirs)                |
+| `<leader>D`         | N/V  | Delete without yank (`<leader>d` reserved for dap)  |
+| `<leader>p`         | V    | Paste without overwriting register                  |
+| `<` / `>`           | V    | Indent / outdent (keep selection)                   |
 
 ## Find & Navigate
 
@@ -121,7 +124,8 @@ Bare `nvim` (no args, no stdin) auto-restores cwd session.
 | Key                         | Description                                                        |
 | --------------------------- | ------------------------------------------------------------------ |
 | `K` / `<C-k>` (i)           | Hover / signature help                                             |
-| `gd` / `gr` / `gi`          | Definition / references / implementation                           |
+| `gd` / `gD`                 | Definition / declaration                                           |
+| `gr` / `gi` / `gy`          | References / implementation / type definition                      |
 | `<leader>rn`                | Rename                                                             |
 | `<leader>cc` / `<leader>ca` | Diagnostics float / code action                                    |
 | `<leader>ci` / `<leader>uh` | Toggle inlay hints (alias)                                         |
