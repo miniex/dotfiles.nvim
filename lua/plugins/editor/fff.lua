@@ -43,6 +43,7 @@ return {
 
         -- Replace picker_ui's file-local BORDER_PRESETS with flower corners.
         -- It only honors preset names, so vim.o.winborder = "✿,…" gets ignored.
+        local patched = false
         local visited = {}
         local function walk(fn, patch)
             if type(fn) ~= "function" or visited[fn] then
@@ -70,7 +71,13 @@ return {
                         new[k] = vim.g.flower_border
                     end
                     debug.setupvalue(fn, i, new)
+                    patched = true
                 end
+            end)
+        end
+        if not patched then
+            vim.schedule(function()
+                vim.notify("fff: BORDER_PRESETS upvalue missing — border patch skipped", vim.log.levels.WARN)
             end)
         end
 

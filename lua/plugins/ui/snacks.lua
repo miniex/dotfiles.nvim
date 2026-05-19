@@ -125,16 +125,18 @@ return {
             -- Responsive: drop header → recent on small heights. Image/menu/startup always.
             sections = function(self)
                 local h = self:size().height
-                local result = {
-                    {
+                local result = {}
+                local sticker = vim.fn.stdpath("config") .. "/assets/dashboard_sticker.ansi"
+                if vim.fn.filereadable(sticker) == 1 then
+                    table.insert(result, {
                         section = "terminal",
-                        cmd = "cat " .. vim.fn.stdpath("config") .. "/assets/dashboard_sticker.ansi",
+                        cmd = "cat " .. vim.fn.shellescape(sticker),
                         height = 24,
                         width = 60,
                         padding = 1,
                         align = "center",
-                    },
-                }
+                    })
+                end
 
                 if h >= 40 then
                     table.insert(result, {
