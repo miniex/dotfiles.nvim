@@ -17,23 +17,45 @@ return {
     config = function(_, opts)
         require("smear_cursor").setup(opts)
 
-        -- Pulse smear on terminal enter only; persistent mode jitters keystrokes.
         local sc = require("smear_cursor.config")
-        local gen = 0
+        local grp = vim.api.nvim_create_augroup("SmearCursorAutocmds", { clear = true })
+
+        -- Pulse smear on terminal enter only; persistent mode jitters keystrokes.
+        local term_gen = 0
         vim.api.nvim_create_autocmd("WinEnter", {
-            group = vim.api.nvim_create_augroup("SmearTerminalEnterPulse", { clear = true }),
+            group = grp,
             callback = function()
                 if vim.bo.buftype ~= "terminal" then
                     return
                 end
                 sc.smear_terminal_mode = true
-                gen = gen + 1
-                local mine = gen
+                term_gen = term_gen + 1
+                local mine = term_gen
                 vim.defer_fn(function()
-                    if mine == gen then
+                    if mine == term_gen then
                         sc.smear_terminal_mode = false
                     end
                 end, 300)
+            end,
+        })
+
+        -- Skip smear on float open: the (1,1) landing + the plugin's own
+        -- cursor placement fire back-to-back; 80ms swallows both jumps.
+        local float_gen = 0
+        vim.api.nvim_create_autocmd("WinEnter", {
+            group = grp,
+            callback = function()
+                if vim.api.nvim_win_get_config(0).relative == "" then
+                    return
+                end
+                sc.enabled = false
+                float_gen = float_gen + 1
+                local mine = float_gen
+                vim.defer_fn(function()
+                    if mine == float_gen then
+                        sc.enabled = true
+                    end
+                end, 80)
             end,
         })
     end,
