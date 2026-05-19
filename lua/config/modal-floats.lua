@@ -29,9 +29,11 @@ local function close_other_owners(keep_owner, keep_win)
     for _, win in ipairs(vim.api.nvim_list_wins()) do
         if win ~= keep_win and is_floating(win) then
             local buf = vim.api.nvim_win_get_buf(win)
-            local o = OWNER[vim.bo[buf].filetype]
-            if o and o ~= keep_owner then
-                pcall(vim.api.nvim_win_close, win, true)
+            if vim.api.nvim_buf_is_valid(buf) then
+                local o = OWNER[vim.bo[buf].filetype]
+                if o and o ~= keep_owner then
+                    pcall(vim.api.nvim_win_close, win, true)
+                end
             end
         end
     end

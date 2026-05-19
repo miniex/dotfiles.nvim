@@ -54,6 +54,8 @@ return {
             local lint = require("lint")
             lint.linters_by_ft = opts.linters_by_ft
 
+            -- Coalesce InsertLeave bursts into a single linter run.
+            local pending
             vim.api.nvim_create_autocmd({ "BufWritePost", "BufReadPost", "InsertLeave" }, {
                 group = vim.api.nvim_create_augroup("nvim-lint", { clear = true }),
                 callback = function()
@@ -61,7 +63,14 @@ return {
                     if vim.bo.buftype ~= "" then
                         return
                     end
-                    lint.try_lint()
+                    if pending and not pending:is_closing() then
+                        pending:stop()
+                        pending:close()
+                    end
+                    pending = vim.defer_fn(function()
+                        pending = nil
+                        lint.try_lint()
+                    end, 250)
                 end,
             })
         end,

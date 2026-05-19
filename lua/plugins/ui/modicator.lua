@@ -17,19 +17,22 @@ local mode_color = {
 }
 
 local sign_ns = vim.api.nvim_create_namespace("ModicatorBloom")
+local last_color
 local function refresh_sign()
     local buf = vim.api.nvim_get_current_buf()
     if vim.bo[buf].buftype ~= "" then
         return
     end
-    vim.api.nvim_buf_clear_namespace(buf, sign_ns, 0, -1)
     local line = vim.fn.line(".") - 1
     local color = mode_color[vim.fn.mode()] or damin_blue
-    local hl = "ModicatorBloomCurrent"
-    vim.api.nvim_set_hl(0, hl, { fg = color, bold = true })
+    if color ~= last_color then
+        vim.api.nvim_set_hl(0, "ModicatorBloomCurrent", { fg = color, bold = true })
+        last_color = color
+    end
+    vim.api.nvim_buf_clear_namespace(buf, sign_ns, 0, -1)
     pcall(vim.api.nvim_buf_set_extmark, buf, sign_ns, line, 0, {
         sign_text = "✿",
-        sign_hl_group = hl,
+        sign_hl_group = "ModicatorBloomCurrent",
         priority = 100,
     })
 end

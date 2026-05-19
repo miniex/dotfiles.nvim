@@ -39,22 +39,31 @@ local damin_mid = "#C09DBE"
 local damin_pink = "#E890B0"
 local damin_dim = "#6E7A95"
 
--- ♡ trail on harpoon-pinned buffers.
-local function harpoon_pinned(path)
-    local ok, harpoon = pcall(require, "harpoon")
-    if not ok then
-        return false
+-- ♡ on harpoon-pinned buffers. 50ms cache: name_formatter fires per buffer per redraw.
+local harpoon_ok, harpoon_mod
+local pinned, pinned_at = {}, 0
+local function pinned_set()
+    local now = vim.uv.hrtime()
+    if now - pinned_at < 50 * 1e6 then
+        return pinned
     end
-    local list = harpoon:list()
-    if not list or not list.items then
-        return false
+    pinned_at = now
+    pinned = {}
+    if not harpoon_ok then
+        harpoon_ok, harpoon_mod = pcall(require, "harpoon")
     end
-    for _, item in ipairs(list.items) do
-        if item.value == path then
-            return true
-        end
+    if not harpoon_ok then
+        return pinned
     end
-    return false
+    local list = harpoon_mod:list()
+    local items = list and list.items
+    if not items then
+        return pinned
+    end
+    for _, item in ipairs(items) do
+        pinned[item.value] = true
+    end
+    return pinned
 end
 
 return {
@@ -74,7 +83,7 @@ return {
                     return vim.api.nvim_buf_get_name(buf) ~= ""
                 end,
                 name_formatter = function(buf)
-                    return harpoon_pinned(buf.path) and "♡ " .. buf.name or buf.name
+                    return pinned_set()[buf.path] and "♡ " .. buf.name or buf.name
                 end,
                 always_show_bufferline = true,
                 show_buffer_close_icons = true,
