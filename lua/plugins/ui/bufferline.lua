@@ -39,7 +39,7 @@ local damin_mid = "#C09DBE"
 local damin_pink = "#E890B0"
 local damin_dim = "#6E7A95"
 
--- ♡ on harpoon-pinned buffers. 50ms cache: name_formatter fires per buffer per redraw.
+-- 50ms cache: name_formatter fires per buffer per redraw.
 local harpoon_ok, harpoon_mod
 local pinned, pinned_at = {}, 0
 local function pinned_set()
@@ -95,7 +95,8 @@ return {
                 diagnostics = "nvim_lsp",
                 modified_icon = "●",
                 buffer_close_icon = "✗",
-                tab_size = 10,
+                enforce_regular_tabs = true,
+                tab_size = 16,
                 padding = 1,
                 max_name_length = 16,
                 max_prefix_length = 10,
@@ -116,7 +117,6 @@ return {
                     },
                 },
             },
-            -- 3-stop gradient: selected = pink (active), visible = mid, normal = blue (dim).
             highlights = {
                 fill = { bg = "NONE" },
                 background = { fg = damin_dim, bg = "NONE", italic = true },
