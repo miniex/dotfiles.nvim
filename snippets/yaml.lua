@@ -1,6 +1,7 @@
 local ls = require("luasnip")
 local s = ls.snippet
 local i = ls.insert_node
+local rep = require("luasnip.extras").rep
 local fmt = require("luasnip.extras.fmt").fmt
 
 return {
@@ -23,7 +24,7 @@ jobs:
       - name: {}
         run: {}
 ]],
-            { i(1, "ci"), i(2, "main"), i(3, "build"), i(4, "build"), i(0, "make") }
+            { i(1, "ci"), i(2, "main"), i(3, "build"), rep(3), i(0, "make") }
         )
     ),
     -- generic job step
@@ -40,7 +41,7 @@ jobs:
   environment:
     {}: {}
 ]],
-            { i(1, "name"), i(2, "image:tag"), i(3, "8080"), i(4, "8080"), i(5, "KEY"), i(0, "value") }
+            { i(1, "name"), i(2, "image:tag"), i(3, "8080"), rep(3), i(4, "KEY"), i(0, "value") }
         )
     ),
     -- yaml anchor & alias

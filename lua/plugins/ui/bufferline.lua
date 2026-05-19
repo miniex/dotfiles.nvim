@@ -66,11 +66,28 @@ local function pinned_set()
     return pinned
 end
 
+local buf_jump_keys = {}
+for n = 1, 10 do
+    local key = n == 10 and "0" or tostring(n)
+    table.insert(buf_jump_keys, {
+        "<leader>" .. key,
+        "<cmd>BufferLineGoToBuffer " .. n .. "<cr>",
+        desc = "Go to buffer " .. n,
+    })
+end
+
 return {
     "akinsho/bufferline.nvim",
     version = "*",
     event = "VeryLazy",
     dependencies = { "nvim-tree/nvim-web-devicons", "catppuccin/nvim" },
+    keys = vim.list_extend(buf_jump_keys, {
+        { "[b", "<cmd>BufferLineCyclePrev<cr>", desc = "Previous buffer" },
+        { "]b", "<cmd>BufferLineCycleNext<cr>", desc = "Next buffer" },
+        -- S-h/l overrides vim's H/L screen jumps.
+        { "<S-h>", "<cmd>BufferLineCyclePrev<cr>", desc = "Previous buffer" },
+        { "<S-l>", "<cmd>BufferLineCycleNext<cr>", desc = "Next buffer" },
+    }),
     opts = function()
         local p = require("catppuccin.palettes").get_palette("mocha")
         return {

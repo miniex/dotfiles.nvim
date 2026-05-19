@@ -1,16 +1,5 @@
+-- asm-lsp server config lives in lsp/asm_lsp.lua.
 return {
-    {
-        "neovim/nvim-lspconfig",
-        opts = {
-            servers = {
-                -- asm-lsp covers x86/x86_64 (GAS, NASM, MASM), ARM/AArch64,
-                -- RISC-V, MIPS, PowerPC, Z80, 6502, AVR.
-                asm_lsp = {
-                    filetypes = { "asm", "vmasm", "nasm", "masm" },
-                },
-            },
-        },
-    },
     {
         "nvim-treesitter/nvim-treesitter",
         opts = function(_, opts)

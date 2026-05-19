@@ -1,11 +1,4 @@
+-- vtsls owns JS/TS; emmet stays on markup/style.
 return {
-    filetypes = {
-        "html",
-        "css",
-        "scss",
-        "javascript",
-        "javascriptreact",
-        "typescript",
-        "typescriptreact",
-    },
+    filetypes = { "html", "css", "scss" },
 }

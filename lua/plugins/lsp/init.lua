@@ -55,6 +55,11 @@ return {
         dependencies = { "b0o/SchemaStore.nvim" },
         opts = { inlay_hints = { enabled = true } },
         config = function(_, opts)
+            if vim.fn.has("nvim-0.11") ~= 1 then
+                vim.notify("LSP setup needs nvim 0.11+", vim.log.levels.ERROR)
+                return
+            end
+
             vim.lsp.config("*", { root_markers = { ".git" } })
 
             -- ◆ corner-flowered rounded border (damin echo).

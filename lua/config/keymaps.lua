@@ -77,13 +77,4 @@ end, "n", "Toggle undotree")
 
 map("<leader>qR", "<cmd>restart<cr>", "n", "Restart Neovim")
 
--- buffer navigation (bufferline order); <leader>0 = 10th
-for i = 1, 10 do
-    local key = i == 10 and "0" or tostring(i)
-    map("<leader>" .. key, ":BufferLineGoToBuffer " .. i .. "<CR>", "n", "Go to buffer " .. i)
-end
-map("[b", ":BufferLineCyclePrev<CR>", "n", "Previous buffer")
-map("]b", ":BufferLineCycleNext<CR>", "n", "Next buffer")
--- Shift-h/l for tab-style buffer nav (overrides vim's H/L screen jumps).
-map("<S-h>", ":BufferLineCyclePrev<CR>", "n", "Previous buffer")
-map("<S-l>", ":BufferLineCycleNext<CR>", "n", "Next buffer")
+-- Buffer nav keymaps live on the bufferline.nvim spec for lazy-load safety.

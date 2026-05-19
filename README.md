@@ -120,7 +120,7 @@ Leader: `<Space>`. Full reference: [docs/KEYMAPS.md](docs/KEYMAPS.md).
 
 - **Disable languages** — `sh ~/.config/nvim/set-lang.sh` (interactive) or hand-edit `lua/config/langs_local.lua` (gitignored). Overrides `lua/config/langs.lua` per-machine.
 - **Add a language**:
-    1. `lsp/<server>.lua` — server settings table (nvim-lspconfig provides `cmd`/`root_markers`/`filetypes` defaults)
+    1. `lsp/<server>.lua` — single source for `cmd` / `root_markers` / `filetypes` / `settings`. Don't restate via `nvim-lspconfig.opts.servers.<name>`.
     2. `lua/config/lang_servers.lua` — map `lang = { "server" }`. Empty list = no LSP, or owned by a per-lang plugin (e.g. rust → rustaceanvim)
     3. `lua/plugins/lang/<name>.lua` — DAP, treesitter parsers, lang-specific plugins. Register the module name in `lua/config/langs.lua`
     - Linters → `lua/plugins/lsp/lint.lua`. Non-LSP tools → `mason-tool-installer.nvim` ensure_installed.
@@ -144,18 +144,18 @@ PRs welcome. Before opening: `./tools/format.sh` + `./tools/lint.sh` must pass c
 
 ## Troubleshooting
 
-| Issue                    | Check                                                                            |
-| ------------------------ | -------------------------------------------------------------------------------- |
-| LSP not attaching        | `:Mason`, `:LspInfo`, `:LspLog`                                                  |
-| LSP settings not applied | `lsp/<server>.lua` exists; server is in `lang_servers.lua` under an enabled lang |
-| Lint not running         | linter on `$PATH`, see `lua/plugins/lsp/lint.lua` (per-buffer 250ms debounce)    |
-| Mason tools missing      | `:MasonToolsUpdate`, then `:Mason`                                               |
-| Python debug fails       | `:MasonInstall debugpy` — `nvim-dap-python` warns and skips setup if missing     |
-| `<leader>ff` not working | `:Lazy build fff.nvim` (Rust toolchain)                                          |
-| ui2 cmdline glitches     | `vim.g.disable_ui2 = true` in `globals.lua`                                      |
-| Profiling startup        | `PROF=1 nvim`, then `<leader>Pp` / `<leader>Pf`                                  |
-| Treesitter errors        | `:checkhealth nvim-treesitter`; `tree-sitter --version` ≥ 0.26.1 (not npm)       |
-| Theme not updating       | `rm -rf ~/.cache/nvim/catppuccin` and restart                                    |
+| Issue                    | Check                                                                                                                                   |
+| ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------- |
+| LSP not attaching        | `:Mason`, `:LspInfo`, `:LspLog`                                                                                                         |
+| LSP settings not applied | `lsp/<server>.lua` exists; server is in `lang_servers.lua` under an enabled lang; not restated via `nvim-lspconfig.opts.servers.<name>` |
+| Lint not running         | linter on `$PATH`, see `lua/plugins/lsp/lint.lua` (per-buffer 250ms debounce)                                                           |
+| Mason tools missing      | `:MasonToolsUpdate`, then `:Mason`                                                                                                      |
+| Python debug fails       | `:MasonInstall debugpy` — `nvim-dap-python` warns and skips setup if missing                                                            |
+| `<leader>ff` not working | `:Lazy build fff.nvim` (Rust toolchain)                                                                                                 |
+| ui2 cmdline glitches     | `vim.g.disable_ui2 = true` in `globals.lua`                                                                                             |
+| Profiling startup        | `PROF=1 nvim`, then `<leader>Pp` / `<leader>Pf`                                                                                         |
+| Treesitter errors        | `:checkhealth nvim-treesitter`; `tree-sitter --version` ≥ 0.26.1 (not npm)                                                              |
+| Theme not updating       | `rm -rf ~/.cache/nvim/catppuccin` and restart                                                                                           |
 
 > nvim-treesitter `master` is archived and incompatible with 0.12; pinned to `main`.
 
