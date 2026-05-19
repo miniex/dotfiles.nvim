@@ -22,7 +22,14 @@ return {
         cmd = { "Mason", "MasonInstall", "MasonUninstall", "MasonUpdate", "MasonLog" },
         keys = { { "<leader>cm", "<cmd>Mason<cr>", desc = "Mason" } },
         build = ":MasonUpdate",
-        opts = {},
+        opts = {
+            ui = {
+                border = vim.g.flower_border,
+                width = 0.85,
+                height = 0.85,
+                icons = { package_installed = "✓", package_pending = "✿", package_uninstalled = "·" },
+            },
+        },
     },
     {
         "williamboman/mason-lspconfig.nvim",
@@ -62,22 +69,20 @@ return {
 
             vim.lsp.config("*", { root_markers = { ".git" } })
 
-            -- ◆ corner-flowered rounded border (damin echo).
-            local flower_border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" }
-            flower_border[1] = "✿"
-            flower_border[3] = "✿"
-            flower_border[5] = "✿"
-            flower_border[7] = "✿"
-            vim.g.flower_border = flower_border
-
             -- Sign/virtual_text owned by diagnostic-ui.lua (tiny-inline).
-            local diagnostic = vim.diagnostic
-            diagnostic.config({
+            vim.diagnostic.config({
                 virtual_text = false,
                 update_in_insert = false,
                 underline = true,
                 severity_sort = true,
-                float = { border = flower_border, source = "always", header = "", prefix = "" },
+                float = {
+                    border = vim.g.flower_border,
+                    source = "always",
+                    header = "",
+                    prefix = "",
+                    title = " ✿ diagnostics ✿ ",
+                    title_pos = "center",
+                },
             })
 
             local group = vim.api.nvim_create_augroup("lsp-attach-keys", { clear = true })
@@ -92,7 +97,11 @@ return {
                     -- Intentional aliases over 0.11+ defaults (grr/gri/grn/gra/gK)
                     -- for muscle memory and which-key discovery.
                     map("n", "K", function()
-                        vim.lsp.buf.hover({ border = vim.g.flower_border })
+                        vim.lsp.buf.hover({
+                            border = vim.g.flower_border,
+                            title = " ✿ hover ✿ ",
+                            title_pos = "center",
+                        })
                     end, "Hover")
                     map("n", "gd", vim.lsp.buf.definition, "Goto Definition")
                     map("n", "gD", vim.lsp.buf.declaration, "Goto Declaration")
@@ -110,7 +119,11 @@ return {
                     map("n", "<leader>cL", vim.lsp.codelens.run, "Run CodeLens")
                     map("n", "<leader>rn", vim.lsp.buf.rename, "Rename")
                     map("i", "<C-k>", function()
-                        vim.lsp.buf.signature_help({ border = vim.g.flower_border })
+                        vim.lsp.buf.signature_help({
+                            border = vim.g.flower_border,
+                            title = " ✿ signature ✿ ",
+                            title_pos = "center",
+                        })
                     end, "Signature Help")
 
                     local client = vim.lsp.get_client_by_id(args.data.client_id)

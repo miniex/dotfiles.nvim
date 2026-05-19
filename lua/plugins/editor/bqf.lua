@@ -6,7 +6,7 @@ return {
         preview = {
             win_height = 12,
             win_vheight = 12,
-            border = "rounded",
+            border = vim.g.flower_border,
             should_preview_cb = function(bufnr, _)
                 local ret = true
                 local bufname = vim.api.nvim_buf_get_name(bufnr)

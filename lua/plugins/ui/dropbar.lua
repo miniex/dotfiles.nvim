@@ -59,10 +59,9 @@ return {
             },
         },
         menu = {
-            -- Match the rounded borders used by completion / signature / hover
-            -- so the picker visually belongs to the same UI family.
+            -- Shared flower border (defined in config/globals.lua).
             win_configs = {
-                border = "rounded",
+                border = vim.g.flower_border,
                 col = function(menu)
                     return menu.prev_menu and menu.prev_menu._win_configs.width + 1 or 0
                 end,

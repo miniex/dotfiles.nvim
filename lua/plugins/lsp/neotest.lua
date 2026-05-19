@@ -143,7 +143,7 @@ return {
                         expand_all = "zR",
                     },
                 },
-                floating = { border = "rounded" },
+                floating = { border = vim.g.flower_border },
             })
         end,
     },

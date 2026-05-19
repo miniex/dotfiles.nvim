@@ -32,6 +32,12 @@ require("lazy").setup({
     change_detection = { notify = false },
     -- Don't fetch READMEs.
     readme = { enabled = false },
+    ui = {
+        border = vim.g.flower_border,
+        title = " ✿ lazy ✿ ",
+        title_pos = "center",
+        backdrop = 100,
+    },
     performance = {
         cache = { enabled = true },
         reset_packpath = true,

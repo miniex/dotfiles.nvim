@@ -33,6 +33,11 @@ opt.mouse:append("a")
 opt.autoread = true
 opt.undofile = true
 
+-- 0.11+ global default for plugin floats that read vim.o.winborder. fff.nvim
+-- only honors preset *names* (single/double/rounded/…); rely on FloatBorder hl
+-- (pink, set in globals.lua) for color uniformity even where the shape can't be flowers.
+opt.winborder = "rounded"
+
 -- folding: treesitter expr, start fully expanded (zc/zo to fold/unfold).
 opt.foldmethod = "expr"
 opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"

@@ -17,7 +17,11 @@ return {
             {
                 "<leader>mm",
                 function()
-                    h().ui:toggle_quick_menu(h():list())
+                    h().ui:toggle_quick_menu(h():list(), {
+                        border = vim.g.flower_border,
+                        title = " ✿ harpoon ✿ ",
+                        title_pos = "center",
+                    })
                 end,
                 desc = "Harpoon Menu",
             },

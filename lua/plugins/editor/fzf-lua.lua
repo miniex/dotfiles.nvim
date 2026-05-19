@@ -165,10 +165,15 @@ return {
         winopts = {
             height = 0.85,
             width = 0.85,
-            border = "rounded",
+            border = vim.g.flower_border,
+            title = " ✿ fzf ✿ ",
+            title_pos = "center",
+            backdrop = 100,
             preview = {
                 default = "bat",
                 layout = "flex",
+                border = vim.g.flower_border,
+                title_pos = "center",
             },
         },
         keymap = {

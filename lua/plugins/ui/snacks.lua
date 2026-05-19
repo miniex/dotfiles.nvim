@@ -238,15 +238,38 @@ return {
         picker = {
             enabled = true,
             ui_select = true,
-            win = {
-                input = {
-                    border = "rounded",
-                    keys = {
-                        ["<Esc>"] = { "close", mode = { "n", "i" } },
+            -- Snacks's stock `default` layout hardcodes "bottom"/"none"/true for
+            -- input/list/preview borders, swallowing win.*.border. Override the
+            -- whole layout so every box uses the shared flower border.
+            layouts = {
+                default = {
+                    layout = {
+                        box = "horizontal",
+                        width = 0.85,
+                        height = 0.85,
+                        border = "none",
+                        {
+                            box = "vertical",
+                            border = vim.g.flower_border,
+                            title = " ✿ {title} {live} {flags} ✿ ",
+                            title_pos = "center",
+                            { win = "input", height = 1, border = "bottom" },
+                            { win = "list", border = "none" },
+                        },
+                        {
+                            win = "preview",
+                            title = " ✿ {preview} ✿ ",
+                            title_pos = "center",
+                            border = vim.g.flower_border,
+                            width = 0.5,
+                        },
                     },
                 },
-                list = { border = "rounded" },
-                preview = { border = "rounded" },
+            },
+            win = {
+                input = {
+                    keys = { ["<Esc>"] = { "close", mode = { "n", "i" } } },
+                },
             },
         },
         profiler = {
@@ -263,7 +286,9 @@ return {
                 position = "float",
                 width = 0.85,
                 height = 0.85,
-                border = "rounded",
+                border = vim.g.flower_border,
+                title = " ✿ terminal ✿ ",
+                title_pos = "center",
                 wo = { winbar = "", winblend = 0 },
                 keys = {
                     term_close = { "<C-x>", "hide", mode = { "n", "t" }, desc = "Hide Terminal" },
@@ -272,6 +297,16 @@ return {
         },
         words = { enabled = true },
         zen = { enabled = true },
+        -- Override snacks's built-in window styles. Each style has its own default
+        -- border; pinning them all to flower keeps the UI consistent.
+        styles = {
+            notification = { border = vim.g.flower_border },
+            notification_history = { border = vim.g.flower_border },
+            input = { border = vim.g.flower_border, relative = "cursor" },
+            scratch = { border = vim.g.flower_border },
+            zen = { border = vim.g.flower_border },
+            float = { border = vim.g.flower_border },
+        },
     },
     keys = {
         {

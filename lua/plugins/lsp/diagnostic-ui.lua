@@ -48,7 +48,12 @@ return {
                         [vim.diagnostic.severity.HINT] = "?",
                     },
                 },
-                float = { border = "rounded", source = "if_many" },
+                float = {
+                    border = vim.g.flower_border,
+                    source = "if_many",
+                    title = " ✿ diagnostics ✿ ",
+                    title_pos = "center",
+                },
             })
         end,
         keys = {

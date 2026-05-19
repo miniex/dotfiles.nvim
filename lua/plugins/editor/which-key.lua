@@ -5,6 +5,7 @@ return {
         preset = "modern",
         -- Bigger window + tighter spacing → fewer pages to flip through.
         win = {
+            border = vim.g.flower_border,
             height = { min = 4, max = math.floor(vim.o.lines * 0.7) },
             padding = { 1, 2 },
         },

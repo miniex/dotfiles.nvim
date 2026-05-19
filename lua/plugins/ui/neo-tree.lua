@@ -1,3 +1,17 @@
+local damin_pink = "#E890B0"
+
+-- damin polish: pink float border + pink "currently editing" file.
+local function apply_hl()
+    vim.api.nvim_set_hl(0, "NeoTreeFloatBorder", { fg = damin_pink, bg = "NONE" })
+    vim.api.nvim_set_hl(0, "NeoTreeFloatTitle", { fg = damin_pink, bold = true })
+    vim.api.nvim_set_hl(0, "NeoTreeFileNameOpened", { fg = damin_pink, italic = true, bold = true })
+end
+apply_hl()
+vim.api.nvim_create_autocmd("ColorScheme", {
+    group = vim.api.nvim_create_augroup("NeoTreeDaminHL", { clear = true }),
+    callback = apply_hl,
+})
+
 return {
     "nvim-neo-tree/neo-tree.nvim",
     branch = "v3.x",
@@ -13,6 +27,8 @@ return {
     },
     opts = {
         close_if_last_window = true,
+        -- "NC" is neo-tree's default; the actual flower border is set via
+        -- window.popup.border.style below (the official path through nui.nvim).
         popup_border_style = "rounded",
         enable_git_status = true,
         enable_diagnostics = true,
@@ -23,12 +39,12 @@ return {
                 indent_size = 1,
                 padding = 1,
                 with_markers = true,
-                indent_marker = "│",
-                last_indent_marker = "└",
+                indent_marker = "┊",
+                last_indent_marker = "╰",
                 highlight = "NeoTreeIndentMarker",
                 with_expanders = true,
-                expander_collapsed = "",
-                expander_expanded = "",
+                expander_collapsed = "❯",
+                expander_expanded = "❮",
             },
             icon = {
                 folder_closed = "",
@@ -41,18 +57,22 @@ return {
                 symbol = "✿",
                 highlight = "NeoTreeModified",
             },
+            name = {
+                trailing_slash = true,
+                use_git_status_colors = true,
+            },
             -- Dingbats only — mirrors fish-theme-damin, no nerd-font dependency.
             git_status = {
                 symbols = {
-                    added = "✓",
-                    modified = "✗",
+                    added = "✦",
+                    modified = "✿",
                     deleted = "✗",
-                    renamed = "→",
-                    untracked = "?",
+                    renamed = "❀",
+                    untracked = "❁",
                     ignored = "·",
-                    unstaged = "⇣",
+                    unstaged = "✧",
                     staged = "✓",
-                    conflict = "✦",
+                    conflict = "✺",
                 },
             },
         },
@@ -60,6 +80,10 @@ return {
         window = {
             position = "float",
             popup = {
+                border = {
+                    style = vim.g.flower_border,
+                    text = { top = vim.g.flower_title("files"), top_align = "center" },
+                },
                 size = { height = "85%", width = "85%" },
                 position = "50%",
             },
