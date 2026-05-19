@@ -40,6 +40,30 @@ return {
                 desc = "Rust Debuggables",
                 ft = "rust",
             },
+            {
+                "<leader>cT",
+                function()
+                    vim.cmd.RustLsp("testables")
+                end,
+                desc = "Rust Testables",
+                ft = "rust",
+            },
+            {
+                "<leader>cE",
+                function()
+                    vim.cmd.RustLsp("expandMacro")
+                end,
+                desc = "Rust Expand Macro",
+                ft = "rust",
+            },
+            {
+                "<leader>cP",
+                function()
+                    vim.cmd.RustLsp("parentModule")
+                end,
+                desc = "Rust Parent Module",
+                ft = "rust",
+            },
         },
         opts = {
             server = {

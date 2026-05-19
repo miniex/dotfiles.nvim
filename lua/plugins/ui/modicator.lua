@@ -11,8 +11,8 @@ local mode_color = {
     s = damin_pink,
     S = damin_pink,
     ["\19"] = damin_pink,
-    R = "#f38ba8",
-    c = "#9399b2",
+    R = damin_pink,
+    c = damin_blue,
     t = damin_blue,
 }
 

@@ -53,6 +53,11 @@ map("<C-j>", [[<C-\><C-n><Cmd>lua _NavPane('j')<CR>]], "t", "Move to bottom pane
 map("<C-k>", [[<C-\><C-n><Cmd>lua _NavPane('k')<CR>]], "t", "Move to top pane (term)")
 map("<C-l>", [[<C-\><C-n><Cmd>lua _NavPane('l')<CR>]], "t", "Move to right pane (term)")
 
+-- Re-center cursor after jumps (zv opens folds, zz centers vertically).
+for _, key in ipairs({ "n", "N", "*", "#", "g*", "g#", "<C-o>", "<C-i>" }) do
+    vim.keymap.set("n", key, key .. "zvzz", { silent = true })
+end
+
 -- clear search highlight
 map("<leader>h", ":nohlsearch<CR>", "n", "Clear search highlight")
 
@@ -68,6 +73,10 @@ map("<leader>D", '"_d', { "n", "x" }, "Delete (no yank)")
 
 -- paste without yank
 map("<leader>p", '"_dP', "x", "Paste over (no yank)")
+
+-- paste + reindent (uppercase P; lowercase still belongs to paste-without-yank).
+map("<leader>P", "p`[v`]=", "n", "Paste + reindent")
+map("<leader>P", '"_dP`[v`]=', "x", "Paste over + reindent")
 
 -- 0.12 built-in undo tree (opt package, needs packadd before first use).
 map("<leader>uU", function()

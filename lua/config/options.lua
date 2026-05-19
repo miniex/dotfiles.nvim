@@ -38,6 +38,10 @@ opt.undofile = true
 -- (pink, set in globals.lua) for color uniformity even where the shape can't be flowers.
 opt.winborder = "rounded"
 
+-- Stable viewport on splits + jumps (no surprise scroll when opening hover/preview).
+opt.splitkeep = "screen"
+opt.jumpoptions = "view"
+
 -- folding: treesitter expr, start fully expanded (zc/zo to fold/unfold).
 opt.foldmethod = "expr"
 opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"

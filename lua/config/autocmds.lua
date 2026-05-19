@@ -22,14 +22,23 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 })
 hide_eob()
 
--- WSL2 clipboard sync via clip.exe
-local clip = "/mnt/c/Windows/System32/clip.exe"
-if vim.fn.executable(clip) == 1 then
+-- TextYankPost → system clipboard. First available backend wins (Wayland / X11 / macOS / WSL2).
+local clip_cmd
+if vim.fn.executable("wl-copy") == 1 then
+    clip_cmd = { "wl-copy" }
+elseif vim.fn.executable("xclip") == 1 then
+    clip_cmd = { "xclip", "-selection", "clipboard" }
+elseif vim.fn.executable("pbcopy") == 1 then
+    clip_cmd = { "pbcopy" }
+elseif vim.fn.executable("/mnt/c/Windows/System32/clip.exe") == 1 then
+    clip_cmd = { "/mnt/c/Windows/System32/clip.exe" }
+end
+if clip_cmd then
     vim.api.nvim_create_autocmd("TextYankPost", {
-        group = vim.api.nvim_create_augroup("WSLYank", { clear = true }),
+        group = vim.api.nvim_create_augroup("YankToClipboard", { clear = true }),
         callback = function()
             local content = table.concat(vim.v.event.regcontents, "\n")
-            vim.system({ clip }, { stdin = content })
+            vim.system(clip_cmd, { stdin = content })
         end,
     })
 end
@@ -57,6 +66,30 @@ vim.api.nvim_create_autocmd("BufReadPost", {
         local last = vim.api.nvim_buf_line_count(args.buf)
         if mark[1] > 0 and mark[1] <= last then
             pcall(vim.api.nvim_win_set_cursor, 0, mark)
+        end
+    end,
+})
+
+-- Macro recording on/off → toast so it's never a surprise.
+vim.api.nvim_create_autocmd("RecordingEnter", {
+    group = vim.api.nvim_create_augroup("macro-toast", { clear = true }),
+    callback = function()
+        vim.notify("recording @" .. vim.fn.reg_recording(), vim.log.levels.INFO, { title = "macro" })
+    end,
+})
+vim.api.nvim_create_autocmd("RecordingLeave", {
+    group = "macro-toast",
+    callback = function()
+        vim.notify("saved @" .. vim.v.event.regname, vim.log.levels.INFO, { title = "macro" })
+    end,
+})
+
+-- Snacks terminal: start in insert so `<leader>t` is type-ready immediately.
+vim.api.nvim_create_autocmd({ "TermOpen", "BufWinEnter" }, {
+    group = vim.api.nvim_create_augroup("snacks-term-insert", { clear = true }),
+    callback = function(args)
+        if vim.bo[args.buf].buftype == "terminal" then
+            vim.cmd.startinsert()
         end
     end,
 })

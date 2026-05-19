@@ -14,7 +14,12 @@ Leader: `<Space>`. `<localleader>` also `<Space>` (most localleader bindings liv
 | `<leader>s`         | N    | Save (writes auto-mkdir parent dirs)                |
 | `<leader>D`         | N/V  | Delete without yank (`<leader>d` reserved for dap)  |
 | `<leader>p`         | V    | Paste without overwriting register                  |
+| `<leader>P`         | N/V  | Paste + auto-reindent (`=` over pasted lines)       |
 | `<` / `>`           | V    | Indent / outdent (keep selection)                   |
+
+> `n`, `N`, `*`, `#`, `g*`, `g#`, `<C-o>`, `<C-i>` auto-center the cursor (`zvzz`).
+> Yank → system clipboard via `wl-copy` / `xclip` / `pbcopy` / `clip.exe` (first available).
+> Macro recording shows a `recording @a` / `saved @a` toast.
 
 ## Find & Navigate
 
@@ -132,6 +137,7 @@ Bare `nvim` (no args, no stdin) auto-restores cwd session.
 | `<leader>cd` / `<leader>cl` | Toggle inline diagnostic / `virtual_lines`                         |
 | `<leader>cM`                | Toggle multi-diagnostic on cursorline                              |
 | `<leader>cL`                | Run CodeLens (rust-analyzer, gopls, elixir-ls, ocamllsp, jdtls, …) |
+| `<leader>cI` / `<leader>cU` | TS/JS: organize imports / remove unused (vtsls)                    |
 | `<leader>cO` / `<leader>cN` | Aerial: outline / outline nav                                      |
 | `[o` / `]o`                 | Aerial: previous / next symbol                                     |
 | `<leader>cm`                | Open Mason                                                         |
@@ -264,10 +270,12 @@ In the toggle terminal, `$EDITOR`/`$VISUAL`/`$GIT_EDITOR` forward to the parent 
 
 ## Language-specific
 
-| Key                         | Description                     |
-| --------------------------- | ------------------------------- |
-| `<leader>ch`                | C/C++: switch source ↔ header   |
-| `<leader>cR` / `<leader>cD` | Rust: code action / debuggables |
+| Key                                        | Description                                 |
+| ------------------------------------------ | ------------------------------------------- |
+| `<leader>ch`                               | C/C++: switch source ↔ header               |
+| `<leader>cR` / `<leader>cD` / `<leader>cT` | Rust: code action / debuggables / testables |
+| `<leader>cE` / `<leader>cP`                | Rust: expand macro / jump to parent module  |
+| `<leader>cI` / `<leader>cU`                | TS/JS: organize imports / remove unused     |
 
 ## Misc
 

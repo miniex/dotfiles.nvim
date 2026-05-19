@@ -90,6 +90,10 @@ local function unify_floats()
     -- lazygit (uses LazyGitBorder/LazyGitFloat via winhl override)
     setb("LazyGitBorder")
     setn("LazyGitFloat")
+
+    -- snacks indent guides → muted damin tones (indent dim, scope pink).
+    vim.api.nvim_set_hl(0, "SnacksIndent", { fg = "#3a2a35" })
+    vim.api.nvim_set_hl(0, "SnacksIndentScope", { fg = pink })
 end
 unify_floats()
 vim.api.nvim_create_autocmd("ColorScheme", {

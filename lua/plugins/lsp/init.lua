@@ -134,6 +134,24 @@ return {
                         if client:supports_method("textDocument/codeLens") then
                             vim.lsp.codelens.enable(true, { bufnr = bufnr })
                         end
+                        if client:supports_method("textDocument/documentHighlight") then
+                            local g = vim.api.nvim_create_augroup("lsp-doc-hl-" .. bufnr, { clear = true })
+                            vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+                                buffer = bufnr,
+                                group = g,
+                                callback = vim.lsp.buf.document_highlight,
+                            })
+                            vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI", "BufLeave" }, {
+                                buffer = bufnr,
+                                group = g,
+                                callback = vim.lsp.buf.clear_references,
+                            })
+                        end
+                        if
+                            vim.lsp.linked_editing_range and client:supports_method("textDocument/linkedEditingRange")
+                        then
+                            pcall(vim.lsp.linked_editing_range.enable, true, { bufnr = bufnr })
+                        end
                     end
                 end,
             })

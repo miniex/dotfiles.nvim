@@ -229,7 +229,12 @@ return {
         dim = { enabled = true },
         gitbrowse = { enabled = true },
         image = { enabled = vim.env.TERM == "xterm-kitty" or vim.env.KITTY_WINDOW_ID ~= nil },
-        indent = { enabled = true },
+        indent = {
+            enabled = true,
+            indent = { char = "┊" },
+            scope = { char = "╎", underline = false },
+            chunk = { enabled = false },
+        },
         input = { enabled = true },
         notifier = {
             enabled = true,
