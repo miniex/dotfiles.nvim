@@ -123,7 +123,7 @@ Bare `nvim` (no args, no stdin) auto-restores cwd session.
 
 > Neovim 0.11+ also auto-binds `grr`/`gri`/`grn`/`gra`/`gK`/`gO` on `LspAttach`.
 >
-> Severity-sorted; gutter signs `✗`/`!`/`i`/`?` mirror lualine. Floats: rounded border, source when ambiguous.
+> Severity-sorted; gutter signs `✗`/`!`/`i`/`?` mirror lualine; colors match the scrollbar marks. Floats: rounded border, source when ambiguous.
 > nvim-lightbulb: `❋` sign when a code action is available.
 
 | Key                         | Description                                                        |

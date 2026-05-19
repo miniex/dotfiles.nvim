@@ -1,6 +1,10 @@
 -- damin 2-color: blue (#98ABCC) cool, pink (#E890B0) warm.
 local damin_blue = "#98ABCC"
 local damin_pink = "#E890B0"
+-- Git accents — kept in sync with scrollbar marks.
+local git_add = "#A8DBB6"
+local git_change = damin_pink
+local git_delete = "#D8788C"
 
 return {
     {
@@ -34,6 +38,23 @@ return {
                         VertSplit = { fg = damin_pink, bg = "NONE" },
                         FloatBorder = { fg = damin_pink, bg = "NONE" },
                         BufferLineOffset = { fg = damin_pink, bg = "NONE", bold = true },
+
+                        GitSignsAdd = { fg = git_add, bg = "NONE" },
+                        GitSignsChange = { fg = git_change, bg = "NONE" },
+                        GitSignsDelete = { fg = git_delete, bg = "NONE" },
+                        GitSignsTopdelete = { fg = git_delete, bg = "NONE" },
+                        GitSignsChangedelete = { fg = git_change, bg = "NONE" },
+                        GitSignsUntracked = { fg = git_add, bg = "NONE" },
+                        GitSignsAddNr = { fg = git_add, bg = "NONE" },
+                        GitSignsChangeNr = { fg = git_change, bg = "NONE" },
+                        GitSignsDeleteNr = { fg = git_delete, bg = "NONE" },
+                        GitSignsAddLn = { fg = git_add, bg = "NONE" },
+                        GitSignsChangeLn = { fg = git_change, bg = "NONE" },
+                        DiagnosticSignError = { fg = damin_pink, bg = "NONE" },
+                        DiagnosticSignWarn = { fg = damin_pink, bg = "NONE" },
+                        DiagnosticSignInfo = { fg = damin_blue, bg = "NONE" },
+                        DiagnosticSignHint = { fg = damin_blue, bg = "NONE" },
+                        DiagnosticSignOk = { fg = damin_blue, bg = "NONE" },
                     }
                 end,
                 integrations = {
