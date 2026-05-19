@@ -95,8 +95,10 @@ return {
                 diagnostics = "nvim_lsp",
                 modified_icon = "●",
                 buffer_close_icon = "✗",
-                tab_size = 18,
+                tab_size = 10,
                 padding = 1,
+                max_name_length = 16,
+                max_prefix_length = 10,
                 offsets = {
                     {
                         filetype = "neo-tree",
