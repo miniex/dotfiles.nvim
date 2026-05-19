@@ -15,7 +15,7 @@ Lean, fast, easy on the eyes. Native LSP via `lsp/<server>.lua` discovery, Rust-
 - **Completion** — blink.cmp (Rust fuzzy), inlay hints suppressed during insert, tiny-inline-diagnostic
 - **Treesitter** — `main` branch + textobjects, sticky context, ts-autotag, ts-context-commentstring
 - **Pickers** — fff.nvim (Rust file finder) + snacks.picker (grep/buffers/recent) + fzf-lua (git/lsp/lines/snippets)
-- **Editor** — neo-tree (floating), flash, trouble, which-key, todo-comments, dropbar, mini.surround, persistence (auto-restores on bare `nvim`), aerial, harpoon v2, grug-far, **quicker.nvim** (editable quickfix), **multicursor.nvim**, 0.12 built-in `:Undotree`, nvim-bqf, nvim-colorizer, git-conflict, nvim-lightbulb (code-action sign)
+- **Editor** — neo-tree (floating), flash, trouble, which-key, todo-comments, dropbar, mini.surround, persistence (auto-restores on bare `nvim`, re-attaches highlighter / LSP / linter on restored buffers), aerial, harpoon v2, grug-far, **quicker.nvim** (editable quickfix), **multicursor.nvim**, 0.12 built-in `:Undotree`, nvim-bqf, nvim-colorizer, git-conflict, nvim-lightbulb (code-action sign)
 - **Modal floats** — big floating UIs (pickers / terminal / lazy / mason / harpoon / neo-tree) are mutually exclusive; hover, completion, signature, and notifications stack freely on top
 - **snacks.nvim** — picker, profiler, terminal, dashboard, statuscolumn, notifier, indent, scroll, dim, image, bigfile, scratch, zen, gitbrowse, rename (LSP-aware)
 - **Markdown** — render-markdown.nvim inline rendering of headings / lists / tables / code
