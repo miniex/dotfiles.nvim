@@ -280,5 +280,5 @@ In the toggle terminal, `$EDITOR`/`$VISUAL`/`$GIT_EDITOR` forward to the parent 
 ## Misc
 
 - **Open URL** (`gx`, n/v): `vim.ui.open()` on link / path under cursor.
-- **Hex** (`xxd`): `:HexToggle`, `:HexDump`, `:HexAssemble`, or `nvim -b <file>`.
+- **Hex** (`xxd`): auto for binary files; manual `:HexToggle`, `:HexDump`, `:HexAssemble`, or `nvim -b <file>`.
 - **Completion** (insert): `<Tab>`/`<S-Tab>` next/prev · `<C-Space>` trigger · `<CR>` confirm · `<C-e>` close · `<C-f>`/`<C-S-f>` scroll docs. Menu columns: `label · source · kind`.
