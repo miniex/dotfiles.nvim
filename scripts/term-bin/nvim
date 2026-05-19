@@ -1,8 +1,27 @@
 #!/bin/sh
-# $EDITOR for Neovim's embedded terminals. When nested ($NVIM set by parent),
-# forward to the running instance via --remote-wait instead of nesting.
-REAL_NVIM=/opt/homebrew/bin/nvim
-if [ -n "$NVIM" ]; then
+# $EDITOR for Neovim's embedded terminals. When nested ($NVIM set), forward
+# to the parent via --remote-wait. PATH lookup skips our own dir since this
+# wrapper is also named `nvim` and would shadow the real binary.
+set -eu
+
+SELF_DIR=$(cd "$(dirname "$0")" && pwd)
+REAL_NVIM=""
+OLDIFS=$IFS
+IFS=:
+for d in $PATH; do
+    if [ "$d" != "$SELF_DIR" ] && [ -x "$d/nvim" ]; then
+        REAL_NVIM="$d/nvim"
+        break
+    fi
+done
+IFS=$OLDIFS
+
+if [ -z "$REAL_NVIM" ]; then
+    echo "term-bin/nvim: real nvim not found in PATH" >&2
+    exit 127
+fi
+
+if [ -n "${NVIM:-}" ]; then
     exec "$REAL_NVIM" --server "$NVIM" --remote-wait "$@"
 fi
 exec "$REAL_NVIM" "$@"

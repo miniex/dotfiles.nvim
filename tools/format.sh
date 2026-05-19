@@ -1,6 +1,6 @@
 #!/bin/sh
 # Format Lua (stylua) and shell scripts (shfmt).
-set -e
+set -eu
 
 cd "$(dirname "$0")/.."
 

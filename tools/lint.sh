@@ -1,6 +1,6 @@
 #!/bin/sh
 # Lint Lua (stylua + lua-language-server) and shell (shfmt + shellcheck).
-set -e
+set -eu
 
 cd "$(dirname "$0")/.."
 
