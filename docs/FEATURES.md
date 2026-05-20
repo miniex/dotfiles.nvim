@@ -6,7 +6,8 @@
 - **Inlay hints** — toggle per buffer with `<leader>ci`; suppressed automatically during insert mode.
 - **Code lens** — enabled on capable servers (gopls, rust-analyzer, lua_ls, ocamllsp, elixir-ls). `BufWritePost` refreshes lens count.
 - **Diagnostics** — single config in `lua/plugins/lsp/init.lua`; `tiny-inline-diagnostic.nvim` owns virtual text. Severity-sorted, signs `✗`/`!`/`i`/`?`.
-- **Completion** — [blink.cmp](https://github.com/Saghen/blink.cmp) with Rust fuzzy matching. Sources: LSP / snippets (LuaSnip + friendly-snippets) / path / buffer.
+- **Completion** — [blink.cmp](https://github.com/Saghen/blink.cmp) with Rust fuzzy matching. Sources: LSP / snippets (LuaSnip + friendly-snippets) / path / buffer; filtered per filetype (no LSP in `gitcommit` / `gitrebase`, buffer-only in snacks input prompts).
+- **LSP restart** — `<leader>cs` for when a server hangs.
 
 ## Treesitter
 
@@ -60,7 +61,7 @@ See [`lua/config/modal-floats.lua`](../lua/config/modal-floats.lua) for the mutu
 
 ## Git
 
-- **gitsigns** — gutter signs, hunk staging (`<leader>gh*`), inline blame (`<leader>gtb`).
+- **gitsigns** — gutter signs, hunk staging (`<leader>gh*`), inline blame (`<leader>gtb`), word-level diff highlights inside changed lines.
 - **fugitive** — `<leader>gs` status, `<leader>gd` diff, `<leader>gdv` 3-way merge diff.
 - **lazygit** — `<leader>gg` full / `<leader>gf` current file / `<leader>gF` filtered.
 - **diffview** — file / repo / stash history under `<leader>gv*`.

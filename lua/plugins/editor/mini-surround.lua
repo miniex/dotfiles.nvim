@@ -30,5 +30,6 @@ return {
         n_lines = 50,
         search_method = "cover_or_next",
         silent = true,
+        respect_selection_type = true,
     },
 }

@@ -137,6 +137,7 @@ Bare `nvim` (no args, no stdin) auto-restores cwd session.
 | `<leader>cd` / `<leader>cl` | Toggle inline diagnostic / `virtual_lines`                         |
 | `<leader>cM`                | Toggle multi-diagnostic on cursorline                              |
 | `<leader>cL`                | Run CodeLens (rust-analyzer, gopls, elixir-ls, ocamllsp, jdtls, …) |
+| `<leader>cs`                | `:LspRestart` (recover from a hung server)                         |
 | `<leader>cI` / `<leader>cU` | TS/JS: organize imports / remove unused (vtsls)                    |
 | `<leader>cO` / `<leader>cN` | Aerial: outline / outline nav                                      |
 | `[o` / `]o`                 | Aerial: previous / next symbol                                     |

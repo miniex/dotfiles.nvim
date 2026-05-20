@@ -9,7 +9,7 @@
 | Python debug fails       | `:MasonInstall debugpy` — `nvim-dap-python` warns and skips setup if missing                                                            |
 | `<leader>ff` not working | `:Lazy build fff.nvim` (Rust toolchain)                                                                                                 |
 | ui2 cmdline glitches     | `vim.g.disable_ui2 = true` in `globals.lua`                                                                                             |
-| Profiling startup        | `PROF=1 nvim`, then `<leader>Pp` / `<leader>Pf`                                                                                         |
+| Profiling startup        | `PROF=1 nvim` auto-captures the startup; `<leader>Pf` to pick frames                                                                    |
 | Treesitter errors        | `:checkhealth nvim-treesitter`; `tree-sitter --version` ≥ 0.26.1 (not npm)                                                              |
 | Theme not updating       | `rm -rf ~/.cache/nvim/catppuccin` and restart                                                                                           |
 | Missing prereq tools     | `./tools/health.sh` — flags tree-sitter version, Nerd Font fallback, toolchains, clipboard bridge                                       |

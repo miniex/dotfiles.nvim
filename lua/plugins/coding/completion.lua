@@ -62,6 +62,13 @@ return {
             snippets = { preset = "luasnip" },
             sources = {
                 default = { "lsp", "path", "snippets", "buffer" },
+                per_filetype = {
+                    -- Drop LSP on commit/log buffers — completions are noise.
+                    gitcommit = { "path", "buffer" },
+                    gitrebase = { "buffer" },
+                    -- snacks input prompts: keep it minimal.
+                    snacks_input = { "buffer" },
+                },
             },
         },
     },

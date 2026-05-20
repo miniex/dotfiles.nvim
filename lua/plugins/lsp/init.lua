@@ -125,6 +125,7 @@ return {
                     map("n", "<leader>ci", toggle_inlay, "Toggle Inlay Hints")
                     map("n", "<leader>uh", toggle_inlay, "Toggle Inlay Hints")
                     map("n", "<leader>cL", vim.lsp.codelens.run, "Run CodeLens")
+                    map("n", "<leader>cs", "<cmd>LspRestart<cr>", "LSP Restart")
                     map("n", "<leader>rn", vim.lsp.buf.rename, "Rename")
                     map("i", "<C-k>", function()
                         vim.lsp.buf.signature_help({

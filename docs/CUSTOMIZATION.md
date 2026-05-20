@@ -59,3 +59,15 @@ Drop Lua files in `~/.config/nvim/snippets/`. Filetype-scoped by filename (e.g. 
 
 - dial groups defined in `lua/plugins/editor/dial.lua` (extend for project-specific toggles like `staging↔prod`).
 - todo-comments tags in `lua/plugins/editor/todo-comments.lua`.
+
+## Per-project config
+
+`vim.opt.exrc = true` loads a `.nvim.lua` (or `.exrc`) from the cwd, gated by `vim.secure` on first open. Use for per-project indent / `colorcolumn` / extra keymaps.
+
+## Startup profiling
+
+`PROF=1 nvim` auto-captures the full startup via `snacks.profiler` (see `lua/config/lazy.lua`). Pick frames with `<leader>Pf`.
+
+## Completion sources
+
+`blink.cmp` sources filtered per filetype in `lua/plugins/coding/completion.lua` (`per_filetype` table). Add an entry when a filetype needs its own source mix.

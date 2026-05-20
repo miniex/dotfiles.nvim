@@ -22,6 +22,21 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 })
 hide_eob()
 
+vim.api.nvim_create_autocmd("TextYankPost", {
+    group = vim.api.nvim_create_augroup("yank-flash", { clear = true }),
+    callback = function()
+        (vim.hl or vim.highlight).on_yank({ timeout = 150 })
+    end,
+})
+
+-- Equalize splits on terminal resize (covers tmux pane / font-size changes).
+vim.api.nvim_create_autocmd("VimResized", {
+    group = vim.api.nvim_create_augroup("auto-equalize-splits", { clear = true }),
+    callback = function()
+        vim.cmd("wincmd =")
+    end,
+})
+
 -- TextYankPost → system clipboard. First available backend wins (Wayland / X11 / macOS / WSL2).
 local clip_cmd
 if vim.fn.executable("wl-copy") == 1 then
