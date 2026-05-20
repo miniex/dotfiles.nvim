@@ -188,7 +188,19 @@ return {
                         vim.schedule_wrap(function()
                             attempts = attempts + 1
                             pcall(attach_all)
-                            if attempts >= 15 then
+                            -- Early exit: stop as soon as every missing parser landed.
+                            local done = false
+                            local ok_chk, inst = pcall(ts.get_installed, "parsers")
+                            if ok_chk and type(inst) == "table" then
+                                done = true
+                                for _, lang in ipairs(missing) do
+                                    if not vim.tbl_contains(inst, lang) then
+                                        done = false
+                                        break
+                                    end
+                                end
+                            end
+                            if done or attempts >= 15 then
                                 timer:stop()
                                 timer:close()
                             end

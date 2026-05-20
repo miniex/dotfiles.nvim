@@ -1,3 +1,6 @@
+-- Atomic toggle state for <leader>cl; avoids RMW on the global config.
+local virt_lines_on = false
+
 -- Mutable for the <leader>cM toggle.
 local tiny_opts = {
     preset = "modern",
@@ -49,9 +52,8 @@ return {
             {
                 "<leader>cl",
                 function()
-                    local cfg = vim.diagnostic.config() or {}
-                    local enabled = cfg.virtual_lines and true or false
-                    vim.diagnostic.config({ virtual_lines = not enabled })
+                    virt_lines_on = not virt_lines_on
+                    vim.diagnostic.config({ virtual_lines = virt_lines_on })
                 end,
                 desc = "Toggle Virtual Lines (multi-line diagnostics)",
             },
