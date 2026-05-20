@@ -48,15 +48,15 @@ Plugin specs are discovered by `lazy.setup({ spec = { { import = "plugins.coding
 
 ## Single sources of truth
 
-| Concern                 | Lives in                                           | Why                                                                                            |
-| ----------------------- | -------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
-| LSP per-server settings | `lsp/<server>.lua`                                 | Neovim's native discovery; don't restate in `nvim-lspconfig.opts.servers.<name>`.              |
-| Lang → server mapping   | `lua/config/lang_servers.lua`                      | One place to ask "what servers does this language enable?"                                     |
-| Enabled languages       | `lua/config/langs.lua` (+ `langs_local.lua`)       | `langs_local.lua` is gitignored and wins per-machine.                                          |
-| Diagnostic UI           | `lua/plugins/lsp/init.lua` `vim.diagnostic.config` | tiny-inline-diagnostic owns `virtual_text`; everything else (signs, float) lives here.         |
-| Modal float mutual-ex   | `lua/config/modal-floats.lua` `OWNER` table        | Same `owner` keeps sibling windows of one plugin together; opening another owner closes prior. |
-| Modal float geometry    | `lua/config/modal-geom.lua`                        | Shared 0.85 × 0.85 chrome-aware rectangle. Change `M.RATIO` to resize every modal at once.     |
-| Border characters       | `lua/config/globals.lua` `vim.g.flower_border`     | Every plugin reads this; theme/border consistency in one place.                                |
+| Concern                 | Lives in                                           | Why                                                                                                             |
+| ----------------------- | -------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
+| LSP per-server settings | `lsp/<server>.lua`                                 | Neovim's native discovery; don't restate in `nvim-lspconfig.opts.servers.<name>`.                               |
+| Lang → server mapping   | `lua/config/lang_servers.lua`                      | One place to ask "what servers does this language enable?"                                                      |
+| Enabled languages       | `lua/config/langs.lua` (+ `langs_local.lua`)       | `langs_local.lua` is gitignored and wins per-machine.                                                           |
+| Diagnostic UI           | `lua/plugins/lsp/init.lua` `vim.diagnostic.config` | tiny-inline-diagnostic owns `virtual_text`; everything else (signs, float) lives here.                          |
+| Modal float mutual-ex   | `lua/config/modal-floats.lua` `OWNER` table        | Same `owner` keeps sibling windows of one plugin together; opening another owner closes prior.                  |
+| Modal float geometry    | `lua/config/modal-geom.lua`                        | Shared 0.85 × 0.85 chrome-aware rectangle; tracks `VimResized`. Change `M.RATIO` to resize every modal at once. |
+| Border characters       | `lua/config/globals.lua` `vim.g.flower_border`     | Every plugin reads this; theme/border consistency in one place.                                                 |
 
 ## Plugin spec categories (`lua/plugins/`)
 

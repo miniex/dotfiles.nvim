@@ -55,7 +55,10 @@ All seven modals share a single 0.85 × 0.85 chrome-aware rectangle defined in [
 - snacks picker / terminal read it via function callbacks
 - harpoon / lazy / mason / lazygit get snapped by a synchronous `FileType` autocmd (no flash because the snap shares a frame with the open)
 - fzf-lua uses its own `winopts.on_create` hook (it sets filetype under `eventignore = all` so the FileType aligner misses it)
+- neo-tree's popup `size` / `position` are function callbacks; nui resolves them on every open
 - fff.nvim has its own chrome-aware layout that already matches
+
+A `VimResized` handler in `modal-geom.lua` also re-snaps every open modal, so the rectangle holds when you resize the terminal mid-session (neo-tree's nui container + inner tree get reflowed together).
 
 See [`lua/config/modal-floats.lua`](../lua/config/modal-floats.lua) for the mutual-exclusion registry.
 

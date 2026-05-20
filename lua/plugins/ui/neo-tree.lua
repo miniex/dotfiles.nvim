@@ -84,8 +84,17 @@ return {
                     style = vim.g.flower_border,
                     text = { top = vim.g.flower_title("files"), top_align = "center" },
                 },
-                size = { height = "85%", width = "85%" },
-                position = "50%",
+                -- Function callbacks track the shared modal-geom rectangle
+                -- on every open (resolve_config_option re-evaluates each time).
+                size = function()
+                    local mg = require("config.modal-geom")
+                    return { width = mg.inner_width(), height = mg.inner_height() }
+                end,
+                position = function()
+                    -- +1 cancels nui's half-border position adjustment.
+                    local mg = require("config.modal-geom")
+                    return { row = mg.row() + 1, col = mg.col() + 1 }
+                end,
             },
             mapping_options = { noremap = true, nowait = true },
             mappings = {

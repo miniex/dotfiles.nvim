@@ -61,9 +61,8 @@ function M.inner_height()
     return M.height() - 2
 end
 
--- Force-align floats whose APIs ignore explicit row/col (harpoon, lazy,
--- mason, lazygit). FileType is synchronous, so the resize lands in the same
--- tick as the open and nvim only renders the final state.
+-- Modals whose APIs ignore explicit row/col — snapped on FileType (synchronous,
+-- no flash). neo-tree is handled separately (nui nested popup; see VimResized).
 local ALIGNED_FT = {
     harpoon = true,
     lazy = true,
@@ -73,29 +72,85 @@ local ALIGNED_FT = {
 
 if not vim.g._modal_geom_aligner then
     vim.g._modal_geom_aligner = true
+    local function snap(buf)
+        if not vim.api.nvim_buf_is_valid(buf) then
+            return
+        end
+        local win = vim.fn.bufwinid(buf)
+        if win == -1 or not vim.api.nvim_win_is_valid(win) then
+            return false
+        end
+        local cfg = vim.api.nvim_win_get_config(win)
+        if cfg.relative == "" then
+            return true
+        end
+        local w, h, r, c = M.geom()
+        pcall(vim.api.nvim_win_set_config, win, {
+            relative = cfg.relative,
+            win = cfg.win,
+            width = w - 2,
+            height = h - 2,
+            row = r,
+            col = c,
+        })
+        return true
+    end
+    local group = vim.api.nvim_create_augroup("ModalGeomAlign", { clear = true })
     vim.api.nvim_create_autocmd("FileType", {
-        group = vim.api.nvim_create_augroup("ModalGeomAlign", { clear = true }),
+        group = group,
         callback = function(args)
             if not ALIGNED_FT[args.match] then
                 return
             end
-            local win = vim.fn.bufwinid(args.buf)
-            if win == -1 or not vim.api.nvim_win_is_valid(win) then
-                return
+            -- Defer one tick if the window isn't open yet at FileType time.
+            if snap(args.buf) == false then
+                vim.schedule(function()
+                    snap(args.buf)
+                end)
             end
-            local cfg = vim.api.nvim_win_get_config(win)
-            if cfg.relative == "" then
-                return
-            end
+        end,
+    })
+    -- Re-snap every visible modal on terminal/tmux resize. neo-tree needs
+    -- its nui container + inner tree reflowed in lockstep.
+    vim.api.nvim_create_autocmd("VimResized", {
+        group = group,
+        callback = function()
             local w, h, r, c = M.geom()
-            pcall(vim.api.nvim_win_set_config, win, {
-                relative = cfg.relative,
-                win = cfg.win,
-                width = w - 2,
-                height = h - 2,
-                row = r,
-                col = c,
-            })
+            for _, win in ipairs(vim.api.nvim_list_wins()) do
+                if vim.api.nvim_win_is_valid(win) then
+                    local cfg = vim.api.nvim_win_get_config(win)
+                    if cfg.relative ~= "" then
+                        local buf = vim.api.nvim_win_get_buf(win)
+                        local ft = vim.api.nvim_buf_is_valid(buf) and vim.bo[buf].filetype or ""
+                        if ft == "neo-tree" and cfg.relative == "win" and vim.api.nvim_win_is_valid(cfg.win) then
+                            pcall(vim.api.nvim_win_set_config, cfg.win, {
+                                relative = "editor",
+                                width = w,
+                                height = h,
+                                row = r + 1,
+                                col = c + 1,
+                            })
+                            pcall(vim.api.nvim_win_set_config, win, {
+                                relative = "win",
+                                win = cfg.win,
+                                row = 1,
+                                col = 1,
+                                width = w - 2,
+                                height = h - 2,
+                            })
+                        elseif ALIGNED_FT[ft] then
+                            pcall(vim.api.nvim_win_set_config, win, {
+                                relative = cfg.relative,
+                                win = cfg.win,
+                                width = w - 2,
+                                height = h - 2,
+                                row = r,
+                                col = c,
+                            })
+                        end
+                    end
+                end
+            end
         end,
     })
 end
