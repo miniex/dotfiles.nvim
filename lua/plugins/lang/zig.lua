@@ -11,7 +11,8 @@ return {
         optional = true,
         config = function()
             local dap = require("dap")
-            local codelldb = vim.fn.stdpath("data") .. "/mason/packages/codelldb/codelldb"
+            -- Same path rustaceanvim uses; bypasses Mason's bash wrapper.
+            local codelldb = vim.fn.stdpath("data") .. "/mason/packages/codelldb/extension/adapter/codelldb"
             if vim.fn.executable(codelldb) ~= 1 then
                 vim.schedule(function()
                     vim.notify(
