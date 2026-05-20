@@ -322,7 +322,19 @@ return {
         quickfile = { enabled = true },
         scope = { enabled = true },
         scratch = { enabled = true },
-        scroll = { enabled = true },
+        -- outQuad + 150ms (vs default linear/250ms) so key-repeat doesn't queue behind the animation.
+        scroll = {
+            enabled = true,
+            animate = {
+                duration = { step = 10, total = 150 },
+                easing = "outQuad",
+            },
+            animate_repeat = {
+                delay = 80,
+                duration = { step = 5, total = 40 },
+                easing = "linear",
+            },
+        },
         statuscolumn = { enabled = true },
         terminal = {
             enabled = true,

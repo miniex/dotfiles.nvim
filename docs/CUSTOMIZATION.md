@@ -35,6 +35,10 @@ Drop Lua files in `~/.config/nvim/snippets/`. Filetype-scoped by filename (e.g. 
 
 - `lua/plugins/ui/edgy.lua` pins aerial → right, trouble / qf / dap-repl → bottom.
 
+## Scroll animation
+
+- `lua/plugins/ui/snacks.lua` (`scroll` block) — `animate.duration.total` for one-shot length, `animate_repeat.duration.total` for held j/k (keep short or key-repeat lags). `easing` accepts `linear` / `outQuad` / `outCubic`.
+
 ## Keymaps / autocmds
 
 - Global keymaps in `lua/config/keymaps.lua`.

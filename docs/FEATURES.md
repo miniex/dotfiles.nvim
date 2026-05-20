@@ -45,6 +45,7 @@
 - **Floating windows** — every float in the config (LSP hover / signature / diagnostic, neo-tree, snacks panels, fzf-lua, fff.nvim, blink.cmp menu / signature, dropbar, bqf, neotest, which-key, harpoon, Mason, Lazy, lazygit) shares one look: `✿` flower-cornered border (`✿─✿│✿─✿│`), pink edge, transparent background, centered `✿ title ✿`. Configured in [`lua/config/globals.lua`](../lua/config/globals.lua).
 - **flash labels** — damin pink.
 - **nvim-scrollbar** — `♥` cursor mark slides smoothly between rows on jumps and heartbeat-pulses while focused (paused on `FocusLost`). Handle fades vivid → muted after idle. Git triad in mint/pink/rose; gitsigns gutter + DiagnosticSign share the same palette so both edges agree.
+- **snacks.scroll** — viewport glides with `outQuad` easing (150ms one-shot, 40ms while held) so key-repeat doesn't queue behind the animation.
 - **Plus** — edgy (sidebar layout: aerial → right, trouble/qf/dap → bottom), smear-cursor, fidget.
 
 ## Modal floats
