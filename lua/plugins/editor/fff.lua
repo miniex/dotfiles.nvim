@@ -111,20 +111,26 @@ return {
             config.title_pos = "center"
         end
 
-        local orig_open = vim.api.nvim_open_win
-        vim.api.nvim_open_win = function(buf, enter, config)
-            if is_fff_caller() then
-                decorate(config)
+        -- Sentinel: don't re-wrap on config reload.
+        if not vim.g._fff_api_patched then
+            vim.g._fff_api_patched = true
+            local orig_open = vim.api.nvim_open_win
+            ---@diagnostic disable-next-line: duplicate-set-field
+            vim.api.nvim_open_win = function(buf, enter, config)
+                if is_fff_caller() then
+                    decorate(config)
+                end
+                return orig_open(buf, enter, config)
             end
-            return orig_open(buf, enter, config)
-        end
 
-        local orig_set_config = vim.api.nvim_win_set_config
-        vim.api.nvim_win_set_config = function(win, config)
-            if is_fff_caller() then
-                decorate(config)
+            local orig_set_config = vim.api.nvim_win_set_config
+            ---@diagnostic disable-next-line: duplicate-set-field
+            vim.api.nvim_win_set_config = function(win, config)
+                if is_fff_caller() then
+                    decorate(config)
+                end
+                return orig_set_config(win, config)
             end
-            return orig_set_config(win, config)
         end
     end,
 }

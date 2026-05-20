@@ -11,25 +11,40 @@ local function is_picker_preview_buf(buf)
 end
 
 -- Mirror fff.nvim's chrome-aware centering (picker_ui.lua:494) so fff and
--- snacks pickers sit in the exact same rectangle.
+-- snacks pickers sit in the exact same rectangle. Cached so height/row
+-- callbacks share work within one layout update.
 local PICKER_RATIO = 0.85
+local geom_cache = { key = "", h = 0, r = 0 }
 local function picker_geom()
     local has_tabline = vim.o.showtabline == 2 or (vim.o.showtabline == 1 and #vim.api.nvim_list_tabpages() > 1)
     local has_statusline = vim.o.laststatus > 0
+    local key = string.format(
+        "%d:%d:%s:%s",
+        vim.o.lines,
+        vim.o.cmdheight,
+        has_tabline and "T" or "F",
+        has_statusline and "T" or "F"
+    )
+    if geom_cache.key == key then
+        return geom_cache.h, geom_cache.r
+    end
     local top_edge = has_tabline and 1 or 0
     local bottom_edge = vim.o.lines - vim.o.cmdheight - (has_statusline and 1 or 0)
     local usable = bottom_edge - top_edge
     local h = math.min(math.floor(vim.o.lines * PICKER_RATIO), usable)
-    return h, top_edge + math.floor((usable - h) / 2) + 1
+    local r = top_edge + math.floor((usable - h) / 2) + 1
+    geom_cache.key, geom_cache.h, geom_cache.r = key, h, r
+    return h, r
 end
 
-do
+-- Sentinel: don't re-wrap on config reload.
+if not vim.g._snacks_picker_api_patched then
+    vim.g._snacks_picker_api_patched = true
     local orig_open = vim.api.nvim_open_win
     ---@diagnostic disable-next-line: duplicate-set-field
     vim.api.nvim_open_win = function(buf, enter, config)
         if is_picker_preview_buf(buf) and config.col and config.width then
-            config.col = config.col - 1
-            config.width = config.width + 1
+            config = vim.tbl_extend("force", config, { col = config.col - 1, width = config.width + 1 })
         end
         return orig_open(buf, enter, config)
     end
@@ -37,11 +52,13 @@ do
     local orig_set = vim.api.nvim_win_set_config
     ---@diagnostic disable-next-line: duplicate-set-field
     vim.api.nvim_win_set_config = function(win, config)
-        if vim.api.nvim_win_is_valid(win) and is_picker_preview_buf(vim.api.nvim_win_get_buf(win)) then
-            if config.col and config.width then
-                config.col = config.col - 1
-                config.width = config.width + 1
-            end
+        if
+            vim.api.nvim_win_is_valid(win)
+            and is_picker_preview_buf(vim.api.nvim_win_get_buf(win))
+            and config.col
+            and config.width
+        then
+            config = vim.tbl_extend("force", config, { col = config.col - 1, width = config.width + 1 })
         end
         return orig_set(win, config)
     end
