@@ -1,4 +1,4 @@
--- Neotest: unified runner. Rust handled by rustaceanvim :RustLsp testables.
+-- Neotest: unified runner. Rust adapter via rustaceanvim.neotest.
 return {
     {
         "nvim-neotest/neotest",
@@ -11,6 +11,7 @@ return {
             "fredrikaverpil/neotest-golang",
             "jfpedroza/neotest-elixir",
             "alfaix/neotest-gtest",
+            "mrcjkb/rustaceanvim",
         },
         keys = {
             {
@@ -116,18 +117,24 @@ return {
                 },
             }, neotest_ns)
 
+            local adapters = {
+                require("neotest-python")({
+                    runner = "pytest",
+                    dap = { justMyCode = false },
+                }),
+                require("neotest-golang")({
+                    dap_go_enabled = true,
+                }),
+                require("neotest-elixir"),
+                require("neotest-gtest").setup({}),
+            }
+            local ok, rust = pcall(require, "rustaceanvim.neotest")
+            if ok then
+                table.insert(adapters, rust)
+            end
+
             require("neotest").setup({
-                adapters = {
-                    require("neotest-python")({
-                        runner = "pytest",
-                        dap = { justMyCode = false },
-                    }),
-                    require("neotest-golang")({
-                        dap_go_enabled = true,
-                    }),
-                    require("neotest-elixir"),
-                    require("neotest-gtest").setup({}),
-                },
+                adapters = adapters,
                 status = { virtual_text = true },
                 output = { open_on_run = false },
                 quickfix = {
@@ -144,6 +151,37 @@ return {
                     },
                 },
                 floating = { border = vim.g.flower_border },
+            })
+
+            -- Restore summary window across sessions. mksession only saves
+            -- UPPERCASE globals, hence NEOTEST_SUMMARY_OPEN.
+            local session_group = vim.api.nvim_create_augroup("neotest-session", { clear = true })
+            vim.api.nvim_create_autocmd("VimLeavePre", {
+                group = session_group,
+                callback = function()
+                    local open = false
+                    for _, win in ipairs(vim.api.nvim_list_wins()) do
+                        local buf = vim.api.nvim_win_get_buf(win)
+                        if vim.bo[buf].filetype == "neotest-summary" then
+                            open = true
+                            break
+                        end
+                    end
+                    vim.g.NEOTEST_SUMMARY_OPEN = open and 1 or nil
+                end,
+            })
+            vim.api.nvim_create_autocmd("User", {
+                pattern = "PersistenceLoadPost",
+                group = session_group,
+                callback = function()
+                    if vim.g.NEOTEST_SUMMARY_OPEN == 1 then
+                        vim.schedule(function()
+                            pcall(function()
+                                require("neotest").summary.open()
+                            end)
+                        end)
+                    end
+                end,
             })
         end,
     },

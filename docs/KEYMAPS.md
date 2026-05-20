@@ -230,7 +230,7 @@ Picker uses rounded border + preview. Inside: `q`/`<Esc>` close, `h` parent menu
 
 ## Test (neotest)
 
-Python (pytest), Go (gotestsum), Elixir (mix), C/C++ (gtest). Rust uses `:RustLsp testables`.
+Python (pytest), Go (gotestsum), Elixir (mix), C/C++ (gtest), Rust (rustaceanvim). `:RustLsp testables` still works as a Rust-only picker. Summary window state restored across sessions.
 
 | Key                        | Description                                  |
 | -------------------------- | -------------------------------------------- |

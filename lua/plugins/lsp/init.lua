@@ -69,15 +69,23 @@ return {
 
             vim.lsp.config("*", { root_markers = { ".git" } })
 
-            -- Sign/virtual_text owned by diagnostic-ui.lua (tiny-inline).
+            -- virtual_text is off — tiny-inline-diagnostic owns it.
             vim.diagnostic.config({
                 virtual_text = false,
                 update_in_insert = false,
                 underline = true,
                 severity_sort = true,
+                signs = {
+                    text = {
+                        [vim.diagnostic.severity.ERROR] = "✗",
+                        [vim.diagnostic.severity.WARN] = "!",
+                        [vim.diagnostic.severity.INFO] = "i",
+                        [vim.diagnostic.severity.HINT] = "?",
+                    },
+                },
                 float = {
                     border = vim.g.flower_border,
-                    source = "always",
+                    source = "if_many",
                     header = "",
                     prefix = "",
                     title = " ✿ diagnostics ✿ ",

@@ -34,27 +34,9 @@ return {
         "rachartier/tiny-inline-diagnostic.nvim",
         event = "LspAttach",
         opts = tiny_opts,
+        -- Native signs/float live in lsp/init.lua; tiny-inline only owns virtual_text.
         config = function(_, opts)
-            -- tiny-inline owns rendering; native virtual_text stays off.
             require("tiny-inline-diagnostic").setup(opts)
-            vim.diagnostic.config({
-                virtual_text = false,
-                severity_sort = true,
-                signs = {
-                    text = {
-                        [vim.diagnostic.severity.ERROR] = "✗",
-                        [vim.diagnostic.severity.WARN] = "!",
-                        [vim.diagnostic.severity.INFO] = "i",
-                        [vim.diagnostic.severity.HINT] = "?",
-                    },
-                },
-                float = {
-                    border = vim.g.flower_border,
-                    source = "if_many",
-                    title = " ✿ diagnostics ✿ ",
-                    title_pos = "center",
-                },
-            })
         end,
         keys = {
             {
