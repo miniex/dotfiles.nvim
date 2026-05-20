@@ -157,6 +157,9 @@ PRs welcome. Before opening: `./tools/format.sh` + `./tools/lint.sh` must pass c
 | Treesitter errors        | `:checkhealth nvim-treesitter`; `tree-sitter --version` ≥ 0.26.1 (not npm)                                                              |
 | Theme not updating       | `rm -rf ~/.cache/nvim/catppuccin` and restart                                                                                           |
 | Missing prereq tools     | `./tools/health.sh` — flags tree-sitter version, Nerd Font fallback, toolchains, clipboard bridge                                       |
+| Lazy sync stuck / broken | `:Lazy sync` (force) or `:Lazy restore` (revert to `lazy-lock.json`); nuke caches as a last resort                                      |
+| Snippets not appearing   | `:Lazy reload friendly-snippets` and `:LuaSnipUnlinkCurrent` if mid-expansion; check filetype matches a file in `snippets/`             |
+| Neotest discovery fails  | adapter for that language is missing or its CLI isn't on `$PATH` (`pytest` / `go` / `mix` / `gtest` / `cargo`)                          |
 
 > nvim-treesitter `master` is archived and incompatible with 0.12; pinned to `main`.
 
