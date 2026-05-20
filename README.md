@@ -10,19 +10,26 @@ Lean, fast, easy on the eyes. Native LSP via `lsp/<server>.lua` discovery, Rust-
 
 ## Highlights
 
-- **Native LSP** — `vim.lsp.config` + `lsp/<server>.lua` discovery; mason-lspconfig handles install/enable
-- **Native UI2** — floating cmdline + messages (`vim._core.ui2.enable()`); opt out via `vim.g.disable_ui2 = true`
-- **Completion** — blink.cmp (Rust fuzzy), inlay hints suppressed during insert, tiny-inline-diagnostic
-- **Treesitter** — `main` branch + textobjects, sticky context, ts-autotag, ts-context-commentstring
-- **Pickers** — fff.nvim (Rust file finder) + snacks.picker (grep/buffers/recent) + fzf-lua (git/lsp/lines/snippets); the snacks picker pair shares a single overlapping `✿│✿` divider between list and preview
-- **Editor** — neo-tree (floating), flash, trouble, which-key, todo-comments, dropbar, mini.surround / mini.move (`<A-hjkl>` line shuffle), persistence (auto-restores on bare `nvim`, re-attaches highlighter / LSP / linter on restored buffers), aerial, harpoon v2, grug-far, **quicker.nvim** (editable quickfix), **multicursor.nvim**, **dial.nvim** (smart `<C-a>/<C-x>` for bools / dates / semver / `&&↔||`), 0.12 built-in `:Undotree`, nvim-bqf, nvim-colorizer, git-conflict, nvim-lightbulb (code-action sign)
-- **Modal floats** — big floating UIs (pickers / terminal / lazy / mason / harpoon / lazygit / neo-tree) are mutually exclusive and share a single 0.85 × 0.85 chrome-aware rectangle (`lua/config/modal-geom.lua`), so every keymap lands them in the exact same spot. Hover, completion, signature, and notifications stack freely on top
-- **snacks.nvim** — picker, profiler, terminal, dashboard, statuscolumn, notifier, indent, scroll, dim, image, bigfile, scratch, zen, gitbrowse, rename (LSP-aware)
-- **Markdown** — render-markdown.nvim inline rendering of headings / lists / tables / code
-- **Tooling** — nvim-lint (per-buffer 250ms debounce, skips run if you switched away), mason-tool-installer, DAP (Rust/C-C++/Python/Go/Zig/Elixir) with persistent breakpoints, neotest (Python/Go/Elixir/C++/Rust); summary window restored across sessions via persistence.nvim
-- **UI** — Catppuccin Mocha retoned to a 2-color damin palette (`#98ABCC` / `#E890B0`) mirroring [`fish-theme-damin`](https://github.com/miniex/fish-theme-damin) + [`dotfiles.kitty`](https://github.com/miniex/dotfiles.kitty) + [`dotfiles.tmux`](https://github.com/miniex/dotfiles.tmux). lualine: `✧ … ⋆` sparkle bookends, `✿` mode glyph (swaps to `✎` in visual / operator-pending, briefly `✦` on mode change). bufferline: pink → mid → blue 3-stop gradient, `surface0` card under the active buffer, `▎` left bar + ordinal prefix on active, `♡` on harpoon-pinned, `●` on modified, uniform 16-char tab width regardless of filename length, Neo-tree / Outline get sidebar offset labels. incline: `⌬` when window is zoomed (alone in tabpage). modicator: `✿` sign on the current line in mode color. every floating window in the config — LSP hover / signature / diagnostic, neo-tree, snacks (picker / terminal / notifier / input / scratch / zen), fzf-lua, fff.nvim, completion menu / signature, dropbar, bqf, neotest, which-key, harpoon, Mason, Lazy, lazygit — shares one look: ✿ flower-cornered border (`✿─✿│✿─✿│`), pink (`#E890B0`) edge, transparent background, and centered `✿ title ✿` (configured in [`lua/config/globals.lua`](lua/config/globals.lua)). flash labels in damin pink. nvim-scrollbar: ♥ cursor mark slides smoothly between rows on jumps and heartbeat-pulses while focused (paused on `FocusLost` to save ~20Hz of `nvim_set_hl`), handle fades vivid → muted after idle, git triad in mint/pink/rose — gitsigns gutter + DiagnosticSign share the same palette so both edges agree. Plus edgy (sidebar layout), smear-cursor, fidget
-- **Git** — gitsigns, fugitive, lazygit, diffview, **gitgraph.nvim** (in-buffer branch graph)
-- **Yank → system clipboard** auto-routed via `wl-copy` (Wayland), `xclip` (X11), `pbcopy` (macOS), or `clip.exe` (WSL2) — whichever is on PATH first.
+- **Native LSP & UI2** — `vim.lsp.config` + `lsp/<server>.lua` discovery; floating cmdline + messages
+- **Completion** — blink.cmp (Rust fuzzy) + tiny-inline-diagnostic
+- **Treesitter** — `main` branch, textobjects, sticky context, ts-autotag, ts-context-commentstring
+- **Pickers** — fff.nvim + snacks.picker + fzf-lua, all sharing one 0.85 × 0.85 rectangle
+- **Editor** — neo-tree, flash, trouble, harpoon v2, dial, multicursor, quicker, grug-far, …
+- **UI** — Catppuccin Mocha retoned to a 2-color damin palette (`#98ABCC` / `#E890B0`); flower-cornered borders on every floating window
+- **Modal floats** — pickers / terminal / lazy / mason / harpoon / lazygit / neo-tree are mutually exclusive and land in the exact same spot
+- **Tooling** — nvim-lint, mason-tool-installer, DAP (6 langs), neotest (5 langs)
+- **Git** — gitsigns, fugitive, lazygit, diffview, gitgraph.nvim
+- **Clipboard** — yank → wl-copy / xclip / pbcopy / clip.exe (whichever is on PATH first)
+
+Full breakdown: [docs/FEATURES.md](docs/FEATURES.md).
+
+## Quick start
+
+```bash
+sh -c "$(curl -fsSL https://raw.githubusercontent.com/miniex/dotfiles.nvim/main/install.sh)"
+```
+
+Prerequisites, manual install, and recovery: [docs/SETUP.md](docs/SETUP.md).
 
 ## Language Support
 
@@ -55,49 +62,6 @@ Lean, fast, easy on the eyes. Native LSP via `lsp/<server>.lua` discovery, Rust-
 
 > Formatting is opt-in via `tools/format.sh`, not on save.
 
-## Setup
-
-### Prerequisites
-
-- **Neovim ≥ 0.12.0**
-- `git`, `tar`, `curl`, `xxd`, C compiler, `make`, ripgrep
-- A [Nerd Font](https://www.nerdfonts.com/) **plus** [`Symbols Nerd Font Mono`](https://github.com/ryanoasis/nerd-fonts/releases/latest/download/NerdFontsSymbolsOnly.zip) as fallback (many MDI glyphs are in the Supplementary PUA). In Kitty: `symbol_map U+E000-U+F8FF,U+F0000-U+10FFFD Symbols Nerd Font Mono`
-- [`tree-sitter-cli`](https://github.com/tree-sitter/tree-sitter) **≥ 0.26.1** (`cargo install` or distro; **not npm**)
-- Node.js + npm — for npm-based Mason packages
-- Python 3 + pip, Go, Rust toolchains — required by Mason / debugpy / fff.nvim binary
-- Zig / OCaml+opam / Erlang+Elixir — optional, only if the matching lang toggle is on
-- [`just`](https://github.com/casey/just), [lazygit](https://github.com/jesseduffield/lazygit), [`fzf`](https://github.com/junegunn/fzf), [ImageMagick](https://imagemagick.org/) — optional (image previews require `magick`; animated GIFs show first frame only)
-
-### Install
-
-Mason auto-installs plugins, LSPs, linters, DAP adapters on first launch.
-
-#### One-shot installer
-
-Backs up existing config, optionally picks langs:
-
-```bash
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/miniex/dotfiles.nvim/main/install.sh)"
-```
-
-#### Manual
-
-```bash
-mv ~/.config/nvim ~/.config/nvim.backup
-mv ~/.local/share/nvim ~/.local/share/nvim.backup
-git clone https://github.com/miniex/dotfiles.nvim.git ~/.config/nvim
-sh ~/.config/nvim/set-lang.sh   # optional
-nvim
-```
-
-#### Recovery
-
-Broken after `git pull`? Nuke caches and restart:
-
-```bash
-rm -rf ~/.local/share/nvim ~/.local/state/nvim ~/.cache/nvim
-```
-
 ## Essential Keymaps
 
 Leader: `<Space>`. Full reference: [docs/KEYMAPS.md](docs/KEYMAPS.md).
@@ -116,21 +80,13 @@ Leader: `<Space>`. Full reference: [docs/KEYMAPS.md](docs/KEYMAPS.md).
 | `<leader>gg`                | LazyGit                         |
 | `<leader>?`                 | which-key (all keymaps)         |
 
-## Customization
+## Documentation
 
-- **Disable languages** — `sh ~/.config/nvim/set-lang.sh` (interactive) or hand-edit `lua/config/langs_local.lua` (gitignored). Overrides `lua/config/langs.lua` per-machine.
-- **Add a language**:
-    1. `lsp/<server>.lua` — single source for `cmd` / `root_markers` / `filetypes` / `settings`. Don't restate via `nvim-lspconfig.opts.servers.<name>`.
-    2. `lua/config/lang_servers.lua` — map `lang = { "server" }`. Empty list = no LSP, or owned by a per-lang plugin (e.g. rust → rustaceanvim)
-    3. `lua/plugins/lang/<name>.lua` — DAP, treesitter parsers, lang-specific plugins. Register the module name in `lua/config/langs.lua`
-    - Linters → `lua/plugins/lsp/lint.lua`. Non-LSP tools → `mason-tool-installer.nvim` ensure_installed.
-- **Snippets** — drop Lua files in `~/.config/nvim/snippets/` (filetype-scoped, plus `all.lua` with `uuid` / `iso` / `todo` / `fixme` / `note`). VSCode JSON via friendly-snippets in parallel.
-- **Theme** — `lua/plugins/ui/themes.lua`. Change `damin_blue` / `damin_pink` anchors at the top; the whole UI retones.
-- **ui2** — toggle via `vim.g.disable_ui2 = true` in `globals.lua`.
-- **Sidebar layout** — `lua/plugins/ui/edgy.lua` pins aerial → right, trouble/qf/dap → bottom.
-- **Keymaps / autocmds** — `lua/config/keymaps.lua` and `autocmds.lua`.
-- **Modal floats** — `lua/config/modal-floats.lua`. Extend the `OWNER` table (`ft = "owner"`) to register a new modal; same owner = sibling windows kept together.
-- **Modal geometry** — `lua/config/modal-geom.lua`. Change `M.RATIO` to resize every modal float at once; add a filetype to `ALIGNED_FT` to snap a new plugin into the same rectangle.
+- [docs/SETUP.md](docs/SETUP.md) — prerequisites, install, recovery
+- [docs/FEATURES.md](docs/FEATURES.md) — per-category feature breakdown
+- [docs/KEYMAPS.md](docs/KEYMAPS.md) — every keymap
+- [docs/CUSTOMIZATION.md](docs/CUSTOMIZATION.md) — where to edit what
+- [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md) — common issues
 
 ## Companion repos
 
@@ -142,27 +98,6 @@ Leader: `<Space>`. Full reference: [docs/KEYMAPS.md](docs/KEYMAPS.md).
 ## Contributing
 
 PRs welcome. Before opening: `./tools/format.sh` + `./tools/lint.sh` must pass clean. Run `./tools/health.sh` to verify host prereqs (tree-sitter, Nerd Fonts, toolchains). Commit prefix lowercase (`feat:`, `fix:`, …). Full details: [CONTRIBUTING.md](CONTRIBUTING.md).
-
-## Troubleshooting
-
-| Issue                    | Check                                                                                                                                   |
-| ------------------------ | --------------------------------------------------------------------------------------------------------------------------------------- |
-| LSP not attaching        | `:Mason`, `:LspInfo`, `:LspLog`                                                                                                         |
-| LSP settings not applied | `lsp/<server>.lua` exists; server is in `lang_servers.lua` under an enabled lang; not restated via `nvim-lspconfig.opts.servers.<name>` |
-| Lint not running         | linter on `$PATH`, see `lua/plugins/lsp/lint.lua` (per-buffer 250ms debounce)                                                           |
-| Mason tools missing      | `:MasonToolsUpdate`, then `:Mason`                                                                                                      |
-| Python debug fails       | `:MasonInstall debugpy` — `nvim-dap-python` warns and skips setup if missing                                                            |
-| `<leader>ff` not working | `:Lazy build fff.nvim` (Rust toolchain)                                                                                                 |
-| ui2 cmdline glitches     | `vim.g.disable_ui2 = true` in `globals.lua`                                                                                             |
-| Profiling startup        | `PROF=1 nvim`, then `<leader>Pp` / `<leader>Pf`                                                                                         |
-| Treesitter errors        | `:checkhealth nvim-treesitter`; `tree-sitter --version` ≥ 0.26.1 (not npm)                                                              |
-| Theme not updating       | `rm -rf ~/.cache/nvim/catppuccin` and restart                                                                                           |
-| Missing prereq tools     | `./tools/health.sh` — flags tree-sitter version, Nerd Font fallback, toolchains, clipboard bridge                                       |
-| Lazy sync stuck / broken | `:Lazy sync` (force) or `:Lazy restore` (revert to `lazy-lock.json`); nuke caches as a last resort                                      |
-| Snippets not appearing   | `:Lazy reload friendly-snippets` and `:LuaSnipUnlinkCurrent` if mid-expansion; check filetype matches a file in `snippets/`             |
-| Neotest discovery fails  | adapter for that language is missing or its CLI isn't on `$PATH` (`pytest` / `go` / `mix` / `gtest` / `cargo`)                          |
-
-> nvim-treesitter `master` is archived and incompatible with 0.12; pinned to `main`.
 
 ## License
 
