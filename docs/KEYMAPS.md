@@ -215,7 +215,7 @@ Picker uses rounded border + preview. Inside: `q`/`<Esc>` close, `h` parent menu
 | `<leader>gvs` / `<leader>gvA`   | gitgraph.nvim: prompt for `--since` / `--author` filter                                      |
 | `[h` / `]h`                     | Prev / next hunk                                                                             |
 | `<leader>ghs/r/S/u/R/p/i/b/d/D` | Stage / reset / stage-buf / undo-stage / reset-buf / preview / inline / blame / diff / diff~ |
-| `<leader>ghq`                   | gitsigns: blame to quickfix                                                                  |
+| `<leader>ghq`                   | gitsigns: hunks (attached buffers) to quickfix                                               |
 | `<leader>gtb` / `<leader>gtd`   | Toggle line blame / show deleted                                                             |
 | `<leader>gxq`                   | git-conflict: conflicts to quickfix                                                          |
 | `[X` / `]X`                     | Prev / next conflict                                                                         |
