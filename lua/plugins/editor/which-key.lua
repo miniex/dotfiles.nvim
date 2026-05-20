@@ -3,10 +3,14 @@ return {
     event = "VeryLazy",
     opts = {
         preset = "modern",
-        -- Bigger window + tighter spacing → fewer pages to flip through.
+        -- Pin to the bottom at 85% width (matches modal floats horizontally).
         win = {
             border = vim.g.flower_border,
-            height = { min = 4, max = math.floor(vim.o.lines * 0.7) },
+            no_overlap = false,
+            width = 0.85,
+            col = 0.5,
+            row = math.huge,
+            height = { min = 4, max = 0.7 },
             padding = { 1, 2 },
         },
         layout = {
