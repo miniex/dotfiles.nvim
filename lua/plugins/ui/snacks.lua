@@ -10,32 +10,7 @@ local function is_picker_preview_buf(buf)
     return buf and buf ~= 0 and vim.api.nvim_buf_is_valid(buf) and vim.bo[buf].filetype == "snacks_picker_preview"
 end
 
--- Mirror fff.nvim's chrome-aware centering (picker_ui.lua:494) so fff and
--- snacks pickers sit in the exact same rectangle. Cached so height/row
--- callbacks share work within one layout update.
-local PICKER_RATIO = 0.85
-local geom_cache = { key = "", h = 0, r = 0 }
-local function picker_geom()
-    local has_tabline = vim.o.showtabline == 2 or (vim.o.showtabline == 1 and #vim.api.nvim_list_tabpages() > 1)
-    local has_statusline = vim.o.laststatus > 0
-    local key = string.format(
-        "%d:%d:%s:%s",
-        vim.o.lines,
-        vim.o.cmdheight,
-        has_tabline and "T" or "F",
-        has_statusline and "T" or "F"
-    )
-    if geom_cache.key == key then
-        return geom_cache.h, geom_cache.r
-    end
-    local top_edge = has_tabline and 1 or 0
-    local bottom_edge = vim.o.lines - vim.o.cmdheight - (has_statusline and 1 or 0)
-    local usable = bottom_edge - top_edge
-    local h = math.min(math.floor(vim.o.lines * PICKER_RATIO), usable)
-    local r = top_edge + math.floor((usable - h) / 2) + 1
-    geom_cache.key, geom_cache.h, geom_cache.r = key, h, r
-    return h, r
-end
+local mgeom = require("config.modal-geom")
 
 -- Sentinel: don't re-wrap on config reload.
 if not vim.g._snacks_picker_api_patched then
@@ -312,14 +287,10 @@ return {
                 default = {
                     layout = {
                         box = "horizontal",
-                        width = PICKER_RATIO,
-                        height = function()
-                            return (picker_geom())
-                        end,
-                        row = function()
-                            local _, r = picker_geom()
-                            return r
-                        end,
+                        width = mgeom.width,
+                        height = mgeom.height,
+                        row = mgeom.row,
+                        col = mgeom.col,
                         border = "none",
                         {
                             box = "vertical",
@@ -357,8 +328,10 @@ return {
             enabled = true,
             win = {
                 position = "float",
-                width = 0.85,
-                height = 0.85,
+                width = mgeom.inner_width,
+                height = mgeom.inner_height,
+                row = mgeom.row,
+                col = mgeom.col,
                 border = vim.g.flower_border,
                 title = " ✿ terminal ✿ ",
                 title_pos = "center",

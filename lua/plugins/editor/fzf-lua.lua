@@ -169,6 +169,24 @@ return {
             title = " ✿ fzf ✿ ",
             title_pos = "center",
             backdrop = 100,
+            -- fzf-lua sets filetype under eventignore=all, so modal-geom's
+            -- FileType aligner misses it. Use its own on_create hook instead.
+            on_create = function()
+                local mg = require("config.modal-geom")
+                local w, h, r, c = mg.geom()
+                local win = vim.api.nvim_get_current_win()
+                local cfg = vim.api.nvim_win_get_config(win)
+                if cfg.relative == "" then
+                    return
+                end
+                pcall(vim.api.nvim_win_set_config, win, {
+                    relative = cfg.relative,
+                    width = w - 2,
+                    height = h - 2,
+                    row = r,
+                    col = c,
+                })
+            end,
             preview = {
                 default = "bat",
                 layout = "flex",

@@ -37,6 +37,7 @@ require("lazy").setup({
         title = " ✿ lazy ✿ ",
         title_pos = "center",
         backdrop = 100,
+        size = { width = 0.85, height = 0.85 },
     },
     performance = {
         cache = { enabled = true },

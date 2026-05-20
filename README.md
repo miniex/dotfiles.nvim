@@ -14,9 +14,9 @@ Lean, fast, easy on the eyes. Native LSP via `lsp/<server>.lua` discovery, Rust-
 - **Native UI2** — floating cmdline + messages (`vim._core.ui2.enable()`); opt out via `vim.g.disable_ui2 = true`
 - **Completion** — blink.cmp (Rust fuzzy), inlay hints suppressed during insert, tiny-inline-diagnostic
 - **Treesitter** — `main` branch + textobjects, sticky context, ts-autotag, ts-context-commentstring
-- **Pickers** — fff.nvim (Rust file finder) + snacks.picker (grep/buffers/recent) + fzf-lua (git/lsp/lines/snippets); fff and snacks share an identical 0.85 × 0.85 rectangle with a single overlapping `✿│✿` divider between list and preview
+- **Pickers** — fff.nvim (Rust file finder) + snacks.picker (grep/buffers/recent) + fzf-lua (git/lsp/lines/snippets); the snacks picker pair shares a single overlapping `✿│✿` divider between list and preview
 - **Editor** — neo-tree (floating), flash, trouble, which-key, todo-comments, dropbar, mini.surround / mini.move (`<A-hjkl>` line shuffle), persistence (auto-restores on bare `nvim`, re-attaches highlighter / LSP / linter on restored buffers), aerial, harpoon v2, grug-far, **quicker.nvim** (editable quickfix), **multicursor.nvim**, **dial.nvim** (smart `<C-a>/<C-x>` for bools / dates / semver / `&&↔||`), 0.12 built-in `:Undotree`, nvim-bqf, nvim-colorizer, git-conflict, nvim-lightbulb (code-action sign)
-- **Modal floats** — big floating UIs (pickers / terminal / lazy / mason / harpoon / neo-tree) are mutually exclusive; hover, completion, signature, and notifications stack freely on top
+- **Modal floats** — big floating UIs (pickers / terminal / lazy / mason / harpoon / lazygit / neo-tree) are mutually exclusive and share a single 0.85 × 0.85 chrome-aware rectangle (`lua/config/modal-geom.lua`), so every keymap lands them in the exact same spot. Hover, completion, signature, and notifications stack freely on top
 - **snacks.nvim** — picker, profiler, terminal, dashboard, statuscolumn, notifier, indent, scroll, dim, image, bigfile, scratch, zen, gitbrowse, rename (LSP-aware)
 - **Markdown** — render-markdown.nvim inline rendering of headings / lists / tables / code
 - **Tooling** — nvim-lint (per-buffer 250ms debounce, skips run if you switched away), mason-tool-installer, DAP (Rust/C-C++/Python/Go/Zig/Elixir) with persistent breakpoints, neotest (Python/Go/Elixir/C++/Rust); summary window restored across sessions via persistence.nvim
@@ -130,6 +130,7 @@ Leader: `<Space>`. Full reference: [docs/KEYMAPS.md](docs/KEYMAPS.md).
 - **Sidebar layout** — `lua/plugins/ui/edgy.lua` pins aerial → right, trouble/qf/dap → bottom.
 - **Keymaps / autocmds** — `lua/config/keymaps.lua` and `autocmds.lua`.
 - **Modal floats** — `lua/config/modal-floats.lua`. Extend the `OWNER` table (`ft = "owner"`) to register a new modal; same owner = sibling windows kept together.
+- **Modal geometry** — `lua/config/modal-geom.lua`. Change `M.RATIO` to resize every modal float at once; add a filetype to `ALIGNED_FT` to snap a new plugin into the same rectangle.
 
 ## Companion repos
 

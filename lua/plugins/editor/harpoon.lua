@@ -17,6 +17,7 @@ return {
             {
                 "<leader>mm",
                 function()
+                    -- Geometry is snapped by modal-geom's FileType aligner.
                     h().ui:toggle_quick_menu(h():list(), {
                         border = vim.g.flower_border,
                         title = " ✿ harpoon ✿ ",
