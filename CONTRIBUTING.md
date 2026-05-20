@@ -31,9 +31,10 @@ cargo install stylua                                       # cargo
 ./tools/format.sh   # stylua + shfmt rewrite; jq/taplo/yamlfmt on tracked files when present
 ./tools/lint.sh     # stylua --check + lua-language-server + shfmt diff + shellcheck
                     # + fish -n / zsh -n on tracked *.fish / *.zsh files when present
+./tools/health.sh   # diagnose host prereqs (tree-sitter, Nerd Fonts, toolchains); never fails
 ```
 
-`lint.sh` exits non-zero on drift or diagnostic. CI expects clean.
+`lint.sh` exits non-zero on drift or diagnostic. CI expects clean. `health.sh` is informational.
 
 ## PR rules
 

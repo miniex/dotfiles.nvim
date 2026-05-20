@@ -82,6 +82,7 @@ return {
             { "<leader>gs", "<cmd>Git<cr>", desc = "Git Status" },
             { "<leader>gb", "<cmd>Git blame<cr>", desc = "Git Blame" },
             { "<leader>gd", "<cmd>Gdiffsplit<cr>", desc = "Git Diff" },
+            { "<leader>gdv", "<cmd>Gvdiffsplit!<cr>", desc = "Git 3-way Diff (merge conflict)" },
             { "<leader>gl", "<cmd>Git log --oneline<cr>", desc = "Git Log" },
             { "<leader>gp", "<cmd>Git push<cr>", desc = "Git Push" },
             { "<leader>gP", "<cmd>Git pull<cr>", desc = "Git Pull" },

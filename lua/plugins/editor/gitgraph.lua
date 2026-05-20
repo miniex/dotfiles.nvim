@@ -18,6 +18,18 @@ return {
             end,
             desc = "Git Graph (current branch)",
         },
+        {
+            "<leader>gvs",
+            function()
+                vim.ui.input({ prompt = "Since (e.g. '2 weeks ago', '2025-01-01'): " }, function(since)
+                    if not since or since == "" then
+                        return
+                    end
+                    require("gitgraph").draw({ "--since=" .. since }, { all = true, max_count = 5000 })
+                end)
+            end,
+            desc = "Git Graph (since)",
+        },
     },
     opts = {
         symbols = {

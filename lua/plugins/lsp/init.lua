@@ -141,6 +141,16 @@ return {
                         end
                         if client:supports_method("textDocument/codeLens") then
                             vim.lsp.codelens.enable(true, { bufnr = bufnr })
+                            -- codelens.enable wires LspAttach/BufEnter/InsertLeave; add
+                            -- BufWritePost to catch new testables/run lenses after save.
+                            local cl_group = vim.api.nvim_create_augroup("lsp-codelens-" .. bufnr, { clear = true })
+                            vim.api.nvim_create_autocmd("BufWritePost", {
+                                buffer = bufnr,
+                                group = cl_group,
+                                callback = function()
+                                    vim.lsp.codelens.refresh({ bufnr = bufnr })
+                                end,
+                            })
                         end
                         if client:supports_method("textDocument/documentHighlight") then
                             local g = vim.api.nvim_create_augroup("lsp-doc-hl-" .. bufnr, { clear = true })

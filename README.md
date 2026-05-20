@@ -140,7 +140,7 @@ Leader: `<Space>`. Full reference: [docs/KEYMAPS.md](docs/KEYMAPS.md).
 
 ## Contributing
 
-PRs welcome. Before opening: `./tools/format.sh` + `./tools/lint.sh` must pass clean. Commit prefix lowercase (`feat:`, `fix:`, …). Full details: [CONTRIBUTING.md](CONTRIBUTING.md).
+PRs welcome. Before opening: `./tools/format.sh` + `./tools/lint.sh` must pass clean. Run `./tools/health.sh` to verify host prereqs (tree-sitter, Nerd Fonts, toolchains). Commit prefix lowercase (`feat:`, `fix:`, …). Full details: [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Troubleshooting
 
@@ -156,6 +156,7 @@ PRs welcome. Before opening: `./tools/format.sh` + `./tools/lint.sh` must pass c
 | Profiling startup        | `PROF=1 nvim`, then `<leader>Pp` / `<leader>Pf`                                                                                         |
 | Treesitter errors        | `:checkhealth nvim-treesitter`; `tree-sitter --version` ≥ 0.26.1 (not npm)                                                              |
 | Theme not updating       | `rm -rf ~/.cache/nvim/catppuccin` and restart                                                                                           |
+| Missing prereq tools     | `./tools/health.sh` — flags tree-sitter version, Nerd Font fallback, toolchains, clipboard bridge                                       |
 
 > nvim-treesitter `master` is archived and incompatible with 0.12; pinned to `main`.
 

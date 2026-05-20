@@ -18,7 +18,7 @@ if [ -n "$missing" ]; then
 fi
 
 stylua .
-shfmt -w -i 4 -ci -bn -s install.sh set-lang.sh tools/format.sh tools/lint.sh
+shfmt -w -i 4 -ci -bn -s install.sh set-lang.sh tools/format.sh tools/lint.sh tools/health.sh
 
 if command -v jq >/dev/null 2>&1; then
     # lazy-lock.json is plugin-managed; never touch.

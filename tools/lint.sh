@@ -21,8 +21,8 @@ fi
 stylua --check .
 lua-language-server --check . --logpath /tmp/lua-ls-check
 
-shfmt -d -i 4 -ci -bn -s install.sh set-lang.sh tools/format.sh tools/lint.sh
-shellcheck install.sh set-lang.sh tools/format.sh tools/lint.sh
+shfmt -d -i 4 -ci -bn -s install.sh set-lang.sh tools/format.sh tools/lint.sh tools/health.sh
+shellcheck install.sh set-lang.sh tools/format.sh tools/lint.sh tools/health.sh
 
 # Parse-only check on any tracked files matching $1 using `$2 -n`. Warn-if-absent.
 check_parse() {

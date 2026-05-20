@@ -204,11 +204,13 @@ Picker uses rounded border + preview. Inside: `q`/`<Esc>` close, `h` parent menu
 | Key                             | Description                                                                                  |
 | ------------------------------- | -------------------------------------------------------------------------------------------- |
 | `<leader>gs/gb/gd/gl/gc/gp/gP`  | Fugitive: status/blame/diff/log/commit/push/pull                                             |
+| `<leader>gdv`                   | Fugitive: 3-way diffsplit (`:Gvdiffsplit!`) — for merge conflicts                            |
 | `<leader>gg/gf/gF/gL`           | LazyGit: full / current file / filter file / filter all                                      |
 | `<leader>gB`                    | gitbrowse: open current line in browser (n/v)                                                |
 | `<leader>gvo/gvc/gvr`           | Diffview: open / close / refresh                                                             |
 | `<leader>gvf/gvF/gvh`           | Diffview file history: current / repo / stash                                                |
 | `<leader>gvg` / `<leader>gvG`   | gitgraph.nvim: all branches / current (`<cr>` → diffview)                                    |
+| `<leader>gvs`                   | gitgraph.nvim: prompt for `--since` filter (e.g. `2 weeks ago`)                              |
 | `[h` / `]h`                     | Prev / next hunk                                                                             |
 | `<leader>ghs/r/S/u/R/p/i/b/d/D` | Stage / reset / stage-buf / undo-stage / reset-buf / preview / inline / blame / diff / diff~ |
 | `<leader>gtb` / `<leader>gtd`   | Toggle line blame / show deleted                                                             |
