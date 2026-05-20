@@ -15,14 +15,24 @@ return {
                 "cpp",
                 "go",
                 "rust",
+                "zig",
                 -- Scripting
                 "python",
                 "lua",
+                "elixir",
+                "ocaml",
+                "ocaml_interface",
                 -- Web
                 "html",
                 "css",
                 "javascript",
                 "typescript",
+                "heex",
+                -- API / Query
+                "graphql",
+                -- Shaders
+                "wgsl",
+                "glsl",
                 -- Database
                 "sql",
                 -- Data / Config
@@ -35,11 +45,15 @@ return {
                 -- Markup
                 "markdown",
                 "markdown_inline",
+                "typst",
                 -- Build / Infra
                 "cmake",
                 "nix",
                 "dockerfile",
                 "just",
+                "hcl",
+                "terraform",
+                "helm",
                 -- Editor
                 "vim",
                 "vimdoc",

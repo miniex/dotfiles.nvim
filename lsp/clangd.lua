@@ -19,6 +19,8 @@ return {
     root_dir = function(bufnr, on_dir)
         local fname = vim.api.nvim_buf_get_name(bufnr)
         local primary = vim.fs.root(fname, {
+            ".clangd",
+            "CMakeLists.txt",
             "Makefile",
             "configure.ac",
             "configure.in",
@@ -26,6 +28,7 @@ return {
             "meson.build",
             "meson_options.txt",
             "build.ninja",
+            "xmake.lua",
         })
         local secondary = vim.fs.root(fname, {
             "compile_commands.json",

@@ -19,39 +19,39 @@ Lean, fast, easy on the eyes. Native LSP via `lsp/<server>.lua` discovery, Rust-
 - **Modal floats** — big floating UIs (pickers / terminal / lazy / mason / harpoon / neo-tree) are mutually exclusive; hover, completion, signature, and notifications stack freely on top
 - **snacks.nvim** — picker, profiler, terminal, dashboard, statuscolumn, notifier, indent, scroll, dim, image, bigfile, scratch, zen, gitbrowse, rename (LSP-aware)
 - **Markdown** — render-markdown.nvim inline rendering of headings / lists / tables / code
-- **Tooling** — nvim-lint (per-buffer 250ms debounce, skips run if you switched away), mason-tool-installer, DAP (Rust/C-C++/Python/Go) with persistent breakpoints, neotest (Python/Go/Elixir/C++)
+- **Tooling** — nvim-lint (per-buffer 250ms debounce, skips run if you switched away), mason-tool-installer, DAP (Rust/C-C++/Python/Go/Zig/Elixir) with persistent breakpoints, neotest (Python/Go/Elixir/C++)
 - **UI** — Catppuccin Mocha retoned to a 2-color damin palette (`#98ABCC` / `#E890B0`) mirroring [`fish-theme-damin`](https://github.com/miniex/fish-theme-damin) + [`dotfiles.kitty`](https://github.com/miniex/dotfiles.kitty) + [`dotfiles.tmux`](https://github.com/miniex/dotfiles.tmux). lualine: `✧ … ⋆` sparkle bookends, `✿` mode glyph (swaps to `✎` in visual / operator-pending, briefly `✦` on mode change). bufferline: pink → mid → blue 3-stop gradient, `surface0` card under the active buffer, `▎` left bar + ordinal prefix on active, `♡` on harpoon-pinned, `●` on modified, uniform 16-char tab width regardless of filename length, Neo-tree / Outline get sidebar offset labels. incline: `⌬` when window is zoomed (alone in tabpage). modicator: `✿` sign on the current line in mode color. every floating window in the config — LSP hover / signature / diagnostic, neo-tree, snacks (picker / terminal / notifier / input / scratch / zen), fzf-lua, fff.nvim, completion menu / signature, dropbar, bqf, neotest, which-key, harpoon, Mason, Lazy, lazygit — shares one look: ✿ flower-cornered border (`✿─✿│✿─✿│`), pink (`#E890B0`) edge, transparent background, and centered `✿ title ✿` (configured in [`lua/config/globals.lua`](lua/config/globals.lua)). flash labels in damin pink. nvim-scrollbar: ♥ cursor mark slides smoothly between rows on jumps and heartbeat-pulses while focused (paused on `FocusLost` to save ~20Hz of `nvim_set_hl`), handle fades vivid → muted after idle, git triad in mint/pink/rose — gitsigns gutter + DiagnosticSign share the same palette so both edges agree. Plus edgy (sidebar layout), smear-cursor, fidget
 - **Git** — gitsigns, fugitive, lazygit, diffview, **gitgraph.nvim** (in-buffer branch graph)
 - **Yank → system clipboard** auto-routed via `wl-copy` (Wayland), `xclip` (X11), `pbcopy` (macOS), or `clip.exe` (WSL2) — whichever is on PATH first.
 
 ## Language Support
 
-| Language            | LSP                           | Linter           | Debugger |
-| ------------------- | ----------------------------- | ---------------- | -------- |
-| Shell (sh/bash)     | bashls                        | shellcheck       | -        |
-| Zsh / Fish          | -                             | zsh -n / fish -n | -        |
-| Assembly            | asm-lsp                       | -                | -        |
-| C/C++               | clangd                        | -                | cpptools |
-| Go                  | gopls                         | golangci-lint    | delve    |
-| Rust                | rust-analyzer (rustaceanvim)  | -                | CodeLLDB |
-| Zig                 | zls                           | -                | -        |
-| OCaml               | ocamllsp                      | -                | -        |
-| Elixir              | elixirls                      | -                | -        |
-| Python              | basedpyright + ruff           | ruff (LSP)       | debugpy  |
-| Lua                 | lua_ls                        | selene           | -        |
-| CSS / HTML          | cssls / html+emmet            | -                | -        |
-| Tailwind / JS-TS    | tailwindcss / vtsls           | eslint_d         | -        |
-| GraphQL / SQL       | graphql / sqls                | -                | -        |
-| JSON / YAML         | jsonls / yamlls               | -                | -        |
-| Protobuf / TOML     | buf_ls / taplo                | -                | -        |
-| RON                 | -                             | -                | -        |
-| Typst               | tinymist                      | -                | -        |
-| Markdown / MDX      | marksman / + mdx_analyzer     | markdownlint     | -        |
-| CMake / Nix         | neocmake / nil_ls             | - / statix       | -        |
-| Dockerfile / Helm   | dockerls / helm_ls            | hadolint         | -        |
-| Terraform / HCL     | terraformls                   | tflint           | -        |
-| Shaders (WGSL/GLSL) | wgsl-analyzer / glsl_analyzer | -                | -        |
-| Just                | just-lsp                      | -                | -        |
+| Language            | LSP                           | Linter           | Debugger                |
+| ------------------- | ----------------------------- | ---------------- | ----------------------- |
+| Shell (sh/bash)     | bashls                        | shellcheck       | -                       |
+| Zsh / Fish          | -                             | zsh -n / fish -n | -                       |
+| Assembly            | asm-lsp                       | -                | -                       |
+| C/C++               | clangd                        | -                | cpptools                |
+| Go                  | gopls                         | golangci-lint    | delve                   |
+| Rust                | rust-analyzer (rustaceanvim)  | -                | CodeLLDB                |
+| Zig                 | zls                           | -                | codelldb                |
+| OCaml               | ocamllsp                      | -                | -                       |
+| Elixir              | elixirls                      | -                | elixir-ls debug adapter |
+| Python              | basedpyright + ruff           | ruff (LSP)       | debugpy                 |
+| Lua                 | lua_ls                        | selene           | -                       |
+| CSS / HTML          | cssls / html+emmet            | -                | -                       |
+| Tailwind / JS-TS    | tailwindcss / vtsls           | eslint_d         | -                       |
+| GraphQL / SQL       | graphql / sqls                | -                | -                       |
+| JSON / YAML         | jsonls / yamlls               | -                | -                       |
+| Protobuf / TOML     | buf_ls / taplo                | -                | -                       |
+| RON                 | -                             | -                | -                       |
+| Typst               | tinymist                      | -                | -                       |
+| Markdown / MDX      | marksman / + mdx_analyzer     | markdownlint     | -                       |
+| CMake / Nix         | neocmake / nil_ls             | - / statix       | -                       |
+| Dockerfile / Helm   | dockerls / helm_ls            | hadolint         | -                       |
+| Terraform / HCL     | terraformls                   | tflint           | -                       |
+| Shaders (WGSL/GLSL) | wgsl-analyzer / glsl_analyzer | -                | -                       |
+| Just                | just-lsp                      | -                | -                       |
 
 > Formatting is opt-in via `tools/format.sh`, not on save.
 
