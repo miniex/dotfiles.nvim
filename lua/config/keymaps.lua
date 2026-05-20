@@ -86,4 +86,16 @@ end, "n", "Toggle undotree")
 
 map("<leader>qR", "<cmd>restart<cr>", "n", "Restart Neovim")
 
+-- Yank file path to `+` — absolute / relative variants.
+map("<leader>yp", function()
+    local path = vim.fn.expand("%:p")
+    vim.fn.setreg("+", path)
+    vim.notify(path, vim.log.levels.INFO, { title = "yanked path" })
+end, "n", "Yank file path (absolute)")
+map("<leader>yP", function()
+    local path = vim.fn.fnamemodify(vim.fn.expand("%"), ":~:.")
+    vim.fn.setreg("+", path)
+    vim.notify(path, vim.log.levels.INFO, { title = "yanked path" })
+end, "n", "Yank file path (relative)")
+
 -- Buffer nav keymaps live on the bufferline.nvim spec for lazy-load safety.

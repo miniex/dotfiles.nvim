@@ -30,6 +30,18 @@ return {
             end,
             desc = "Git Graph (since)",
         },
+        {
+            "<leader>gvA",
+            function()
+                vim.ui.input({ prompt = "Author (substring matches): " }, function(author)
+                    if not author or author == "" then
+                        return
+                    end
+                    require("gitgraph").draw({ "--author=" .. author }, { all = true, max_count = 5000 })
+                end)
+            end,
+            desc = "Git Graph (author)",
+        },
     },
     opts = {
         symbols = {

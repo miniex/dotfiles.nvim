@@ -35,5 +35,8 @@ return {
             desc = "Next Trouble/Quickfix Item",
         },
     },
-    opts = { auto_close = true },
+    opts = {
+        auto_close = true,
+        preview = { type = "main" },
+    },
 }

@@ -24,6 +24,13 @@ return {
             end,
             desc = "Search & Replace (current file)",
         },
+        {
+            "<leader>rw",
+            function()
+                require("grug-far").open({ prefills = { search = vim.fn.expand("<cword>") } })
+            end,
+            desc = "Search & Replace (current word)",
+        },
     },
     opts = {
         headerMaxWidth = 80,

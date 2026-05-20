@@ -176,6 +176,14 @@ return {
                 end,
                 desc = "Toggle DAP UI",
             },
+            {
+                "<leader>dW",
+                function()
+                    local widgets = require("dap.ui.widgets")
+                    widgets.centered_float(widgets.scopes)
+                end,
+                desc = "Watch Scopes (centered float)",
+            },
         },
     },
 }

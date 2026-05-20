@@ -182,6 +182,7 @@ return {
                 map("n", "<leader>ghD", function()
                     gs.diffthis("~")
                 end, "Diff This ~")
+                map("n", "<leader>ghq", gs.blame_to_qflist, "Blame to QF")
 
                 -- Toggle
                 map("n", "<leader>gtb", gs.toggle_current_line_blame, "Toggle Line Blame")

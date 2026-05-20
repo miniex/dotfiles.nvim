@@ -95,6 +95,7 @@ Inside the grug-far buffer: `<localleader>r` replace, `<localleader>s` sync to d
 | `<leader>rr` | n    | Open at project root                 |
 | `<leader>rR` | v    | Open with visual selection prefilled |
 | `<leader>rf` | n    | Scoped to current file               |
+| `<leader>rw` | n    | Prefilled with `<cword>`             |
 
 ## Session (persistence.nvim)
 
@@ -211,9 +212,10 @@ Picker uses rounded border + preview. Inside: `q`/`<Esc>` close, `h` parent menu
 | `<leader>gvo/gvc/gvr`           | Diffview: open / close / refresh                                                             |
 | `<leader>gvf/gvF/gvh`           | Diffview file history: current / repo / stash                                                |
 | `<leader>gvg` / `<leader>gvG`   | gitgraph.nvim: all branches / current (`<cr>` → diffview)                                    |
-| `<leader>gvs`                   | gitgraph.nvim: prompt for `--since` filter (e.g. `2 weeks ago`)                              |
+| `<leader>gvs` / `<leader>gvA`   | gitgraph.nvim: prompt for `--since` / `--author` filter                                      |
 | `[h` / `]h`                     | Prev / next hunk                                                                             |
 | `<leader>ghs/r/S/u/R/p/i/b/d/D` | Stage / reset / stage-buf / undo-stage / reset-buf / preview / inline / blame / diff / diff~ |
+| `<leader>ghq`                   | gitsigns: blame to quickfix                                                                  |
 | `<leader>gtb` / `<leader>gtd`   | Toggle line blame / show deleted                                                             |
 | `<leader>gxq`                   | git-conflict: conflicts to quickfix                                                          |
 | `[X` / `]X`                     | Prev / next conflict                                                                         |
@@ -228,6 +230,7 @@ Picker uses rounded border + preview. Inside: `q`/`<Esc>` close, `h` parent menu
 | `<leader>di` / `dO` / `do`    | Step into / over / out                                          |
 | `<leader>dg` / `dj` / `dk`    | Go to line / Down / Up frame                                    |
 | `<leader>dl/dr/dp/dt/ds/du`   | Last / REPL / pause / terminate / session / toggle UI           |
+| `<leader>dW`                  | Scopes as a centered float (dap.ui.widgets)                     |
 | `<leader>dGt` / `<leader>dGl` | Go: nearest test / last test                                    |
 | `<leader>dPt` / `<leader>dPc` | Python: test method / class                                     |
 
@@ -269,6 +272,7 @@ In the toggle terminal, `$EDITOR`/`$VISUAL`/`$GIT_EDITOR` forward to the parent 
 | `<leader>1` … `<leader>9` · `<leader>0` | Jump to bufferline position 1–9 / 10          |
 | `[b` / `]b` · `<S-h>` / `<S-l>`         | Prev / next buffer (open-order)               |
 | `<leader>cn` / `<leader>un`             | Notification history / dismiss all            |
+| `<leader>yp` / `<leader>yP`             | Yank file path to `+`: absolute / relative    |
 | `]]` / `[[`                             | LSP word: next / previous reference           |
 
 ## Language-specific
