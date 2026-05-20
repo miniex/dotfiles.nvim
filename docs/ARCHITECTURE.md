@@ -1,0 +1,80 @@
+# Architecture
+
+Why files live where they do.
+
+## Top-level layout
+
+```
+~/.config/nvim/
+├── init.lua              entry point — required at root by Neovim
+├── lsp/                  per-server settings (vim.lsp.config, 0.11+)
+├── snippets/             luasnip filetype-scoped + all.lua
+├── lua/                  every require()-able module
+│   ├── config/             core: options, autocmds, keymaps, lazy bootstrap
+│   └── plugins/            plugin specs (lazy.nvim picks them up)
+├── docs/                 markdown guides (this file)
+├── tools/                shell helpers: format / lint / health
+├── scripts/              term-bin shims (term-bin/nvim → outer nvim)
+├── assets/               dashboard sticker, preview image
+├── CONTRIBUTING.md
+└── README.md
+```
+
+The asymmetry between `lsp/` / `snippets/` (at root) and `lua/config|plugins/` (under `lua/`) is **dictated by Neovim**, not a stylistic choice — see below.
+
+## Why each path is where it is
+
+| Path                | Forced by                                                                                       |
+| ------------------- | ----------------------------------------------------------------------------------------------- |
+| `init.lua`          | Neovim looks here on startup. Cannot move.                                                      |
+| `lsp/<server>.lua`  | Neovim 0.11+ native LSP discovery scans `<rtp>/lsp/` only. Cannot move.                         |
+| `lua/<mod>/*.lua`   | `require("mod.x")` resolves to `<rtp>/lua/mod/x.lua`. Cannot move out of `lua/`.                |
+| `snippets/<ft>.lua` | Free choice. Path is set in `lua/plugins/coding/completion.lua` (`luasnip.loaders.from_lua`).   |
+| `tools/`            | Free. Shell scripts, not loaded by Neovim.                                                      |
+| `scripts/term-bin/` | Free. Used as `$EDITOR` inside the snacks terminal so `git commit` opens a split in outer nvim. |
+
+## Boot sequence
+
+`init.lua` requires in this order:
+
+1. `config.globals` — `vim.g.*` shared across modules (`flower_border`, `disable_ui2`)
+2. `config.options` — `vim.opt` settings (must precede plugins reading them, e.g. `cmdheight`, `laststatus`)
+3. `config.autocmds` — global autocmds (clipboard sync, mkdir-on-save, ts-attach, …)
+4. `config.modal-floats` — mutual-exclusion registry for big floating UIs
+5. `config.keymaps` — global keymaps (not buffer-local)
+6. `config.lazy` — bootstrap lazy.nvim and load `plugins.*` specs
+
+Plugin specs are discovered by `lazy.setup({ spec = { { import = "plugins.coding" }, ... } })` in `lua/config/lazy.lua`. Per-language modules (`lua/plugins/lang/<lang>.lua`) are loaded only when the matching key in `lua/config/langs.lua` is `true`.
+
+## Single sources of truth
+
+| Concern                 | Lives in                                           | Why                                                                                            |
+| ----------------------- | -------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| LSP per-server settings | `lsp/<server>.lua`                                 | Neovim's native discovery; don't restate in `nvim-lspconfig.opts.servers.<name>`.              |
+| Lang → server mapping   | `lua/config/lang_servers.lua`                      | One place to ask "what servers does this language enable?"                                     |
+| Enabled languages       | `lua/config/langs.lua` (+ `langs_local.lua`)       | `langs_local.lua` is gitignored and wins per-machine.                                          |
+| Diagnostic UI           | `lua/plugins/lsp/init.lua` `vim.diagnostic.config` | tiny-inline-diagnostic owns `virtual_text`; everything else (signs, float) lives here.         |
+| Modal float mutual-ex   | `lua/config/modal-floats.lua` `OWNER` table        | Same `owner` keeps sibling windows of one plugin together; opening another owner closes prior. |
+| Modal float geometry    | `lua/config/modal-geom.lua`                        | Shared 0.85 × 0.85 chrome-aware rectangle. Change `M.RATIO` to resize every modal at once.     |
+| Border characters       | `lua/config/globals.lua` `vim.g.flower_border`     | Every plugin reads this; theme/border consistency in one place.                                |
+
+## Plugin spec categories (`lua/plugins/`)
+
+| Subdir      | Belongs here                                                                |
+| ----------- | --------------------------------------------------------------------------- |
+| `coding/`   | Completion (blink.cmp, LuaSnip, friendly-snippets).                         |
+| `editor/`   | Editing UX: neo-tree, flash, surround, harpoon, multicursor, git, …         |
+| `lang/`     | Per-language adapters (DAP configs, treesitter parsers, lang-only plugins). |
+| `lsp/`      | LSP infra (mason, nvim-lspconfig, lint, dap, neotest, diagnostic-ui).       |
+| `markdown/` | Render plugins specific to markdown.                                        |
+| `ui/`       | Theme, lualine, bufferline, snacks (picker/terminal/dashboard), edgy, …     |
+
+If a plugin touches multiple categories (e.g. snacks does picker + terminal + dashboard), pick the dominant one and add a comment if non-obvious.
+
+## Where to look next
+
+- [SETUP.md](SETUP.md) — install, prereqs, recovery
+- [FEATURES.md](FEATURES.md) — what each feature does
+- [KEYMAPS.md](KEYMAPS.md) — every keymap
+- [CUSTOMIZATION.md](CUSTOMIZATION.md) — extension points for adding a language, theme tweak, etc.
+- [TROUBLESHOOTING.md](TROUBLESHOOTING.md) — common issues

@@ -86,6 +86,7 @@ Leader: `<Space>`. Full reference: [docs/KEYMAPS.md](docs/KEYMAPS.md).
 - [docs/FEATURES.md](docs/FEATURES.md) — per-category feature breakdown
 - [docs/KEYMAPS.md](docs/KEYMAPS.md) — every keymap
 - [docs/CUSTOMIZATION.md](docs/CUSTOMIZATION.md) — where to edit what
+- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — why files live where they do
 - [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md) — common issues
 
 ## Companion repos
