@@ -22,8 +22,10 @@ return {
     opts = {
         prompt = "  ",
         title = "✿ files ✿",
+        -- 0.85 × 0.85, input top, preview right 50% — matches snacks.picker.
         layout = {
-            -- snacks.picker has input on top → match.
+            width = 0.85,
+            height = 0.85,
             prompt_position = "top",
             preview_position = "right",
             preview_size = 0.5,

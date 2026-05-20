@@ -3,6 +3,50 @@ local SIDEBAR_FT = {
     ["neo-tree-popup"] = true,
 }
 
+-- Nudge picker preview's left border onto list's right border (col -1 /
+-- width +1). List's zindex (52) wins the shared column, leaving one ✿│✿
+-- divider. Preview is identified by snacks's scratch_ft (preview.lua:84).
+local function is_picker_preview_buf(buf)
+    return buf and buf ~= 0 and vim.api.nvim_buf_is_valid(buf) and vim.bo[buf].filetype == "snacks_picker_preview"
+end
+
+-- Mirror fff.nvim's chrome-aware centering (picker_ui.lua:494) so fff and
+-- snacks pickers sit in the exact same rectangle.
+local PICKER_RATIO = 0.85
+local function picker_geom()
+    local has_tabline = vim.o.showtabline == 2 or (vim.o.showtabline == 1 and #vim.api.nvim_list_tabpages() > 1)
+    local has_statusline = vim.o.laststatus > 0
+    local top_edge = has_tabline and 1 or 0
+    local bottom_edge = vim.o.lines - vim.o.cmdheight - (has_statusline and 1 or 0)
+    local usable = bottom_edge - top_edge
+    local h = math.min(math.floor(vim.o.lines * PICKER_RATIO), usable)
+    return h, top_edge + math.floor((usable - h) / 2) + 1
+end
+
+do
+    local orig_open = vim.api.nvim_open_win
+    ---@diagnostic disable-next-line: duplicate-set-field
+    vim.api.nvim_open_win = function(buf, enter, config)
+        if is_picker_preview_buf(buf) and config.col and config.width then
+            config.col = config.col - 1
+            config.width = config.width + 1
+        end
+        return orig_open(buf, enter, config)
+    end
+
+    local orig_set = vim.api.nvim_win_set_config
+    ---@diagnostic disable-next-line: duplicate-set-field
+    vim.api.nvim_win_set_config = function(win, config)
+        if vim.api.nvim_win_is_valid(win) and is_picker_preview_buf(vim.api.nvim_win_get_buf(win)) then
+            if config.col and config.width then
+                config.col = config.col - 1
+                config.width = config.width + 1
+            end
+        end
+        return orig_set(win, config)
+    end
+end
+
 -- $EDITOR → parent nvim. Pass at toggle(), not opts.terminal (snacks id mismatch).
 local TERM_WRAPPER = vim.fn.stdpath("config") .. "/scripts/term-bin/nvim"
 local TERM_ENV = {
@@ -245,15 +289,20 @@ return {
         picker = {
             enabled = true,
             ui_select = true,
-            -- Snacks's stock `default` layout hardcodes "bottom"/"none"/true for
-            -- input/list/preview borders, swallowing win.*.border. Override the
-            -- whole layout so every box uses the shared flower border.
+            -- Two flower-bordered boxes adjacent; col-overlap (see
+            -- `is_picker_preview_buf` patch at top) renders one ✿│✿ divider.
             layouts = {
                 default = {
                     layout = {
                         box = "horizontal",
-                        width = 0.85,
-                        height = 0.85,
+                        width = PICKER_RATIO,
+                        height = function()
+                            return (picker_geom())
+                        end,
+                        row = function()
+                            local _, r = picker_geom()
+                            return r
+                        end,
                         border = "none",
                         {
                             box = "vertical",
