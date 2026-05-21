@@ -99,7 +99,7 @@ Inside the grug-far buffer: `<localleader>r` replace, `<localleader>s` sync to d
 
 ## Session (persistence.nvim)
 
-Bare `nvim` (no args, no stdin) auto-restores cwd session.
+Bare `nvim` auto-restores the cwd session (skipped in headless or when the session has no real files).
 
 | Key          | Description                 |
 | ------------ | --------------------------- |

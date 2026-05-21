@@ -10,12 +10,30 @@ return {
                 vim.g.started_with_stdin = true
             end,
         })
+        -- Empty `enew`-only sessions trample the dashboard; only restore real files.
+        local function session_has_files()
+            local file = require("persistence").current()
+            if vim.fn.filereadable(file) == 0 then
+                return false
+            end
+            for _, line in ipairs(vim.fn.readfile(file)) do
+                if line:match("^badd ") or line:match("^edit ") then
+                    return true
+                end
+            end
+            return false
+        end
         vim.api.nvim_create_autocmd("VimEnter", {
             group = group,
             nested = true,
             once = true,
             callback = function()
-                if vim.fn.argc(-1) > 0 or vim.g.started_with_stdin then
+                if
+                    vim.fn.argc(-1) > 0
+                    or vim.g.started_with_stdin
+                    or #vim.api.nvim_list_uis() == 0
+                    or not session_has_files()
+                then
                     return
                 end
                 require("persistence").load()
@@ -74,4 +92,11 @@ return {
     opts = {
         options = { "buffers", "curdir", "tabpages", "winsize", "help", "globals", "skiprtp", "folds" },
     },
+    config = function(_, opts)
+        require("persistence").setup(opts)
+        -- Don't let headless runs (CI, scripts) overwrite the saved session.
+        if #vim.api.nvim_list_uis() == 0 then
+            require("persistence").stop()
+        end
+    end,
 }

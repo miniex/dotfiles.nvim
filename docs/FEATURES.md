@@ -32,7 +32,7 @@
 - **Smart inc/dec** — dial.nvim. `<C-a>`/`<C-x>` flips bools, dates, semver, `&&↔||`.
 - **Quickfix** — quicker.nvim (editable QF), nvim-bqf (preview), trouble (`auto_close` on jump, main-window preview).
 - **Misc** — mini.surround (`gs*`), mini.move (`<A-hjkl>` line shuffle), todo-comments, dropbar (winbar), git-conflict, nvim-lightbulb (code-action sign), nvim-colorizer, 0.12 built-in `:Undotree`.
-- **Persistence** — `persistence.nvim` auto-restores on bare `nvim`, re-attaches TS / LSP / linter on restored buffers. Neotest summary window state persists across sessions.
+- **Persistence** — `persistence.nvim` auto-restores on bare `nvim` (skipping headless and empty sessions), re-attaches TS / LSP / linter on restored buffers. Neotest summary window state persists across sessions.
 
 ## UI
 
