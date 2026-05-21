@@ -58,6 +58,35 @@ vim.api.nvim_create_autocmd("FileType", {
     end,
 })
 
+local function pick_main_win()
+    for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+        if vim.api.nvim_win_is_valid(win) and vim.api.nvim_win_get_config(win).relative == "" then
+            local b = vim.api.nvim_win_get_buf(win)
+            if
+                vim.api.nvim_buf_is_valid(b)
+                and vim.bo[b].buftype ~= "terminal"
+                and not SIDEBAR_FT[vim.bo[b].filetype]
+            then
+                return win
+            end
+        end
+    end
+end
+
+local function open_dashboard()
+    local main_win = pick_main_win()
+    if not main_win then
+        return
+    end
+    vim.api.nvim_set_current_win(main_win)
+    ---@diagnostic disable-next-line: undefined-field
+    local S = _G.Snacks
+    if S and S.dashboard then
+        -- `win` replaces the main buffer in place instead of floating over [No Name].
+        pcall(S.dashboard.open, { win = main_win })
+    end
+end
+
 -- On last file buffer close → dashboard in main window (avoid [No Name]).
 local function open_dashboard_if_empty(closing)
     for _, buf in ipairs(vim.api.nvim_list_bufs()) do
@@ -71,29 +100,38 @@ local function open_dashboard_if_empty(closing)
             return
         end
     end
-    local main_win
-    for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
-        if vim.api.nvim_win_is_valid(win) and vim.api.nvim_win_get_config(win).relative == "" then
-            local b = vim.api.nvim_win_get_buf(win)
-            if
-                vim.api.nvim_buf_is_valid(b)
-                and vim.bo[b].buftype ~= "terminal"
-                and not SIDEBAR_FT[vim.bo[b].filetype]
-            then
-                main_win = win
-                vim.api.nvim_set_current_win(win)
-                break
-            end
+    open_dashboard()
+end
+
+local function toggle_dashboard()
+    if vim.bo.filetype == "snacks_dashboard" then
+        local alt = vim.fn.bufnr("#")
+        if alt > 0 and vim.api.nvim_buf_is_valid(alt) then
+            vim.cmd.buffer(alt)
         end
-    end
-    -- Guard in case Snacks setup failed.
-    ---@diagnostic disable-next-line: undefined-field
-    local S = _G.Snacks
-    if S and S.dashboard and main_win then
-        -- `win` replaces the main buffer in place instead of floating over [No Name].
-        pcall(S.dashboard.open, { win = main_win })
+    else
+        open_dashboard()
     end
 end
+
+-- Unlisted dashboard buf → `:mksession` writes `enew`; swap to alternate first.
+vim.api.nvim_create_autocmd("User", {
+    pattern = "PersistenceSavePre",
+    group = vim.api.nvim_create_augroup("SnacksDashboardSavePre", { clear = true }),
+    callback = function()
+        for _, win in ipairs(vim.api.nvim_list_wins()) do
+            local b = vim.api.nvim_win_get_buf(win)
+            if vim.api.nvim_buf_is_valid(b) and vim.bo[b].filetype == "snacks_dashboard" then
+                vim.api.nvim_win_call(win, function()
+                    local alt = vim.fn.bufnr("#")
+                    if alt > 0 and vim.api.nvim_buf_is_valid(alt) then
+                        vim.cmd.buffer(alt)
+                    end
+                end)
+            end
+        end
+    end,
+})
 
 vim.api.nvim_create_autocmd("BufDelete", {
     group = vim.api.nvim_create_augroup("SnacksDashboardOnLastClose", { clear = true }),
@@ -404,6 +442,13 @@ return {
                 Snacks.bufdelete()
             end,
             desc = "Delete Buffer",
+        },
+        {
+            "<leader>;",
+            function()
+                toggle_dashboard()
+            end,
+            desc = "Toggle Dashboard",
         },
         {
             "<leader>bd",
