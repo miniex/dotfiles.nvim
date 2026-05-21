@@ -100,12 +100,23 @@ vim.api.nvim_create_autocmd("RecordingLeave", {
 })
 
 -- Snacks terminal: start in insert so `<leader>t` is type-ready immediately.
+-- Schedule so the dashboard sticker's terminal buf gets its `snacks_dashboard`
+-- ft before the check — otherwise insert mode leaks into the dashboard.
 vim.api.nvim_create_autocmd({ "TermOpen", "BufWinEnter" }, {
     group = vim.api.nvim_create_augroup("snacks-term-insert", { clear = true }),
     callback = function(args)
-        if vim.bo[args.buf].buftype == "terminal" then
-            vim.cmd.startinsert()
+        if vim.bo[args.buf].buftype ~= "terminal" then
+            return
         end
+        vim.schedule(function()
+            if
+                vim.api.nvim_buf_is_valid(args.buf)
+                and vim.api.nvim_get_current_buf() == args.buf
+                and vim.bo[args.buf].filetype ~= "snacks_dashboard"
+            then
+                vim.cmd.startinsert()
+            end
+        end)
     end,
 })
 

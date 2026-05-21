@@ -38,7 +38,7 @@
 
 - **Theme** — Catppuccin Mocha retoned to a 2-color **damin** palette: `#98ABCC` (blue) / `#E890B0` (pink). Mirrors [`fish-theme-damin`](https://github.com/miniex/fish-theme-damin) + [`dotfiles.kitty`](https://github.com/miniex/dotfiles.kitty) + [`dotfiles.tmux`](https://github.com/miniex/dotfiles.tmux).
 - **lualine** — `✧ … ⋆` sparkle bookends, `✿` mode glyph (swaps to `✎` in visual / operator-pending, briefly `✦` on mode change).
-- **bufferline** — pink → mid → blue 3-stop gradient, `surface0` card under active, `▎` left bar + ordinal prefix, `♡` on harpoon-pinned, `●` on modified, uniform 16-char tab width. Neo-tree / Outline get sidebar offset labels.
+- **bufferline** — pink → mid → blue 3-stop gradient, `surface0` card under active, `▎` left bar + ordinal prefix, `♡` on harpoon-pinned, `●` on modified, uniform 16-char tab width. Neo-tree / Outline get sidebar offset labels. Lazy-loads on first real file open, so the dashboard isn't preceded by an empty tabline.
 - **incline** — `⌬` when window is zoomed (alone in tabpage).
 - **modicator** — `✿` sign on the current line in mode color.
 - **which-key** — hint floats pinned to the bottom row at 85% editor width (centered); height grows with content.
@@ -98,3 +98,5 @@ Yank → system clipboard auto-routed via `wl-copy` (Wayland), `xclip` (X11), `p
 ## snacks.nvim modules in use
 
 picker · profiler · terminal · dashboard · statuscolumn · notifier · indent · scroll · dim · image · bigfile · scratch · zen · gitbrowse · rename (LSP-aware).
+
+Closing the last named file (`<leader>w` / `<leader>bd`) swaps the main window in place for the dashboard.

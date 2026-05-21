@@ -27,6 +27,8 @@ opt.encoding = "UTF-8"
 opt.cmdheight = 0
 -- Set before lualine to avoid dashboard height shift on startup.
 opt.laststatus = 3
+-- Hidden until bufferline lazy-loads on a real file — no [No Name] flicker before dashboard.
+opt.showtabline = 0
 opt.scrolloff = 10
 opt.smoothscroll = true
 opt.mouse:append("a")
