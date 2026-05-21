@@ -118,7 +118,7 @@ return {
             desc = "Search History",
         },
         {
-            "<leader>fs",
+            "<leader>fS",
             function()
                 local ls = require("luasnip")
                 local ft = vim.bo.filetype

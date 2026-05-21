@@ -11,7 +11,7 @@ Leader: `<Space>`. `<localleader>` also `<Space>` (most localleader bindings liv
 | `<C-a>` / `<C-x>`   | N/V  | dial: smart inc/dec (bools, dates, semver, &&↔\|\|) |
 | `g<C-a>` / `g<C-x>` | V    | dial: cumulative inc/dec across selection           |
 | `<leader>h`         | N    | Clear search highlight                              |
-| `<leader>s`         | N    | Save (writes auto-mkdir parent dirs)                |
+| `<leader>bs`        | N    | Save (writes auto-mkdir parent dirs)                |
 | `<leader>D`         | N/V  | Delete without yank (`<leader>d` reserved for dap)  |
 | `<leader>p`         | V    | Paste without overwriting register                  |
 | `<leader>P`         | N/V  | Paste + auto-reindent (`=` over pasted lines)       |
@@ -32,7 +32,7 @@ Leader: `<Space>`. `<localleader>` also `<Space>` (most localleader bindings liv
 | `<leader>fg` / `fr` / `fb` / `fh` | snacks.picker: grep / recent / buffers / help                  |
 | `<leader>ft`                      | TODO comments                                                  |
 | `<leader>fR`                      | Rename current file (LSP-aware)                                |
-| `<leader>fs`                      | Snippets (LuaSnip, current ft + all)                           |
+| `<leader>fS`                      | Snippets (LuaSnip, current ft + all)                           |
 | `<leader>z` / `z'`                | fzf-lua: builtin menu / resume last picker                     |
 | `<leader>e` / `<leader>o`         | Neo-tree: toggle / reveal                                      |
 | `<cr>` / `l` (in neo-tree)        | Open file in new tabpage; folder expand/collapse               |
@@ -170,7 +170,7 @@ Bare `nvim` auto-restores the cwd session (skipped in headless or when the sessi
 | `]F` / `[F`                 | n/x/o | Next / prev function end           |
 | `]c` / `[c`                 | n/x/o | Next / prev class start            |
 | `]a` / `[a`                 | n/x/o | Next / prev parameter              |
-| `<leader>a` / `<leader>A`   | n     | Swap parameter with next / prev    |
+| `<leader>cA` / `<leader>cS` | n     | Swap parameter with next / prev    |
 | `gnn`                       | n     | Init incremental selection         |
 | `gnm` / `gnM`               | x     | Expand / shrink node               |
 | `<leader>uc`                | n     | Toggle treesitter context          |

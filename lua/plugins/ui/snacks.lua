@@ -167,6 +167,39 @@ vim.api.nvim_create_autocmd("BufDelete", {
     end,
 })
 
+-- Source-of-truth for dashboard shortcuts: feeds preset.keys + the icon strip.
+local DASH_KEYS = {
+    {
+        key = "f",
+        icon = "\u{F002}",
+        icon_hl = "Function",
+        desc = "Find",
+        action = ":lua require('fff').find_files()",
+    },
+    {
+        key = "g",
+        icon = "\u{F00E}",
+        icon_hl = "String",
+        desc = "Grep",
+        action = ":lua Snacks.dashboard.pick('grep')",
+    },
+    {
+        key = "r",
+        icon = "\u{F1DA}",
+        icon_hl = "Constant",
+        desc = "Recent",
+        action = ":lua Snacks.dashboard.pick('recent')",
+    },
+    {
+        key = "c",
+        icon = "\u{F013}",
+        icon_hl = "Special",
+        desc = "Config",
+        action = ":lua Snacks.dashboard.pick('files', { cwd = vim.fn.stdpath('config') })",
+    },
+    { key = "q", icon = "\u{F011}", icon_hl = "ErrorMsg", desc = "Quit", action = ":qa" },
+}
+
 -- damin 5-step gradient (#98ABCC → #E890B0) for the NEOVIM header.
 local header_gradient = { "#98ABCC", "#ACA4C5", "#C09DBE", "#D496B7", "#E890B0" }
 local function set_header_hl()
@@ -191,37 +224,15 @@ return {
         dashboard = {
             enabled = true,
             preset = {
-                keys = {
-                    {
-                        icon = " ",
-                        key = "f",
-                        desc = "Find",
-                        action = ":lua require('fff').find_files()",
+                keys = vim.tbl_map(function(k)
+                    return {
+                        icon = k.icon .. " ",
+                        key = k.key,
+                        desc = k.desc,
+                        action = k.action,
                         hidden = true,
-                    },
-                    {
-                        icon = " ",
-                        key = "g",
-                        desc = "Grep",
-                        action = ":lua Snacks.dashboard.pick('grep')",
-                        hidden = true,
-                    },
-                    {
-                        icon = " ",
-                        key = "r",
-                        desc = "Recent",
-                        action = ":lua Snacks.dashboard.pick('recent')",
-                        hidden = true,
-                    },
-                    {
-                        icon = " ",
-                        key = "c",
-                        desc = "Config",
-                        action = ":lua Snacks.dashboard.pick('files', { cwd = vim.fn.stdpath('config') })",
-                        hidden = true,
-                    },
-                    { icon = " ", key = "q", desc = "Quit", action = ":qa", hidden = true },
-                },
+                    }
+                end, DASH_KEYS),
             },
             -- Responsive: drop header → recent on small heights. Image/menu/startup always.
             sections = function(self)
@@ -269,26 +280,15 @@ return {
 
                 -- keys section keeps bindings live; render as compact icon strip.
                 table.insert(result, { section = "keys", padding = 0 })
-                table.insert(result, {
-                    text = {
-                        { "\u{F002}  ", hl = "Function" },
-                        { "f", hl = "SnacksDashboardKey" },
-                        { "      " },
-                        { "\u{F00E}  ", hl = "String" },
-                        { "g", hl = "SnacksDashboardKey" },
-                        { "      " },
-                        { "\u{F1DA}  ", hl = "Constant" },
-                        { "r", hl = "SnacksDashboardKey" },
-                        { "      " },
-                        { "\u{F013}  ", hl = "Special" },
-                        { "c", hl = "SnacksDashboardKey" },
-                        { "      " },
-                        { "\u{F011}  ", hl = "ErrorMsg" },
-                        { "q", hl = "SnacksDashboardKey" },
-                    },
-                    align = "center",
-                    padding = 0,
-                })
+                local strip = {}
+                for i, k in ipairs(DASH_KEYS) do
+                    if i > 1 then
+                        table.insert(strip, { "      " })
+                    end
+                    table.insert(strip, { k.icon .. "  ", hl = k.icon_hl })
+                    table.insert(strip, { k.key, hl = "SnacksDashboardKey" })
+                end
+                table.insert(result, { text = strip, align = "center", padding = 0 })
                 table.insert(result, {
                     text = {
                         { "press ", hl = "Comment" },

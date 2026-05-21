@@ -66,12 +66,11 @@ return {
         map_move("]a", "@parameter.inner", "next", "Next parameter")
         map_move("[a", "@parameter.inner", "prev", "Prev parameter")
 
-        -- Swap parameters/arguments (next / prev) — useful when reordering
-        -- function arguments without retyping. Capital A swaps backward.
-        vim.keymap.set("n", "<leader>a", function()
+        -- Swap parameter with next / prev — useful when reordering arguments.
+        vim.keymap.set("n", "<leader>cA", function()
             swap.swap_next("@parameter.inner", "textobjects")
         end, { desc = "Swap parameter with next" })
-        vim.keymap.set("n", "<leader>A", function()
+        vim.keymap.set("n", "<leader>cS", function()
             swap.swap_previous("@parameter.inner", "textobjects")
         end, { desc = "Swap parameter with prev" })
     end,

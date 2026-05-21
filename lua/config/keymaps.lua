@@ -65,8 +65,8 @@ map("<leader>h", ":nohlsearch<CR>", "n", "Clear search highlight")
 map("<", "<gv", "v", "Outdent (keep selection)")
 map(">", ">gv", "v", "Indent (keep selection)")
 
--- save
-map("<leader>s", ":w<CR>", "n", "Save file")
+-- save (in buffer group; <leader>w / delete is adjacent)
+map("<leader>bs", ":w<CR>", "n", "Save file")
 
 -- delete without yank (D, not d: <leader>d is dap)
 map("<leader>D", '"_d', { "n", "x" }, "Delete (no yank)")
