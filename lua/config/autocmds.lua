@@ -142,6 +142,40 @@ vim.api.nvim_create_autocmd({ "TermOpen", "BufWinEnter" }, {
     end,
 })
 
+-- ui2's pager doesn't surface `:messages` for us — render the history in a modal instead.
+vim.api.nvim_create_user_command("Messages", function()
+    local out = vim.fn.execute("messages")
+    local lines = vim.split(out, "\n", { plain = true })
+    while #lines > 0 and lines[1] == "" do
+        table.remove(lines, 1)
+    end
+    if #lines == 0 then
+        vim.notify("no messages", vim.log.levels.INFO)
+        return
+    end
+    local mgeom = require("config.modal-geom")
+    local w, h, r, c = mgeom.geom()
+    local buf = vim.api.nvim_create_buf(false, true)
+    vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
+    vim.bo[buf].buftype = "nofile"
+    vim.bo[buf].modifiable = false
+    vim.bo[buf].filetype = "messages"
+    local win = vim.api.nvim_open_win(buf, true, {
+        relative = "editor",
+        border = vim.g.flower_border,
+        style = "minimal",
+        width = w - 2,
+        height = h - 2,
+        row = r,
+        col = c,
+        title = " ✿ messages ✿ ",
+        title_pos = "center",
+    })
+    vim.api.nvim_win_set_cursor(win, { #lines, 0 })
+    vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = buf, silent = true })
+end, { desc = "Show :messages in a centered modal" })
+vim.cmd([[cnoreabbrev <expr> messages getcmdtype() == ':' && getcmdline() == 'messages' ? 'Messages' : 'messages']])
+
 -- Treesitter attach. Pre-plugin so startup-loaded files get highlighted.
 -- get_lang() handles ft↔parser mismatches (e.g. typescriptreact → tsx).
 vim.api.nvim_create_autocmd("FileType", {

@@ -90,6 +90,7 @@ See [`lua/config/modal-floats.lua`](../lua/config/modal-floats.lua) for the mutu
 
 - Floating cmdline + messages via `vim._core.ui2.enable()`.
 - Opt out with `vim.g.disable_ui2 = true` in `globals.lua`.
+- `:messages` is aliased to `:Messages`, which renders the history in a centered flower-border modal (ui2's own pager doesn't surface for us).
 
 ## Clipboard
 
