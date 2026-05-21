@@ -111,17 +111,18 @@ return {
             config.title_pos = "center"
         end
 
+        -- Skip the stack walk for floats without a title — most of them.
+        local function decorate_if_fff(_, config)
+            if type(config) ~= "table" or type(config.title) ~= "string" then
+                return
+            end
+            if is_fff_caller() then
+                decorate(config)
+            end
+        end
         require("config.modal-floats").add_decorator("fff_title", {
-            open = function(_, config)
-                if is_fff_caller() then
-                    decorate(config)
-                end
-            end,
-            set_config = function(_, config)
-                if is_fff_caller() then
-                    decorate(config)
-                end
-            end,
+            open = decorate_if_fff,
+            set_config = decorate_if_fff,
         })
     end,
 }

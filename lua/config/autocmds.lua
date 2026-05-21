@@ -49,11 +49,29 @@ elseif vim.fn.executable("/mnt/c/Windows/System32/clip.exe") == 1 then
     clip_cmd = { "/mnt/c/Windows/System32/clip.exe" }
 end
 if clip_cmd then
+    -- Yank-only + 50ms debounce so macros don't fork dozens of clipboard processes.
+    local pending_content, pending_timer
     vim.api.nvim_create_autocmd("TextYankPost", {
         group = vim.api.nvim_create_augroup("YankToClipboard", { clear = true }),
         callback = function()
-            local content = table.concat(vim.v.event.regcontents, "\n")
-            vim.system(clip_cmd, { stdin = content })
+            if vim.v.event.operator ~= "y" then
+                return
+            end
+            pending_content = table.concat(vim.v.event.regcontents, "\n")
+            if pending_timer then
+                pending_timer:stop()
+                pending_timer:close()
+            end
+            pending_timer = vim.uv.new_timer()
+            pending_timer:start(
+                50,
+                0,
+                vim.schedule_wrap(function()
+                    pending_timer:close()
+                    pending_timer = nil
+                    vim.system(clip_cmd, { stdin = pending_content })
+                end)
+            )
         end,
     })
 end

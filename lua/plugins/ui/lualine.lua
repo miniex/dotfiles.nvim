@@ -60,12 +60,18 @@ return {
         }
 
         -- Sparkle pulse on ModeChanged: glyph briefly swaps to ✦.
-        local sparkle = { active = false }
+        -- Generation counter so rapid mode flips coalesce into one redraw.
+        local sparkle = { active = false, gen = 0 }
         vim.api.nvim_create_autocmd("ModeChanged", {
             group = vim.api.nvim_create_augroup("LualineSparklePulse", { clear = true }),
             callback = function()
                 sparkle.active = true
+                sparkle.gen = sparkle.gen + 1
+                local my_gen = sparkle.gen
                 vim.defer_fn(function()
+                    if sparkle.gen ~= my_gen then
+                        return
+                    end
                     sparkle.active = false
                     pcall(vim.cmd.redrawstatus)
                 end, 180)

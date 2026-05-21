@@ -37,9 +37,6 @@ local function refresh_sign()
     if last_buf and vim.api.nvim_buf_is_valid(last_buf) then
         vim.api.nvim_buf_clear_namespace(last_buf, sign_ns, 0, -1)
     end
-    if buf ~= last_buf then
-        vim.api.nvim_buf_clear_namespace(buf, sign_ns, 0, -1)
-    end
     pcall(vim.api.nvim_buf_set_extmark, buf, sign_ns, line, 0, {
         sign_text = "✿",
         sign_hl_group = "ModicatorBloomCurrent",
@@ -61,17 +58,19 @@ local function schedule_refresh()
     end, 16)
 end
 
-vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI", "ModeChanged", "BufEnter" }, {
-    group = vim.api.nvim_create_augroup("ModicatorBloomSign", { clear = true }),
-    callback = schedule_refresh,
-})
-
 return {
     "mawkler/modicator.nvim",
     event = "VeryLazy",
     init = function()
         -- Highlight only line-number column. Other requirements in options.lua.
         vim.o.cursorlineopt = "number"
+    end,
+    config = function(_, opts)
+        require("modicator").setup(opts)
+        vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI", "ModeChanged", "BufEnter" }, {
+            group = vim.api.nvim_create_augroup("ModicatorBloomSign", { clear = true }),
+            callback = schedule_refresh,
+        })
     end,
     opts = {
         show_warnings = false,

@@ -18,6 +18,25 @@ return {
             icon_cache[filename] = { i, c }
             return i, c
         end
+
+        -- Recompute the tabpage's zoomed state only when window topology changes.
+        local zoomed_by_tab = {}
+        local function tab_zoomed(tab)
+            local hit = zoomed_by_tab[tab]
+            if hit ~= nil then
+                return hit
+            end
+            local z = #vim.api.nvim_tabpage_list_wins(tab) == 1
+            zoomed_by_tab[tab] = z
+            return z
+        end
+        vim.api.nvim_create_autocmd({ "WinNew", "WinClosed", "TabEnter", "TabNew" }, {
+            group = vim.api.nvim_create_augroup("InclineZoomCache", { clear = true }),
+            callback = function()
+                zoomed_by_tab = {}
+            end,
+        })
+
         -- Devicon colors can change with the theme.
         vim.api.nvim_create_autocmd("ColorScheme", {
             group = vim.api.nvim_create_augroup("InclineIconCache", { clear = true }),
@@ -74,7 +93,7 @@ return {
                 local readonly = vim.bo[props.buf].readonly
                 -- ⌬ = "zoom": this window owns its tabpage alone.
                 local tab = props.tab or vim.api.nvim_win_get_tabpage(props.win)
-                local zoomed = #vim.api.nvim_tabpage_list_wins(tab) == 1
+                local zoomed = tab_zoomed(tab)
 
                 local accent = props.focused and damin_pink or p.overlay1
 

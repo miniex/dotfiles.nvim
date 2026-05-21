@@ -1,4 +1,30 @@
 -- Right-edge scrollbar with diagnostic/git marks. Animated heart + faded handle.
+local excluded_ft = {
+    prompt = true,
+    snacks_dashboard = true,
+    ["neo-tree"] = true,
+    ["neo-tree-popup"] = true,
+    Trouble = true,
+    trouble = true,
+    ["dap-repl"] = true,
+    dapui_console = true,
+    dapui_scopes = true,
+    dapui_breakpoints = true,
+    dapui_stacks = true,
+    dapui_watches = true,
+    aerial = true,
+    lazy = true,
+    mason = true,
+    snacks_picker_input = true,
+    snacks_picker_list = true,
+    snacks_terminal = true,
+    fff_input = true,
+    fff_list = true,
+    fff_preview = true,
+    harpoon = true,
+    qf = true,
+}
+
 return {
     "petertriho/nvim-scrollbar",
     event = "BufReadPost",
@@ -226,9 +252,15 @@ return {
             render_cursor(bufnr, line)
         end
 
+        local snap_jump_threshold = 20
         local function animate_cursor(bufnr, target)
             local from = displayed_lines[bufnr]
             if from == nil or from == target then
+                snap_cursor(bufnr, target)
+                return
+            end
+            -- Held j/k or large jump: snap instead of arming a new timer each press.
+            if math.abs(target - from) > snap_jump_threshold then
                 snap_cursor(bufnr, target)
                 return
             end
@@ -340,14 +372,28 @@ return {
             end,
         })
 
-        -- Pause pulse when unfocused (saves 20Hz of nvim_set_hl).
+        -- Pause pulse when unfocused or on chrome buffers (saves 20Hz of nvim_set_hl).
+        local function should_pulse()
+            return not excluded_ft[vim.bo.filetype]
+        end
+        local function maybe_start_pulse()
+            if should_pulse() then
+                start_pulse()
+            else
+                stop_pulse()
+            end
+        end
         vim.api.nvim_create_autocmd("FocusLost", {
             group = scrollbar_group,
             callback = stop_pulse,
         })
         vim.api.nvim_create_autocmd("FocusGained", {
             group = scrollbar_group,
-            callback = start_pulse,
+            callback = maybe_start_pulse,
+        })
+        vim.api.nvim_create_autocmd({ "BufEnter", "FileType" }, {
+            group = scrollbar_group,
+            callback = maybe_start_pulse,
         })
         vim.api.nvim_create_autocmd("VimLeavePre", {
             group = scrollbar_group,
