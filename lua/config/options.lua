@@ -29,6 +29,8 @@ opt.cmdheight = 0
 opt.laststatus = 3
 -- Hidden until bufferline lazy-loads on a real file — no [No Name] flicker before dashboard.
 opt.showtabline = 0
+-- Safety net for the first-`<leader>` lag while which-key triggers register.
+opt.timeoutlen = 300
 opt.scrolloff = 10
 opt.smoothscroll = true
 opt.mouse:append("a")

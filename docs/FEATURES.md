@@ -41,7 +41,7 @@
 - **bufferline** — pink → mid → blue 3-stop gradient, `surface0` card under active, `▎` left bar + ordinal prefix, `♡` on harpoon-pinned, `●` on modified, uniform 16-char tab width. Neo-tree / Outline get sidebar offset labels. Lazy-loads on first real file open, so the dashboard isn't preceded by an empty tabline.
 - **incline** — `⌬` when window is zoomed (alone in tabpage).
 - **modicator** — `✿` sign on the current line in mode color.
-- **which-key** — hint floats pinned to the bottom row at 85% editor width (centered); height grows with content.
+- **which-key** — hint floats pinned to the bottom row at 85% editor width (centered); height grows with content. Triggers register synchronously + `timeoutlen=300` so the first `<leader>` press isn't slow ([#912](https://github.com/folke/which-key.nvim/issues/912) workaround).
 - **Floating windows** — every float in the config (LSP hover / signature / diagnostic, neo-tree, snacks panels, fzf-lua, fff.nvim, blink.cmp menu / signature / docs, fidget, dropbar, bqf, neotest, which-key, harpoon, Mason, Lazy, lazygit) shares one look: `✿` flower-cornered border (`✿─✿│✿─✿│`), pink edge, transparent background, centered `✿ title ✿`. Configured in [`lua/config/globals.lua`](../lua/config/globals.lua).
 - **flash labels** — damin pink.
 - **nvim-scrollbar** — `♥` cursor mark slides smoothly between rows (snaps on large jumps) and heartbeat-pulses while focused (paused on `FocusLost` and on chrome buffers like the dashboard / neo-tree). Handle fades vivid → muted after idle. Git triad in mint/pink/rose; gitsigns gutter + DiagnosticSign share the same palette so both edges agree.
