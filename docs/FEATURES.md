@@ -42,7 +42,7 @@
 - **incline** — `⌬` when window is zoomed (alone in tabpage).
 - **modicator** — `✿` sign on the current line in mode color.
 - **which-key** — hint floats pinned to the bottom row at 85% editor width (centered); height grows with content.
-- **Floating windows** — every float in the config (LSP hover / signature / diagnostic, neo-tree, snacks panels, fzf-lua, fff.nvim, blink.cmp menu / signature, dropbar, bqf, neotest, which-key, harpoon, Mason, Lazy, lazygit) shares one look: `✿` flower-cornered border (`✿─✿│✿─✿│`), pink edge, transparent background, centered `✿ title ✿`. Configured in [`lua/config/globals.lua`](../lua/config/globals.lua).
+- **Floating windows** — every float in the config (LSP hover / signature / diagnostic, neo-tree, snacks panels, fzf-lua, fff.nvim, blink.cmp menu / signature / docs, fidget, dropbar, bqf, neotest, which-key, harpoon, Mason, Lazy, lazygit) shares one look: `✿` flower-cornered border (`✿─✿│✿─✿│`), pink edge, transparent background, centered `✿ title ✿`. Configured in [`lua/config/globals.lua`](../lua/config/globals.lua).
 - **flash labels** — damin pink.
 - **nvim-scrollbar** — `♥` cursor mark slides smoothly between rows on jumps and heartbeat-pulses while focused (paused on `FocusLost`). Handle fades vivid → muted after idle. Git triad in mint/pink/rose; gitsigns gutter + DiagnosticSign share the same palette so both edges agree.
 - **snacks.scroll** — viewport glides with `outQuad` easing (150ms one-shot, 40ms while held) so key-repeat doesn't queue behind the animation.
@@ -99,4 +99,4 @@ Yank → system clipboard auto-routed via `wl-copy` (Wayland), `xclip` (X11), `p
 
 picker · profiler · terminal · dashboard · statuscolumn · notifier · indent · scroll · dim · image · bigfile · scratch · zen · gitbrowse · rename (LSP-aware).
 
-Closing the last named file (`<leader>w` / `<leader>bd`) swaps the main window in place for the dashboard; `<leader>;` peeks and returns to the alternate on the next press. Persistence quietly swaps dashboard windows out before saving so the session restores cleanly.
+Closing the last named file (`<leader>w` / `<leader>bd`) swaps the main window in place for the dashboard; `<leader>;` peeks and returns to the alternate on the next press. Persistence quietly swaps dashboard windows out before saving so the session restores cleanly. Footer surfaces a `<leader>qs` hint when a session exists for the cwd.

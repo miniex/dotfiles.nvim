@@ -11,6 +11,7 @@ return {
         notification = {
             window = {
                 winblend = 0,
+                border = vim.g.flower_border,
             },
         },
     },

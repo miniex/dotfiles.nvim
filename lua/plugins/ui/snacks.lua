@@ -310,19 +310,23 @@ return {
                     )
                 end
 
-                -- ❥ footer: uptime · plugins loaded / total. snacks's text
-                -- field only accepts static segment tables (or plain strings),
-                -- so stats are evaluated here per render and the segments are
-                -- emitted statically.
+                -- ❥ footer: uptime · plugins · (session hint if one exists for cwd).
                 local stats = require("lazy").stats()
                 local ms = math.floor(stats.startuptime + 0.5)
+                local segments = {
+                    { "❥ ", hl = "DashHeader5" },
+                    { ("%d ms"):format(ms), hl = "Comment" },
+                    { "  ·  ", hl = "DashHeader3" },
+                    { ("✿ %d/%d plugins"):format(stats.loaded, stats.count), hl = "Comment" },
+                }
+                local ok_p, persistence = pcall(require, "persistence")
+                if ok_p and vim.fn.filereadable(persistence.current()) == 1 then
+                    table.insert(segments, { "  ·  ", hl = "DashHeader3" })
+                    table.insert(segments, { "✦ ", hl = "DashHeader5" })
+                    table.insert(segments, { "<leader>qs to restore", hl = "Comment" })
+                end
                 table.insert(result, {
-                    text = {
-                        { "❥ ", hl = "DashHeader5" },
-                        { ("%d ms"):format(ms), hl = "Comment" },
-                        { "  ·  ", hl = "DashHeader3" },
-                        { ("✿ %d/%d plugins"):format(stats.loaded, stats.count), hl = "Comment" },
-                    },
+                    text = segments,
                     align = "center",
                     padding = 1,
                 })

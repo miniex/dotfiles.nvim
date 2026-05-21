@@ -177,6 +177,8 @@ return {
                 map("n", "<leader>ghb", function()
                     gs.blame_line({ full = true })
                 end, "Blame Line")
+                -- Full-file blame view; press `s`/`S` inside to open the commit.
+                map("n", "<leader>ghc", gs.blame, "Blame File (commit nav)")
                 map("n", "<leader>ghd", gs.diffthis, "Diff This")
                 map("n", "<leader>ghD", function()
                     gs.diffthis("~")

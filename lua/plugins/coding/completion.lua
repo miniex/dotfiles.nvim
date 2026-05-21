@@ -46,7 +46,11 @@ return {
             },
             completion = {
                 accept = { auto_brackets = { enabled = true } },
-                documentation = { auto_show = true, auto_show_delay_ms = 200 },
+                documentation = {
+                    auto_show = true,
+                    auto_show_delay_ms = 200,
+                    window = { border = vim.g.flower_border },
+                },
                 menu = {
                     border = vim.g.flower_border,
                     draw = {
