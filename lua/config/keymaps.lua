@@ -98,4 +98,4 @@ map("<leader>yP", function()
     vim.notify(path, vim.log.levels.INFO, { title = "yanked path" })
 end, "n", "Yank file path (relative)")
 
--- Buffer nav keymaps live on the bufferline.nvim spec for lazy-load safety.
+-- Buffer nav keymaps live on the bufferline.nvim spec.

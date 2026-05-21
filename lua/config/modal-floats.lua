@@ -1,3 +1,39 @@
+local M = {}
+
+-- One shared `nvim_open_win` / `nvim_win_set_config` patch. Plugins register
+-- a named decorator instead of wrapping the APIs themselves. Each decorator
+-- returns a modified config or nil to leave it alone.
+M._decorators = M._decorators or {}
+
+function M.add_decorator(name, spec)
+    M._decorators[name] = spec
+end
+
+if not vim.g._modal_float_api_patched then
+    vim.g._modal_float_api_patched = true
+    local orig_open = vim.api.nvim_open_win
+    ---@diagnostic disable-next-line: duplicate-set-field
+    vim.api.nvim_open_win = function(buf, enter, config)
+        for _, d in pairs(M._decorators) do
+            if d.open then
+                config = d.open(buf, config) or config
+            end
+        end
+        return orig_open(buf, enter, config)
+    end
+
+    local orig_set_config = vim.api.nvim_win_set_config
+    ---@diagnostic disable-next-line: duplicate-set-field
+    vim.api.nvim_win_set_config = function(win, config)
+        for _, d in pairs(M._decorators) do
+            if d.set_config then
+                config = d.set_config(win, config) or config
+            end
+        end
+        return orig_set_config(win, config)
+    end
+end
+
 -- Modal floats are mutually exclusive: opening one closes the others.
 -- Auxiliary floats (hover, completion, signature, notifier, fidget, flash,
 -- dropbar, snacks.input, which-key) are intentionally absent — they stack.
@@ -59,3 +95,5 @@ vim.api.nvim_create_autocmd("FileType", {
         end)
     end,
 })
+
+return M

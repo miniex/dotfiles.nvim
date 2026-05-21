@@ -10,34 +10,29 @@ local function is_picker_preview_buf(buf)
     return buf and buf ~= 0 and vim.api.nvim_buf_is_valid(buf) and vim.bo[buf].filetype == "snacks_picker_preview"
 end
 
+local function shift_preview(config)
+    return vim.tbl_extend("force", config, { col = config.col - 1, width = config.width + 1 })
+end
+
 local mgeom = require("config.modal-geom")
 
--- Sentinel: don't re-wrap on config reload.
-if not vim.g._snacks_picker_api_patched then
-    vim.g._snacks_picker_api_patched = true
-    local orig_open = vim.api.nvim_open_win
-    ---@diagnostic disable-next-line: duplicate-set-field
-    vim.api.nvim_open_win = function(buf, enter, config)
+require("config.modal-floats").add_decorator("snacks_picker_preview", {
+    open = function(buf, config)
         if is_picker_preview_buf(buf) and config.col and config.width then
-            config = vim.tbl_extend("force", config, { col = config.col - 1, width = config.width + 1 })
+            return shift_preview(config)
         end
-        return orig_open(buf, enter, config)
-    end
-
-    local orig_set = vim.api.nvim_win_set_config
-    ---@diagnostic disable-next-line: duplicate-set-field
-    vim.api.nvim_win_set_config = function(win, config)
+    end,
+    set_config = function(win, config)
         if
             vim.api.nvim_win_is_valid(win)
             and is_picker_preview_buf(vim.api.nvim_win_get_buf(win))
             and config.col
             and config.width
         then
-            config = vim.tbl_extend("force", config, { col = config.col - 1, width = config.width + 1 })
+            return shift_preview(config)
         end
-        return orig_set(win, config)
-    end
-end
+    end,
+})
 
 -- $EDITOR → parent nvim. Pass at toggle(), not opts.terminal (snacks id mismatch).
 local TERM_WRAPPER = vim.fn.stdpath("config") .. "/scripts/term-bin/nvim"

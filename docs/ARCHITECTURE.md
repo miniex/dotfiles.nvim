@@ -40,7 +40,7 @@ The asymmetry between `lsp/` / `snippets/` (at root) and `lua/config|plugins/` (
 1. `config.globals` — `vim.g.*` shared across modules (`flower_border`, `disable_ui2`)
 2. `config.options` — `vim.opt` settings (must precede plugins reading them, e.g. `cmdheight`, `laststatus`)
 3. `config.autocmds` — global autocmds (clipboard sync, mkdir-on-save, ts-attach, …)
-4. `config.modal-floats` — mutual-exclusion registry for big floating UIs
+4. `config.modal-floats` — mutual-exclusion registry + shared `nvim_open_win` / `nvim_win_set_config` decorator hook
 5. `config.keymaps` — global keymaps (not buffer-local)
 6. `config.lazy` — bootstrap lazy.nvim and load `plugins.*` specs
 
@@ -55,6 +55,7 @@ Plugin specs are discovered by `lazy.setup({ spec = { { import = "plugins.coding
 | Enabled languages       | `lua/config/langs.lua` (+ `langs_local.lua`)       | `langs_local.lua` is gitignored and wins per-machine.                                                           |
 | Diagnostic UI           | `lua/plugins/lsp/init.lua` `vim.diagnostic.config` | tiny-inline-diagnostic owns `virtual_text`; everything else (signs, float) lives here.                          |
 | Modal float mutual-ex   | `lua/config/modal-floats.lua` `OWNER` table        | Same `owner` keeps sibling windows of one plugin together; opening another owner closes prior.                  |
+| Float config decorators | `lua/config/modal-floats.lua` `add_decorator()`    | Single global `nvim_open_win` / `nvim_win_set_config` patch — plugins register name-keyed transforms.           |
 | Modal float geometry    | `lua/config/modal-geom.lua`                        | Shared 0.85 × 0.85 chrome-aware rectangle; tracks `VimResized`. Change `M.RATIO` to resize every modal at once. |
 | Border characters       | `lua/config/globals.lua` `vim.g.flower_border`     | Every plugin reads this; theme/border consistency in one place.                                                 |
 
