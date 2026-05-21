@@ -1,3 +1,14 @@
+-- Focus the gitsigns popup so the cursor lands inside. Scheduled because
+-- `preview_hunk` is sync-ish; for the async `blame_line`, pass this as its callback.
+local function focus_gitsigns(id)
+    vim.schedule(function()
+        local ok, gpopup = pcall(require, "gitsigns.popup")
+        if ok then
+            gpopup.focus_open(id)
+        end
+    end)
+end
+
 return {
     {
         "nvim-treesitter/nvim-treesitter",
@@ -126,6 +137,27 @@ return {
     {
         "lewis6991/gitsigns.nvim",
         event = { "BufReadPre", "BufNewFile" },
+        config = function(_, opts)
+            require("gitsigns").setup(opts)
+            local function sync_preview_geom()
+                local mgeom = require("config.modal-geom")
+                local w, h, r, c = mgeom.geom()
+                require("gitsigns.config").config.preview_config = {
+                    border = vim.g.flower_border,
+                    style = "minimal",
+                    relative = "editor",
+                    width = w - 2,
+                    height = h - 2,
+                    row = r,
+                    col = c,
+                }
+            end
+            sync_preview_geom()
+            vim.api.nvim_create_autocmd("VimResized", {
+                group = vim.api.nvim_create_augroup("GitsignsPreviewGeom", { clear = true }),
+                callback = sync_preview_geom,
+            })
+        end,
         opts = {
             current_line_blame = true,
             current_line_blame_opts = {
@@ -171,10 +203,14 @@ return {
                 end, "Reset Hunk")
                 map("n", "<leader>ghS", gs.stage_buffer, "Stage Buffer")
                 map("n", "<leader>ghR", gs.reset_buffer, "Reset Buffer")
-                map("n", "<leader>ghp", gs.preview_hunk, "Preview Hunk")
-                map("n", "<leader>ghi", gs.preview_hunk_inline, "Preview Hunk Inline")
+                map("n", "<leader>ghp", function()
+                    gs.preview_hunk()
+                    focus_gitsigns("hunk")
+                end, "Preview Hunk")
                 map("n", "<leader>ghb", function()
-                    gs.blame_line({ full = true })
+                    gs.blame_line({ full = true }, function()
+                        focus_gitsigns("blame")
+                    end)
                 end, "Blame Line")
                 -- Full-file blame view; press `s`/`S` inside to open the commit.
                 map("n", "<leader>ghc", gs.blame, "Blame File (commit nav)")
