@@ -47,6 +47,7 @@ return {
             markdown = "markdown",
         }
         vim.api.nvim_create_autocmd("FileType", {
+            group = vim.api.nvim_create_augroup("DialFiletypeGroup", { clear = true }),
             pattern = vim.tbl_keys(ft_group),
             callback = function(args)
                 vim.b[args.buf].dial_group = ft_group[vim.bo[args.buf].filetype]

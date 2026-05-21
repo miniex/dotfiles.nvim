@@ -103,11 +103,35 @@ local function open_dashboard_if_empty(closing)
     open_dashboard()
 end
 
+-- Skip terminals and the dashboard itself — those bounce back or jump into a terminal.
+local function is_real_file_buf(buf)
+    return buf > 0
+        and vim.api.nvim_buf_is_valid(buf)
+        and vim.bo[buf].buftype == ""
+        and vim.api.nvim_buf_get_name(buf) ~= ""
+end
+
+local function pick_alt_file_buf()
+    local alt = vim.fn.bufnr("#")
+    if is_real_file_buf(alt) then
+        return alt
+    end
+    local infos = vim.fn.getbufinfo({ buflisted = 1 })
+    table.sort(infos, function(a, b)
+        return a.lastused > b.lastused
+    end)
+    for _, info in ipairs(infos) do
+        if is_real_file_buf(info.bufnr) then
+            return info.bufnr
+        end
+    end
+end
+
 local function toggle_dashboard()
     if vim.bo.filetype == "snacks_dashboard" then
-        local alt = vim.fn.bufnr("#")
-        if alt > 0 and vim.api.nvim_buf_is_valid(alt) then
-            vim.cmd.buffer(alt)
+        local target = pick_alt_file_buf()
+        if target then
+            vim.cmd.buffer(target)
         end
     else
         open_dashboard()
@@ -123,9 +147,9 @@ vim.api.nvim_create_autocmd("User", {
             local b = vim.api.nvim_win_get_buf(win)
             if vim.api.nvim_buf_is_valid(b) and vim.bo[b].filetype == "snacks_dashboard" then
                 vim.api.nvim_win_call(win, function()
-                    local alt = vim.fn.bufnr("#")
-                    if alt > 0 and vim.api.nvim_buf_is_valid(alt) then
-                        vim.cmd.buffer(alt)
+                    local target = pick_alt_file_buf()
+                    if target then
+                        vim.cmd.buffer(target)
                     end
                 end)
             end
@@ -453,18 +477,7 @@ return {
         {
             "<leader>bd",
             function()
-                if vim.bo.modified then
-                    local choice =
-                        vim.fn.confirm(("Save changes to %q?"):format(vim.fn.bufname()), "&Yes\n&No\n&Cancel")
-                    if choice == 1 then
-                        vim.cmd.write()
-                        Snacks.bufdelete()
-                    elseif choice == 2 then
-                        Snacks.bufdelete({ force = true })
-                    end
-                else
-                    Snacks.bufdelete()
-                end
+                Snacks.bufdelete()
             end,
             desc = "Delete Buffer (confirm if modified)",
         },

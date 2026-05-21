@@ -203,23 +203,23 @@ Picker uses rounded border + preview. Inside: `q`/`<Esc>` close, `h` parent menu
 
 ## Git
 
-| Key                             | Description                                                                                  |
-| ------------------------------- | -------------------------------------------------------------------------------------------- |
-| `<leader>gs/gb/gd/gl/gc/gp/gP`  | Fugitive: status/blame/diff/log/commit/push/pull                                             |
-| `<leader>gdv`                   | Fugitive: 3-way diffsplit (`:Gvdiffsplit!`) — for merge conflicts                            |
-| `<leader>gg/gf/gF/gL`           | LazyGit: full / current file / filter file / filter all                                      |
-| `<leader>gB`                    | gitbrowse: open current line in browser (n/v)                                                |
-| `<leader>gvo/gvc/gvr`           | Diffview: open / close / refresh                                                             |
-| `<leader>gvf/gvF/gvh`           | Diffview file history: current / repo / stash                                                |
-| `<leader>gvg` / `<leader>gvG`   | gitgraph.nvim: all branches / current (`<cr>` → diffview)                                    |
-| `<leader>gvs` / `<leader>gvA`   | gitgraph.nvim: prompt for `--since` / `--author` filter                                      |
-| `[h` / `]h`                     | Prev / next hunk                                                                             |
-| `<leader>ghs/r/S/u/R/p/i/b/d/D` | Stage / reset / stage-buf / undo-stage / reset-buf / preview / inline / blame / diff / diff~ |
-| `<leader>ghq`                   | gitsigns: hunks (attached buffers) to quickfix                                               |
-| `<leader>gtb` / `<leader>gtd`   | Toggle line blame / show deleted                                                             |
-| `<leader>gxq`                   | git-conflict: conflicts to quickfix                                                          |
-| `[X` / `]X`                     | Prev / next conflict                                                                         |
-| `co/ct/cb/c0`                   | Inside conflict: ours / theirs / both / none                                                 |
+| Key                            | Description                                                                              |
+| ------------------------------ | ---------------------------------------------------------------------------------------- |
+| `<leader>gs/gb/gd/gl/gc/gp/gP` | Fugitive: status/blame/diff/log/commit/push/pull                                         |
+| `<leader>gdv`                  | Fugitive: 3-way diffsplit (`:Gvdiffsplit!`) — for merge conflicts                        |
+| `<leader>gg/gf/gF/gL`          | LazyGit: full / current file / filter file / filter all                                  |
+| `<leader>gB`                   | gitbrowse: open current line in browser (n/v)                                            |
+| `<leader>gvo/gvc/gvr`          | Diffview: open / close / refresh                                                         |
+| `<leader>gvf/gvF/gvh`          | Diffview file history: current / repo / stash                                            |
+| `<leader>gvg` / `<leader>gvG`  | gitgraph.nvim: all branches / current (`<cr>` → diffview)                                |
+| `<leader>gvs` / `<leader>gvA`  | gitgraph.nvim: prompt for `--since` / `--author` filter                                  |
+| `[h` / `]h`                    | Prev / next hunk                                                                         |
+| `<leader>ghs/r/S/R/p/i/b/d/D`  | Stage (toggle) / reset / stage-buf / reset-buf / preview / inline / blame / diff / diff~ |
+| `<leader>ghq`                  | gitsigns: hunks (attached buffers) to quickfix                                           |
+| `<leader>gtb` / `<leader>gtd`  | Toggle line blame / show deleted                                                         |
+| `<leader>gxq`                  | git-conflict: conflicts to quickfix                                                      |
+| `[X` / `]X`                    | Prev / next conflict                                                                     |
+| `co/ct/cb/c0`                  | Inside conflict: ours / theirs / both / none                                             |
 
 ## Debugger (DAP)
 

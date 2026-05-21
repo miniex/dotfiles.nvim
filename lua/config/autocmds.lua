@@ -70,11 +70,15 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 })
 
 -- Restore last cursor position via the `"` mark (persisted by shada).
+-- Guard the win check: persistence re-fires BufReadPost via nvim_buf_call.
 vim.api.nvim_create_autocmd("BufReadPost", {
     group = vim.api.nvim_create_augroup("restore-cursor", { clear = true }),
     callback = function(args)
         local ft = vim.bo[args.buf].filetype
         if ft == "gitcommit" or ft == "gitrebase" then
+            return
+        end
+        if vim.api.nvim_win_get_buf(0) ~= args.buf then
             return
         end
         local mark = vim.api.nvim_buf_get_mark(args.buf, '"')
