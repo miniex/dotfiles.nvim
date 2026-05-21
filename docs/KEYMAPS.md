@@ -154,31 +154,31 @@ Bare `nvim` auto-restores the cwd session (skipped in headless or when the sessi
 
 ## Treesitter Textobjects & Context
 
-| Key                         | Mode  | Description                        |
-| --------------------------- | ----- | ---------------------------------- |
-| `af` / `if`                 | x/o   | Function (outer / inner)           |
-| `ac` / `ic`                 | x/o   | Class                              |
-| `aa` / `ia`                 | x/o   | Parameter / argument               |
-| `ai` / `ii`                 | x/o   | Conditional                        |
-| `al` / `il`                 | x/o   | Loop                               |
-| `a/` / `i/`                 | x/o   | Comment                            |
-| `a=` / `i=`                 | x/o   | Assignment                         |
-| `am` / `im`                 | x/o   | Call                               |
-| `aB` / `iB`                 | x/o   | Block (capital — `b` is word-back) |
-| `aS`                        | x/o   | Statement                          |
-| `]f` / `[f`                 | n/x/o | Next / prev function start         |
-| `]F` / `[F`                 | n/x/o | Next / prev function end           |
-| `]c` / `[c`                 | n/x/o | Next / prev class start            |
-| `]a` / `[a`                 | n/x/o | Next / prev parameter              |
-| `<leader>cA` / `<leader>cS` | n     | Swap parameter with next / prev    |
-| `gnn`                       | n     | Init incremental selection         |
-| `gnm` / `gnM`               | x     | Expand / shrink node               |
-| `<leader>uc`                | n     | Toggle treesitter context          |
-| `<leader>uC`                | n     | Toggle nvim-colorizer              |
-| `<leader>um`                | n     | Toggle render-markdown             |
-| `<leader>uU`                | n     | Toggle undotree                    |
-| `<leader>uz` / `<leader>uZ` | n     | Snacks zen / zen zoom              |
-| `[x`                        | n     | Jump to context start              |
+| Key                         | Mode  | Description                                                               |
+| --------------------------- | ----- | ------------------------------------------------------------------------- |
+| `af` / `if`                 | x/o   | Function (outer / inner)                                                  |
+| `ac` / `ic`                 | x/o   | Class                                                                     |
+| `aa` / `ia`                 | x/o   | Parameter / argument                                                      |
+| `ai` / `ii`                 | x/o   | Conditional                                                               |
+| `al` / `il`                 | x/o   | Loop                                                                      |
+| `a/` / `i/`                 | x/o   | Comment                                                                   |
+| `a=` / `i=`                 | x/o   | Assignment                                                                |
+| `am` / `im`                 | x/o   | Call                                                                      |
+| `aB` / `iB`                 | x/o   | Block (capital — `b` is word-back)                                        |
+| `aS`                        | x/o   | Statement                                                                 |
+| `]f` / `[f`                 | n/x/o | Next / prev function start                                                |
+| `]F` / `[F`                 | n/x/o | Next / prev function end                                                  |
+| `]C` / `[C`                 | n/x/o | Next / prev class start (lowercase `]c`/`[c` left for diff change motion) |
+| `]a` / `[a`                 | n/x/o | Next / prev parameter                                                     |
+| `<leader>cA` / `<leader>cS` | n     | Swap parameter with next / prev                                           |
+| `gnn`                       | n     | Init incremental selection                                                |
+| `gnm` / `gnM`               | x     | Expand / shrink node                                                      |
+| `<leader>uc`                | n     | Toggle treesitter context                                                 |
+| `<leader>uC`                | n     | Toggle nvim-colorizer                                                     |
+| `<leader>um`                | n     | Toggle render-markdown                                                    |
+| `<leader>uU`                | n     | Toggle undotree                                                           |
+| `<leader>uz` / `<leader>uZ` | n     | Snacks zen / zen zoom                                                     |
+| `[x`                        | n     | Jump to context start                                                     |
 
 ## Folding (treesitter)
 

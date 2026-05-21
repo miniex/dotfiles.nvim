@@ -61,8 +61,9 @@ return {
         map_move("[f", "@function.outer", "prev", "Prev function start")
         map_move("]F", "@function.outer", "next_end", "Next function end")
         map_move("[F", "@function.outer", "prev_end", "Prev function end")
-        map_move("]c", "@class.outer", "next", "Next class start")
-        map_move("[c", "@class.outer", "prev", "Prev class start")
+        -- Capital C to keep `]c`/`[c` (next/prev change in diff mode) free.
+        map_move("]C", "@class.outer", "next", "Next class start")
+        map_move("[C", "@class.outer", "prev", "Prev class start")
         map_move("]a", "@parameter.inner", "next", "Next parameter")
         map_move("[a", "@parameter.inner", "prev", "Prev parameter")
 

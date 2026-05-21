@@ -40,7 +40,8 @@ local damin_pink = "#E890B0"
 local damin_dim = "#6E7A95"
 
 -- 50ms cache: name_formatter fires per buffer per redraw.
-local harpoon_ok, harpoon_mod
+-- Tristate so a failed require doesn't retry forever (nil → try, false → give up).
+local harpoon_state, harpoon_mod
 local pinned, pinned_at = {}, 0
 local function pinned_set()
     local now = vim.uv.hrtime()
@@ -49,10 +50,11 @@ local function pinned_set()
     end
     pinned_at = now
     pinned = {}
-    if not harpoon_ok then
-        harpoon_ok, harpoon_mod = pcall(require, "harpoon")
+    if harpoon_state == nil then
+        local ok, mod = pcall(require, "harpoon")
+        harpoon_state, harpoon_mod = ok, ok and mod or nil
     end
-    if not harpoon_ok then
+    if not (harpoon_state and harpoon_mod) then
         return pinned
     end
     local list = harpoon_mod:list()

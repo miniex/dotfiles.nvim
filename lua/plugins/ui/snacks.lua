@@ -155,6 +155,13 @@ vim.api.nvim_create_autocmd("User", {
 vim.api.nvim_create_autocmd("BufDelete", {
     group = vim.api.nvim_create_augroup("SnacksDashboardOnLastClose", { clear = true }),
     callback = function(args)
+        -- Skip terminals / help / scratches — only file buffer closes can leave the editor "empty".
+        if not vim.api.nvim_buf_is_valid(args.buf) then
+            return
+        end
+        if vim.bo[args.buf].buftype ~= "" or not vim.bo[args.buf].buflisted then
+            return
+        end
         local closing = args.buf
         vim.schedule(function()
             open_dashboard_if_empty(closing)
