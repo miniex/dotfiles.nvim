@@ -3,11 +3,6 @@
 return {
     "folke/edgy.nvim",
     event = "VeryLazy",
-    init = function()
-        -- splitkeep=screen prevents cursor jumps on panel open.
-        vim.opt.laststatus = 3
-        vim.opt.splitkeep = "screen"
-    end,
     opts = {
         bottom = {
             {

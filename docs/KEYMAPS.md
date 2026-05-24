@@ -124,7 +124,7 @@ Bare `nvim` auto-restores the cwd session (skipped in headless or when the sessi
 
 > Neovim 0.11+ also auto-binds `grr`/`gri`/`grn`/`gra`/`gK`/`gO` on `LspAttach`.
 >
-> Severity-sorted; gutter signs `✗`/`!`/`i`/`?` mirror lualine; colors match the scrollbar marks. Floats: rounded border, source when ambiguous.
+> Severity-sorted; gutter signs `✗`/`!`/`i`/`?` mirror lualine; colors match the scrollbar marks. Diag float shows source when ambiguous.
 > nvim-lightbulb: `❋` sign when a code action is available.
 
 | Key                         | Description                                                        |
@@ -194,7 +194,7 @@ Bare `nvim` auto-restores the cwd session (skipped in headless or when the sessi
 
 ## Winbar Breadcrumb (dropbar)
 
-Picker uses rounded border + preview. Inside: `q`/`<Esc>` close, `h` parent menu, `l` open entry.
+Inside the menu: `q`/`<Esc>` close, `h` parent (no-op at top), `l` open entry.
 
 | Key          | Description                          |
 | ------------ | ------------------------------------ |

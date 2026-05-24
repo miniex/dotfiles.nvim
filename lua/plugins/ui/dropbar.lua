@@ -81,7 +81,13 @@ return {
                         menu:close()
                     end
                 end,
-                ["h"] = "<C-w>q",
+                -- Parent menu when nested; no-op at top (use q/Esc to close).
+                ["h"] = function()
+                    local menu = require("dropbar.api").get_current_dropbar_menu()
+                    if menu and menu.prev_menu then
+                        menu:close()
+                    end
+                end,
                 ["l"] = function()
                     local menu = require("dropbar.api").get_current_dropbar_menu()
                     if not menu or not menu.win or not vim.api.nvim_win_is_valid(menu.win) then

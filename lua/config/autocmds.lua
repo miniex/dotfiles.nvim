@@ -108,14 +108,15 @@ vim.api.nvim_create_autocmd("BufReadPost", {
 })
 
 -- Macro recording on/off → toast so it's never a surprise.
+local macro_toast = vim.api.nvim_create_augroup("macro-toast", { clear = true })
 vim.api.nvim_create_autocmd("RecordingEnter", {
-    group = vim.api.nvim_create_augroup("macro-toast", { clear = true }),
+    group = macro_toast,
     callback = function()
         vim.notify("recording @" .. vim.fn.reg_recording(), vim.log.levels.INFO, { title = "macro" })
     end,
 })
 vim.api.nvim_create_autocmd("RecordingLeave", {
-    group = "macro-toast",
+    group = macro_toast,
     callback = function()
         vim.notify("saved @" .. vim.v.event.regname, vim.log.levels.INFO, { title = "macro" })
     end,

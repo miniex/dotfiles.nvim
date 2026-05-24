@@ -11,7 +11,6 @@ return {
                     require("dap-go").debug_test()
                 end,
                 desc = "Debug Go Test",
-                ft = "go",
             },
             {
                 "<leader>dGl",
@@ -19,7 +18,6 @@ return {
                     require("dap-go").debug_last_test()
                 end,
                 desc = "Debug Last Go Test",
-                ft = "go",
             },
         },
     },
