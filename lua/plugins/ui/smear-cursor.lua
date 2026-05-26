@@ -20,6 +20,28 @@ return {
         local sc = require("smear_cursor.config")
         local grp = vim.api.nvim_create_augroup("SmearCursorAutocmds", { clear = true })
 
+        -- Sticky-off: outlives the 80ms float-open defer below; spring would otherwise
+        -- fire per CursorMovedI in snacks_picker_input.
+        local sticky_disabled_ft = {
+            snacks_picker_input = true,
+            snacks_picker_list = true,
+            snacks_picker_preview = true,
+            snacks_terminal = true,
+            fff_input = true,
+            fff_list = true,
+            fff_preview = true,
+            fzf = true,
+            fzflua_backdrop = true,
+        }
+        local function should_stay_disabled(buf)
+            buf = buf or 0
+            if sticky_disabled_ft[vim.bo[buf].filetype] then
+                return true
+            end
+            local bt = vim.bo[buf].buftype
+            return bt == "terminal" or bt == "prompt"
+        end
+
         -- Pulse smear on terminal enter only; persistent mode jitters keystrokes.
         local term_gen = 0
         vim.api.nvim_create_autocmd("WinEnter", {
@@ -45,6 +67,11 @@ return {
         vim.api.nvim_create_autocmd("WinEnter", {
             group = grp,
             callback = function()
+                if should_stay_disabled(0) then
+                    sc.enabled = false
+                    float_gen = float_gen + 1
+                    return
+                end
                 if vim.api.nvim_win_get_config(0).relative == "" then
                     return
                 end
@@ -52,10 +79,35 @@ return {
                 float_gen = float_gen + 1
                 local mine = float_gen
                 vim.defer_fn(function()
-                    if mine == float_gen then
+                    if mine == float_gen and not should_stay_disabled(0) then
                         sc.enabled = true
                     end
                 end, 80)
+            end,
+        })
+
+        -- ft is set after WinEnter for snacks_picker_input / fzf; recheck here.
+        vim.api.nvim_create_autocmd({ "BufEnter", "FileType" }, {
+            group = grp,
+            callback = function(event)
+                if should_stay_disabled(event.buf) then
+                    sc.enabled = false
+                    float_gen = float_gen + 1
+                end
+            end,
+        })
+
+        -- Restore smear when leaving a sticky-disabled window for a normal one.
+        vim.api.nvim_create_autocmd("WinLeave", {
+            group = grp,
+            callback = function()
+                if should_stay_disabled(0) then
+                    vim.schedule(function()
+                        if not should_stay_disabled(0) then
+                            sc.enabled = true
+                        end
+                    end)
+                end
             end,
         })
     end,

@@ -17,13 +17,26 @@ local excluded_ft = {
     mason = true,
     snacks_picker_input = true,
     snacks_picker_list = true,
+    snacks_picker_preview = true,
     snacks_terminal = true,
     fff_input = true,
     fff_list = true,
     fff_preview = true,
+    fzf = true,
+    fzflua_backdrop = true,
     harpoon = true,
     qf = true,
 }
+
+-- excluded_filetypes gates the plugin's render, not these per-keystroke callbacks.
+local function is_excluded(buf)
+    local ft = buf and vim.bo[buf] and vim.bo[buf].filetype or vim.bo.filetype
+    if excluded_ft[ft] then
+        return true
+    end
+    local bt = buf and vim.bo[buf] and vim.bo[buf].buftype or vim.bo.buftype
+    return bt == "terminal" or bt == "prompt"
+end
 
 return {
     "petertriho/nvim-scrollbar",
@@ -50,31 +63,7 @@ return {
                 GitChange = { text = "▐", color = "#E890B0" }, -- pink
                 GitDelete = { text = "▁", color = "#D8788C" }, -- rose
             },
-            excluded_filetypes = {
-                "prompt",
-                "snacks_dashboard",
-                "neo-tree",
-                "neo-tree-popup",
-                "Trouble",
-                "trouble",
-                "dap-repl",
-                "dapui_console",
-                "dapui_scopes",
-                "dapui_breakpoints",
-                "dapui_stacks",
-                "dapui_watches",
-                "aerial",
-                "lazy",
-                "mason",
-                "snacks_picker_input",
-                "snacks_picker_list",
-                "snacks_terminal",
-                "fff_input",
-                "fff_list",
-                "fff_preview",
-                "harpoon",
-                "qf",
-            },
+            excluded_filetypes = vim.tbl_keys(excluded_ft),
             handlers = {
                 cursor = false, -- custom animated cursor below
                 diagnostic = true,
@@ -326,6 +315,9 @@ return {
         vim.api.nvim_create_autocmd("CursorMoved", {
             group = scrollbar_group,
             callback = function(event)
+                if is_excluded(event.buf) then
+                    return
+                end
                 poke_handle()
                 animate_cursor(event.buf, vim.fn.line(".") - 1)
             end,
@@ -335,6 +327,9 @@ return {
         vim.api.nvim_create_autocmd("CursorMovedI", {
             group = scrollbar_group,
             callback = function(event)
+                if is_excluded(event.buf) then
+                    return
+                end
                 poke_handle()
                 snap_cursor(event.buf, vim.fn.line(".") - 1)
             end,
@@ -343,6 +338,9 @@ return {
         vim.api.nvim_create_autocmd("WinScrolled", {
             group = scrollbar_group,
             callback = function()
+                if is_excluded(vim.api.nvim_get_current_buf()) then
+                    return
+                end
                 poke_handle()
             end,
         })
@@ -351,6 +349,9 @@ return {
         vim.api.nvim_create_autocmd({ "BufEnter", "WinEnter" }, {
             group = scrollbar_group,
             callback = function(event)
+                if is_excluded(event.buf) then
+                    return
+                end
                 if vim.api.nvim_buf_is_valid(event.buf) then
                     snap_cursor(event.buf, vim.fn.line(".") - 1)
                 end
