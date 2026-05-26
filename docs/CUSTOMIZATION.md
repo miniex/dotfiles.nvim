@@ -41,10 +41,11 @@ Drop Lua files in `~/.config/nvim/snippets/`. Filetype-scoped by filename (e.g. 
 
 ## Picker / terminal exclusions
 
-Two tables keep typing snappy in pickers and `<leader>t` — add a new modal's filetype to both:
+Three tables keep typing snappy in pickers and `<leader>t` — add a new modal's filetype to all three:
 
 - `lua/plugins/ui/scrollbar.lua` — `excluded_ft` (also feeds `excluded_filetypes`).
 - `lua/plugins/ui/smear-cursor.lua` — `sticky_disabled_ft`.
+- `lua/plugins/ui/modicator.lua` — `excluded_ft` (gates the extmark-rewrite defer).
 
 ## Keymaps / autocmds
 

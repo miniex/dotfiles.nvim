@@ -17,6 +17,17 @@ local mode_color = {
 }
 
 local sign_ns = vim.api.nvim_create_namespace("ModicatorBloom")
+local excluded_ft = {
+    snacks_picker_input = true,
+    snacks_picker_list = true,
+    snacks_picker_preview = true,
+    snacks_terminal = true,
+    fff_input = true,
+    fff_list = true,
+    fff_preview = true,
+    fzf = true,
+    fzflua_backdrop = true,
+}
 local last_color
 local last_buf, last_line
 local function refresh_sign()
@@ -49,6 +60,10 @@ end
 local refresh_pending = false
 local function schedule_refresh()
     if refresh_pending then
+        return
+    end
+    -- Bail before arming the defer.
+    if vim.bo.buftype ~= "" or excluded_ft[vim.bo.filetype] then
         return
     end
     refresh_pending = true
