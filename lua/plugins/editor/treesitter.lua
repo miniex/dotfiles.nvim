@@ -166,9 +166,13 @@ return {
             local ok, installed = pcall(ts.get_installed, "parsers")
             local missing
             if ok and type(installed) == "table" then
+                local have = {}
+                for _, lang in ipairs(installed) do
+                    have[lang] = true
+                end
                 missing = {}
                 for _, lang in ipairs(opts.ensure_installed) do
-                    if not vim.tbl_contains(installed, lang) then
+                    if not have[lang] then
                         table.insert(missing, lang)
                     end
                 end

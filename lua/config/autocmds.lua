@@ -37,18 +37,21 @@ vim.api.nvim_create_autocmd("VimResized", {
     end,
 })
 
--- TextYankPost → system clipboard. First available backend wins (Wayland / X11 / macOS / WSL2).
-local clip_cmd
-if vim.fn.executable("wl-copy") == 1 then
-    clip_cmd = { "wl-copy" }
-elseif vim.fn.executable("xclip") == 1 then
-    clip_cmd = { "xclip", "-selection", "clipboard" }
-elseif vim.fn.executable("pbcopy") == 1 then
-    clip_cmd = { "pbcopy" }
-elseif vim.fn.executable("/mnt/c/Windows/System32/clip.exe") == 1 then
-    clip_cmd = { "/mnt/c/Windows/System32/clip.exe" }
-end
-if clip_cmd then
+-- TextYankPost → system clipboard. Deferred: first yank can't beat the schedule.
+vim.schedule(function()
+    local clip_cmd
+    if vim.fn.executable("wl-copy") == 1 then
+        clip_cmd = { "wl-copy" }
+    elseif vim.fn.executable("xclip") == 1 then
+        clip_cmd = { "xclip", "-selection", "clipboard" }
+    elseif vim.fn.executable("pbcopy") == 1 then
+        clip_cmd = { "pbcopy" }
+    elseif vim.fn.executable("/mnt/c/Windows/System32/clip.exe") == 1 then
+        clip_cmd = { "/mnt/c/Windows/System32/clip.exe" }
+    end
+    if not clip_cmd then
+        return
+    end
     -- Yank-only + 50ms debounce so macros don't fork dozens of clipboard processes.
     local pending_content, pending_timer
     vim.api.nvim_create_autocmd("TextYankPost", {
@@ -74,7 +77,7 @@ if clip_cmd then
             )
         end,
     })
-end
+end)
 
 -- mkdir parent dir on save (so :e new/path/file works).
 vim.api.nvim_create_autocmd("BufWritePre", {

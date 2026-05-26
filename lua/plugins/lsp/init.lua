@@ -220,30 +220,32 @@ return {
                 end,
             })
 
-            -- mason bin → PATH before checking executable (mason loads lazy).
-            local mason_bin = vim.fn.stdpath("data") .. "/mason/bin"
-            local current_path = vim.env.PATH or ""
-            if not current_path:find(mason_bin, 1, true) then
-                vim.env.PATH = mason_bin .. ":" .. current_path
-            end
-
-            local function cmd_executable(cmd)
-                if type(cmd) == "table" and cmd[1] then
-                    return vim.fn.executable(cmd[1]) == 1
-                elseif type(cmd) == "string" then
-                    return vim.fn.executable(cmd) == 1
-                end
-                return false
-            end
-
-            -- Enable now if binary on PATH; rest via mason-lspconfig automatic_enable.
             local servers = enabled_servers()
-            for _, name in ipairs(servers) do
-                local cfg = vim.lsp.config[name]
-                if cfg and cmd_executable(cfg.cmd) then
-                    vim.lsp.enable(name)
+
+            -- Defer ~20 executable() stats off the first-BufReadPre path; LSPs attach a tick later.
+            vim.schedule(function()
+                local mason_bin = vim.fn.stdpath("data") .. "/mason/bin"
+                local current_path = vim.env.PATH or ""
+                if not current_path:find(mason_bin, 1, true) then
+                    vim.env.PATH = mason_bin .. ":" .. current_path
                 end
-            end
+
+                local function cmd_executable(cmd)
+                    if type(cmd) == "table" and cmd[1] then
+                        return vim.fn.executable(cmd[1]) == 1
+                    elseif type(cmd) == "string" then
+                        return vim.fn.executable(cmd) == 1
+                    end
+                    return false
+                end
+
+                for _, name in ipairs(servers) do
+                    local cfg = vim.lsp.config[name]
+                    if cfg and cmd_executable(cfg.cmd) then
+                        vim.lsp.enable(name)
+                    end
+                end
+            end)
 
             vim.api.nvim_create_autocmd("VimEnter", {
                 group = vim.api.nvim_create_augroup("MasonLspconfigBootstrap", { clear = true }),
