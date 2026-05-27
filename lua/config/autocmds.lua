@@ -1,10 +1,14 @@
--- Skip non-file buffers; checktime would stat them on every BufEnter.
+-- Skip non-file buffers (stat noise) and large files (reload cost).
 vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter" }, {
     group = vim.api.nvim_create_augroup("auto-checktime", { clear = true }),
     callback = function(args)
-        if vim.bo[args.buf].buftype == "" then
-            vim.cmd("checktime")
+        if vim.bo[args.buf].buftype ~= "" then
+            return
         end
+        if vim.fn.getfsize(vim.api.nvim_buf_get_name(args.buf)) > 10 * 1024 * 1024 then
+            return
+        end
+        vim.cmd("checktime")
     end,
 })
 
@@ -25,6 +29,9 @@ hide_eob()
 vim.api.nvim_create_autocmd("TextYankPost", {
     group = vim.api.nvim_create_augroup("yank-flash", { clear = true }),
     callback = function()
+        if vim.fn.reg_recording() ~= "" then
+            return
+        end
         (vim.hl or vim.highlight).on_yank({ timeout = 150 })
     end,
 })
@@ -105,7 +112,10 @@ vim.api.nvim_create_autocmd("BufReadPost", {
         local mark = vim.api.nvim_buf_get_mark(args.buf, '"')
         local last = vim.api.nvim_buf_line_count(args.buf)
         if mark[1] > 0 and mark[1] <= last then
-            pcall(vim.api.nvim_win_set_cursor, 0, mark)
+            if pcall(vim.api.nvim_win_set_cursor, 0, mark) then
+                -- open enclosing folds.
+                pcall(vim.cmd, "normal! zv")
+            end
         end
     end,
 })
