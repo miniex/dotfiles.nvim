@@ -160,7 +160,7 @@ return {
         local heart_dim = "#E890B0"
         local heart_bright = "#FFD4DE"
         local heart_period_ms = 1100
-        local pulse_frame_ms = 100 -- 10Hz is smooth enough at a 1.1s period.
+        local pulse_frame_ms = 150 -- ~6.7Hz; smooth enough at the 1.1s period.
 
         local function heartbeat_curve(t)
             local function bump(center, width)

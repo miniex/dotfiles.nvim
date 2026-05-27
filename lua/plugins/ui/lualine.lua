@@ -101,7 +101,7 @@ return {
                 section_separators = { left = "", right = "" },
                 globalstatus = true,
                 disabled_filetypes = { statusline = { "snacks_dashboard" } },
-                refresh = { statusline = 1000 },
+                refresh = { statusline = 2000 },
             },
             sections = {
                 lualine_a = {
