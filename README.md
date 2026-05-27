@@ -48,12 +48,12 @@ Prerequisites, manual install, and recovery: [docs/SETUP.md](docs/SETUP.md).
 | Lua                 | lua_ls                        | selene           | -                       |
 | CSS / HTML          | cssls / html+emmet            | -                | -                       |
 | Tailwind / JS-TS    | tailwindcss / vtsls           | eslint_d         | -                       |
-| GraphQL / SQL       | graphql / sqls                | -                | -                       |
-| JSON / YAML         | jsonls / yamlls               | -                | -                       |
+| GraphQL / SQL       | graphql / sqls                | - / sqlfluff     | -                       |
+| JSON / YAML         | jsonls / yamlls               | - / yamllint     | -                       |
 | Protobuf / TOML     | buf_ls / taplo                | -                | -                       |
 | RON                 | -                             | -                | -                       |
 | Typst               | tinymist                      | -                | -                       |
-| Markdown / MDX      | marksman / + mdx_analyzer     | markdownlint     | -                       |
+| Markdown / MDX      | marksman / mdx_analyzer       | markdownlint     | -                       |
 | CMake / Nix         | neocmake / nil_ls             | - / statix       | -                       |
 | Dockerfile / Helm   | dockerls / helm_ls            | hadolint         | -                       |
 | Terraform / HCL     | terraformls                   | tflint           | -                       |

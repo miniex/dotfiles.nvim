@@ -77,7 +77,7 @@ See [`lua/config/modal-floats.lua`](../lua/config/modal-floats.lua) for the mutu
 ## Tooling
 
 - **nvim-lint** — per-buffer 250ms debounce, skips run if you switched away.
-- **mason-tool-installer** — single source of truth for non-LSP tools (shellcheck, golangci-lint, eslint_d, selene, markdownlint, statix, hadolint, …).
+- **mason-tool-installer** — single source of truth for non-LSP tools (shellcheck, golangci-lint, eslint_d, selene, markdownlint, statix, hadolint, sqlfluff, yamllint, …).
 - **DAP** — Rust (rustaceanvim's codelldb) / C-C++ (cpptools) / Python (debugpy) / Go (delve) / Zig (codelldb) / Elixir (elixir-ls debug adapter). Persistent breakpoints per-cwd.
 - **neotest** — Python (pytest) / Go (gotestsum) / Elixir (mix) / C/C++ (gtest) / Rust (rustaceanvim). Summary window state restored across sessions.
 - **health check** — `./tools/health.sh` reports prereq status.
@@ -85,7 +85,7 @@ See [`lua/config/modal-floats.lua`](../lua/config/modal-floats.lua) for the mutu
 ## Markdown
 
 - `render-markdown.nvim` inline rendering of headings / lists / tables / code blocks.
-- `mdx_analyzer` adds MDX support alongside marksman.
+- `mdx_analyzer` handles `.mdx`; `marksman` handles `.md`.
 
 ## Native UI2
 

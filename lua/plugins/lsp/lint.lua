@@ -17,6 +17,10 @@ return {
                 "statix",
                 -- Dockerfile
                 "hadolint",
+                -- SQL
+                "sqlfluff",
+                -- YAML
+                "yamllint",
             },
         },
     },
@@ -48,6 +52,10 @@ return {
                 nix = { "statix" },
                 -- Dockerfile
                 dockerfile = { "hadolint" },
+                -- SQL
+                sql = { "sqlfluff" },
+                -- YAML
+                yaml = { "yamllint" },
             },
         },
         config = function(_, opts)
