@@ -99,3 +99,55 @@ map("<leader>yP", function()
 end, "n", "Yank file path (relative)")
 
 -- Buffer nav keymaps live on the bufferline.nvim spec.
+
+-- Last window → bufdelete (keeps bufferline + dashboard in sync); else :quit
+-- so split-only closes still work.
+local function normal_win_count(buf)
+    local n = 0
+    for _, win in ipairs(vim.fn.win_findbuf(buf)) do
+        if vim.api.nvim_win_get_config(win).relative == "" then
+            n = n + 1
+        end
+    end
+    return n
+end
+
+local function quit_or_bufdelete(force)
+    -- Dashboard has no buffer to close — exit nvim instead.
+    if vim.bo.filetype == "snacks_dashboard" then
+        vim.cmd(force and "qall!" or "qall")
+        return
+    end
+    if normal_win_count(vim.api.nvim_get_current_buf()) <= 1 then
+        require("snacks").bufdelete({ force = force })
+    else
+        vim.cmd(force and "quit!" or "quit")
+    end
+end
+
+vim.api.nvim_create_user_command("Q", function(opts)
+    quit_or_bufdelete(opts.bang)
+end, { bang = true, desc = "Smart quit (bufdelete if last window)" })
+
+vim.api.nvim_create_user_command("WQ", function(opts)
+    vim.cmd(opts.bang and "write!" or "write")
+    quit_or_bufdelete(opts.bang)
+end, { bang = true, desc = "Write + smart quit" })
+
+-- Route only exact `q` / `wq` / `x` / `exit`; the `!` suffix flows through
+-- naturally because cnoreabbrev expands on the non-keyword boundary.
+vim.cmd([[
+    cnoreabbrev <expr> q    (getcmdtype()==':' && getcmdline()=='q')    ? 'Q'  : 'q'
+    cnoreabbrev <expr> wq   (getcmdtype()==':' && getcmdline()=='wq')   ? 'WQ' : 'wq'
+    cnoreabbrev <expr> x    (getcmdtype()==':' && getcmdline()=='x')    ? 'WQ' : 'x'
+    cnoreabbrev <expr> exit (getcmdtype()==':' && getcmdline()=='exit') ? 'WQ' : 'exit'
+]])
+
+vim.keymap.set("n", "ZZ", function()
+    vim.cmd("write")
+    quit_or_bufdelete(false)
+end, { silent = true, desc = "Write + smart quit" })
+
+vim.keymap.set("n", "ZQ", function()
+    quit_or_bufdelete(true)
+end, { silent = true, desc = "Force smart quit" })

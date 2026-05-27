@@ -262,19 +262,21 @@ Python (pytest), Go (gotestsum), Elixir (mix), C/C++ (gtest), Rust (rustaceanvim
 
 In the toggle terminal, `$EDITOR`/`$VISUAL`/`$GIT_EDITOR` forward to the parent Neovim via `scripts/term-bin/nvim` — `git commit` opens a split in the outer instance.
 
-| Key                                     | Description                                    |
-| --------------------------------------- | ---------------------------------------------- |
-| `<leader>t` (n/t)                       | Toggle terminal (centered float)               |
-| `<C-x>`                                 | Hide terminal                                  |
-| `<leader>w`                             | Smart buffer delete (last file → dashboard)    |
-| `<leader>;`                             | Toggle dashboard (peek; press again to return) |
-| `<leader>bd` / `<leader>bD`             | Snacks.bufdelete: confirm-on-modified / force  |
-| `<leader>.` / `<leader>bS`              | Snacks scratch: toggle / select buffer         |
-| `<leader>1` … `<leader>9` · `<leader>0` | Jump to bufferline position 1–9 / 10           |
-| `[b` / `]b` · `<S-h>` / `<S-l>`         | Prev / next buffer (open-order)                |
-| `<leader>cn` / `<leader>un`             | Notification history / dismiss all             |
-| `<leader>yp` / `<leader>yP`             | Yank file path to `+`: absolute / relative     |
-| `]]` / `[[`                             | LSP word: next / previous reference            |
+| Key                                     | Description                                                                                            |
+| --------------------------------------- | ------------------------------------------------------------------------------------------------------ |
+| `<leader>t` (n/t)                       | Toggle terminal (centered float)                                                                       |
+| `<C-x>`                                 | Hide terminal                                                                                          |
+| `<leader>w`                             | Smart buffer delete (last file → dashboard)                                                            |
+| `:q` / `:wq` / `:x` / `:exit` / `ZZ`    | Smart quit: bufdelete on last window, else `:quit`. `!` keeps force semantics. On dashboard → `:qall`. |
+| `ZQ`                                    | Force smart quit (no save)                                                                             |
+| `<leader>;`                             | Toggle dashboard (peek; press again to return)                                                         |
+| `<leader>bd` / `<leader>bD`             | Snacks.bufdelete: confirm-on-modified / force                                                          |
+| `<leader>.` / `<leader>bS`              | Snacks scratch: toggle / select buffer                                                                 |
+| `<leader>1` … `<leader>9` · `<leader>0` | Jump to bufferline position 1–9 / 10                                                                   |
+| `[b` / `]b` · `<S-h>` / `<S-l>`         | Prev / next buffer (open-order)                                                                        |
+| `<leader>cn` / `<leader>un`             | Notification history / dismiss all                                                                     |
+| `<leader>yp` / `<leader>yP`             | Yank file path to `+`: absolute / relative                                                             |
+| `]]` / `[[`                             | LSP word: next / previous reference                                                                    |
 
 ## Language-specific
 
