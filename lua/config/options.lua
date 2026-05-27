@@ -23,6 +23,11 @@ opt.fillchars:append({ eob = " " })
 
 -- etc
 opt.encoding = "UTF-8"
+-- undofile covers recovery; skip swap/backup files.
+opt.backup = false
+opt.writebackup = false
+opt.swapfile = false
+opt.pumheight = 10
 -- ui2 owns cmdline; reclaim the row.
 opt.cmdheight = 0
 -- Set before lualine to avoid dashboard height shift on startup.

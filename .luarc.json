@@ -13,6 +13,7 @@
     },
     "workspace": {
         "library": [
+            "${VIMRUNTIME}",
             "runtime/lua",
             "${3rd}/luv/library"
         ],

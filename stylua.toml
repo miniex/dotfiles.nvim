@@ -1,2 +1,9 @@
 indent_type = "Spaces"
 indent_width = 4
+line_endings = "Unix"
+quote_style = "AutoPreferDouble"
+call_parentheses = "Always"
+collapse_simple_statement = "Never"
+
+[sort_requires]
+enabled = true
