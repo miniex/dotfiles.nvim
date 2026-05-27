@@ -36,6 +36,8 @@ opt.laststatus = 3
 opt.showtabline = 0
 -- Safety net for the first-`<leader>` lag while which-key triggers register.
 opt.timeoutlen = 300
+-- CursorHold idle for document_highlight + lightbulb.
+opt.updatetime = 300
 opt.scrolloff = 10
 opt.smoothscroll = true
 opt.mouse:append("a")

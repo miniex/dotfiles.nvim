@@ -185,7 +185,11 @@ return {
                     ts.install(missing)
                     -- Re-fire FileType as parsers finish installing; pcall so a throw can't leak the timer.
                     local attempts = 0
-                    local timer = assert(vim.uv.new_timer())
+                    local timer = vim.uv.new_timer()
+                    if not timer then
+                        pcall(attach_all)
+                        return
+                    end
                     timer:start(
                         2000,
                         2000,
