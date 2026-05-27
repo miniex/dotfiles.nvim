@@ -99,15 +99,15 @@ return {
             mapping_options = { noremap = true, nowait = true },
             mappings = {
                 ["<space>"] = "none",
-                ["<cr>"] = "open_tabnew_float",
-                ["l"] = "open_tabnew_float",
+                ["<cr>"] = "open_in_main",
+                ["l"] = "open_in_main",
                 ["h"] = "close_node",
             },
         },
 
-        -- Float mode: neo-tree's open commands hit invalid winid; close + tabnew instead.
+        -- Float mode workaround: neo-tree's native open hits invalid winid.
         commands = {
-            open_tabnew_float = function(state)
+            open_in_main = function(state)
                 local utils = require("neo-tree.utils")
                 local node = state.tree:get_node()
                 if utils.is_expandable(node) then
@@ -117,8 +117,22 @@ return {
                         utils.wrap(fs.toggle_directory, state)
                     )
                 end
+                local main
+                for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+                    local buf = vim.api.nvim_win_get_buf(win)
+                    if vim.api.nvim_win_get_config(win).relative == "" and vim.bo[buf].buftype ~= "terminal" then
+                        main = win
+                        break
+                    end
+                end
                 require("neo-tree.command").execute({ action = "close" })
-                vim.cmd("tabnew " .. vim.fn.fnameescape(node:get_id()))
+                local path = vim.fn.fnameescape(node:get_id())
+                if main and vim.api.nvim_win_is_valid(main) then
+                    vim.api.nvim_set_current_win(main)
+                    vim.cmd("edit " .. path)
+                else
+                    vim.cmd("tabnew " .. path)
+                end
             end,
         },
 

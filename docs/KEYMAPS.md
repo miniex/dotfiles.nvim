@@ -35,7 +35,7 @@ Leader: `<Space>`. `<localleader>` also `<Space>` (most localleader bindings liv
 | `<leader>fS`                      | Snippets (LuaSnip, current ft + all)                           |
 | `<leader>z` / `z'`                | fzf-lua: builtin menu / resume last picker                     |
 | `<leader>e` / `<leader>o`         | Neo-tree: toggle / reveal                                      |
-| `<cr>` / `l` (in neo-tree)        | Open file in new tabpage; folder expand/collapse               |
+| `<cr>` / `l` (in neo-tree)        | Open file in main window; folder expand/collapse               |
 | `s` / `S` (n/x/o)                 | Flash: jump / treesitter jump                                  |
 | `<leader>?`                       | which-key: all keymaps (`<C-d>`/`<C-u>` flip pages)            |
 
