@@ -86,6 +86,14 @@ return {
             return mode_glyph[vim.fn.mode()] or "✿"
         end
 
+        -- lualine's default refresh misses these events.
+        vim.api.nvim_create_autocmd({ "RecordingEnter", "RecordingLeave" }, {
+            group = vim.api.nvim_create_augroup("LualineMacroRedraw", { clear = true }),
+            callback = function()
+                vim.schedule(vim.cmd.redrawstatus)
+            end,
+        })
+
         require("lualine").setup({
             options = {
                 theme = damin_theme,
@@ -114,6 +122,15 @@ return {
                     },
                 },
                 lualine_b = {
+                    {
+                        function()
+                            return "● @" .. vim.fn.reg_recording()
+                        end,
+                        cond = function()
+                            return vim.fn.reg_recording() ~= ""
+                        end,
+                        color = { fg = damin_pink, gui = "bold" },
+                    },
                     { "branch", icon = "", color = { fg = damin_blue } },
                 },
                 lualine_c = {

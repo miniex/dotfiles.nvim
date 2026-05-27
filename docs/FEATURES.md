@@ -6,7 +6,7 @@
 - **Inlay hints** — toggle per buffer with `<leader>ci`; suppressed automatically during insert mode.
 - **Code lens** — enabled on capable servers (gopls, rust-analyzer, lua_ls, ocamllsp, elixir-ls). `BufWritePost` refreshes lens count.
 - **Diagnostics** — single config in `lua/plugins/lsp/init.lua`; `tiny-inline-diagnostic.nvim` owns virtual text. Severity-sorted, signs `✗`/`!`/`i`/`?`.
-- **Completion** — [blink.cmp](https://github.com/Saghen/blink.cmp) with Rust fuzzy matching. Sources: LSP / snippets (LuaSnip + friendly-snippets) / path / buffer; filtered per filetype (no LSP in `gitcommit` / `gitrebase`, buffer-only in snacks input prompts).
+- **Completion** — [blink.cmp](https://github.com/Saghen/blink.cmp) with Rust fuzzy matching + inline ghost-text preview. Sources: LSP / snippets (LuaSnip + friendly-snippets) / path / buffer; filtered per filetype (no LSP in `gitcommit` / `gitrebase`, buffer-only in snacks input prompts).
 - **LSP restart** — `<leader>cs` for when a server hangs.
 
 ## Treesitter
@@ -37,7 +37,7 @@
 ## UI
 
 - **Theme** — Catppuccin Mocha retoned to a 2-color **damin** palette: `#98ABCC` (blue) / `#E890B0` (pink). Mirrors [`fish-theme-damin`](https://github.com/miniex/fish-theme-damin) + [`dotfiles.kitty`](https://github.com/miniex/dotfiles.kitty) + [`dotfiles.tmux`](https://github.com/miniex/dotfiles.tmux).
-- **lualine** — `✧ … ⋆` sparkle bookends, `✿` mode glyph (swaps to `✎` in visual / operator-pending, briefly `✦` on mode change).
+- **lualine** — `✧ … ⋆` sparkle bookends, `✿` mode glyph (swaps to `✎` in visual / operator-pending, briefly `✦` on mode change); `● @x` while a macro is recording.
 - **bufferline** — pink → mid → blue 3-stop gradient, `surface0` card under active, `▎` left bar + ordinal prefix, `♡` on harpoon-pinned, `●` on modified, uniform 16-char tab width. Neo-tree / Outline get sidebar offset labels. Lazy-loads on first real file open, so the dashboard isn't preceded by an empty tabline.
 - **incline** — `⌬` when window is zoomed (alone in tabpage).
 - **modicator** — `✿` sign on the current line in mode color. Refresh defer skips picker/terminal/chrome buffers.

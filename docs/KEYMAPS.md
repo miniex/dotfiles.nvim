@@ -19,7 +19,7 @@ Leader: `<Space>`. `<localleader>` also `<Space>` (most localleader bindings liv
 
 > `n`, `N`, `*`, `#`, `g*`, `g#`, `<C-o>`, `<C-i>` auto-center the cursor (`zvzz`).
 > Yank → system clipboard via `wl-copy` / `xclip` / `pbcopy` / `clip.exe` (first available).
-> Macro recording shows a `recording @a` / `saved @a` toast.
+> Macro recording shows a `recording @a` / `saved @a` toast plus `● @a` in the statusline while active.
 
 ## Find & Navigate
 

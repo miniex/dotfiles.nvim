@@ -51,6 +51,7 @@ return {
                     auto_show_delay_ms = 200,
                     window = { border = vim.g.flower_border },
                 },
+                ghost_text = { enabled = true },
                 menu = {
                     border = vim.g.flower_border,
                     draw = {
