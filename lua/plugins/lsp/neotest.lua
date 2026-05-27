@@ -11,6 +11,7 @@ return {
             "fredrikaverpil/neotest-golang",
             "jfpedroza/neotest-elixir",
             "alfaix/neotest-gtest",
+            "MisanthropicBit/neotest-busted",
             "mrcjkb/rustaceanvim",
         },
         keys = {
@@ -127,6 +128,7 @@ return {
                 }),
                 require("neotest-elixir"),
                 require("neotest-gtest").setup({}),
+                require("neotest-busted"),
             }
             local ok, rust = pcall(require, "rustaceanvim.neotest")
             if ok then
