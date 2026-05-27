@@ -266,7 +266,7 @@ In the toggle terminal, `$EDITOR`/`$VISUAL`/`$GIT_EDITOR` forward to the parent 
 | --------------------------------------- | ------------------------------------------------------------------------------------------------------ |
 | `<leader>t` (n/t)                       | Toggle terminal (centered float)                                                                       |
 | `<C-x>`                                 | Hide terminal                                                                                          |
-| `<leader>w`                             | Smart buffer delete (last file → dashboard)                                                            |
+| `<leader>w`                             | Smart buffer delete (last file → dashboard; on dashboard → file buf if any, else `:qall`)              |
 | `:q` / `:wq` / `:x` / `:exit` / `ZZ`    | Smart quit: bufdelete on last window, else `:quit`. `!` keeps force semantics. On dashboard → `:qall`. |
 | `ZQ`                                    | Force smart quit (no save)                                                                             |
 | `<leader>;`                             | Toggle dashboard (peek; press again to return)                                                         |

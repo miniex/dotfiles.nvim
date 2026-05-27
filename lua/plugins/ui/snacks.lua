@@ -469,6 +469,16 @@ return {
         {
             "<leader>w",
             function()
+                -- Dashboard → file buf if any, else exit.
+                if vim.bo.filetype == "snacks_dashboard" then
+                    local target = pick_alt_file_buf()
+                    if target then
+                        vim.cmd.buffer(target)
+                    else
+                        vim.cmd("qall")
+                    end
+                    return
+                end
                 Snacks.bufdelete()
             end,
             desc = "Delete Buffer",
