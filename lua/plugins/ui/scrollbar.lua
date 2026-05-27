@@ -181,10 +181,16 @@ return {
 
         local pulse_start = vim.uv.hrtime() / 1e6
         local pulse_timer
+        local last_pulse_color
         local function pulse_tick()
             local now = vim.uv.hrtime() / 1e6
             local t = ((now - pulse_start) % heart_period_ms) / heart_period_ms
             local c = lerp_color(heart_dim, heart_bright, heartbeat_curve(t))
+            -- Heartbeat lingers near heart_dim; skip the redundant set_hl pair.
+            if c == last_pulse_color then
+                return
+            end
+            last_pulse_color = c
             vim.api.nvim_set_hl(0, "ScrollbarCursor", { fg = c })
             vim.api.nvim_set_hl(0, "ScrollbarCursorHandle", { fg = c })
         end
@@ -193,6 +199,7 @@ return {
                 return
             end
             pulse_start = vim.uv.hrtime() / 1e6 -- reset phase
+            last_pulse_color = nil
             pulse_timer = vim.uv.new_timer()
             _G._scrollbar_pulse_timer = pulse_timer
             pulse_timer:start(0, pulse_frame_ms, vim.schedule_wrap(pulse_tick))
@@ -370,6 +377,7 @@ return {
             callback = function()
                 set_handle(current_color)
                 apply_mark_hl()
+                last_pulse_color = nil
             end,
         })
 
