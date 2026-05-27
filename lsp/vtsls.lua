@@ -19,6 +19,7 @@ local common = {
 }
 
 return {
+    root_markers = { "tsconfig.json", "jsconfig.json", "package.json", ".git" },
     settings = {
         vtsls = {
             experimental = { completion = { enableServerSideFuzzyMatch = true } },

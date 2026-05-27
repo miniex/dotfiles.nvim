@@ -2,7 +2,7 @@
 
 ## LSP & Completion
 
-- **Native LSP** — `vim.lsp.config` + `lsp/<server>.lua` discovery; mason-lspconfig handles install/enable.
+- **Native LSP** — `vim.lsp.config` + `lsp/<server>.lua` discovery; mason-lspconfig handles install/enable. Workspace root anchors on language manifests, `.git` as fallback.
 - **Inlay hints** — toggle per buffer with `<leader>ci`; suppressed automatically during insert mode.
 - **Code lens** — enabled on capable servers (gopls, rust-analyzer, lua_ls, ocamllsp, elixir-ls). `BufWritePost` refreshes lens count.
 - **Diagnostics** — single config in `lua/plugins/lsp/init.lua`; `tiny-inline-diagnostic.nvim` owns virtual text. Severity-sorted, signs `✗`/`!`/`i`/`?`.

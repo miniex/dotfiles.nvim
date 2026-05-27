@@ -1,6 +1,7 @@
 -- filetypes narrowed to "yaml" so helm templates (own filetype) don't attach.
 return {
     filetypes = { "yaml" },
+    root_markers = { ".yamllint", ".yamllint.yaml", ".yamllint.yml", ".git" },
     before_init = function(_, config)
         config.settings.yaml.schemas =
             vim.tbl_deep_extend("force", config.settings.yaml.schemas or {}, require("schemastore").yaml.schemas())

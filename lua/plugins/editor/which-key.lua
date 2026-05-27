@@ -71,6 +71,7 @@ return {
             { "<leader>u", group = "toggle/ui" },
             { "<leader>x", group = "diagnostics/quickfix" },
             { "<leader>r", group = "rename/replace" },
+            { "<leader>y", group = "yank" },
             { "<leader>z", group = "fzf" },
             { "gs", group = "surround" },
             { "gn", group = "ts-select" },

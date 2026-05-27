@@ -1,4 +1,5 @@
 return {
+    root_markers = { ".luarc.json", ".luarc.jsonc", "stylua.toml", ".stylua.toml", "selene.toml", ".git" },
     settings = {
         Lua = {
             workspace = { checkThirdParty = false },
