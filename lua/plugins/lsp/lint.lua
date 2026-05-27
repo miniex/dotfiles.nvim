@@ -65,7 +65,8 @@ return {
             -- Coalesce bursts, keyed per buffer.
             local pending = {}
             local group = vim.api.nvim_create_augroup("nvim-lint", { clear = true })
-            vim.api.nvim_create_autocmd({ "BufWritePost", "BufReadPost", "InsertLeave" }, {
+            -- No InsertLeave: save / read only.
+            vim.api.nvim_create_autocmd({ "BufWritePost", "BufReadPost" }, {
                 group = group,
                 callback = function(args)
                     local bufnr = args.buf

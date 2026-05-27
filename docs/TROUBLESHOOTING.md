@@ -4,7 +4,7 @@
 | ------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
 | LSP not attaching                                 | `:Mason`, `:LspInfo`, `:LspLog`                                                                                                                 |
 | LSP settings not applied                          | `lsp/<server>.lua` exists; server is in `lang_servers.lua` under an enabled lang; not restated via `nvim-lspconfig.opts.servers.<name>`         |
-| Lint not running                                  | linter on `$PATH`, see `lua/plugins/lsp/lint.lua` (per-buffer 250ms debounce)                                                                   |
+| Lint not running                                  | linter on `$PATH`, see `lua/plugins/lsp/lint.lua`. Fires on save / read (250ms debounce); save to re-run after edits.                           |
 | Mason tools missing                               | `:MasonToolsUpdate`, then `:Mason`                                                                                                              |
 | Python debug fails                                | `:MasonInstall debugpy` — `nvim-dap-python` warns and skips setup if missing                                                                    |
 | `<leader>ff` not working                          | `:Lazy build fff.nvim` (Rust toolchain)                                                                                                         |
