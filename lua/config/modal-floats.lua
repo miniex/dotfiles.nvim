@@ -16,7 +16,11 @@ if not vim.g._modal_float_api_patched then
     vim.api.nvim_open_win = function(buf, enter, config)
         for _, d in pairs(M._decorators) do
             if d.open then
-                config = d.open(buf, config) or config
+                -- pcall so one decorator can't break the chain.
+                local ok, result = pcall(d.open, buf, config)
+                if ok then
+                    config = result or config
+                end
             end
         end
         return orig_open(buf, enter, config)
@@ -27,7 +31,10 @@ if not vim.g._modal_float_api_patched then
     vim.api.nvim_win_set_config = function(win, config)
         for _, d in pairs(M._decorators) do
             if d.set_config then
-                config = d.set_config(win, config) or config
+                local ok, result = pcall(d.set_config, win, config)
+                if ok then
+                    config = result or config
+                end
             end
         end
         return orig_set_config(win, config)
