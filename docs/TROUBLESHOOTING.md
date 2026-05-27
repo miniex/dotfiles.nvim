@@ -17,6 +17,7 @@
 | Snippets not appearing                            | `:Lazy reload friendly-snippets` and `:LuaSnipUnlinkCurrent` if mid-expansion; check filetype matches a file in `snippets/`                     |
 | Neotest discovery fails                           | adapter for that language is missing or its CLI isn't on `$PATH` (`pytest` / `go` / `mix` / `gtest` / `cargo`)                                  |
 | Dashboard preceded by flickering `[No Name]` tabs | Stale persistence session for the cwd. Delete it: `rm ~/.local/state/nvim/sessions/$(pwd \| tr / %).vim`                                        |
+| `:q` swaps to an unexpected buffer after restore  | Old session file has stale `badd` lines; `:qa` once to overwrite, or `rm` it                                                                    |
 | Typing lag in `<leader>t` / pickers (fzf / fff)   | New picker/terminal float? Add its filetype to `excluded_ft` (`scrollbar.lua` + `modicator.lua`) and `sticky_disabled_ft` (`smear-cursor.lua`). |
 
 > nvim-treesitter `master` is archived and incompatible with 0.12; pinned to `main`.

@@ -90,7 +90,7 @@ return {
         },
     },
     opts = {
-        options = { "buffers", "curdir", "tabpages", "winsize", "help", "globals", "skiprtp", "folds" },
+        options = { "curdir", "tabpages", "winsize", "help", "globals", "skiprtp", "folds" },
     },
     config = function(_, opts)
         require("persistence").setup(opts)
