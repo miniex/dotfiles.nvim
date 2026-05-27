@@ -3,7 +3,7 @@ return {
     event = "VeryLazy",
     dependencies = { "nvim-tree/nvim-web-devicons", "SmiteshP/nvim-navic", "catppuccin" },
     config = function()
-        local p = require("catppuccin.palettes").get_palette("mocha")
+        local p = require("config.palette").mocha()
         local navic = require("nvim-navic")
 
         local damin_blue = "#98ABCC"

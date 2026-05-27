@@ -58,6 +58,7 @@ Plugin specs are discovered by `lazy.setup({ spec = { { import = "plugins.coding
 | Float config decorators | `lua/config/modal-floats.lua` `add_decorator()`    | Single global `nvim_open_win` / `nvim_win_set_config` patch — plugins register name-keyed transforms.           |
 | Modal float geometry    | `lua/config/modal-geom.lua`                        | Shared 0.85 × 0.85 chrome-aware rectangle; tracks `VimResized`. Change `M.RATIO` to resize every modal at once. |
 | Border characters       | `lua/config/globals.lua` `vim.g.flower_border`     | Every plugin reads this; theme/border consistency in one place.                                                 |
+| Catppuccin palette      | `lua/config/palette.lua` `mocha()`                 | Cached `get_palette("mocha")`; lualine + incline share one parse.                                               |
 
 ## Plugin spec categories (`lua/plugins/`)
 

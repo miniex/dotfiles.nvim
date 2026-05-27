@@ -5,7 +5,7 @@ return {
     dependencies = { "nvim-tree/nvim-web-devicons", "catppuccin" },
     event = "VeryLazy",
     config = function()
-        local p = require("catppuccin.palettes").get_palette("mocha")
+        local p = require("config.palette").mocha()
         local damin_pink = "#E890B0"
         local devicons = require("nvim-web-devicons")
         local icon_cache = {}
