@@ -53,7 +53,7 @@ map("<C-j>", [[<C-\><C-n><Cmd>lua _NavPane('j')<CR>]], "t", "Move to bottom pane
 map("<C-k>", [[<C-\><C-n><Cmd>lua _NavPane('k')<CR>]], "t", "Move to top pane (term)")
 map("<C-l>", [[<C-\><C-n><Cmd>lua _NavPane('l')<CR>]], "t", "Move to right pane (term)")
 
--- Re-center cursor after jumps (zv opens folds, zz centers vertically).
+-- zvzz after jumps. gg/G excluded — races with snacks.scroll (folke/snacks.nvim#2672).
 for _, key in ipairs({
     "n",
     "N",
@@ -63,8 +63,6 @@ for _, key in ipairs({
     "g#",
     "<C-o>",
     "<C-i>",
-    "G",
-    "gg",
     "[c",
     "]c",
     "[m",
