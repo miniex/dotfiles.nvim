@@ -12,6 +12,81 @@ vim.api.nvim_create_autocmd("ColorScheme", {
     callback = apply_hl,
 })
 
+-- Show recursive size on directory rows (neo-tree's default is "-").
+-- Budget-capped so a giant subtree can't stall the render.
+local function patch_recursive_dir_size()
+    local common = require("neo-tree.sources.common.components")
+    local utils = require("neo-tree.utils")
+    local events = require("neo-tree.events")
+    local uv = vim.uv or vim.loop
+
+    local SCAN_BUDGET = 10000
+    local cache = {}
+
+    local function compute(root)
+        local stack = { root }
+        local total, scanned = 0, 0
+        while #stack > 0 do
+            local dir = table.remove(stack)
+            local handle = uv.fs_scandir(dir)
+            if handle then
+                while true do
+                    local name, t = uv.fs_scandir_next(handle)
+                    if not name then
+                        break
+                    end
+                    scanned = scanned + 1
+                    if scanned > SCAN_BUDGET then
+                        return nil
+                    end
+                    local child = dir .. "/" .. name
+                    if t == "file" then
+                        local st = uv.fs_stat(child)
+                        if st then
+                            total = total + st.size
+                        end
+                    elseif t == "directory" then
+                        stack[#stack + 1] = child
+                    end
+                end
+            end
+        end
+        return total
+    end
+
+    local original = common.file_size
+    common.file_size = function(config, node, state)
+        if node:get_depth() ~= 1 and node.type == "directory" then
+            local path = node:get_id()
+            local entry = cache[path]
+            if entry == nil then
+                entry = compute(path) or false
+                cache[path] = entry
+            end
+            local text
+            if entry == false then
+                text = ">…"
+            else
+                local ok, human = pcall(utils.human_size, entry)
+                text = (ok and human) or "-"
+            end
+            local width = config.width or 12
+            return {
+                text = vim.fn.printf("%" .. width .. "s  ", text),
+                highlight = config.highlight or "NeoTreeFileStats",
+            }
+        end
+        return original(config, node, state)
+    end
+
+    events.subscribe({
+        event = events.FS_EVENT,
+        handler = function()
+            cache = {}
+        end,
+    })
+end
+
 return {
     "nvim-neo-tree/neo-tree.nvim",
     branch = "v3.x",
@@ -25,6 +100,10 @@ return {
         "nvim-tree/nvim-web-devicons",
         "MunifTanjim/nui.nvim",
     },
+    config = function(_, opts)
+        require("neo-tree").setup(opts)
+        patch_recursive_dir_size()
+    end,
     opts = {
         close_if_last_window = true,
         -- "NC" is neo-tree's default; the actual flower border is set via

@@ -25,7 +25,7 @@
 
 ## Editor
 
-- **Files** — neo-tree (floating). `<leader>e` toggle, `<leader>o` reveal current file.
+- **Files** — neo-tree (floating). `<leader>e` toggle, `<leader>o` reveal current file. Directory rows show recursive total size instead of the default `-`.
 - **Navigation** — flash (`s` / `S`), trouble (`<leader>xx`), aerial (`<leader>cO`), harpoon v2 (`<leader>m*`).
 - **Search & replace** — grug-far (`<leader>rr`).
 - **Multi-cursor** — multicursor.nvim under `<leader>M*` + `<C-Up>` / `<C-Down>`.
