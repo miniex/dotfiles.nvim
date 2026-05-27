@@ -39,7 +39,8 @@ opt.timeoutlen = 300
 -- CursorHold idle for document_highlight + lightbulb.
 opt.updatetime = 300
 opt.scrolloff = 10
-opt.smoothscroll = true
+-- snacks.scroll owns scroll; built-in would double-fire.
+opt.smoothscroll = false
 opt.mouse:append("a")
 opt.autoread = true
 opt.undofile = true

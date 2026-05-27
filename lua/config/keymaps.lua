@@ -54,7 +54,22 @@ map("<C-k>", [[<C-\><C-n><Cmd>lua _NavPane('k')<CR>]], "t", "Move to top pane (t
 map("<C-l>", [[<C-\><C-n><Cmd>lua _NavPane('l')<CR>]], "t", "Move to right pane (term)")
 
 -- Re-center cursor after jumps (zv opens folds, zz centers vertically).
-for _, key in ipairs({ "n", "N", "*", "#", "g*", "g#", "<C-o>", "<C-i>" }) do
+for _, key in ipairs({
+    "n",
+    "N",
+    "*",
+    "#",
+    "g*",
+    "g#",
+    "<C-o>",
+    "<C-i>",
+    "G",
+    "gg",
+    "[c",
+    "]c",
+    "[m",
+    "]m",
+}) do
     vim.keymap.set("n", key, key .. "zvzz", { silent = true })
 end
 
