@@ -61,6 +61,12 @@ function M.inner_height()
     return M.height() - 2
 end
 
+-- Inner rectangle for border'd modals. Spread into a win/preview config + relative.
+function M.inner_rect()
+    local w, h, r, c = M.geom()
+    return { width = w - 2, height = h - 2, row = r, col = c }
+end
+
 -- Modals whose APIs ignore explicit row/col — snapped on FileType (synchronous,
 -- no flash). neo-tree is handled separately (nui nested popup; see VimResized).
 local ALIGNED_FT = {
@@ -84,15 +90,10 @@ if not vim.g._modal_geom_aligner then
         if cfg.relative == "" then
             return true
         end
-        local w, h, r, c = M.geom()
-        pcall(vim.api.nvim_win_set_config, win, {
-            relative = cfg.relative,
-            win = cfg.win,
-            width = w - 2,
-            height = h - 2,
-            row = r,
-            col = c,
-        })
+        local rect = M.inner_rect()
+        rect.relative = cfg.relative
+        rect.win = cfg.win
+        pcall(vim.api.nvim_win_set_config, win, rect)
         return true
     end
     local group = vim.api.nvim_create_augroup("ModalGeomAlign", { clear = true })
@@ -139,14 +140,10 @@ if not vim.g._modal_geom_aligner then
                                 height = h - 2,
                             })
                         elseif ALIGNED_FT[ft] then
-                            pcall(vim.api.nvim_win_set_config, win, {
-                                relative = cfg.relative,
-                                win = cfg.win,
-                                width = w - 2,
-                                height = h - 2,
-                                row = r,
-                                col = c,
-                            })
+                            local rect = M.inner_rect()
+                            rect.relative = cfg.relative
+                            rect.win = cfg.win
+                            pcall(vim.api.nvim_win_set_config, win, rect)
                         end
                     end
                 end

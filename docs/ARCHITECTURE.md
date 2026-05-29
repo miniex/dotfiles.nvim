@@ -8,6 +8,7 @@ Why files live where they do.
 ~/.config/nvim/
 ├── init.lua              entry point — required at root by Neovim
 ├── lsp/                  per-server settings (vim.lsp.config, 0.11+)
+├── after/ftplugin/       per-filetype buffer options (auto-sourced on FileType)
 ├── snippets/             luasnip filetype-scoped + all.lua
 ├── lua/                  every require()-able module
 │   ├── config/             core: options, autocmds, keymaps, lazy bootstrap
@@ -24,14 +25,15 @@ The asymmetry between `lsp/` / `snippets/` (at root) and `lua/config|plugins/` (
 
 ## Why each path is where it is
 
-| Path                | Forced by                                                                                       |
-| ------------------- | ----------------------------------------------------------------------------------------------- |
-| `init.lua`          | Neovim looks here on startup. Cannot move.                                                      |
-| `lsp/<server>.lua`  | Neovim 0.11+ native LSP discovery scans `<rtp>/lsp/` only. Cannot move.                         |
-| `lua/<mod>/*.lua`   | `require("mod.x")` resolves to `<rtp>/lua/mod/x.lua`. Cannot move out of `lua/`.                |
-| `snippets/<ft>.lua` | Free choice. Path is set in `lua/plugins/coding/completion.lua` (`luasnip.loaders.from_lua`).   |
-| `tools/`            | Free. Shell scripts, not loaded by Neovim.                                                      |
-| `scripts/term-bin/` | Free. Used as `$EDITOR` inside the snacks terminal so `git commit` opens a split in outer nvim. |
+| Path                      | Forced by                                                                                       |
+| ------------------------- | ----------------------------------------------------------------------------------------------- |
+| `init.lua`                | Neovim looks here on startup. Cannot move.                                                      |
+| `lsp/<server>.lua`        | Neovim 0.11+ native LSP discovery scans `<rtp>/lsp/` only. Cannot move.                         |
+| `after/ftplugin/<ft>.lua` | Neovim auto-sources `<rtp>/after/ftplugin/<ft>.lua` on `FileType`. Cannot move.                 |
+| `lua/<mod>/*.lua`         | `require("mod.x")` resolves to `<rtp>/lua/mod/x.lua`. Cannot move out of `lua/`.                |
+| `snippets/<ft>.lua`       | Free choice. Path is set in `lua/plugins/coding/completion.lua` (`luasnip.loaders.from_lua`).   |
+| `tools/`                  | Free. Shell scripts, not loaded by Neovim.                                                      |
+| `scripts/term-bin/`       | Free. Used as `$EDITOR` inside the snacks terminal so `git commit` opens a split in outer nvim. |
 
 ## Boot sequence
 
@@ -48,28 +50,31 @@ Plugin specs are discovered by `lazy.setup({ spec = { { import = "plugins.coding
 
 ## Single sources of truth
 
-| Concern                 | Lives in                                           | Why                                                                                                             |
-| ----------------------- | -------------------------------------------------- | --------------------------------------------------------------------------------------------------------------- |
-| LSP per-server settings | `lsp/<server>.lua`                                 | Neovim's native discovery; don't restate in `nvim-lspconfig.opts.servers.<name>`.                               |
-| Lang → server mapping   | `lua/config/lang_servers.lua`                      | One place to ask "what servers does this language enable?"                                                      |
-| Enabled languages       | `lua/config/langs.lua` (+ `langs_local.lua`)       | `langs_local.lua` is gitignored and wins per-machine.                                                           |
-| Diagnostic UI           | `lua/plugins/lsp/init.lua` `vim.diagnostic.config` | tiny-inline-diagnostic owns `virtual_text`; everything else (signs, float) lives here.                          |
-| Modal float mutual-ex   | `lua/config/modal-floats.lua` `OWNER` table        | Same `owner` keeps sibling windows of one plugin together; opening another owner closes prior.                  |
-| Float config decorators | `lua/config/modal-floats.lua` `add_decorator()`    | Single global `nvim_open_win` / `nvim_win_set_config` patch — plugins register name-keyed transforms.           |
-| Modal float geometry    | `lua/config/modal-geom.lua`                        | Shared 0.85 × 0.85 chrome-aware rectangle; tracks `VimResized`. Change `M.RATIO` to resize every modal at once. |
-| Border characters       | `lua/config/globals.lua` `vim.g.flower_border`     | Every plugin reads this; theme/border consistency in one place.                                                 |
-| Catppuccin palette      | `lua/config/palette.lua` `mocha()`                 | Cached `get_palette("mocha")`; lualine + incline share one parse.                                               |
+| Concern                 | Lives in                                               | Why                                                                                                             |
+| ----------------------- | ------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------- |
+| LSP per-server settings | `lsp/<server>.lua`                                     | Neovim's native discovery; don't restate in `nvim-lspconfig.opts.servers.<name>`.                               |
+| Lang → server mapping   | `lua/config/lang_servers.lua`                          | One place to ask "what servers does this language enable?"                                                      |
+| Enabled languages       | `lua/config/langs.lua` (+ `langs_local.lua`)           | `langs_local.lua` is gitignored and wins per-machine.                                                           |
+| Diagnostic UI           | `lua/plugins/lsp/init.lua` `vim.diagnostic.config`     | tiny-inline-diagnostic owns `virtual_text`; everything else (signs, float) lives here.                          |
+| Modal float mutual-ex   | `lua/config/modal-floats.lua` `OWNER` table            | Same `owner` keeps sibling windows of one plugin together; opening another owner closes prior.                  |
+| Float config decorators | `lua/config/modal-floats.lua` `add_decorator()`        | Single global `nvim_open_win` / `nvim_win_set_config` patch — plugins register name-keyed transforms.           |
+| Modal float geometry    | `lua/config/modal-geom.lua`                            | Shared 0.85 × 0.85 chrome-aware rectangle; tracks `VimResized`. Change `M.RATIO` to resize every modal at once. |
+| Border characters       | `lua/config/globals.lua` `vim.g.flower_border`         | Every plugin reads this; theme/border consistency in one place.                                                 |
+| Palette & brand accents | `lua/config/palette.lua`                               | Cached `mocha()` parse + the `blue` / `pink` / git accents every UI plugin reads.                               |
+| UI chrome filetypes     | `lua/config/chrome_filetypes.lua`                      | `pickers` / `panels` lists; scrollbar / smear / modicator / incline build exclusions from one source.           |
+| Treesitter grammars     | `lua/plugins/editor/treesitter.lua` `ensure_installed` | Central grammar list; lang files don't extend it.                                                               |
+| CodeLLDB DAP adapter    | `lua/config/codelldb.lua`                              | Resolves the Mason codelldb binary once; shared by C/C++ and Zig.                                               |
 
 ## Plugin spec categories (`lua/plugins/`)
 
-| Subdir      | Belongs here                                                                |
-| ----------- | --------------------------------------------------------------------------- |
-| `coding/`   | Completion (blink.cmp, LuaSnip, friendly-snippets).                         |
-| `editor/`   | Editing UX: neo-tree, flash, surround, harpoon, multicursor, git, …         |
-| `lang/`     | Per-language adapters (DAP configs, treesitter parsers, lang-only plugins). |
-| `lsp/`      | LSP infra (mason, nvim-lspconfig, lint, dap, neotest, diagnostic-ui).       |
-| `markdown/` | Render plugins specific to markdown.                                        |
-| `ui/`       | Theme, lualine, bufferline, snacks (picker/terminal/dashboard), edgy, …     |
+| Subdir      | Belongs here                                                                                                                    |
+| ----------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `coding/`   | Completion (blink.cmp, LuaSnip, friendly-snippets).                                                                             |
+| `editor/`   | Editing UX: neo-tree, flash, surround, harpoon, multicursor, git, …                                                             |
+| `lang/`     | Per-language adapters (DAP configs, `vim.filetype.add`, lang-only plugins). Grammars live centrally in `editor/treesitter.lua`. |
+| `lsp/`      | LSP infra (mason, nvim-lspconfig, lint, dap, neotest, diagnostic-ui).                                                           |
+| `markdown/` | Render plugins specific to markdown.                                                                                            |
+| `ui/`       | Theme, lualine, bufferline, snacks (picker/terminal/dashboard), edgy, …                                                         |
 
 If a plugin touches multiple categories (e.g. snacks does picker + terminal + dashboard), pick the dominant one and add a comment if non-obvious.
 

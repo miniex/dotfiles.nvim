@@ -28,11 +28,13 @@ return {
                 "javascript",
                 "typescript",
                 "heex",
+                "eex",
                 -- API / Query
                 "graphql",
                 -- Shaders
                 "wgsl",
                 "glsl",
+                "hlsl",
                 -- Database
                 "sql",
                 -- Data / Config

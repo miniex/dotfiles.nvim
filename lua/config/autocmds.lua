@@ -68,17 +68,24 @@ vim.schedule(function()
                 return
             end
             pending_content = table.concat(vim.v.event.regcontents, "\n")
-            if pending_timer then
+            if pending_timer and not pending_timer:is_closing() then
                 pending_timer:stop()
                 pending_timer:close()
             end
-            pending_timer = vim.uv.new_timer()
-            pending_timer:start(
+            -- Local handle so the callback closes its own timer, not a newer
+            -- one that replaced it on a fast re-yank.
+            local timer = vim.uv.new_timer()
+            pending_timer = timer
+            timer:start(
                 50,
                 0,
                 vim.schedule_wrap(function()
-                    pending_timer:close()
-                    pending_timer = nil
+                    if not timer:is_closing() then
+                        timer:close()
+                    end
+                    if pending_timer == timer then
+                        pending_timer = nil
+                    end
                     vim.system(clip_cmd, { stdin = pending_content })
                 end)
             )

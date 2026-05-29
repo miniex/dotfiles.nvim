@@ -6,12 +6,5 @@ vim.filetype.add({
     },
 })
 
-return {
-    {
-        "nvim-treesitter/nvim-treesitter",
-        opts = function(_, opts)
-            opts.ensure_installed = opts.ensure_installed or {}
-            vim.list_extend(opts.ensure_installed, { "helm" })
-        end,
-    },
-}
+-- Grammar lives in the base treesitter list.
+return {}

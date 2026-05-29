@@ -1,11 +1,5 @@
+-- Grammars (terraform, hcl) live in the base treesitter list.
 return {
-    {
-        "nvim-treesitter/nvim-treesitter",
-        opts = function(_, opts)
-            opts.ensure_installed = opts.ensure_installed or {}
-            vim.list_extend(opts.ensure_installed, { "terraform", "hcl" })
-        end,
-    },
     {
         "WhoIsSethDaniel/mason-tool-installer.nvim",
         opts = { ensure_installed = { "tflint" } },

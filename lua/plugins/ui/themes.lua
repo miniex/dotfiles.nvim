@@ -1,10 +1,11 @@
--- damin 2-color: blue (#98ABCC) cool, pink (#E890B0) warm.
-local damin_blue = "#98ABCC"
-local damin_pink = "#E890B0"
--- Git accents — kept in sync with scrollbar marks.
-local git_add = "#A8DBB6"
+-- damin 2-color: blue cool, pink warm (single source: config.palette).
+local pal = require("config.palette")
+local damin_blue = pal.blue
+local damin_pink = pal.pink
+-- Git accents (shared via config.palette; scrollbar marks use the same).
+local git_add = pal.git_add
 local git_change = damin_pink
-local git_delete = "#D8788C"
+local git_delete = pal.git_delete
 
 return {
     {

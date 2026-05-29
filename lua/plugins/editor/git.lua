@@ -88,7 +88,7 @@ return {
     -- Fugitive: Git wrapper for Neovim
     {
         "tpope/vim-fugitive",
-        cmd = { "Git", "G", "Gstatus", "Gblame", "Gpush", "Gpull", "Gdiff", "Glog" },
+        cmd = { "Git", "G" },
         keys = {
             { "<leader>gs", "<cmd>Git<cr>", desc = "Git Status" },
             { "<leader>gb", "<cmd>Git blame<cr>", desc = "Git Blame" },
@@ -140,17 +140,11 @@ return {
         config = function(_, opts)
             require("gitsigns").setup(opts)
             local function sync_preview_geom()
-                local mgeom = require("config.modal-geom")
-                local w, h, r, c = mgeom.geom()
-                require("gitsigns.config").config.preview_config = {
-                    border = vim.g.flower_border,
-                    style = "minimal",
-                    relative = "editor",
-                    width = w - 2,
-                    height = h - 2,
-                    row = r,
-                    col = c,
-                }
+                local rect = require("config.modal-geom").inner_rect()
+                rect.border = vim.g.flower_border
+                rect.style = "minimal"
+                rect.relative = "editor"
+                require("gitsigns.config").config.preview_config = rect
             end
             sync_preview_geom()
             vim.api.nvim_create_autocmd("VimResized", {

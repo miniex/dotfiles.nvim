@@ -1,32 +1,8 @@
 -- Right-edge scrollbar with diagnostic/git marks. Animated heart + faded handle.
-local excluded_ft = {
-    prompt = true,
-    snacks_dashboard = true,
-    ["neo-tree"] = true,
-    ["neo-tree-popup"] = true,
-    Trouble = true,
-    trouble = true,
-    ["dap-repl"] = true,
-    dapui_console = true,
-    dapui_scopes = true,
-    dapui_breakpoints = true,
-    dapui_stacks = true,
-    dapui_watches = true,
-    aerial = true,
-    lazy = true,
-    mason = true,
-    snacks_picker_input = true,
-    snacks_picker_list = true,
-    snacks_picker_preview = true,
-    snacks_terminal = true,
-    fff_input = true,
-    fff_list = true,
-    fff_preview = true,
-    fzf = true,
-    fzflua_backdrop = true,
-    harpoon = true,
-    qf = true,
-}
+local chrome = require("config.chrome_filetypes")
+local pal = require("config.palette")
+local excluded_ft = chrome.set(chrome.pickers, chrome.panels)
+excluded_ft.prompt = true
 
 -- excluded_filetypes gates the plugin's render, not these per-keystroke callbacks.
 local function is_excluded(buf)
@@ -47,21 +23,21 @@ return {
             throttle_ms = 16, -- 60fps cap for smooth cursor animation
             handle = {
                 text = "▐",
-                color = "#98ABCC",
+                color = pal.blue,
                 blend = 50,
             },
             marks = {
                 -- Diagnostic/Search/Misc handlers index text[1] — wrap in array.
-                Cursor = { text = "♥", color = "#E890B0" },
-                Search = { text = { "★" }, color = "#E890B0" },
-                Error = { text = { "●" }, color = "#E890B0" },
-                Warn = { text = { "◆" }, color = "#E890B0" },
-                Info = { text = { "•" }, color = "#98ABCC" },
-                Hint = { text = { "·" }, color = "#98ABCC" },
-                Misc = { text = { "•" }, color = "#98ABCC" },
-                GitAdd = { text = "▐", color = "#A8DBB6" }, -- mint
-                GitChange = { text = "▐", color = "#E890B0" }, -- pink
-                GitDelete = { text = "▁", color = "#D8788C" }, -- rose
+                Cursor = { text = "♥", color = pal.pink },
+                Search = { text = { "★" }, color = pal.pink },
+                Error = { text = { "●" }, color = pal.pink },
+                Warn = { text = { "◆" }, color = pal.pink },
+                Info = { text = { "•" }, color = pal.blue },
+                Hint = { text = { "·" }, color = pal.blue },
+                Misc = { text = { "•" }, color = pal.blue },
+                GitAdd = { text = "▐", color = pal.git_add }, -- mint
+                GitChange = { text = "▐", color = pal.pink }, -- pink
+                GitDelete = { text = "▁", color = pal.git_delete }, -- rose
             },
             excluded_filetypes = vim.tbl_keys(excluded_ft),
             handlers = {
@@ -100,15 +76,15 @@ return {
 
         -- Cursor color is driven by the heartbeat timer; everything else stays solid.
         local mark_colors = {
-            Search = "#E890B0",
-            Error = "#E890B0",
-            Warn = "#E890B0",
-            Info = "#98ABCC",
-            Hint = "#98ABCC",
-            Misc = "#98ABCC",
-            GitAdd = "#A8DBB6",
-            GitChange = "#E890B0",
-            GitDelete = "#D8788C",
+            Search = pal.pink,
+            Error = pal.pink,
+            Warn = pal.pink,
+            Info = pal.blue,
+            Hint = pal.blue,
+            Misc = pal.blue,
+            GitAdd = pal.git_add,
+            GitChange = pal.pink,
+            GitDelete = pal.git_delete,
         }
 
         local function apply_mark_hl()
@@ -119,7 +95,7 @@ return {
         end
 
         -- Handle: fade between active/idle.
-        local active_color = "#98ABCC"
+        local active_color = pal.blue
         local idle_color = "#5F6A82"
         local idle_delay_ms = 700
         local fade_duration_ms = 500
@@ -157,7 +133,7 @@ return {
         end
 
         -- Heart: lub-dub pulse. Baseline pink keeps it visible mid-slide.
-        local heart_dim = "#E890B0"
+        local heart_dim = pal.pink
         local heart_bright = "#FFD4DE"
         local heart_period_ms = 1100
         local pulse_frame_ms = 150 -- ~6.7Hz; smooth enough at the 1.1s period.

@@ -44,6 +44,7 @@ cargo install stylua                                       # cargo
     - `lua/config/` — global config
     - `lua/plugins/{coding,editor,lang,lsp,ui}/` — plugin specs
     - `lsp/<server>.lua` at repo root — per-server settings (0.11+ native discovery). Single source for `cmd` / `root_markers` / `filetypes` / `settings`; don't restate via `nvim-lspconfig.opts.servers.<name>`.
+    - `after/ftplugin/<ft>.lua` at repo root — per-filetype buffer options (auto-sourced on `FileType`).
     - `lua/config/lang_servers.lua` — lang ↔ server wiring
     - `lua/config/modal-floats.lua` — registry of mutually-exclusive modal floating UIs (extend `OWNER` to add a new one)
 - Don't commit `lazy-lock.json` churn unless it's a plugin bump.

@@ -112,6 +112,12 @@ cleanup() {
 }
 trap cleanup INT TERM EXIT
 
+if [ ! -t 0 ] || [ ! -r /dev/tty ]; then
+    echo "set-lang.sh needs an interactive terminal." >&2
+    echo "Edit lua/config/langs_local.lua by hand for non-interactive setups." >&2
+    exit 1
+fi
+
 cursor=0
 stty -echo -icanon
 printf '\033[?25l'

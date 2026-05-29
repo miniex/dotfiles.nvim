@@ -1,4 +1,4 @@
--- Inlay hints stay hidden until `<leader>ci` toggles them on.
+-- Inlay hint kinds shown when hints are enabled (on by default; `<leader>ci` toggles).
 local hints = {
     parameterNames = { enabled = "all", suppressWhenArgumentMatchesName = true },
     variableTypes = { enabled = true, suppressWhenTypeMatchesName = true },

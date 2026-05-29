@@ -39,19 +39,7 @@ return {
         ft = { "c", "cpp" },
         config = function()
             local dap = require("dap")
-            -- Skip codelldb if not installed yet; re-resolved on next session.
-            local mason_ok, mason_registry = pcall(require, "mason-registry")
-            if mason_ok and mason_registry.is_installed("codelldb") then
-                local pkg = vim.fn.expand("$MASON/packages/codelldb")
-                dap.adapters.codelldb = {
-                    type = "server",
-                    port = "${port}",
-                    executable = {
-                        command = pkg .. "/extension/adapter/codelldb",
-                        args = { "--port", "${port}" },
-                    },
-                }
-            end
+            dap.adapters.codelldb = dap.adapters.codelldb or require("config.codelldb").adapter("c/c++")
 
             local function pick_executable()
                 return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")

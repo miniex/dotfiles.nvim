@@ -16,7 +16,7 @@ vim.g.flower_title = function(s)
 end
 
 -- Pin every plugin's float Normal/Border/Title groups to one look.
-local pink = "#E890B0"
+local pink = require("config.palette").pink
 local function unify_floats()
     local function setn(name)
         vim.api.nvim_set_hl(0, name, { bg = "NONE" })

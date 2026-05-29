@@ -1,11 +1,5 @@
+-- Grammars (elixir, heex, eex) live in the base treesitter list.
 return {
-    {
-        "nvim-treesitter/nvim-treesitter",
-        opts = function(_, opts)
-            opts.ensure_installed = opts.ensure_installed or {}
-            vim.list_extend(opts.ensure_installed, { "elixir", "heex", "eex" })
-        end,
-    },
     {
         "mfussenegger/nvim-dap",
         optional = true,

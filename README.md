@@ -38,7 +38,7 @@ Prerequisites, manual install, and recovery: [docs/SETUP.md](docs/SETUP.md).
 | Shell (sh/bash)     | bashls                        | shellcheck       | -                       |
 | Zsh / Fish          | -                             | zsh -n / fish -n | -                       |
 | Assembly            | asm-lsp                       | -                | -                       |
-| C/C++               | clangd                        | -                | cpptools                |
+| C/C++               | clangd                        | -                | codelldb                |
 | Go                  | gopls                         | golangci-lint    | delve                   |
 | Rust                | rust-analyzer (rustaceanvim)  | -                | CodeLLDB                |
 | Zig                 | zls                           | -                | codelldb                |

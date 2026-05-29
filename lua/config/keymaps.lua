@@ -18,20 +18,26 @@ vim.api.nvim_create_autocmd("WinEnter", {
 
 local function nav(dir)
     nav_in_progress = true
-    local cur = vim.api.nvim_get_current_win()
-    local target = return_to[dir]
-    if target and vim.api.nvim_win_is_valid(target) and target ~= cur then
-        return_to[dir] = nil
-        return_to[opposite[dir]] = cur
-        vim.api.nvim_set_current_win(target)
-    else
-        vim.cmd("wincmd " .. dir)
-        local now = vim.api.nvim_get_current_win()
-        if now ~= cur then
+    -- pcall so an error can't leave the flag stuck; schedule the reset so a
+    -- deferred WinEnter still sees it set.
+    pcall(function()
+        local cur = vim.api.nvim_get_current_win()
+        local target = return_to[dir]
+        if target and vim.api.nvim_win_is_valid(target) and target ~= cur then
+            return_to[dir] = nil
             return_to[opposite[dir]] = cur
+            vim.api.nvim_set_current_win(target)
+        else
+            vim.cmd("wincmd " .. dir)
+            local now = vim.api.nvim_get_current_win()
+            if now ~= cur then
+                return_to[opposite[dir]] = cur
+            end
         end
-    end
-    nav_in_progress = false
+    end)
+    vim.schedule(function()
+        nav_in_progress = false
+    end)
 end
 
 _G._NavPane = nav

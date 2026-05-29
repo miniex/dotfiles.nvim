@@ -19,7 +19,7 @@ return {
     config = function(_, opts)
         require("nvim-lightbulb").setup(opts)
         local function set_hl()
-            vim.api.nvim_set_hl(0, "LightBulbSign", { fg = "#E890B0", bg = "NONE" })
+            vim.api.nvim_set_hl(0, "LightBulbSign", { fg = require("config.palette").pink, bg = "NONE" })
         end
         set_hl()
         vim.api.nvim_create_autocmd("ColorScheme", {

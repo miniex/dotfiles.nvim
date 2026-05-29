@@ -22,17 +22,8 @@ return {
 
         -- Sticky-off: outlives the 80ms float-open defer below; spring would otherwise
         -- fire per CursorMovedI in snacks_picker_input.
-        local sticky_disabled_ft = {
-            snacks_picker_input = true,
-            snacks_picker_list = true,
-            snacks_picker_preview = true,
-            snacks_terminal = true,
-            fff_input = true,
-            fff_list = true,
-            fff_preview = true,
-            fzf = true,
-            fzflua_backdrop = true,
-        }
+        local chrome = require("config.chrome_filetypes")
+        local sticky_disabled_ft = chrome.set(chrome.pickers)
         local function should_stay_disabled(buf)
             buf = buf or 0
             if sticky_disabled_ft[vim.bo[buf].filetype] then

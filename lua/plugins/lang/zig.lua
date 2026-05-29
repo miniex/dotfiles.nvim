@@ -1,35 +1,14 @@
 return {
-    {
-        "nvim-treesitter/nvim-treesitter",
-        opts = function(_, opts)
-            opts.ensure_installed = opts.ensure_installed or {}
-            vim.list_extend(opts.ensure_installed, { "zig" })
-        end,
-    },
+    -- Grammar (zig) lives in the base treesitter list.
     {
         "mfussenegger/nvim-dap",
         optional = true,
         config = function()
             local dap = require("dap")
-            -- Same path rustaceanvim uses; bypasses Mason's bash wrapper.
-            local codelldb = vim.fn.stdpath("data") .. "/mason/packages/codelldb/extension/adapter/codelldb"
-            if vim.fn.executable(codelldb) ~= 1 then
-                vim.schedule(function()
-                    vim.notify(
-                        "codelldb not found at " .. codelldb .. "\nRun :MasonInstall codelldb",
-                        vim.log.levels.WARN,
-                        { title = "nvim-dap (zig)" }
-                    )
-                end)
+            dap.adapters.codelldb = dap.adapters.codelldb or require("config.codelldb").adapter("zig")
+            if not dap.adapters.codelldb then
                 return
             end
-
-            dap.adapters.codelldb = dap.adapters.codelldb
-                or {
-                    type = "server",
-                    port = "${port}",
-                    executable = { command = codelldb, args = { "--port", "${port}" } },
-                }
 
             dap.configurations.zig = {
                 {

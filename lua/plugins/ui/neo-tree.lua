@@ -1,4 +1,4 @@
-local damin_pink = "#E890B0"
+local damin_pink = require("config.palette").pink
 
 -- damin polish: pink float border + pink "currently editing" file.
 local function apply_hl()
@@ -106,9 +106,9 @@ return {
     end,
     opts = {
         close_if_last_window = true,
-        -- "NC" is neo-tree's default; the actual flower border is set via
-        -- window.popup.border.style below (the official path through nui.nvim).
-        popup_border_style = "rounded",
+        -- Flower border for secondary popups too (rename/preview); the main
+        -- float uses window.popup.border.style below.
+        popup_border_style = vim.g.flower_border,
         enable_git_status = true,
         enable_diagnostics = true,
 

@@ -3,11 +3,12 @@ return {
     event = "VeryLazy",
     dependencies = { "nvim-tree/nvim-web-devicons", "SmiteshP/nvim-navic", "catppuccin" },
     config = function()
-        local p = require("config.palette").mocha()
+        local palette = require("config.palette")
+        local p = palette.mocha()
         local navic = require("nvim-navic")
 
-        local damin_blue = "#98ABCC"
-        local damin_pink = "#E890B0"
+        local damin_blue = palette.blue
+        local damin_pink = palette.pink
 
         -- damin: text-on-transparent. ✿ glyph color = mode (blue/pink/red/dim).
         local damin_theme = {
@@ -152,9 +153,11 @@ return {
                     },
                     {
                         navic.get_location,
-                        -- Narrow windows: dropbar already owns the breadcrumb.
+                        -- Fallback only: show when dropbar's winbar isn't drawing
+                        -- the breadcrumb for this window (avoids double display).
                         cond = function()
-                            return navic.is_available() and vim.o.columns > 140
+                            local wb = vim.wo.winbar
+                            return navic.is_available() and (wb == nil or wb == "")
                         end,
                         color = { fg = p.overlay0 },
                     },

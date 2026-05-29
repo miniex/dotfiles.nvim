@@ -1,10 +1,16 @@
 -- LSP: native discovery (lsp/<server>.lua) gated by langs × lang_servers.
+local drift_warned = false
 local function enabled_servers()
     local langs = require("config.langs")
     local map = require("config.lang_servers")
-    local out, seen = {}, {}
+    local out, seen, undefined = {}, {}, {}
     for lang, on in pairs(langs) do
         if on then
+            -- A missing key (vs an intentional empty {} like ron/rust) means an
+            -- enabled lang would silently get no LSP — surface the drift once.
+            if map[lang] == nil then
+                undefined[#undefined + 1] = lang
+            end
             for _, s in ipairs(map[lang] or {}) do
                 if not seen[s] then
                     seen[s] = true
@@ -12,6 +18,16 @@ local function enabled_servers()
                 end
             end
         end
+    end
+    if #undefined > 0 and not drift_warned then
+        drift_warned = true
+        vim.schedule(function()
+            vim.notify(
+                "Enabled langs missing from lang_servers.lua: " .. table.concat(undefined, ", "),
+                vim.log.levels.WARN,
+                { title = "config.lang_servers" }
+            )
+        end)
     end
     return out
 end
@@ -67,7 +83,14 @@ return {
                 return
             end
 
-            vim.lsp.config("*", { root_markers = { ".git" } })
+            -- Advertise blink.cmp's extra capabilities (snippets, resolve) to
+            -- every server; native LSP merges this "*" config over its defaults.
+            local capabilities = {}
+            local ok_blink, blink = pcall(require, "blink.cmp")
+            if ok_blink then
+                capabilities = blink.get_lsp_capabilities({}, false)
+            end
+            vim.lsp.config("*", { capabilities = capabilities, root_markers = { ".git" } })
 
             -- virtual_text is off — tiny-inline-diagnostic owns it.
             vim.diagnostic.config({

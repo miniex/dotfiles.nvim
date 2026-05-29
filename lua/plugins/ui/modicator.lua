@@ -1,6 +1,7 @@
 -- ✿ echo: line-number column accent + mode-aware sign in front.
-local damin_blue = "#98ABCC"
-local damin_pink = "#E890B0"
+local pal = require("config.palette")
+local damin_blue = pal.blue
+local damin_pink = pal.pink
 
 local mode_color = {
     n = damin_blue,
@@ -17,17 +18,8 @@ local mode_color = {
 }
 
 local sign_ns = vim.api.nvim_create_namespace("ModicatorBloom")
-local excluded_ft = {
-    snacks_picker_input = true,
-    snacks_picker_list = true,
-    snacks_picker_preview = true,
-    snacks_terminal = true,
-    fff_input = true,
-    fff_list = true,
-    fff_preview = true,
-    fzf = true,
-    fzflua_backdrop = true,
-}
+local chrome = require("config.chrome_filetypes")
+local excluded_ft = chrome.set(chrome.pickers)
 local last_color
 local last_buf, last_line
 local function refresh_sign()

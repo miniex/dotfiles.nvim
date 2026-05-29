@@ -5,8 +5,9 @@ return {
     dependencies = { "nvim-tree/nvim-web-devicons", "catppuccin" },
     event = "VeryLazy",
     config = function()
-        local p = require("config.palette").mocha()
-        local damin_pink = "#E890B0"
+        local palette = require("config.palette")
+        local p = palette.mocha()
+        local damin_pink = palette.pink
         local devicons = require("nvim-web-devicons")
         local icon_cache = {}
         local function icon_for(filename)
@@ -62,23 +63,7 @@ return {
                 buftypes = function(_, buftype)
                     return buftype ~= "" and buftype ~= "acwrite"
                 end,
-                filetypes = {
-                    "snacks_dashboard",
-                    "neo-tree",
-                    "Trouble",
-                    "trouble",
-                    "aerial",
-                    "dap-repl",
-                    "dapui_scopes",
-                    "dapui_breakpoints",
-                    "dapui_stacks",
-                    "dapui_watches",
-                    "dapui_console",
-                    "lazy",
-                    "mason",
-                    "nvim-undotree",
-                    "qf",
-                },
+                filetypes = require("config.chrome_filetypes").panels,
                 unlisted_buffers = false,
                 wintypes = "special",
             },

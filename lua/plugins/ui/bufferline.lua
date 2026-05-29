@@ -34,9 +34,10 @@ for _, b in ipairs(vim.api.nvim_list_bufs()) do
 end
 
 -- damin 3-stop gradient (matches kitty tab_bar + tmux window list)
-local damin_blue = "#98ABCC"
+local pal = require("config.palette")
+local damin_blue = pal.blue
 local damin_mid = "#C09DBE"
-local damin_pink = "#E890B0"
+local damin_pink = pal.pink
 local damin_dim = "#6E7A95"
 
 -- 50ms cache: name_formatter fires per buffer per redraw.
@@ -120,16 +121,10 @@ return {
                 padding = 1,
                 max_name_length = 16,
                 max_prefix_length = 10,
+                -- Only aerial docks (right); neo-tree is float-only, no offset.
                 offsets = {
                     {
-                        filetype = "neo-tree",
-                        text = "  Explorer",
-                        text_align = "left",
-                        separator = " ",
-                        highlight = "BufferLineOffset",
-                    },
-                    {
-                        filetype = "Outline",
+                        filetype = "aerial",
                         text = "  Outline",
                         text_align = "left",
                         separator = " ",

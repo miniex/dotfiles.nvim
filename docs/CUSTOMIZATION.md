@@ -13,10 +13,11 @@ Or hand-edit `lua/config/langs_local.lua` (gitignored). Overrides `lua/config/la
 ### Add a new language
 
 1. `lsp/<server>.lua` — single source for `cmd` / `root_markers` / `filetypes` / `settings`. Don't restate via `nvim-lspconfig.opts.servers.<name>`.
-2. `lua/config/lang_servers.lua` — map `lang = { "server" }`. Empty list = no LSP (or owned by a per-lang plugin like `rust → rustaceanvim`).
-3. `lua/plugins/lang/<name>.lua` — DAP, treesitter parsers, lang-specific plugins. Register the module name in `lua/config/langs.lua`.
+2. `lua/config/lang_servers.lua` — map `lang = { "server" }`. Empty list = no LSP (or owned by a per-lang plugin like `rust → rustaceanvim`). An enabled lang with **no** key here warns on startup (no silent missing LSP).
+3. `lua/plugins/lang/<name>.lua` — DAP, `vim.filetype.add`, lang-specific plugins. Register the module name in `lua/config/langs.lua`.
+4. Treesitter grammar → add it to the central `ensure_installed` list in `lua/plugins/editor/treesitter.lua` (lang files no longer extend it themselves).
 
-Linters → `lua/plugins/lsp/lint.lua`. Non-LSP CLI tools → `mason-tool-installer.nvim` `ensure_installed`.
+Linters → `lua/plugins/lsp/lint.lua`. Non-LSP CLI tools → `mason-tool-installer.nvim` `ensure_installed`. CodeLLDB-based DAP (C/C++, Zig) → shared resolver `lua/config/codelldb.lua`.
 
 ## Snippets
 
@@ -24,7 +25,8 @@ Drop Lua files in `~/.config/nvim/snippets/`. Filetype-scoped by filename (e.g. 
 
 ## Theme
 
-- `lua/plugins/ui/themes.lua`. Change `damin_blue` / `damin_pink` anchors at the top; the whole UI retones.
+- `lua/config/palette.lua` — the two brand accents (`blue` / `pink`) and git accents (`git_add` / `git_delete`) live here; every UI plugin reads them, so changing one value retones the whole UI.
+- `lua/plugins/ui/themes.lua` maps those accents onto highlight groups.
 - Border characters live in `lua/config/globals.lua` (`vim.g.flower_border`).
 
 ## ui2
@@ -41,11 +43,11 @@ Drop Lua files in `~/.config/nvim/snippets/`. Filetype-scoped by filename (e.g. 
 
 ## Picker / terminal exclusions
 
-Three tables keep typing snappy in pickers and `<leader>t` — add a new modal's filetype to all three:
+`lua/config/chrome_filetypes.lua` is the single source — `pickers` (snacks/fff/fzf overlays) and `panels` (neo-tree, trouble, dap, aerial, …). scrollbar / smear-cursor / modicator / incline all build their exclusions from it. Add a new float's filetype to `pickers` or `panels` once and every chrome plugin picks it up.
 
-- `lua/plugins/ui/scrollbar.lua` — `excluded_ft` (also feeds `excluded_filetypes`).
-- `lua/plugins/ui/smear-cursor.lua` — `sticky_disabled_ft`.
-- `lua/plugins/ui/modicator.lua` — `excluded_ft` (gates the extmark-rewrite defer).
+## Per-filetype options
+
+- `after/ftplugin/<ft>.lua` — buffer-local options Neovim auto-sources on `FileType`. Used for `go` / `make` (tabs, overriding the global `expandtab`) and `gitcommit` / `markdown` (spell, wrap, 72-col). Add a file named after the filetype to set its own buffer options.
 
 ## Keymaps / autocmds
 
