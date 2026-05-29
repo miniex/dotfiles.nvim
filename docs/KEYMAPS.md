@@ -11,6 +11,7 @@ Leader: `<Space>`. `<localleader>` also `<Space>` (most localleader bindings liv
 | `<C-a>` / `<C-x>`   | N/V  | dial: smart inc/dec (bools, dates, semver, &&↔\|\|) |
 | `g<C-a>` / `g<C-x>` | V    | dial: cumulative inc/dec across selection           |
 | `<leader>h`         | N    | Clear search highlight                              |
+| `<Esc>`             | N    | Clear search highlight                              |
 | `<leader>bs`        | N    | Save (writes auto-mkdir parent dirs)                |
 | `<leader>D`         | N/V  | Delete without yank (`<leader>d` reserved for dap)  |
 | `<leader>p`         | V    | Paste without overwriting register                  |

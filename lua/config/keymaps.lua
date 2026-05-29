@@ -77,8 +77,9 @@ for _, key in ipairs({
     vim.keymap.set("n", key, key .. "zvzz", { silent = true })
 end
 
--- clear search highlight
+-- clear search highlight (<Esc> falls back here until multicursor overrides it).
 map("<leader>h", ":nohlsearch<CR>", "n", "Clear search highlight")
+map("<Esc>", "<cmd>nohlsearch<cr>", "n", "Clear search highlight")
 
 -- indent
 map("<", "<gv", "v", "Outdent (keep selection)")

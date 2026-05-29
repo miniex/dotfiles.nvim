@@ -179,12 +179,13 @@ return {
                 then
                     vim.b[bufnr]._lsp_dochl_done = true
                     local g = vim.api.nvim_create_augroup("lsp-doc-hl-" .. bufnr, { clear = true })
-                    vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+                    -- Normal mode only; InsertEnter clears stale highlight (no per-keystroke clear in insert).
+                    vim.api.nvim_create_autocmd("CursorHold", {
                         buffer = bufnr,
                         group = g,
                         callback = vim.lsp.buf.document_highlight,
                     })
-                    vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI", "BufLeave" }, {
+                    vim.api.nvim_create_autocmd({ "CursorMoved", "InsertEnter", "BufLeave" }, {
                         buffer = bufnr,
                         group = g,
                         callback = vim.lsp.buf.clear_references,
