@@ -88,6 +88,12 @@ See [`lua/config/modal-floats.lua`](../lua/config/modal-floats.lua) for the mutu
 - `render-markdown.nvim` inline rendering of headings / lists / tables / code blocks.
 - `mdx_analyzer` handles `.mdx`; `marksman` handles `.md`.
 
+## Database
+
+- **vim-dadbod-ui** — `<leader>uD` toggles the DB drawer; `:DBUIAddConnection` to register a URL, then browse / query per connection.
+- **vim-dadbod-completion** — table / column completion in blink.cmp for `sql` / `mysql` / `plsql` (alongside `sqls`).
+- Needs the engine's client CLI on `$PATH` (`psql` / `mysql` / `sqlite3`).
+
 ## Native UI2
 
 - Floating cmdline + messages via `vim._core.ui2.enable()`.

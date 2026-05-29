@@ -23,7 +23,7 @@ Linters → `lua/plugins/lsp/lint.lua`. Non-LSP CLI tools → `mason-tool-instal
 
 ## Snippets
 
-Drop Lua files in `~/.config/nvim/snippets/`. Filetype-scoped by filename (e.g. `lua.lua`), plus `all.lua` for cross-filetype tokens (`uuid` / `iso` / `todo` / `fixme` / `note`). VSCode JSON snippets via friendly-snippets run in parallel.
+Drop Lua files in `~/.config/nvim/snippets/`. Filetype-scoped by filename (e.g. `lua.lua`), plus `all.lua` for cross-filetype tokens (`uuid` / `iso` / `todo` / `fixme` / `note`). VSCode JSON snippets via friendly-snippets run in parallel. Config DSLs ship snippets too (`cmake` / `just` / `terraform` / `proto` / `graphql`).
 
 ## Theme
 
@@ -97,4 +97,4 @@ Drop Lua files in `~/.config/nvim/snippets/`. Filetype-scoped by filename (e.g. 
 
 ## Completion sources
 
-`blink.cmp` sources filtered per filetype in `lua/plugins/coding/completion.lua` (`per_filetype` table). Add an entry when a filetype needs its own source mix.
+`blink.cmp` sources filtered per filetype in `lua/plugins/coding/completion.lua` (`per_filetype` table). Add an entry when a filetype needs its own source mix. A lang plugin can add its own sources via an `optional = true` `blink.cmp` spec — set only `per_filetype` / `providers`, not `default` (e.g. `lua/plugins/lang/sql.lua` for SQL/dadbod).

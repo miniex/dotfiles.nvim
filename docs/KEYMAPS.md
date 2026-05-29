@@ -178,6 +178,7 @@ Bare `nvim` auto-restores the cwd session (skipped in headless or when the sessi
 | `<leader>um`                | n     | Toggle render-markdown                                                    |
 | `<leader>uU`                | n     | Toggle undotree                                                           |
 | `<leader>uz` / `<leader>uZ` | n     | Snacks zen / zen zoom                                                     |
+| `<leader>uD`                | n     | Toggle database UI (dadbod-ui)                                            |
 | `[x`                        | n     | Jump to context start                                                     |
 
 ## Folding (treesitter)

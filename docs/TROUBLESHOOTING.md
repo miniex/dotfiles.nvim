@@ -16,6 +16,7 @@
 | Lazy sync stuck / broken                          | `:Lazy sync` (force) or `:Lazy restore` (revert to `lazy-lock.json`); nuke caches as a last resort                                                                  |
 | Snippets not appearing                            | `:Lazy reload friendly-snippets` and `:LuaSnipUnlinkCurrent` if mid-expansion; check filetype matches a file in `snippets/`                                         |
 | Neotest discovery fails                           | adapter for that language is missing or its CLI isn't on `$PATH` (`pytest` / `go` / `mix` / `gtest` / `cargo`)                                                      |
+| DBUI shows nothing / connection fails             | the engine's client CLI (`psql` / `mysql` / `sqlite3`) isn't on `$PATH`; dadbod shells out to it. `:DBUIAddConnection` registers a URL                              |
 | Dashboard preceded by flickering `[No Name]` tabs | Stale persistence session for the cwd. Delete it: `rm ~/.local/state/nvim/sessions/$(pwd \| tr / %).vim`                                                            |
 | `:q` swaps to an unexpected buffer after restore  | Old session file has stale `badd` lines; `:qa` once to overwrite, or `rm` it                                                                                        |
 | Typing lag in `<leader>t` / pickers (fzf / fff)   | New picker/terminal float? Add its filetype to `pickers` or `panels` in `lua/config/chrome_filetypes.lua` (one source for scrollbar / smear / modicator / incline). |
