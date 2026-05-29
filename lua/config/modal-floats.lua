@@ -14,12 +14,16 @@ if not vim.g._modal_float_api_patched then
     local orig_open = vim.api.nvim_open_win
     ---@diagnostic disable-next-line: duplicate-set-field
     vim.api.nvim_open_win = function(buf, enter, config)
-        for _, d in pairs(M._decorators) do
-            if d.open then
-                -- pcall so one decorator can't break the chain.
-                local ok, result = pcall(d.open, buf, config)
-                if ok then
-                    config = result or config
+        -- Hot path (completion/hover open floats per keystroke): skip when no
+        -- decorator is registered.
+        if next(M._decorators) ~= nil then
+            for _, d in pairs(M._decorators) do
+                if d.open then
+                    -- pcall so one decorator can't break the chain.
+                    local ok, result = pcall(d.open, buf, config)
+                    if ok then
+                        config = result or config
+                    end
                 end
             end
         end
@@ -29,11 +33,13 @@ if not vim.g._modal_float_api_patched then
     local orig_set_config = vim.api.nvim_win_set_config
     ---@diagnostic disable-next-line: duplicate-set-field
     vim.api.nvim_win_set_config = function(win, config)
-        for _, d in pairs(M._decorators) do
-            if d.set_config then
-                local ok, result = pcall(d.set_config, win, config)
-                if ok then
-                    config = result or config
+        if next(M._decorators) ~= nil then
+            for _, d in pairs(M._decorators) do
+                if d.set_config then
+                    local ok, result = pcall(d.set_config, win, config)
+                    if ok then
+                        config = result or config
+                    end
                 end
             end
         end

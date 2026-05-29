@@ -16,6 +16,13 @@ vim.api.nvim_create_autocmd("ColorScheme", {
 -- Budget-capped so a giant subtree can't stall the render.
 local function patch_recursive_dir_size()
     local common = require("neo-tree.sources.common.components")
+    -- Reload-safe: don't wrap an already-wrapped file_size (would re-subscribe
+    -- FS_EVENT and orphan the prior cache).
+    if common._damin_size_patched then
+        return
+    end
+    common._damin_size_patched = true
+
     local utils = require("neo-tree.utils")
     local events = require("neo-tree.events")
     local uv = vim.uv or vim.loop
@@ -79,10 +86,21 @@ local function patch_recursive_dir_size()
         return original(config, node, state)
     end
 
+    -- Invalidate only the changed dir + ancestors (their totals include it), not
+    -- the whole cache — else every save re-scans every visible dir.
     events.subscribe({
         event = events.FS_EVENT,
-        handler = function()
-            cache = {}
+        handler = function(args)
+            local changed = args and args.afile
+            if not changed then
+                cache = {}
+                return
+            end
+            for path in pairs(cache) do
+                if path == changed or vim.startswith(changed, path .. "/") then
+                    cache[path] = nil
+                end
+            end
         end,
     })
 end

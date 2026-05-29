@@ -196,7 +196,7 @@ return {
         local sb_config = require("scrollbar.config")
 
         local move_duration_ms = 220
-        local move_frame_ms = 16
+        local move_frame_ms = 33 -- ~30fps; halves full-render count per cursor move
         local move_timer
         local displayed_lines = {}
 
@@ -357,9 +357,10 @@ return {
             end,
         })
 
-        -- Pause pulse when unfocused or on chrome buffers (saves 20Hz of nvim_set_hl).
+        -- Pause pulse when unfocused or on chrome buffers (terminals/pickers/panels)
+        -- so it isn't repainting highlights where no scrollbar is even shown.
         local function should_pulse()
-            return not excluded_ft[vim.bo.filetype]
+            return not is_excluded()
         end
         local function maybe_start_pulse()
             if should_pulse() then
@@ -376,7 +377,7 @@ return {
             group = scrollbar_group,
             callback = maybe_start_pulse,
         })
-        vim.api.nvim_create_autocmd({ "BufEnter", "FileType" }, {
+        vim.api.nvim_create_autocmd({ "BufEnter", "WinEnter", "FileType" }, {
             group = scrollbar_group,
             callback = maybe_start_pulse,
         })

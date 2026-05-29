@@ -113,41 +113,47 @@ if not vim.g._modal_geom_aligner then
     })
     -- Re-snap every visible modal on terminal/tmux resize. neo-tree needs
     -- its nui container + inner tree reflowed in lockstep.
-    vim.api.nvim_create_autocmd("VimResized", {
-        group = group,
-        callback = function()
-            local w, h, r, c = M.geom()
-            for _, win in ipairs(vim.api.nvim_list_wins()) do
-                if vim.api.nvim_win_is_valid(win) then
-                    local cfg = vim.api.nvim_win_get_config(win)
-                    if cfg.relative ~= "" then
-                        local buf = vim.api.nvim_win_get_buf(win)
-                        local ft = vim.api.nvim_buf_is_valid(buf) and vim.bo[buf].filetype or ""
-                        if ft == "neo-tree" and cfg.relative == "win" and vim.api.nvim_win_is_valid(cfg.win) then
-                            pcall(vim.api.nvim_win_set_config, cfg.win, {
-                                relative = "editor",
-                                width = w,
-                                height = h,
-                                row = r + 1,
-                                col = c + 1,
-                            })
-                            pcall(vim.api.nvim_win_set_config, win, {
-                                relative = "win",
-                                win = cfg.win,
-                                row = 1,
-                                col = 1,
-                                width = w - 2,
-                                height = h - 2,
-                            })
-                        elseif ALIGNED_FT[ft] then
-                            local rect = M.inner_rect()
-                            rect.relative = cfg.relative
-                            rect.win = cfg.win
-                            pcall(vim.api.nvim_win_set_config, win, rect)
-                        end
+    local function resync_all()
+        local w, h, r, c = M.geom()
+        for _, win in ipairs(vim.api.nvim_list_wins()) do
+            if vim.api.nvim_win_is_valid(win) then
+                local cfg = vim.api.nvim_win_get_config(win)
+                if cfg.relative ~= "" then
+                    local buf = vim.api.nvim_win_get_buf(win)
+                    local ft = vim.api.nvim_buf_is_valid(buf) and vim.bo[buf].filetype or ""
+                    if ft == "neo-tree" and cfg.relative == "win" and vim.api.nvim_win_is_valid(cfg.win) then
+                        pcall(vim.api.nvim_win_set_config, cfg.win, {
+                            relative = "editor",
+                            width = w,
+                            height = h,
+                            row = r + 1,
+                            col = c + 1,
+                        })
+                        pcall(vim.api.nvim_win_set_config, win, {
+                            relative = "win",
+                            win = cfg.win,
+                            row = 1,
+                            col = 1,
+                            width = w - 2,
+                            height = h - 2,
+                        })
+                    elseif ALIGNED_FT[ft] then
+                        local rect = M.inner_rect()
+                        rect.relative = cfg.relative
+                        rect.win = cfg.win
+                        pcall(vim.api.nvim_win_set_config, win, rect)
                     end
                 end
             end
+        end
+    end
+    -- Debounce: a drag-resize fires many VimResized; only re-snap once it settles.
+    local resize_timer
+    vim.api.nvim_create_autocmd("VimResized", {
+        group = group,
+        callback = function()
+            resize_timer = resize_timer or (vim.uv or vim.loop).new_timer()
+            resize_timer:start(50, 0, vim.schedule_wrap(resync_all))
         end,
     })
 end

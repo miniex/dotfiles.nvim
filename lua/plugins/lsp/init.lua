@@ -1,6 +1,12 @@
 -- LSP: native discovery (lsp/<server>.lua) gated by langs × lang_servers.
 local drift_warned = false
+local cached_servers
 local function enabled_servers()
+    -- Memoized + sorted: called twice (mason opts + config), and pairs() order
+    -- is otherwise nondeterministic across runs.
+    if cached_servers then
+        return cached_servers
+    end
     local langs = require("config.langs")
     local map = require("config.lang_servers")
     local out, seen, undefined = {}, {}, {}
@@ -29,6 +35,8 @@ local function enabled_servers()
             )
         end)
     end
+    table.sort(out)
+    cached_servers = out
     return out
 end
 
@@ -64,7 +72,9 @@ return {
             -- VeryLazy is post-VimEnter; we trigger run_on_start() manually below.
             run_on_start = false,
             start_delay = 3000,
-            debounce_hours = 24,
+            -- No debounce: it would skip the whole check for hours, so a newly
+            -- enabled lang's tools wouldn't auto-install. auto_update=false keeps
+            -- it to missing-only (no churn).
         },
         config = function(_, opts)
             require("mason-tool-installer").setup(opts)
@@ -116,33 +126,88 @@ return {
                 },
             })
 
+            -- Per-client, capability-gated; runs on EVERY attach so wiring isn't
+            -- tied to attach order (e.g. ruff before basedpyright). Buffer-global
+            -- augroups are guarded to create once per buffer.
+            local function setup_client_features(client, bufnr)
+                if opts.inlay_hints.enabled and client:supports_method("textDocument/inlayHint") then
+                    vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+                    if not vim.b[bufnr]._lsp_inlay_done then
+                        vim.b[bufnr]._lsp_inlay_done = true
+                        -- Drop inlay hints during insert to reduce LSP traffic.
+                        local hg = vim.api.nvim_create_augroup("lsp-inlay-hint-insert-" .. bufnr, { clear = true })
+                        vim.api.nvim_create_autocmd("InsertEnter", {
+                            buffer = bufnr,
+                            group = hg,
+                            callback = function()
+                                if vim.lsp.inlay_hint.is_enabled({ bufnr = bufnr }) then
+                                    vim.lsp.inlay_hint.enable(false, { bufnr = bufnr })
+                                    vim.b[bufnr]._inlay_hint_was_on = true
+                                end
+                            end,
+                        })
+                        vim.api.nvim_create_autocmd("InsertLeave", {
+                            buffer = bufnr,
+                            group = hg,
+                            callback = function()
+                                if vim.b[bufnr]._inlay_hint_was_on then
+                                    vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+                                    vim.b[bufnr]._inlay_hint_was_on = nil
+                                end
+                            end,
+                        })
+                    end
+                end
+                if client:supports_method("textDocument/codeLens") then
+                    vim.lsp.codelens.enable(true, { bufnr = bufnr })
+                    if not vim.b[bufnr]._lsp_codelens_done then
+                        vim.b[bufnr]._lsp_codelens_done = true
+                        -- codelens.enable wires LspAttach/BufEnter/InsertLeave; add
+                        -- BufWritePost to catch new testables/run lenses after save.
+                        local cl_group = vim.api.nvim_create_augroup("lsp-codelens-" .. bufnr, { clear = true })
+                        vim.api.nvim_create_autocmd("BufWritePost", {
+                            buffer = bufnr,
+                            group = cl_group,
+                            callback = function()
+                                vim.lsp.codelens.refresh({ bufnr = bufnr })
+                            end,
+                        })
+                    end
+                end
+                if client:supports_method("textDocument/documentHighlight") and not vim.b[bufnr]._lsp_dochl_done then
+                    vim.b[bufnr]._lsp_dochl_done = true
+                    local g = vim.api.nvim_create_augroup("lsp-doc-hl-" .. bufnr, { clear = true })
+                    vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+                        buffer = bufnr,
+                        group = g,
+                        callback = vim.lsp.buf.document_highlight,
+                    })
+                    vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI", "BufLeave" }, {
+                        buffer = bufnr,
+                        group = g,
+                        callback = vim.lsp.buf.clear_references,
+                    })
+                end
+                if vim.lsp.linked_editing_range and client:supports_method("textDocument/linkedEditingRange") then
+                    pcall(vim.lsp.linked_editing_range.enable, true, { bufnr = bufnr })
+                end
+            end
+
             local group = vim.api.nvim_create_augroup("lsp-attach-keys", { clear = true })
             vim.api.nvim_create_autocmd("LspAttach", {
                 group = group,
                 callback = function(args)
                     local bufnr = args.buf
-                    -- Per-buf one-shot setup so a second attach doesn't reclear the first
-                    -- server's doc-highlight / codelens augroups (e.g. basedpyright + ruff).
-                    local first_attach = not vim.b[bufnr]._lsp_per_buf_done
-                    if not first_attach then
-                        local client = vim.lsp.get_client_by_id(args.data.client_id)
-                        if client then
-                            if opts.inlay_hints.enabled and client:supports_method("textDocument/inlayHint") then
-                                vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
-                            end
-                            if client:supports_method("textDocument/codeLens") then
-                                vim.lsp.codelens.enable(true, { bufnr = bufnr })
-                            end
-                            if
-                                vim.lsp.linked_editing_range
-                                and client:supports_method("textDocument/linkedEditingRange")
-                            then
-                                pcall(vim.lsp.linked_editing_range.enable, true, { bufnr = bufnr })
-                            end
-                        end
+                    local client = vim.lsp.get_client_by_id(args.data.client_id)
+                    if client then
+                        setup_client_features(client, bufnr)
+                    end
+
+                    -- Keymaps are buffer-global: set once on the first attach.
+                    if vim.b[bufnr]._lsp_keys_done then
                         return
                     end
-                    vim.b[bufnr]._lsp_per_buf_done = true
+                    vim.b[bufnr]._lsp_keys_done = true
 
                     local function map(mode, lhs, rhs, desc)
                         vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, silent = true, desc = desc })
@@ -180,66 +245,6 @@ return {
                             title_pos = "center",
                         })
                     end, "Signature Help")
-
-                    local client = vim.lsp.get_client_by_id(args.data.client_id)
-                    if client then
-                        if opts.inlay_hints.enabled and client:supports_method("textDocument/inlayHint") then
-                            vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
-                            -- Drop inlay hints during insert to reduce LSP traffic.
-                            local hg = vim.api.nvim_create_augroup("lsp-inlay-hint-insert-" .. bufnr, { clear = true })
-                            vim.api.nvim_create_autocmd("InsertEnter", {
-                                buffer = bufnr,
-                                group = hg,
-                                callback = function()
-                                    if vim.lsp.inlay_hint.is_enabled({ bufnr = bufnr }) then
-                                        vim.lsp.inlay_hint.enable(false, { bufnr = bufnr })
-                                        vim.b[bufnr]._inlay_hint_was_on = true
-                                    end
-                                end,
-                            })
-                            vim.api.nvim_create_autocmd("InsertLeave", {
-                                buffer = bufnr,
-                                group = hg,
-                                callback = function()
-                                    if vim.b[bufnr]._inlay_hint_was_on then
-                                        vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
-                                        vim.b[bufnr]._inlay_hint_was_on = nil
-                                    end
-                                end,
-                            })
-                        end
-                        if client:supports_method("textDocument/codeLens") then
-                            vim.lsp.codelens.enable(true, { bufnr = bufnr })
-                            -- codelens.enable wires LspAttach/BufEnter/InsertLeave; add
-                            -- BufWritePost to catch new testables/run lenses after save.
-                            local cl_group = vim.api.nvim_create_augroup("lsp-codelens-" .. bufnr, { clear = true })
-                            vim.api.nvim_create_autocmd("BufWritePost", {
-                                buffer = bufnr,
-                                group = cl_group,
-                                callback = function()
-                                    vim.lsp.codelens.refresh({ bufnr = bufnr })
-                                end,
-                            })
-                        end
-                        if client:supports_method("textDocument/documentHighlight") then
-                            local g = vim.api.nvim_create_augroup("lsp-doc-hl-" .. bufnr, { clear = true })
-                            vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
-                                buffer = bufnr,
-                                group = g,
-                                callback = vim.lsp.buf.document_highlight,
-                            })
-                            vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI", "BufLeave" }, {
-                                buffer = bufnr,
-                                group = g,
-                                callback = vim.lsp.buf.clear_references,
-                            })
-                        end
-                        if
-                            vim.lsp.linked_editing_range and client:supports_method("textDocument/linkedEditingRange")
-                        then
-                            pcall(vim.lsp.linked_editing_range.enable, true, { bufnr = bufnr })
-                        end
-                    end
                 end,
             })
 

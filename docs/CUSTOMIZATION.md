@@ -10,6 +10,8 @@ sh ~/.config/nvim/set-lang.sh   # interactive
 
 Or hand-edit `lua/config/langs_local.lua` (gitignored). Overrides `lua/config/langs.lua` per-machine.
 
+Re-enabling a language installs its Mason tools automatically on the next launch (mason-tool-installer runs on start, ~3s deferred) — no manual `:MasonToolsInstall` needed.
+
 ### Add a new language
 
 1. `lsp/<server>.lua` — single source for `cmd` / `root_markers` / `filetypes` / `settings`. Don't restate via `nvim-lspconfig.opts.servers.<name>`.
@@ -62,7 +64,18 @@ Drop Lua files in `~/.config/nvim/snippets/`. Filetype-scoped by filename (e.g. 
 
 ## DAP
 
-- Adapters & language launch configs in `lua/plugins/lang/<lang>.lua` (e.g. zig, elixir, python).
+- Adapters & language launch configs in `lua/plugins/lang/<lang>.lua` (e.g. zig, elixir, c-cpp).
+- For a new language that configures `nvim-dap` directly, append a setup function to **`opts.setups`** (run once by the single `config` in `lua/plugins/lsp/dap.lua`):
+
+    ```lua
+    { "mfussenegger/nvim-dap", optional = true, opts = function(_, opts)
+        opts.setups = opts.setups or {}
+        table.insert(opts.setups, function(dap) dap.configurations.X = { ... } end)
+    end }
+    ```
+
+    Do **not** add a second `config` to `nvim-dap` from a lang file — lazy runs only one `config` per plugin, so they would collide nondeterministically. (Languages with their own plugin — `nvim-dap-go`, `nvim-dap-python` — keep `config` there.)
+
 - Generic keymaps in `lua/plugins/lsp/dap.lua`.
 
 ## Neotest

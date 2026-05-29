@@ -5,7 +5,13 @@ vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter" }, {
         if vim.bo[args.buf].buftype ~= "" then
             return
         end
-        if vim.fn.getfsize(vim.api.nvim_buf_get_name(args.buf)) > 10 * 1024 * 1024 then
+        -- Stat for size once per buffer, not on every BufEnter.
+        local skip = vim.b[args.buf].checktime_skip_large
+        if skip == nil then
+            skip = vim.fn.getfsize(vim.api.nvim_buf_get_name(args.buf)) > 10 * 1024 * 1024
+            vim.b[args.buf].checktime_skip_large = skip
+        end
+        if skip then
             return
         end
         vim.cmd("checktime")

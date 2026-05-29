@@ -31,7 +31,7 @@
 - **Multi-cursor** — multicursor.nvim under `<leader>M*` + `<C-Up>` / `<C-Down>`.
 - **Smart inc/dec** — dial.nvim. `<C-a>`/`<C-x>` flips bools, dates, semver, `&&↔||`.
 - **Quickfix** — quicker.nvim (editable QF), nvim-bqf (preview), trouble (`auto_close` on jump, main-window preview).
-- **Misc** — mini.surround (`gs*`), mini.move (`<A-hjkl>` line shuffle), todo-comments, dropbar (winbar), git-conflict, nvim-lightbulb (code-action sign), nvim-colorizer, 0.12 built-in `:Undotree`.
+- **Misc** — mini.surround (`gs*`), mini.move (`<A-hjkl>` line shuffle), todo-comments, dropbar (winbar), git-conflict, nvim-lightbulb (code-action sign), nvim-colorizer (6/8-digit hex everywhere; 3/4-digit `#RGB` shorthand only in CSS-family, so issue/PR refs like `#590` aren't colorized), 0.12 built-in `:Undotree`.
 - **Persistence** — `persistence.nvim` auto-restores on bare `nvim` (skipping headless and empty sessions), re-attaches TS / LSP / linter on restored buffers. Only window-visible buffers persist (no hidden `badd`). Neotest summary window state persists across sessions.
 
 ## UI

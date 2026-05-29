@@ -1,6 +1,15 @@
 return {
     {
         "mfussenegger/nvim-dap",
+        -- lazy runs only ONE `config` per plugin, so per-lang DAP setup would
+        -- collide there. Each lang appends to opts.setups (opts fns all run).
+        opts = { setups = {} },
+        config = function(_, opts)
+            local dap = require("dap")
+            for _, setup in ipairs(opts.setups or {}) do
+                pcall(setup, dap)
+            end
+        end,
         dependencies = {
             {
                 "rcarriga/nvim-dap-ui",

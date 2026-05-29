@@ -22,6 +22,7 @@ local chrome = require("config.chrome_filetypes")
 local excluded_ft = chrome.set(chrome.pickers)
 local last_color
 local last_buf, last_line
+local last_id, last_id_buf
 local function refresh_sign()
     local buf = vim.api.nvim_get_current_buf()
     if not vim.api.nvim_buf_is_valid(buf) or vim.bo[buf].buftype ~= "" then
@@ -37,32 +38,40 @@ local function refresh_sign()
     if buf == last_buf and line == last_line then
         return
     end
-    if last_buf and vim.api.nvim_buf_is_valid(last_buf) then
-        vim.api.nvim_buf_clear_namespace(last_buf, sign_ns, 0, -1)
+    -- Delete just the prior mark by id instead of clearing the whole namespace.
+    if last_id and last_id_buf and vim.api.nvim_buf_is_valid(last_id_buf) then
+        pcall(vim.api.nvim_buf_del_extmark, last_id_buf, sign_ns, last_id)
     end
-    pcall(vim.api.nvim_buf_set_extmark, buf, sign_ns, line, 0, {
+    local ok, id = pcall(vim.api.nvim_buf_set_extmark, buf, sign_ns, line, 0, {
         sign_text = "✿",
         sign_hl_group = "ModicatorBloomCurrent",
         priority = 100,
     })
+    last_id, last_id_buf = ok and id or nil, ok and buf or nil
     last_buf, last_line = buf, line
 end
 
--- 16ms debounce so held j/k doesn't rewrite extmarks per frame.
+-- 16ms debounce so held j/k doesn't rewrite extmarks per frame. One reused
+-- timer instead of a fresh vim.defer_fn closure per cursor move.
 local refresh_pending = false
+local refresh_timer
 local function schedule_refresh()
     if refresh_pending then
         return
     end
-    -- Bail before arming the defer.
     if vim.bo.buftype ~= "" or excluded_ft[vim.bo.filetype] then
         return
     end
     refresh_pending = true
-    vim.defer_fn(function()
-        refresh_pending = false
-        refresh_sign()
-    end, 16)
+    refresh_timer = refresh_timer or (vim.uv or vim.loop).new_timer()
+    refresh_timer:start(
+        16,
+        0,
+        vim.schedule_wrap(function()
+            refresh_pending = false
+            refresh_sign()
+        end)
+    )
 end
 
 return {

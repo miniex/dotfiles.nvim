@@ -15,7 +15,7 @@ Run `./tools/health.sh` to verify everything in one shot.
 
 ## Install
 
-Mason auto-installs plugins, LSPs, linters, and DAP adapters on first launch.
+Mason auto-installs plugins, LSPs, linters, and DAP adapters on first launch — and again on later launches for any newly enabled language (no manual step).
 
 ### One-shot installer
 
