@@ -1,5 +1,5 @@
 -- Skip non-file buffers (stat noise) and large files (reload cost).
-vim.api.nvim_create_autocmd({ "FocusGained", "BufEnter" }, {
+vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
     group = vim.api.nvim_create_augroup("auto-checktime", { clear = true }),
     callback = function(args)
         if vim.bo[args.buf].buftype ~= "" then
@@ -30,7 +30,6 @@ vim.api.nvim_create_autocmd("ColorScheme", {
     group = vim.api.nvim_create_augroup("hide-eob", { clear = true }),
     callback = hide_eob,
 })
-hide_eob()
 
 vim.api.nvim_create_autocmd("TextYankPost", {
     group = vim.api.nvim_create_augroup("yank-flash", { clear = true }),
@@ -211,6 +210,16 @@ vim.api.nvim_create_autocmd("FileType", {
         if vim.treesitter.highlighter.active[args.buf] then
             return
         end
+        -- Big-file guard: skip TS on huge/minified buffers (per-keystroke re-parse
+        -- stalls). snacks.bigfile handles >1.5MB; this catches the smaller rest.
+        local name = vim.api.nvim_buf_get_name(args.buf)
+        if name ~= "" and vim.fn.getfsize(name) > 1024 * 1024 then
+            return
+        end
+        local first = vim.api.nvim_buf_get_lines(args.buf, 0, 1, false)[1]
+        if first and #first > 2000 then
+            return
+        end
         local lang = vim.treesitter.language.get_lang(vim.bo[args.buf].filetype)
         if not lang then
             return
@@ -218,10 +227,15 @@ vim.api.nvim_create_autocmd("FileType", {
         if not pcall(vim.treesitter.start, args.buf) then
             return
         end
-        -- Defer indentexpr to override default ftplugin indent.
+        -- Defer indentexpr to override default ftplugin indent (idempotent).
         vim.schedule(function()
-            if package.loaded["nvim-treesitter"] and vim.api.nvim_buf_is_valid(args.buf) then
-                vim.bo[args.buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+            local expr = "v:lua.require'nvim-treesitter'.indentexpr()"
+            if
+                package.loaded["nvim-treesitter"]
+                and vim.api.nvim_buf_is_valid(args.buf)
+                and vim.bo[args.buf].indentexpr ~= expr
+            then
+                vim.bo[args.buf].indentexpr = expr
             end
         end)
     end,

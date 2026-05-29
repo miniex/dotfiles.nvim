@@ -4,7 +4,8 @@ return {
     "kosayoda/nvim-lightbulb",
     event = "LspAttach",
     opts = {
-        autocmd = { enabled = true, updatetime = 1000 },
+        -- CursorHold only (no CursorHoldI): skip codeAction requests on insert idle.
+        autocmd = { enabled = true, updatetime = 1000, events = { "CursorHold" } },
         sign = {
             enabled = true,
             text = "❋",

@@ -130,7 +130,7 @@ return {
             -- tied to attach order (e.g. ruff before basedpyright). Buffer-global
             -- augroups are guarded to create once per buffer.
             local function setup_client_features(client, bufnr)
-                if opts.inlay_hints.enabled and client:supports_method("textDocument/inlayHint") then
+                if opts.inlay_hints.enabled and client:supports_method("textDocument/inlayHint", bufnr) then
                     vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
                     if not vim.b[bufnr]._lsp_inlay_done then
                         vim.b[bufnr]._lsp_inlay_done = true
@@ -158,7 +158,7 @@ return {
                         })
                     end
                 end
-                if client:supports_method("textDocument/codeLens") then
+                if client:supports_method("textDocument/codeLens", bufnr) then
                     vim.lsp.codelens.enable(true, { bufnr = bufnr })
                     if not vim.b[bufnr]._lsp_codelens_done then
                         vim.b[bufnr]._lsp_codelens_done = true
@@ -174,7 +174,9 @@ return {
                         })
                     end
                 end
-                if client:supports_method("textDocument/documentHighlight") and not vim.b[bufnr]._lsp_dochl_done then
+                if
+                    client:supports_method("textDocument/documentHighlight", bufnr) and not vim.b[bufnr]._lsp_dochl_done
+                then
                     vim.b[bufnr]._lsp_dochl_done = true
                     local g = vim.api.nvim_create_augroup("lsp-doc-hl-" .. bufnr, { clear = true })
                     vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
@@ -188,7 +190,9 @@ return {
                         callback = vim.lsp.buf.clear_references,
                     })
                 end
-                if vim.lsp.linked_editing_range and client:supports_method("textDocument/linkedEditingRange") then
+                if
+                    vim.lsp.linked_editing_range and client:supports_method("textDocument/linkedEditingRange", bufnr)
+                then
                     pcall(vim.lsp.linked_editing_range.enable, true, { bufnr = bufnr })
                 end
             end

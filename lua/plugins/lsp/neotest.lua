@@ -12,7 +12,6 @@ return {
             "jfpedroza/neotest-elixir",
             "alfaix/neotest-gtest",
             "MisanthropicBit/neotest-busted",
-            "mrcjkb/rustaceanvim",
         },
         keys = {
             {
@@ -130,9 +129,12 @@ return {
                 require("neotest-gtest").setup({}),
                 require("neotest-busted"),
             }
-            local ok, rust = pcall(require, "rustaceanvim.neotest")
-            if ok then
-                table.insert(adapters, rust)
+            -- Only when rustaceanvim is already loaded (ft=rust) — don't force-load it.
+            if package.loaded["rustaceanvim"] then
+                local ok, rust = pcall(require, "rustaceanvim.neotest")
+                if ok then
+                    table.insert(adapters, rust)
+                end
             end
 
             require("neotest").setup({

@@ -95,6 +95,27 @@ return {
             end,
         })
 
+        -- Cache the clock; a minute-aligned timer refreshes it, not every render.
+        if _G._lualine_clock_timer then
+            pcall(function()
+                _G._lualine_clock_timer:stop()
+                _G._lualine_clock_timer:close()
+            end)
+        end
+        local clock_str = os.date("%H:%M")
+        local clock_timer = (vim.uv or vim.loop).new_timer()
+        _G._lualine_clock_timer = clock_timer
+        clock_timer:start(
+            (60 - tonumber(os.date("%S"))) * 1000,
+            60000,
+            vim.schedule_wrap(function()
+                clock_str = os.date("%H:%M")
+                if package.loaded["lualine"] then
+                    vim.cmd("redrawstatus")
+                end
+            end)
+        )
+
         require("lualine").setup({
             options = {
                 theme = damin_theme,
@@ -102,7 +123,7 @@ return {
                 section_separators = { left = "", right = "" },
                 globalstatus = true,
                 disabled_filetypes = { statusline = { "snacks_dashboard" } },
-                refresh = { statusline = 2000 },
+                refresh = { statusline = 1000 },
             },
             sections = {
                 lualine_a = {
@@ -185,7 +206,7 @@ return {
                 lualine_z = {
                     {
                         function()
-                            return "❥ " .. os.date("%H:%M")
+                            return "❥ " .. clock_str
                         end,
                         color = { fg = damin_pink },
                     },

@@ -93,7 +93,7 @@ return {
         { "<S-l>", "<cmd>BufferLineCycleNext<cr>", desc = "Next buffer" },
     }),
     opts = function()
-        local p = require("catppuccin.palettes").get_palette("mocha")
+        local p = pal.mocha()
         return {
             options = {
                 mode = "buffers",

@@ -34,17 +34,6 @@ return {
                 opts = {},
             },
             {
-                "jay-babu/mason-nvim-dap.nvim",
-                dependencies = "mason.nvim",
-                cmd = { "DapInstall", "DapUninstall" },
-                opts = {
-                    -- mason-tool-installer owns installs (avoids ENOTCONN race on codelldb).
-                    automatic_installation = false,
-                    handlers = {},
-                    ensure_installed = {},
-                },
-            },
-            {
                 "WhoIsSethDaniel/mason-tool-installer.nvim",
                 opts = function(_, opts)
                     opts.ensure_installed = opts.ensure_installed or {}

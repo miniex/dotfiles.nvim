@@ -95,7 +95,7 @@ local function unify_floats()
     vim.api.nvim_set_hl(0, "SnacksIndent", { fg = "#3a2a35" })
     vim.api.nvim_set_hl(0, "SnacksIndentScope", { fg = pink })
 end
-unify_floats()
+-- ColorScheme fires on the initial catppuccin load too — no eager call needed.
 vim.api.nvim_create_autocmd("ColorScheme", {
     group = vim.api.nvim_create_augroup("UnifyFloats", { clear = true }),
     callback = unify_floats,

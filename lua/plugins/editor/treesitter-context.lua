@@ -22,7 +22,7 @@ return {
         min_window_height = 16,
         multiline_threshold = 1,
         trim_scope = "outer",
-        mode = "cursor",
+        mode = "topline", -- recompute on scroll only, not on every CursorMoved
         zindex = 20,
     },
 }

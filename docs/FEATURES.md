@@ -15,6 +15,7 @@
 - Modules: textobjects (`af`/`if`/`ac`/`ic`/`aa`/`ia` + jumps), sticky context (`treesitter-context`), `nvim-ts-autotag`, `ts-context-commentstring`.
 - Custom incremental selection (`gnn` / `gnm` / `gnM`).
 - Auto-installs missing parsers on first launch with an early-exit poll.
+- Big-file guard — skips highlight/indent on files >1 MB or with a >2000-char first line (snacks.bigfile handles >1.5 MB).
 
 ## Pickers
 
