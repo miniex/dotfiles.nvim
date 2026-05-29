@@ -133,6 +133,11 @@ local function normal_win_count(buf)
 end
 
 local function quit_or_bufdelete(force)
+    -- Command-line window forbids buffer switching (bufdelete → E11); just close it.
+    if vim.fn.getcmdwintype() ~= "" then
+        vim.cmd(force and "quit!" or "quit")
+        return
+    end
     -- Dashboard has no buffer to close — exit nvim instead.
     if vim.bo.filetype == "snacks_dashboard" then
         vim.cmd(force and "qall!" or "qall")
