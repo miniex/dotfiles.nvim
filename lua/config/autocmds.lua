@@ -2,6 +2,10 @@
 vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
     group = vim.api.nvim_create_augroup("auto-checktime", { clear = true }),
     callback = function(args)
+        -- TermClose can fire after the buffer is wiped (snacks term toggle) → vim.bo[buf] throws E11.
+        if not vim.api.nvim_buf_is_valid(args.buf) then
+            return
+        end
         if vim.bo[args.buf].buftype ~= "" then
             return
         end
