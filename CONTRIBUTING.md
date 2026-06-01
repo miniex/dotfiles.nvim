@@ -32,7 +32,7 @@ cargo install stylua selene                                # cargo (stylua + sel
 ./tools/format.sh   # stylua + shfmt rewrite; jq/taplo/yamlfmt on tracked files when present
 ./tools/lint.sh     # stylua --check + lua-language-server + selene + shfmt diff + shellcheck
                     # + fish -n / zsh -n on tracked *.fish / *.zsh files when present
-./tools/health.sh   # diagnose host prereqs (tree-sitter, Nerd Fonts, toolchains); never fails
+./tools/health.sh   # diagnose host prereqs + format/lint tools (tree-sitter, fonts, stylua/selene/…); never fails
 ```
 
 `lint.sh` exits non-zero on drift or diagnostic; keep it clean before pushing. `health.sh` is informational.

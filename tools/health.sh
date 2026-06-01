@@ -75,6 +75,14 @@ if have lazygit; then ok "lazygit"; else warn "lazygit not on PATH — <leader>g
 if have fzf; then ok "fzf"; else warn "fzf binary not on PATH — fzf-lua loses native fuzzy"; fi
 if have magick; then ok "ImageMagick (magick)"; else warn "magick missing — snacks image previews disabled"; fi
 
+section "Dev tooling (format / lint — see CONTRIBUTING.md)"
+for t in stylua lua-language-server selene shfmt shellcheck; do
+    if have "$t"; then ok "$t"; else warn "$t missing — needed by tools/format.sh / tools/lint.sh"; fi
+done
+for t in jq taplo yamlfmt; do
+    if have "$t"; then ok "$t (optional formatter)"; else warn "$t missing — optional, format.sh skips it"; fi
+done
+
 section "Terminal / Fonts"
 case "${TERM:-}" in
     xterm-kitty) ok "TERM=xterm-kitty (kitty detected)" ;;
