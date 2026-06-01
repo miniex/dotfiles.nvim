@@ -424,6 +424,19 @@ return {
                 },
             },
         },
+        lazygit = {
+            -- Snacks.lazygit runs through Snacks.terminal and would inherit its
+            -- " ✿ terminal ✿ " title; set lazygit's own win to override it.
+            win = {
+                title = " ✿ lazygit ✿ ",
+                title_pos = "center",
+                border = vim.g.flower_border,
+                width = mgeom.inner_width,
+                height = mgeom.inner_height,
+                row = mgeom.row,
+                col = mgeom.col,
+            },
+        },
         words = { enabled = true },
         zen = { enabled = true },
         -- Override snacks's built-in window styles. Each style has its own default
@@ -638,6 +651,27 @@ return {
             end,
             mode = { "n", "v" },
             desc = "Git Browse (open in browser)",
+        },
+        {
+            "<leader>gg",
+            function()
+                Snacks.lazygit()
+            end,
+            desc = "LazyGit",
+        },
+        {
+            "<leader>gf",
+            function()
+                Snacks.lazygit.log_file()
+            end,
+            desc = "LazyGit File History",
+        },
+        {
+            "<leader>gL",
+            function()
+                Snacks.lazygit.log()
+            end,
+            desc = "LazyGit Log",
         },
     },
 }

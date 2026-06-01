@@ -44,7 +44,8 @@ The asymmetry between `lsp/` / `snippets/` (at root) and `lua/config|plugins/` (
 3. `config.autocmds` — global autocmds (clipboard sync, mkdir-on-save, ts-attach, …)
 4. `config.modal-floats` — mutual-exclusion registry + shared `nvim_open_win` / `nvim_win_set_config` decorator hook
 5. `config.keymaps` — global keymaps (not buffer-local)
-6. `config.lazy` — bootstrap lazy.nvim and load `plugins.*` specs
+6. `config.cursor-bloom` — mode-colored `✿` sign on the current line
+7. `config.lazy` — bootstrap lazy.nvim and load `plugins.*` specs
 
 Plugin specs are discovered by `lazy.setup({ spec = { { import = "plugins.coding" }, ... } })` in `lua/config/lazy.lua`. Per-language modules (`lua/plugins/lang/<lang>.lua`) are loaded only when the matching key in `lua/config/langs.lua` is `true`.
 
@@ -61,7 +62,7 @@ Plugin specs are discovered by `lazy.setup({ spec = { { import = "plugins.coding
 | Modal float geometry    | `lua/config/modal-geom.lua`                            | Shared 0.85 × 0.85 chrome-aware rectangle; tracks `VimResized`. Change `M.RATIO` to resize every modal at once. |
 | Border characters       | `lua/config/globals.lua` `vim.g.flower_border`         | Every plugin reads this; theme/border consistency in one place.                                                 |
 | Palette & brand accents | `lua/config/palette.lua`                               | Cached `mocha()` parse + the `blue` / `pink` / git accents every UI plugin reads.                               |
-| UI chrome filetypes     | `lua/config/chrome_filetypes.lua`                      | `pickers` / `panels` lists; scrollbar / smear / modicator / incline build exclusions from one source.           |
+| UI chrome filetypes     | `lua/config/chrome_filetypes.lua`                      | `pickers` / `panels` lists; scrollbar / smear / cursor-bloom / incline build exclusions from one source.        |
 | Treesitter grammars     | `lua/plugins/editor/treesitter.lua` `ensure_installed` | Central grammar list; lang files don't extend it.                                                               |
 | CodeLLDB DAP adapter    | `lua/config/codelldb.lua`                              | Resolves the Mason codelldb binary once; shared by C/C++ and Zig.                                               |
 

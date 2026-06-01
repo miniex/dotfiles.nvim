@@ -69,7 +69,6 @@ return {
                     harpoon = true,
                     mason = true,
                     native_lsp = { enabled = true },
-                    navic = { enabled = true, custom_bg = "NONE" },
                     neotree = true,
                     notify = true,
                     snacks = { enabled = true },

@@ -190,6 +190,8 @@ Bare `nvim` auto-restores the cwd session (skipped in headless or when the sessi
 | `<leader>uT` / `<leader>ux` | n     | Toggle treesitter highlight (Snacks) / hex view                           |
 | `[x`                        | n     | Jump to context start                                                     |
 
+> **mini.ai** adds bracket/quote/tag textobjects (`a(` / `i"` / `at`) with next/last search — `an(` / `in"` (next), `aL(` / `iL"` (last).
+
 ## Folding
 
 `foldexpr = vim.treesitter.foldexpr()` by default; LSP buffers whose server supports `foldingRange` swap to `vim.lsp.foldexpr()` on attach. `foldlevelstart = 99` — files open fully unfolded; fold on demand.
@@ -217,7 +219,7 @@ Inside the menu: `q`/`<Esc>` close, `h` parent (no-op at top), `l` open entry.
 | ------------------------------ | ------------------------------------------------------------------------------------------------- |
 | `<leader>gs/gb/gd/gl/gc/gp/gP` | Fugitive: status/blame/diff/log/commit/push/pull                                                  |
 | `<leader>gdv`                  | Fugitive: 3-way diffsplit (`:Gvdiffsplit!`) — for merge conflicts                                 |
-| `<leader>gg/gf/gF/gL`          | LazyGit: full / current file / filter file / filter all                                           |
+| `<leader>gg/gf/gL`             | LazyGit: open / file history / log                                                                |
 | `<leader>gB`                   | gitbrowse: open current line in browser (n/v)                                                     |
 | `<leader>gvo/gvc/gvr`          | Diffview: open / close / refresh                                                                  |
 | `<leader>gvf/gvF/gvh`          | Diffview file history: current / repo / stash                                                     |

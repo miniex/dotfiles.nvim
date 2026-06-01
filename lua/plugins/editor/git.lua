@@ -40,51 +40,6 @@ return {
         },
     },
 
-    -- LazyGit: Floating window for the lazygit TUI
-    {
-        "kdheepak/lazygit.nvim",
-        cmd = {
-            "LazyGit",
-            "LazyGitConfig",
-            "LazyGitCurrentFile",
-            "LazyGitFilter",
-            "LazyGitFilterCurrentFile",
-        },
-        dependencies = {
-            "nvim-lua/plenary.nvim",
-        },
-        keys = {
-            { "<leader>gg", "<cmd>LazyGit<cr>", desc = "LazyGit" },
-            { "<leader>gf", "<cmd>LazyGitCurrentFile<cr>", desc = "LazyGit Current File" },
-            { "<leader>gF", "<cmd>LazyGitFilterCurrentFile<cr>", desc = "LazyGit Filter Current File" },
-            { "<leader>gL", "<cmd>LazyGitFilter<cr>", desc = "LazyGit Filter" },
-        },
-        init = function()
-            vim.g.lazygit_floating_window_winblend = 0
-            vim.g.lazygit_floating_window_scaling_factor = 0.85
-            vim.g.lazygit_floating_window_border_chars = vim.g.flower_border
-            -- 0 = nvim_open_win path (respects flower chars). plenary popup
-            -- misaligns the ✿ glyphs against lazygit's internal TUI grid.
-            vim.g.lazygit_floating_window_use_plenary = 0
-
-            -- lazygit.nvim doesn't expose a title option; inject one via FileType.
-            vim.api.nvim_create_autocmd("FileType", {
-                pattern = "lazygit",
-                group = vim.api.nvim_create_augroup("LazyGitTitle", { clear = true }),
-                callback = function()
-                    vim.schedule(function()
-                        local win = vim.api.nvim_get_current_win()
-                        pcall(vim.api.nvim_win_set_config, win, {
-                            title = " ✿ lazygit ✿ ",
-                            title_pos = "center",
-                        })
-                    end)
-                end,
-            })
-            vim.g.lazygit_use_neovim_remote = 1
-        end,
-    },
-
     -- Fugitive: Git wrapper for Neovim
     {
         "tpope/vim-fugitive",

@@ -1,11 +1,10 @@
 return {
     "nvim-lualine/lualine.nvim",
     event = "VeryLazy",
-    dependencies = { "nvim-tree/nvim-web-devicons", "SmiteshP/nvim-navic", "catppuccin" },
+    dependencies = { "nvim-tree/nvim-web-devicons", "catppuccin" },
     config = function()
         local palette = require("config.palette")
         local p = palette.mocha()
-        local navic = require("nvim-navic")
 
         local damin_blue = palette.blue
         local damin_pink = palette.pink
@@ -171,16 +170,6 @@ return {
                         "filename",
                         symbols = { modified = " ✿", readonly = " ✗", unnamed = "" },
                         color = { fg = p.overlay2 },
-                    },
-                    {
-                        navic.get_location,
-                        -- Fallback only: show when dropbar's winbar isn't drawing
-                        -- the breadcrumb for this window (avoids double display).
-                        cond = function()
-                            local wb = vim.wo.winbar
-                            return navic.is_available() and (wb == nil or wb == "")
-                        end,
-                        color = { fg = p.overlay0 },
                     },
                 },
                 lualine_x = {

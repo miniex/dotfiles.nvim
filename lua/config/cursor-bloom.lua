@@ -1,4 +1,5 @@
--- ✿ echo: line-number column accent + mode-aware sign in front.
+-- ✿ bloom: mode-colored sign on the current line. The sign was always custom;
+-- modicator's line-number recolor needs cursorline (never set) so it was dropped.
 local pal = require("config.palette")
 local damin_blue = pal.blue
 local damin_pink = pal.pink
@@ -17,7 +18,7 @@ local mode_color = {
     t = damin_blue,
 }
 
-local sign_ns = vim.api.nvim_create_namespace("ModicatorBloom")
+local sign_ns = vim.api.nvim_create_namespace("CursorBloom")
 local chrome = require("config.chrome_filetypes")
 local excluded_ft = chrome.set(chrome.pickers)
 local last_color
@@ -31,7 +32,7 @@ local function refresh_sign()
     local line = vim.fn.line(".") - 1
     local color = mode_color[vim.fn.mode()] or damin_blue
     if color ~= last_color then
-        vim.api.nvim_set_hl(0, "ModicatorBloomCurrent", { fg = color, bold = true })
+        vim.api.nvim_set_hl(0, "CursorBloomCurrent", { fg = color, bold = true })
         last_color = color
     end
     -- Skip rewrite when buf+line unchanged (horizontal motion).
@@ -44,7 +45,7 @@ local function refresh_sign()
     end
     local ok, id = pcall(vim.api.nvim_buf_set_extmark, buf, sign_ns, line, 0, {
         sign_text = "✿",
-        sign_hl_group = "ModicatorBloomCurrent",
+        sign_hl_group = "CursorBloomCurrent",
         priority = 100,
     })
     last_id, last_id_buf = ok and id or nil, ok and buf or nil
@@ -74,27 +75,7 @@ local function schedule_refresh()
     )
 end
 
-return {
-    "mawkler/modicator.nvim",
-    event = "VeryLazy",
-    init = function()
-        -- Highlight only line-number column. Other requirements in options.lua.
-        vim.o.cursorlineopt = "number"
-    end,
-    config = function(_, opts)
-        require("modicator").setup(opts)
-        vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI", "ModeChanged", "BufEnter" }, {
-            group = vim.api.nvim_create_augroup("ModicatorBloomSign", { clear = true }),
-            callback = schedule_refresh,
-        })
-    end,
-    opts = {
-        show_warnings = false,
-        highlights = {
-            defaults = { bold = true },
-        },
-        integration = {
-            lualine = { enabled = true },
-        },
-    },
-}
+vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI", "ModeChanged", "BufEnter" }, {
+    group = vim.api.nvim_create_augroup("CursorBloomSign", { clear = true }),
+    callback = schedule_refresh,
+})

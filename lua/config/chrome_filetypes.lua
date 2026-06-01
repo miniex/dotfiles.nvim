@@ -1,5 +1,5 @@
 -- "Not a real editable file" filetypes, shared by scrollbar / smear-cursor /
--- modicator / incline. Use M.set() to build a lookup from the lists below.
+-- cursor-bloom / incline. Use M.set() to build a lookup from the lists below.
 local M = {}
 
 -- Floating picker overlays (snacks / fff / fzf).

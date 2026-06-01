@@ -45,7 +45,7 @@ Drop Lua files in `~/.config/nvim/snippets/`. Filetype-scoped by filename (e.g. 
 
 ## Picker / terminal exclusions
 
-`lua/config/chrome_filetypes.lua` is the single source — `pickers` (snacks/fff/fzf overlays) and `panels` (neo-tree, trouble, dap, aerial, …). scrollbar / smear-cursor / modicator / incline all build their exclusions from it. Add a new float's filetype to `pickers` or `panels` once and every chrome plugin picks it up.
+`lua/config/chrome_filetypes.lua` is the single source — `pickers` (snacks/fff/fzf overlays) and `panels` (neo-tree, trouble, dap, aerial, …). scrollbar / smear-cursor / cursor-bloom / incline all build their exclusions from it. Add a new float's filetype to `pickers` or `panels` once and every chrome plugin picks it up.
 
 ## Per-filetype options
 

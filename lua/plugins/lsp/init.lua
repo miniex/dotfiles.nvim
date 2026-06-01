@@ -46,6 +46,21 @@ return {
         cmd = { "Mason", "MasonInstall", "MasonUninstall", "MasonUpdate", "MasonLog" },
         keys = { { "<leader>cm", "<cmd>Mason<cr>", desc = "Mason" } },
         build = ":MasonUpdate",
+        -- mason.nvim has no title option; inject the flower title on its FileType.
+        init = function()
+            vim.api.nvim_create_autocmd("FileType", {
+                pattern = "mason",
+                group = vim.api.nvim_create_augroup("MasonFlowerTitle", { clear = true }),
+                callback = function()
+                    vim.schedule(function()
+                        pcall(vim.api.nvim_win_set_config, vim.api.nvim_get_current_win(), {
+                            title = vim.g.flower_title("mason"),
+                            title_pos = "center",
+                        })
+                    end)
+                end,
+            })
+        end,
         opts = {
             ui = {
                 border = vim.g.flower_border,
