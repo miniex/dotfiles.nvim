@@ -65,6 +65,7 @@ Plugin specs are discovered by `lazy.setup({ spec = { { import = "plugins.coding
 | UI chrome filetypes     | `lua/config/chrome_filetypes.lua`                      | `pickers` / `panels` lists; scrollbar / smear / cursor-bloom / incline build exclusions from one source.        |
 | Treesitter grammars     | `lua/plugins/editor/treesitter.lua` `ensure_installed` | Central grammar list; lang files don't extend it.                                                               |
 | CodeLLDB DAP adapter    | `lua/config/codelldb.lua`                              | Resolves the Mason codelldb binary once; shared by C/C++ and Zig.                                               |
+| Formatter width ruler   | `lua/config/format-width.lua`                          | Reads `rustfmt.toml` `max_width` / `ruff` `line-length` upward; `colorcolumn` tracks the per-project width.     |
 
 ## Plugin spec categories (`lua/plugins/`)
 
