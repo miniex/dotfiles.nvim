@@ -24,7 +24,7 @@ Leader: `<Space>`. `<localleader>` also `<Space>` (most localleader bindings liv
 
 ## Find & Navigate
 
-> Modal floats (pickers, snacks terminal, Lazy, Mason, harpoon menu, neo-tree) are mutually exclusive; auxiliary floats (hover, completion, notifier, …) stack on top.
+> Modal floats (pickers, snacks terminal, lazy, Mason, harpoon menu, lazygit, Neo-tree) are mutually exclusive; auxiliary floats (hover, completion, notifier, …) stack on top.
 
 | Key                               | Description                                                    |
 | --------------------------------- | -------------------------------------------------------------- |
@@ -36,8 +36,8 @@ Leader: `<Space>`. `<localleader>` also `<Space>` (most localleader bindings liv
 | `<leader>fS`                      | Snippets (LuaSnip, current ft + all)                           |
 | `<leader>z` / `z'`                | fzf-lua: builtin menu / resume last picker                     |
 | `<leader>e` / `<leader>o`         | Neo-tree: toggle / reveal                                      |
-| `<cr>` / `l` (in neo-tree)        | Open file in main window; folder expand/collapse               |
-| `s` / `S` (n/x/o)                 | Flash: jump / treesitter jump                                  |
+| `<cr>` / `l` (in Neo-tree)        | Open file in main window; folder expand/collapse               |
+| `s` / `S` (n/x/o)                 | flash: jump / treesitter jump                                  |
 | `<leader>?`                       | which-key: all keymaps (`<C-d>`/`<C-u>` flip pages)            |
 
 ## fzf-lua (`<leader>z*`)
@@ -142,11 +142,10 @@ Bare `nvim` auto-restores the cwd session (skipped in headless or when the sessi
 | `<leader>uy`                | Toggle LSP semantic tokens                                         |
 | `<leader>cd` / `<leader>cl` | Toggle inline diagnostic / `virtual_lines`                         |
 | `<leader>cM`                | Toggle multi-diagnostic on cursorline                              |
-| `<leader>cL`                | Run CodeLens (rust-analyzer, gopls, elixir-ls, ocamllsp, jdtls, …) |
+| `<leader>cL`                | Run CodeLens (rust-analyzer, gopls, elixir-ls, ocamllsp, lua_ls)   |
 | `<leader>cs`                | `:LspRestart` (recover from a hung server)                         |
-| `<leader>cI` / `<leader>cU` | TS/JS: organize imports / remove unused (vtsls)                    |
-| `<leader>cO` / `<leader>cN` | Aerial: outline / outline nav                                      |
-| `[o` / `]o`                 | Aerial: previous / next symbol                                     |
+| `<leader>cO` / `<leader>cN` | aerial: outline / outline nav                                      |
+| `[o` / `]o`                 | aerial: previous / next symbol                                     |
 | `<leader>cm`                | Open Mason                                                         |
 | `<leader>xx/xd/xq/xl`       | Trouble: diagnostics / buf / qf / loclist                          |
 | `<leader>x<` / `<leader>x>` | Quickfix stack: older / newer list                                 |
@@ -217,9 +216,9 @@ Inside the menu: `q`/`<Esc>` close, `h` parent (no-op at top), `l` open entry.
 
 | Key                            | Description                                                                                       |
 | ------------------------------ | ------------------------------------------------------------------------------------------------- |
-| `<leader>gs/gb/gd/gl/gc/gp/gP` | Fugitive: status/blame/diff/log/commit/push/pull                                                  |
-| `<leader>gdv`                  | Fugitive: 3-way diffsplit (`:Gvdiffsplit!`) — for merge conflicts                                 |
-| `<leader>gg/gf/gL`             | LazyGit: open / file history / log                                                                |
+| `<leader>gs/gb/gd/gl/gc/gp/gP` | fugitive: status/blame/diff/log/commit/push/pull                                                  |
+| `<leader>gdv`                  | fugitive: 3-way diffsplit (`:Gvdiffsplit!`) — for merge conflicts                                 |
+| `<leader>gg/gf/gL`             | lazygit: open / file history / log                                                                |
 | `<leader>gB`                   | gitbrowse: open current line in browser (n/v)                                                     |
 | `<leader>gvo/gvc/gvr`          | Diffview: open / close / refresh                                                                  |
 | `<leader>gvf/gvF/gvh`          | Diffview file history: current / repo / stash                                                     |

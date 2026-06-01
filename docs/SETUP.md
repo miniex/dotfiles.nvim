@@ -4,7 +4,7 @@
 
 - **Neovim ≥ 0.12.0**
 - `git`, `tar`, `curl`, `xxd`, C compiler, `make`, ripgrep
-- A [Nerd Font](https://www.nerdfonts.com/) **plus** [`Symbols Nerd Font Mono`](https://github.com/ryanoasis/nerd-fonts/releases/latest/download/NerdFontsSymbolsOnly.zip) as fallback (many MDI glyphs sit in the Supplementary PUA). In Kitty: `symbol_map U+E000-U+F8FF,U+F0000-U+10FFFD Symbols Nerd Font Mono`
+- A [Nerd Font](https://www.nerdfonts.com/) **plus** [`Symbols Nerd Font Mono`](https://github.com/ryanoasis/nerd-fonts/releases/latest/download/NerdFontsSymbolsOnly.zip) as fallback (many MDI — Material Design Icons — glyphs sit in the Supplementary PUA). In Kitty: `symbol_map U+E000-U+F8FF,U+F0000-U+10FFFD Symbols Nerd Font Mono`
 - [`tree-sitter-cli`](https://github.com/tree-sitter/tree-sitter) **≥ 0.26.1** (`cargo install` or distro; **not npm**)
 - Node.js + npm — for npm-based Mason packages
 - Python 3 + pip, Go, Rust toolchains — required by Mason / debugpy / fff.nvim binary

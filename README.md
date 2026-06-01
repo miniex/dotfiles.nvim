@@ -2,7 +2,7 @@
 
 Lean, fast, easy on the eyes. Native LSP via `lsp/<server>.lua` discovery, Rust-backed completion (blink.cmp), aggressive lazy-loading.
 
-> **Targets Linux/macOS in [Kitty](https://sw.kovidgoyal.net/kitty/).** WSL2 supported via `clip.exe`. Other terminals work except inline image previews and Material Design Icons fallback.
+> **Targets Linux/macOS in [Kitty](https://sw.kovidgoyal.net/kitty/).** WSL2 supported via `clip.exe`. Other terminals work, minus inline image previews and the Material Design Icons fallback.
 >
 > Pairs with [`miniex/dotfiles.kitty`](https://github.com/miniex/dotfiles.kitty) for matching font fallback / theme / keymaps.
 
@@ -10,15 +10,15 @@ Lean, fast, easy on the eyes. Native LSP via `lsp/<server>.lua` discovery, Rust-
 
 ## Highlights
 
-- **Native LSP & UI2** — `vim.lsp.config` + `lsp/<server>.lua` discovery; floating cmdline + messages
+- **Native LSP & ui2** — `vim.lsp.config` + `lsp/<server>.lua` discovery; floating cmdline + messages
 - **Completion** — blink.cmp (Rust fuzzy) + tiny-inline-diagnostic
 - **Treesitter** — `main` branch, textobjects, sticky context, ts-autotag, ts-context-commentstring
 - **Pickers** — fff.nvim + snacks.picker + fzf-lua, all sharing one 0.85 × 0.85 rectangle
-- **Editor** — neo-tree, flash, trouble, harpoon v2, dial, multicursor, quicker, grug-far, …
+- **Editor** — Neo-tree, flash, Trouble, harpoon v2, dial, multicursor, quicker, grug-far, …
 - **UI** — Catppuccin Mocha retoned to a 2-color damin palette (`#98ABCC` / `#E890B0`); flower-cornered borders on every floating window
-- **Modal floats** — pickers / terminal / lazy / mason / harpoon / lazygit / neo-tree are mutually exclusive and land in the exact same 0.85 × 0.85 chrome-aware rectangle
+- **Modal floats** — pickers / terminal / lazy / Mason / harpoon / lazygit / Neo-tree are mutually exclusive and land in the exact same 0.85 × 0.85 chrome-aware rectangle
 - **Tooling** — nvim-lint, mason-tool-installer, DAP (6 langs), neotest (6 langs), vim-dadbod-ui (SQL client)
-- **Git** — gitsigns, fugitive, lazygit, diffview, gitgraph.nvim
+- **Git** — gitsigns, fugitive, lazygit, Diffview, gitgraph.nvim
 - **Clipboard** — yank → wl-copy / xclip / pbcopy / clip.exe (whichever is on PATH first)
 
 Full breakdown: [docs/FEATURES.md](docs/FEATURES.md).
@@ -40,7 +40,7 @@ Prerequisites, manual install, and recovery: [docs/SETUP.md](docs/SETUP.md).
 | Assembly            | asm-lsp                       | -                | -                       |
 | C/C++               | clangd                        | -                | codelldb                |
 | Go                  | gopls                         | golangci-lint    | delve                   |
-| Rust                | rust-analyzer (rustaceanvim)  | -                | CodeLLDB                |
+| Rust                | rust-analyzer (rustaceanvim)  | -                | codelldb                |
 | Zig                 | zls                           | -                | codelldb                |
 | OCaml               | ocamllsp                      | -                | -                       |
 | Elixir              | elixirls                      | -                | elixir-ls debug adapter |
@@ -60,7 +60,7 @@ Prerequisites, manual install, and recovery: [docs/SETUP.md](docs/SETUP.md).
 | Shaders (WGSL/GLSL) | wgsl-analyzer / glsl_analyzer | -                | -                       |
 | Just                | just-lsp                      | -                | -                       |
 
-> Formatting is opt-in via `tools/format.sh`, not on save.
+> Formatting is manual via `<leader>cf` (native LSP), not on save.
 
 ## Essential Keymaps
 
@@ -69,15 +69,15 @@ Leader: `<Space>`. Full reference: [docs/KEYMAPS.md](docs/KEYMAPS.md).
 | Key                         | Description                     |
 | --------------------------- | ------------------------------- |
 | `<leader>ff` / `<leader>fg` | Find files / live grep          |
-| `<leader>e`                 | Toggle file tree (neo-tree)     |
-| `s` / `S`                   | Flash jump / treesitter jump    |
+| `<leader>e`                 | Toggle file tree (Neo-tree)     |
+| `s` / `S`                   | flash jump / treesitter jump    |
 | `<leader>w`                 | Smart buffer delete             |
 | `<S-h>` / `<S-l>`           | Previous / next buffer          |
 | `<leader>t`                 | Toggle terminal                 |
 | `<leader>rr`                | Search & replace (grug-far)     |
 | `K` / `gd` / `gr`           | Hover / definition / references |
 | `<leader>ca` / `<leader>rn` | Code action / rename            |
-| `<leader>gg`                | LazyGit                         |
+| `<leader>gg`                | lazygit                         |
 | `<leader>?`                 | which-key (all keymaps)         |
 
 ## Documentation
