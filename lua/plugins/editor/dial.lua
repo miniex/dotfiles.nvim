@@ -3,8 +3,8 @@ return {
     keys = {
         { "<C-a>", "<Plug>(dial-increment)", mode = { "n", "v" }, desc = "Increment" },
         { "<C-x>", "<Plug>(dial-decrement)", mode = { "n", "v" }, desc = "Decrement" },
-        { "g<C-a>", "g<Plug>(dial-increment)", mode = "v", desc = "Increment (cumulative)" },
-        { "g<C-x>", "g<Plug>(dial-decrement)", mode = "v", desc = "Decrement (cumulative)" },
+        { "g<C-a>", "<Plug>(dial-g-increment)", mode = "v", desc = "Increment (cumulative)" },
+        { "g<C-x>", "<Plug>(dial-g-decrement)", mode = "v", desc = "Decrement (cumulative)" },
     },
     config = function()
         local augend = require("dial.augend")
@@ -15,7 +15,7 @@ return {
         local logical = cyclic({ "&&", "||" })
         local eq = cyclic({ "==", "!=" })
 
-        -- A filetype group replaces default entirely, so share the base augends.
+        -- Shared base; per-filetype lists extend it (TS keeps numbers/dates too).
         local common = {
             augend.integer.alias.decimal_int,
             augend.integer.alias.hex,
@@ -29,26 +29,17 @@ return {
             logical,
             eq,
         }
+        local ts = vim.list_extend({ cyclic({ "let", "const" }, true) }, common)
+        local markdown = vim.list_extend({ augend.misc.alias.markdown_header }, common)
 
-        require("dial.config").augends:register_group({
-            default = common,
-            typescript = vim.list_extend({ cyclic({ "let", "const" }, true) }, common),
-            markdown = { augend.misc.alias.markdown_header },
-        })
-
-        local ft_group = {
-            typescript = "typescript",
-            typescriptreact = "typescript",
-            javascript = "typescript",
-            javascriptreact = "typescript",
-            markdown = "markdown",
-        }
-        vim.api.nvim_create_autocmd("FileType", {
-            group = vim.api.nvim_create_augroup("DialFiletypeGroup", { clear = true }),
-            pattern = vim.tbl_keys(ft_group),
-            callback = function(args)
-                vim.b[args.buf].dial_group = ft_group[vim.bo[args.buf].filetype]
-            end,
+        -- on_filetype (NOT register_group): the <Plug> maps read config.augends.filetype[ft]; `_` = fallback.
+        require("dial.config").augends:on_filetype({
+            typescript = ts,
+            typescriptreact = ts,
+            javascript = ts,
+            javascriptreact = ts,
+            markdown = markdown,
+            _ = common,
         })
     end,
 }

@@ -79,7 +79,7 @@ return {
                 vim.cmd("normal! v")
                 -- selection is end-exclusive on columns; step back if at col 0
                 if ecol == 0 then
-                    vim.api.nvim_win_set_cursor(0, { erow, math.huge })
+                    vim.api.nvim_win_set_cursor(0, { erow, vim.v.maxcol })
                 else
                     vim.api.nvim_win_set_cursor(0, { erow + 1, ecol - 1 })
                 end

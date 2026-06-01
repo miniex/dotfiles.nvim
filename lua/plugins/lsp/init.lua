@@ -146,9 +146,14 @@ return {
             -- augroups are guarded to create once per buffer.
             local function setup_client_features(client, bufnr)
                 if opts.inlay_hints.enabled and client:supports_method("textDocument/inlayHint", bufnr) then
-                    vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
                     if not vim.b[bufnr]._lsp_inlay_done then
                         vim.b[bufnr]._lsp_inlay_done = true
+                        -- Enable once: re-enabling on a 2nd client / :LspRestart would override the user's toggle.
+                        if vim.api.nvim_get_mode().mode:sub(1, 1) == "i" then
+                            vim.b[bufnr]._inlay_hint_was_on = true -- InsertLeave turns it on
+                        else
+                            vim.lsp.inlay_hint.enable(true, { bufnr = bufnr })
+                        end
                         -- Drop inlay hints during insert to reduce LSP traffic.
                         local hg = vim.api.nvim_create_augroup("lsp-inlay-hint-insert-" .. bufnr, { clear = true })
                         vim.api.nvim_create_autocmd("InsertEnter", {
@@ -174,9 +179,9 @@ return {
                     end
                 end
                 if client:supports_method("textDocument/codeLens", bufnr) then
-                    vim.lsp.codelens.enable(true, { bufnr = bufnr })
                     if not vim.b[bufnr]._lsp_codelens_done then
                         vim.b[bufnr]._lsp_codelens_done = true
+                        vim.lsp.codelens.enable(true, { bufnr = bufnr })
                         -- codelens.enable wires LspAttach/BufEnter/InsertLeave; add
                         -- BufWritePost to catch new testables/run lenses after save.
                         local cl_group = vim.api.nvim_create_augroup("lsp-codelens-" .. bufnr, { clear = true })
