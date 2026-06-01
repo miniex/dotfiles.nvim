@@ -35,12 +35,23 @@ return {
         opts = function(_, opts)
             opts.setups = opts.setups or {}
             table.insert(opts.setups, function(dap)
+                local cmd = vim.fn.stdpath("data") .. "/mason/bin/js-debug-adapter"
+                if vim.fn.executable(cmd) ~= 1 then
+                    vim.schedule(function()
+                        vim.notify(
+                            "js-debug-adapter not found — run :MasonInstall js-debug-adapter",
+                            vim.log.levels.WARN,
+                            { title = "JS/TS DAP" }
+                        )
+                    end)
+                    return
+                end
                 dap.adapters["pwa-node"] = {
                     type = "server",
                     host = "127.0.0.1",
                     port = "${port}",
                     executable = {
-                        command = "js-debug-adapter",
+                        command = cmd,
                         args = { "${port}" },
                     },
                 }

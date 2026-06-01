@@ -302,7 +302,7 @@ In the toggle terminal, `$EDITOR`/`$VISUAL`/`$GIT_EDITOR` forward to the parent 
 | `<leader>cE` / `<leader>cP`                | Rust: expand macro / jump to parent module            |
 | `<leader>cI` / `<leader>cU`                | TS/JS: organize imports / remove unused               |
 | `<leader>cI` / `<leader>cX`                | Python: organize imports / fix all (ruff)             |
-| `<leader>cv/cF/cu/cU/cD` (toml)            | crates: versions / features / update / upgrade / docs |
+| `<leader>cv/cF/cu/cU/cD` (Cargo.toml)      | crates: versions / features / update / upgrade / docs |
 
 ## Misc
 

@@ -217,25 +217,32 @@ return {
                     pcall(vim.lsp.linked_editing_range.enable, true, { bufnr = bufnr })
                 end
                 -- LSP folding where the server supports it; treesitter stays the default.
+                -- foldexpr is per-window, so set it for every window showing the buffer.
                 if vim.lsp.foldexpr and client:supports_method("textDocument/foldingRange", bufnr) then
-                    vim.wo[vim.api.nvim_get_current_win()][0].foldexpr = "v:lua.vim.lsp.foldexpr()"
+                    for _, win in ipairs(vim.fn.win_findbuf(bufnr)) do
+                        vim.wo[win][0].foldexpr = "v:lua.vim.lsp.foldexpr()"
+                    end
                 end
                 -- Color swatches (0.12), tailwindcss only: colorizer owns hex and leaves
                 -- tailwind classes uncolored. documentColor registers dynamically after
                 -- init, so poll until the capability lands, then enable.
-                if vim.lsp.document_color and client.name == "tailwindcss" and not vim.b[bufnr]._lsp_doccolor_done then
-                    vim.b[bufnr]._lsp_doccolor_done = true
+                if vim.lsp.document_color and client.name == "tailwindcss" and not vim.b[bufnr]._doccolor_polling then
+                    vim.b[bufnr]._doccolor_polling = true
                     local cid, tries = client.id, 0
                     local function enable_color()
-                        local c = vim.lsp.get_client_by_id(cid)
-                        if not (c and vim.api.nvim_buf_is_valid(bufnr)) then
+                        if not vim.api.nvim_buf_is_valid(bufnr) then
                             return
                         end
-                        if c:supports_method("textDocument/documentColor", bufnr) then
+                        local c = vim.lsp.get_client_by_id(cid)
+                        if c and c:supports_method("textDocument/documentColor", bufnr) then
                             pcall(vim.lsp.document_color.enable, true, { bufnr = bufnr })
-                        elseif tries < 20 then
+                            vim.b[bufnr]._doccolor_polling = nil
+                        elseif c and tries < 20 then
                             tries = tries + 1
                             vim.defer_fn(enable_color, 250)
+                        else
+                            -- client gone / gave up — clear so a fresh attach (restart) re-polls.
+                            vim.b[bufnr]._doccolor_polling = nil
                         end
                     end
                     enable_color()
@@ -254,6 +261,28 @@ return {
                     end
                 end
             end
+
+            -- Revert foldexpr to treesitter when the last folding client detaches (else it lingers, folds nothing).
+            vim.api.nvim_create_autocmd("LspDetach", {
+                group = vim.api.nvim_create_augroup("lsp-fold-detach", { clear = true }),
+                callback = function(args)
+                    vim.schedule(function()
+                        if not vim.api.nvim_buf_is_valid(args.buf) then
+                            return
+                        end
+                        for _, c in ipairs(vim.lsp.get_clients({ bufnr = args.buf })) do
+                            if c:supports_method("textDocument/foldingRange") then
+                                return
+                            end
+                        end
+                        for _, win in ipairs(vim.fn.win_findbuf(args.buf)) do
+                            if vim.wo[win][0].foldexpr == "v:lua.vim.lsp.foldexpr()" then
+                                vim.wo[win][0].foldexpr = "v:lua.vim.treesitter.foldexpr()"
+                            end
+                        end
+                    end)
+                end,
+            })
 
             local group = vim.api.nvim_create_augroup("lsp-attach-keys", { clear = true })
             vim.api.nvim_create_autocmd("LspAttach", {

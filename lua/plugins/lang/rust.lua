@@ -6,48 +6,24 @@ return {
     {
         "Saecki/crates.nvim",
         event = { "BufRead Cargo.toml" },
-        keys = {
-            {
-                "<leader>cv",
-                function()
-                    require("crates").show_versions_popup()
+        -- Buffer-local keymaps only in Cargo.toml (crates doesn't attach to other toml).
+        init = function()
+            vim.api.nvim_create_autocmd("BufReadPost", {
+                pattern = "Cargo.toml",
+                group = vim.api.nvim_create_augroup("CratesKeys", { clear = true }),
+                callback = function(args)
+                    local crates = require("crates")
+                    local function map(lhs, fn, desc)
+                        vim.keymap.set("n", lhs, fn, { buffer = args.buf, silent = true, desc = desc })
+                    end
+                    map("<leader>cv", crates.show_versions_popup, "Crates: Versions")
+                    map("<leader>cF", crates.show_features_popup, "Crates: Features")
+                    map("<leader>cu", crates.update_crate, "Crates: Update")
+                    map("<leader>cU", crates.upgrade_crate, "Crates: Upgrade")
+                    map("<leader>cD", crates.open_documentation, "Crates: Docs")
                 end,
-                ft = "toml",
-                desc = "Crates: Versions",
-            },
-            {
-                "<leader>cF",
-                function()
-                    require("crates").show_features_popup()
-                end,
-                ft = "toml",
-                desc = "Crates: Features",
-            },
-            {
-                "<leader>cu",
-                function()
-                    require("crates").update_crate()
-                end,
-                ft = "toml",
-                desc = "Crates: Update",
-            },
-            {
-                "<leader>cU",
-                function()
-                    require("crates").upgrade_crate()
-                end,
-                ft = "toml",
-                desc = "Crates: Upgrade",
-            },
-            {
-                "<leader>cD",
-                function()
-                    require("crates").open_documentation()
-                end,
-                ft = "toml",
-                desc = "Crates: Docs",
-            },
-        },
+            })
+        end,
         opts = {
             completion = {
                 crates = {
