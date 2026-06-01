@@ -381,6 +381,15 @@ return {
             group = scrollbar_group,
             callback = maybe_start_pulse,
         })
+        -- The heart isn't watched while typing; pause the pulse in insert mode.
+        vim.api.nvim_create_autocmd("InsertEnter", {
+            group = scrollbar_group,
+            callback = stop_pulse,
+        })
+        vim.api.nvim_create_autocmd("InsertLeave", {
+            group = scrollbar_group,
+            callback = maybe_start_pulse,
+        })
         vim.api.nvim_create_autocmd("VimLeavePre", {
             group = scrollbar_group,
             callback = function()
