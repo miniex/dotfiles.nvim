@@ -84,8 +84,8 @@ return {
         opts = {
             ensure_installed = enabled_servers(),
             auto_update = false,
-            -- VeryLazy is post-VimEnter; we trigger run_on_start() manually below.
-            run_on_start = false,
+            -- Must be true, or the run_on_start() call in config() no-ops (it gates on this flag).
+            run_on_start = true,
             start_delay = 3000,
             -- No debounce: it would skip the whole check for hours, so a newly
             -- enabled lang's tools wouldn't auto-install. auto_update=false keeps
