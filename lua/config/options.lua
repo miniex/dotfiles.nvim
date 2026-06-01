@@ -60,7 +60,8 @@ opt.diffopt:append("linematch:60")
 -- Trusted per-project config (.nvim.lua / .exrc); managed by vim.secure.
 opt.exrc = true
 
--- folding: treesitter expr, start fully expanded (zc/zo to fold/unfold).
+-- folding: treesitter expr by default; LSP buffers swap to vim.lsp.foldexpr on
+-- attach. Start fully expanded (zc/zo to fold/unfold).
 opt.foldmethod = "expr"
 opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
 opt.foldtext = ""

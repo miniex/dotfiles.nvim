@@ -34,4 +34,32 @@ return {
             },
         },
     },
+    {
+        -- Ruff code actions (mirrors lang/web.lua for TS).
+        "neovim/nvim-lspconfig",
+        keys = {
+            {
+                "<leader>cI",
+                function()
+                    vim.lsp.buf.code_action({
+                        context = { only = { "source.organizeImports" }, diagnostics = {} },
+                        apply = true,
+                    })
+                end,
+                desc = "Python: Organize Imports",
+                ft = "python",
+            },
+            {
+                "<leader>cX",
+                function()
+                    vim.lsp.buf.code_action({
+                        context = { only = { "source.fixAll" }, diagnostics = {} },
+                        apply = true,
+                    })
+                end,
+                desc = "Python: Fix All",
+                ft = "python",
+            },
+        },
+    },
 }

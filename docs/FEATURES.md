@@ -5,6 +5,11 @@
 - **Native LSP** — `vim.lsp.config` + `lsp/<server>.lua` discovery; mason-lspconfig handles install/enable. Workspace root anchors on language manifests, `.git` as fallback.
 - **Inlay hints** — toggle per buffer with `<leader>ci`; suppressed automatically during insert mode.
 - **Code lens** — enabled on capable servers (gopls, rust-analyzer, lua_ls, ocamllsp, elixir-ls). `BufWritePost` refreshes lens count.
+- **LSP folding** — capable servers fold via `vim.lsp.foldexpr`; treesitter folds everything else.
+- **Navigation** — `gd` / `gr` / `gi` / `gy` open an fzf-lua picker (auto-jumps on a single result).
+- **Formatting** — `<leader>cf` runs `vim.lsp.buf.format` (native LSP; no formatter plugin).
+- **Semantic tokens** — toggle per buffer with `<leader>uy` (e.g. when they clash with treesitter highlight).
+- **Document colors** — tailwindcss class swatches via native `vim.lsp.document_color` (colorizer still owns hex).
 - **Diagnostics** — single config in `lua/plugins/lsp/init.lua`; `tiny-inline-diagnostic.nvim` owns virtual text. Severity-sorted, signs `✗`/`!`/`i`/`?`.
 - **Completion** — [blink.cmp](https://github.com/Saghen/blink.cmp) with Rust fuzzy matching + inline ghost-text preview. Sources: LSP / snippets (LuaSnip + friendly-snippets) / path / buffer; filtered per filetype (no LSP in `gitcommit` / `gitrebase`, buffer-only in snacks input prompts).
 - **LSP restart** — `<leader>cs` for when a server hangs.

@@ -124,6 +124,7 @@ Bare `nvim` auto-restores the cwd session (skipped in headless or when the sessi
 ## LSP / Diagnostics
 
 > Neovim 0.11+ also auto-binds `grr`/`gri`/`grn`/`gra`/`gK`/`gO` on `LspAttach`.
+> `gd`/`gr`/`gi`/`gy` open an fzf-lua picker (auto-jumps on a single result).
 >
 > Severity-sorted; gutter signs `✗`/`!`/`i`/`?` mirror lualine; colors match the scrollbar marks. Diag float shows source when ambiguous.
 > nvim-lightbulb: `❋` sign when a code action is available.
@@ -135,7 +136,9 @@ Bare `nvim` auto-restores the cwd session (skipped in headless or when the sessi
 | `gr` / `gi` / `gy`          | References / implementation / type definition                      |
 | `<leader>rn`                | Rename                                                             |
 | `<leader>cc` / `<leader>ca` | Diagnostics float / code action                                    |
+| `<leader>cf`                | Format buffer (native LSP)                                         |
 | `<leader>ci` / `<leader>uh` | Toggle inlay hints (alias)                                         |
+| `<leader>uy`                | Toggle LSP semantic tokens                                         |
 | `<leader>cd` / `<leader>cl` | Toggle inline diagnostic / `virtual_lines`                         |
 | `<leader>cM`                | Toggle multi-diagnostic on cursorline                              |
 | `<leader>cL`                | Run CodeLens (rust-analyzer, gopls, elixir-ls, ocamllsp, jdtls, …) |
@@ -182,9 +185,9 @@ Bare `nvim` auto-restores the cwd session (skipped in headless or when the sessi
 | `<leader>uD`                | n     | Toggle database UI (dadbod-ui)                                            |
 | `[x`                        | n     | Jump to context start                                                     |
 
-## Folding (treesitter)
+## Folding
 
-`foldexpr = vim.treesitter.foldexpr()`, `foldlevelstart = 99` — files open fully unfolded; fold on demand.
+`foldexpr = vim.treesitter.foldexpr()` by default; LSP buffers whose server supports `foldingRange` swap to `vim.lsp.foldexpr()` on attach. `foldlevelstart = 99` — files open fully unfolded; fold on demand.
 
 | Key         | Description                    |
 | ----------- | ------------------------------ |
@@ -288,6 +291,7 @@ In the toggle terminal, `$EDITOR`/`$VISUAL`/`$GIT_EDITOR` forward to the parent 
 | `<leader>cR` / `<leader>cD` / `<leader>cT` | Rust: code action / debuggables / testables |
 | `<leader>cE` / `<leader>cP`                | Rust: expand macro / jump to parent module  |
 | `<leader>cI` / `<leader>cU`                | TS/JS: organize imports / remove unused     |
+| `<leader>cI` / `<leader>cX`                | Python: organize imports / fix all (ruff)   |
 
 ## Misc
 

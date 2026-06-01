@@ -196,6 +196,43 @@ return {
                 then
                     pcall(vim.lsp.linked_editing_range.enable, true, { bufnr = bufnr })
                 end
+                -- LSP folding where the server supports it; treesitter stays the default.
+                if vim.lsp.foldexpr and client:supports_method("textDocument/foldingRange", bufnr) then
+                    vim.wo[vim.api.nvim_get_current_win()][0].foldexpr = "v:lua.vim.lsp.foldexpr()"
+                end
+                -- Color swatches (0.12), tailwindcss only: colorizer owns hex and leaves
+                -- tailwind classes uncolored. documentColor registers dynamically after
+                -- init, so poll until the capability lands, then enable.
+                if vim.lsp.document_color and client.name == "tailwindcss" and not vim.b[bufnr]._lsp_doccolor_done then
+                    vim.b[bufnr]._lsp_doccolor_done = true
+                    local cid, tries = client.id, 0
+                    local function enable_color()
+                        local c = vim.lsp.get_client_by_id(cid)
+                        if not (c and vim.api.nvim_buf_is_valid(bufnr)) then
+                            return
+                        end
+                        if c:supports_method("textDocument/documentColor", bufnr) then
+                            pcall(vim.lsp.document_color.enable, true, { bufnr = bufnr })
+                        elseif tries < 20 then
+                            tries = tries + 1
+                            vim.defer_fn(enable_color, 250)
+                        end
+                    end
+                    enable_color()
+                end
+            end
+
+            -- Prefer fzf-lua's LSP pickers (fuzzy on many, auto-jump on one) over
+            -- the native quickfix dump; fall back to native if fzf-lua isn't loaded.
+            local function lsp_pick(method, native)
+                return function()
+                    local ok, fzf = pcall(require, "fzf-lua")
+                    if ok and fzf[method] then
+                        fzf[method]()
+                    else
+                        native()
+                    end
+                end
             end
 
             local group = vim.api.nvim_create_augroup("lsp-attach-keys", { clear = true })
@@ -227,11 +264,11 @@ return {
                             title_pos = "center",
                         })
                     end, "Hover")
-                    map("n", "gd", vim.lsp.buf.definition, "Goto Definition")
+                    map("n", "gd", lsp_pick("lsp_definitions", vim.lsp.buf.definition), "Goto Definition")
                     map("n", "gD", vim.lsp.buf.declaration, "Goto Declaration")
-                    map("n", "gr", vim.lsp.buf.references, "References")
-                    map("n", "gi", vim.lsp.buf.implementation, "Goto Implementation")
-                    map("n", "gy", vim.lsp.buf.type_definition, "Goto Type Definition")
+                    map("n", "gr", lsp_pick("lsp_references", vim.lsp.buf.references), "References")
+                    map("n", "gi", lsp_pick("lsp_implementations", vim.lsp.buf.implementation), "Goto Implementation")
+                    map("n", "gy", lsp_pick("lsp_typedefs", vim.lsp.buf.type_definition), "Goto Type Definition")
                     map("n", "<leader>cc", vim.diagnostic.open_float, "Line Diagnostics")
                     map("n", "<leader>ca", vim.lsp.buf.code_action, "Code Action")
                     local toggle_inlay = function()
@@ -241,15 +278,18 @@ return {
                     map("n", "<leader>ci", toggle_inlay, "Toggle Inlay Hints")
                     map("n", "<leader>uh", toggle_inlay, "Toggle Inlay Hints")
                     map("n", "<leader>cL", vim.lsp.codelens.run, "Run CodeLens")
+                    map("n", "<leader>cf", function()
+                        vim.lsp.buf.format({ async = true })
+                    end, "Format (LSP)")
                     map("n", "<leader>cs", "<cmd>LspRestart<cr>", "LSP Restart")
                     map("n", "<leader>rn", vim.lsp.buf.rename, "Rename")
-                    map("i", "<C-k>", function()
-                        vim.lsp.buf.signature_help({
-                            border = vim.g.flower_border,
-                            title = " ✿ signature ✿ ",
-                            title_pos = "center",
-                        })
-                    end, "Signature Help")
+                    -- Semantic tokens can clash with treesitter highlight; toggle per buffer.
+                    map("n", "<leader>uy", function()
+                        local b = vim.api.nvim_get_current_buf()
+                        local on = vim.lsp.semantic_tokens.is_enabled({ bufnr = b })
+                        vim.lsp.semantic_tokens.enable(not on, { bufnr = b })
+                    end, "Toggle Semantic Tokens")
+                    -- Signature help: blink owns it (auto popup + <C-k> in completion.lua).
                 end,
             })
 
