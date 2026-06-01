@@ -47,7 +47,7 @@ Prerequisites, manual install, and recovery: [docs/SETUP.md](docs/SETUP.md).
 | Python              | basedpyright + ruff           | ruff (LSP)       | debugpy                 |
 | Lua                 | lua_ls                        | selene           | -                       |
 | CSS / HTML          | cssls / html+emmet            | -                | -                       |
-| Tailwind / JS-TS    | tailwindcss / vtsls           | eslint_d         | -                       |
+| Tailwind / JS-TS    | tailwindcss / vtsls           | eslint_d         | js-debug-adapter (Node) |
 | GraphQL / SQL       | graphql / sqls                | - / sqlfluff     | -                       |
 | JSON / YAML         | jsonls / yamlls               | - / yamllint     | -                       |
 | Protobuf / TOML     | buf_ls / taplo                | -                | -                       |

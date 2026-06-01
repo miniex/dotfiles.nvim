@@ -250,7 +250,7 @@ Inside the menu: `q`/`<Esc>` close, `h` parent (no-op at top), `l` open entry.
 
 ## Test (neotest)
 
-Python (pytest), Go (gotestsum), Elixir (mix), C/C++ (gtest), Rust (rustaceanvim). `:RustLsp testables` still works as a Rust-only picker. Summary window state restored across sessions.
+Python (pytest), Go (gotestsum), Elixir (mix), C/C++ (gtest), Lua (busted), Rust (rustaceanvim), Zig. `:RustLsp testables` still works as a Rust-only picker. Summary window state restored across sessions.
 
 | Key                        | Description                                  |
 | -------------------------- | -------------------------------------------- |
