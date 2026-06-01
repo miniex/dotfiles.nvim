@@ -67,7 +67,6 @@ return {
                     gitsigns = true,
                     grug_far = true,
                     harpoon = true,
-                    indent_blankline = { enabled = true },
                     mason = true,
                     native_lsp = { enabled = true },
                     navic = { enabled = true, custom_bg = "NONE" },

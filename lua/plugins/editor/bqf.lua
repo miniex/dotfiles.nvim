@@ -8,15 +8,9 @@ return {
             win_vheight = 12,
             border = vim.g.flower_border,
             should_preview_cb = function(bufnr, _)
-                local ret = true
+                -- Skip preview for oversized files and fugitive buffers.
                 local bufname = vim.api.nvim_buf_get_name(bufnr)
-                local fsize = vim.fn.getfsize(bufname)
-                if fsize > 100 * 1024 then
-                    ret = false
-                elseif bufname:match("^fugitive://") then
-                    ret = false
-                end
-                return ret
+                return vim.fn.getfsize(bufname) <= 100 * 1024 and not bufname:match("^fugitive://")
             end,
         },
         func_map = {

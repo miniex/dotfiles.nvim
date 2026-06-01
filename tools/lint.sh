@@ -1,12 +1,12 @@
 #!/bin/sh
-# Lint Lua (stylua + lua-language-server), POSIX/bash (shfmt + shellcheck),
+# Lint Lua (stylua + lua-language-server + selene), shell (shfmt + shellcheck),
 # and any tracked fish/zsh scripts (fish -n / zsh -n).
 set -eu
 
 cd "$(dirname "$0")/.."
 
 missing=
-for tool in stylua lua-language-server shfmt shellcheck; do
+for tool in stylua lua-language-server selene shfmt shellcheck; do
     if ! command -v "$tool" >/dev/null 2>&1; then
         missing="$missing $tool"
     fi
@@ -20,6 +20,7 @@ fi
 
 stylua --check .
 lua-language-server --check . --logpath /tmp/lua-ls-check
+selene .
 
 sh_files="install.sh set-lang.sh tools/format.sh tools/lint.sh tools/health.sh scripts/term-bin/nvim"
 # shellcheck disable=SC2086 # word-splitting the file list is intentional

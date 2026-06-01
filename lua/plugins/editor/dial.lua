@@ -15,27 +15,24 @@ return {
         local logical = cyclic({ "&&", "||" })
         local eq = cyclic({ "==", "!=" })
 
+        -- A filetype group replaces default entirely, so share the base augends.
+        local common = {
+            augend.integer.alias.decimal_int,
+            augend.integer.alias.hex,
+            augend.constant.alias.alpha,
+            augend.constant.alias.Alpha,
+            augend.date.alias["%Y-%m-%d"],
+            augend.date.alias["%Y/%m/%d"],
+            augend.date.alias["%H:%M"],
+            augend.semver.alias.semver,
+            bool,
+            logical,
+            eq,
+        }
+
         require("dial.config").augends:register_group({
-            default = {
-                augend.integer.alias.decimal_int,
-                augend.integer.alias.hex,
-                augend.constant.alias.alpha,
-                augend.constant.alias.Alpha,
-                augend.date.alias["%Y-%m-%d"],
-                augend.date.alias["%Y/%m/%d"],
-                augend.date.alias["%H:%M"],
-                augend.semver.alias.semver,
-                bool,
-                logical,
-                eq,
-            },
-            typescript = {
-                augend.integer.alias.decimal,
-                cyclic({ "let", "const" }, true),
-                bool,
-                logical,
-                eq,
-            },
+            default = common,
+            typescript = vim.list_extend({ cyclic({ "let", "const" }, true) }, common),
             markdown = { augend.misc.alias.markdown_header },
         })
 

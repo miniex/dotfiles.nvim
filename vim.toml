@@ -1,0 +1,10 @@
+# selene std lib for Neovim (selene.toml → std = "vim"). any=true accepts vim.*/Snacks.* fields.
+[selene]
+base = "lua51"
+name = "vim"
+
+[vim]
+any = true
+
+[Snacks]
+any = true

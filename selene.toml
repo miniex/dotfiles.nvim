@@ -1,0 +1,10 @@
+# selene config (std lib: vim.toml). Used by nvim-lint in-editor and tools/lint.sh.
+std = "vim"
+
+[lints]
+# Intentional _G.* wiring (e.g. _NavPane), not a smell.
+global_usage = "allow"
+# lazy specs / keymap entries are array+map by design.
+mixed_table = "allow"
+# `\u{…}` icon glyphs are valid in Neovim LuaJIT; the lua51 base false-flags them.
+bad_string_escape = "allow"

@@ -8,6 +8,7 @@ Required (`format.sh` / `lint.sh` fail without these):
 
 - [`stylua`](https://github.com/JohnnyMorganz/StyLua) — Lua formatter
 - [`lua-language-server`](https://github.com/LuaLS/lua-language-server) — Lua diagnostics
+- [`selene`](https://github.com/Kampfkarren/selene) — Lua linter (reads `selene.toml` + `vim.toml`)
 - [`shfmt`](https://github.com/mvdan/sh) — shell formatter
 - [`shellcheck`](https://www.shellcheck.net/) — shell linter
 
@@ -21,7 +22,7 @@ Optional (used opportunistically; scripts skip with a warning if absent):
 ```bash
 brew install stylua lua-language-server shfmt shellcheck   # macOS
 brew install jq taplo yamlfmt                              # optional formatters
-cargo install stylua                                       # cargo
+cargo install stylua selene                                # cargo (stylua + selene)
 # Linux: distro package or release tarball
 ```
 
@@ -29,12 +30,12 @@ cargo install stylua                                       # cargo
 
 ```bash
 ./tools/format.sh   # stylua + shfmt rewrite; jq/taplo/yamlfmt on tracked files when present
-./tools/lint.sh     # stylua --check + lua-language-server + shfmt diff + shellcheck
+./tools/lint.sh     # stylua --check + lua-language-server + selene + shfmt diff + shellcheck
                     # + fish -n / zsh -n on tracked *.fish / *.zsh files when present
 ./tools/health.sh   # diagnose host prereqs (tree-sitter, Nerd Fonts, toolchains); never fails
 ```
 
-`lint.sh` exits non-zero on drift or diagnostic. CI expects clean. `health.sh` is informational.
+`lint.sh` exits non-zero on drift or diagnostic; keep it clean before pushing. `health.sh` is informational.
 
 ## PR rules
 
