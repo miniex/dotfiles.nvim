@@ -45,9 +45,8 @@ opt.mouse:append("a")
 opt.autoread = true
 opt.undofile = true
 
--- 0.11+ global default for plugin floats that read vim.o.winborder. fff.nvim
--- only honors preset *names* (single/double/rounded/…); rely on FloatBorder hl
--- (pink, set in globals.lua) for color uniformity even where the shape can't be flowers.
+-- 0.11+ global default for floats reading vim.o.winborder. Plugins that only accept
+-- preset *names* ignore custom flower chars — "rounded" + pink FloatBorder hl keeps color uniform.
 opt.winborder = "rounded"
 
 -- Stable viewport on splits + jumps (no surprise scroll when opening hover/preview).

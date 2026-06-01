@@ -38,13 +38,13 @@ return {
     },
     config = function(_, opts)
         require("fff").setup(opts)
-        local ok, picker_ui = pcall(require, "fff.picker_ui")
+        local ok, layout = pcall(require, "fff.layout")
         if not ok then
             return
         end
 
-        -- Replace picker_ui's file-local BORDER_PRESETS with flower corners.
-        -- It only honors preset names, so vim.o.winborder = "✿,…" gets ignored.
+        -- Replace layout.lua's file-local BORDER_PRESETS with flower corners (fff
+        -- only honors preset *names*, so vim.o.winborder = "✿,…" is ignored).
         local patched = false
         local visited = {}
         local function walk(fn, patch)
@@ -65,7 +65,7 @@ return {
                 i = i + 1
             end
         end
-        for _, v in pairs(picker_ui) do
+        for _, v in pairs(layout) do
             walk(v, function(fn, i, name, val)
                 if name == "BORDER_PRESETS" and type(val) == "table" then
                     local new = {}

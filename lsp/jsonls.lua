@@ -6,8 +6,13 @@ return {
         },
     },
     before_init = function(_, config)
-        -- Cache the catalog so it isn't rebuilt on every server start / :LspRestart.
-        _G._json_schemas = _G._json_schemas or require("schemastore").json.schemas()
+        -- Cache once; pcall so a SchemaStore load failure starts schema-less, not erroring.
+        if _G._json_schemas == nil then
+            local ok, schemas = pcall(function()
+                return require("schemastore").json.schemas()
+            end)
+            _G._json_schemas = ok and schemas or {}
+        end
         config.settings.json.schemas = config.settings.json.schemas or {}
         vim.list_extend(config.settings.json.schemas, _G._json_schemas)
     end,
