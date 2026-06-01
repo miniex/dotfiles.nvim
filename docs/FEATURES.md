@@ -73,7 +73,7 @@ See [`lua/config/modal-floats.lua`](../lua/config/modal-floats.lua) for the mutu
 
 ## Git
 
-- **gitsigns** — gutter signs, hunk staging (`<leader>gh*`), inline blame (`<leader>gtb`), full hunk diff via `<leader>ghp` (centered modal, cursor lands inside).
+- **gitsigns** — gutter signs, hunk staging (`<leader>gh*`), hunk textobject (`ih`/`ah`), inline blame (`<leader>gtb`), full hunk diff via `<leader>ghp` (centered modal, cursor lands inside).
 - **fugitive** — `<leader>gs` status, `<leader>gd` diff, `<leader>gdv` 3-way merge diff.
 - **lazygit** — `<leader>gg` full / `<leader>gf` current file / `<leader>gF` filtered.
 - **diffview** — file / repo / stash history under `<leader>gv*`.

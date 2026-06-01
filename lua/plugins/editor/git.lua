@@ -223,6 +223,10 @@ return {
                 -- Toggle
                 map("n", "<leader>gtb", gs.toggle_current_line_blame, "Toggle Line Blame")
                 map("n", "<leader>gtd", gs.toggle_deleted, "Toggle Deleted")
+
+                -- Hunk textobject: d ih / v ah.
+                map({ "o", "x" }, "ih", gs.select_hunk, "Inner Hunk")
+                map({ "o", "x" }, "ah", gs.select_hunk, "Around Hunk")
             end,
         },
     },

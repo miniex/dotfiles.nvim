@@ -437,6 +437,15 @@ return {
             float = { border = vim.g.flower_border },
         },
     },
+    config = function(_, opts)
+        require("snacks").setup(opts)
+        -- Option toggles with which-key labels + state. Custom toggles stay with their plugins.
+        Snacks.toggle.option("spell", { name = "Spelling" }):map("<leader>us")
+        Snacks.toggle.option("relativenumber", { name = "Relative Number" }):map("<leader>ur")
+        Snacks.toggle.line_number():map("<leader>ul")
+        Snacks.toggle.option("conceallevel", { off = 0, on = 2 }):map("<leader>uo")
+        Snacks.toggle.treesitter():map("<leader>uT")
+    end,
     keys = {
         {
             "<leader>fg",
@@ -570,6 +579,22 @@ return {
             end,
             mode = { "n", "t" },
             desc = "Prev Reference",
+        },
+        {
+            "]i",
+            function()
+                Snacks.scope.jump({ bottom = true })
+            end,
+            mode = { "n", "x", "o" },
+            desc = "Jump to Scope Bottom",
+        },
+        {
+            "[i",
+            function()
+                Snacks.scope.jump({ bottom = false })
+            end,
+            mode = { "n", "x", "o" },
+            desc = "Jump to Scope Top",
         },
         {
             "<leader>.",

@@ -2,6 +2,9 @@ return {
     {
         "windwp/nvim-autopairs",
         event = "InsertEnter",
-        config = true,
+        opts = {
+            check_ts = true,
+            fast_wrap = {}, -- <M-e> to wrap the next item in a pair
+        },
     },
 }

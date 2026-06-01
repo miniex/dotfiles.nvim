@@ -97,6 +97,7 @@ Inside the grug-far buffer: `<localleader>r` replace, `<localleader>s` sync to d
 | `<leader>rR` | v    | Open with visual selection prefilled |
 | `<leader>rf` | n    | Scoped to current file               |
 | `<leader>rw` | n    | Prefilled with `<cword>`             |
+| `<leader>ri` | v    | Search & replace within range        |
 
 ## Session (persistence.nvim)
 
@@ -148,6 +149,7 @@ Bare `nvim` auto-restores the cwd session (skipped in headless or when the sessi
 | `[o` / `]o`                 | Aerial: previous / next symbol                                     |
 | `<leader>cm`                | Open Mason                                                         |
 | `<leader>xx/xd/xq/xl`       | Trouble: diagnostics / buf / qf / loclist                          |
+| `<leader>x<` / `<leader>x>` | Quickfix stack: older / newer list                                 |
 | `<leader>xQ` / `<leader>xL` | quicker.nvim: editable quickfix / loclist (`>`/`<` expand context) |
 | `<leader>xt` / `<leader>xT` | Trouble: TODOs / TODO+FIX+FIXME                                    |
 | `[q` / `]q`                 | Prev / next item (Trouble + qf fallback)                           |
@@ -183,6 +185,9 @@ Bare `nvim` auto-restores the cwd session (skipped in headless or when the sessi
 | `<leader>uU`                | n     | Toggle undotree                                                           |
 | `<leader>uz` / `<leader>uZ` | n     | Snacks zen / zen zoom                                                     |
 | `<leader>uD`                | n     | Toggle database UI (dadbod-ui)                                            |
+| `<leader>us` / `<leader>ur` | n     | Snacks toggle: spell / relative number                                    |
+| `<leader>ul` / `<leader>uo` | n     | Snacks toggle: line number / conceal                                      |
+| `<leader>uT` / `<leader>ux` | n     | Toggle treesitter highlight (Snacks) / hex view                           |
 | `[x`                        | n     | Jump to context start                                                     |
 
 ## Folding
@@ -216,12 +221,14 @@ Inside the menu: `q`/`<Esc>` close, `h` parent (no-op at top), `l` open entry.
 | `<leader>gB`                   | gitbrowse: open current line in browser (n/v)                                                     |
 | `<leader>gvo/gvc/gvr`          | Diffview: open / close / refresh                                                                  |
 | `<leader>gvf/gvF/gvh`          | Diffview file history: current / repo / stash                                                     |
+| `<leader>gvt` / `<leader>gvp`  | Diffview: toggle / focus files panel                                                              |
 | `<leader>gvg` / `<leader>gvG`  | gitgraph.nvim: all branches / current (`<cr>` → diffview)                                         |
 | `<leader>gvs` / `<leader>gvA`  | gitgraph.nvim: prompt for `--since` / `--author` filter                                           |
 | `[h` / `]h`                    | Prev / next hunk                                                                                  |
 | `<leader>ghs/r/S/R/p/b/c/d/D`  | Stage (toggle) / reset / stage-buf / reset-buf / preview / blame-line / blame-file / diff / diff~ |
 | `<leader>ghq`                  | gitsigns: hunks (attached buffers) to quickfix                                                    |
 | `<leader>gtb` / `<leader>gtd`  | Toggle line blame / show deleted                                                                  |
+| `ih` / `ah` (o/x)              | gitsigns hunk textobject (`d ih`, `v ah`)                                                         |
 | `<leader>gxq`                  | git-conflict: conflicts to quickfix                                                               |
 | `[X` / `]X`                    | Prev / next conflict                                                                              |
 | `co/ct/cb/c0`                  | Inside conflict: ours / theirs / both / none                                                      |
@@ -282,19 +289,21 @@ In the toggle terminal, `$EDITOR`/`$VISUAL`/`$GIT_EDITOR` forward to the parent 
 | `<leader>cn` / `<leader>un`             | Notification history / dismiss all                                                                                        |
 | `<leader>yp` / `<leader>yP`             | Yank file path to `+`: absolute / relative                                                                                |
 | `]]` / `[[`                             | LSP word: next / previous reference                                                                                       |
+| `[i` / `]i`                             | Snacks scope: jump to top / bottom edge                                                                                   |
 
 ## Language-specific
 
-| Key                                        | Description                                 |
-| ------------------------------------------ | ------------------------------------------- |
-| `<leader>ch`                               | C/C++: switch source ↔ header               |
-| `<leader>cR` / `<leader>cD` / `<leader>cT` | Rust: code action / debuggables / testables |
-| `<leader>cE` / `<leader>cP`                | Rust: expand macro / jump to parent module  |
-| `<leader>cI` / `<leader>cU`                | TS/JS: organize imports / remove unused     |
-| `<leader>cI` / `<leader>cX`                | Python: organize imports / fix all (ruff)   |
+| Key                                        | Description                                           |
+| ------------------------------------------ | ----------------------------------------------------- |
+| `<leader>ch`                               | C/C++: switch source ↔ header                         |
+| `<leader>cR` / `<leader>cD` / `<leader>cT` | Rust: code action / debuggables / testables           |
+| `<leader>cE` / `<leader>cP`                | Rust: expand macro / jump to parent module            |
+| `<leader>cI` / `<leader>cU`                | TS/JS: organize imports / remove unused               |
+| `<leader>cI` / `<leader>cX`                | Python: organize imports / fix all (ruff)             |
+| `<leader>cv/cF/cu/cU/cD` (toml)            | crates: versions / features / update / upgrade / docs |
 
 ## Misc
 
 - **Open URL** (`gx`, n/v): `vim.ui.open()` on link / path under cursor.
-- **Hex** (`xxd`): auto for binary files; manual `:HexToggle`, `:HexDump`, `:HexAssemble`, or `nvim -b <file>`.
-- **Completion** (insert): `<Tab>`/`<S-Tab>` next/prev · `<C-Space>` trigger · `<CR>` confirm · `<C-e>` close · `<C-f>`/`<C-S-f>` scroll docs. Menu columns: `label · source · kind`.
+- **Hex** (`xxd`): auto for binary files; `<leader>ux` toggle, `:HexDump`, `:HexAssemble`, or `nvim -b <file>`.
+- **Completion** (insert): `<Tab>`/`<S-Tab>` next/prev · `<C-Space>` trigger · `<CR>` confirm · `<C-e>` close · `<C-k>` signature · `<C-f>`/`<C-b>` scroll docs · `<M-e>` wrap pair (autopairs). Menu columns: `label · source · kind`.

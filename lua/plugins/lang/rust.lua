@@ -6,6 +6,48 @@ return {
     {
         "Saecki/crates.nvim",
         event = { "BufRead Cargo.toml" },
+        keys = {
+            {
+                "<leader>cv",
+                function()
+                    require("crates").show_versions_popup()
+                end,
+                ft = "toml",
+                desc = "Crates: Versions",
+            },
+            {
+                "<leader>cF",
+                function()
+                    require("crates").show_features_popup()
+                end,
+                ft = "toml",
+                desc = "Crates: Features",
+            },
+            {
+                "<leader>cu",
+                function()
+                    require("crates").update_crate()
+                end,
+                ft = "toml",
+                desc = "Crates: Update",
+            },
+            {
+                "<leader>cU",
+                function()
+                    require("crates").upgrade_crate()
+                end,
+                ft = "toml",
+                desc = "Crates: Upgrade",
+            },
+            {
+                "<leader>cD",
+                function()
+                    require("crates").open_documentation()
+                end,
+                ft = "toml",
+                desc = "Crates: Docs",
+            },
+        },
         opts = {
             completion = {
                 crates = {

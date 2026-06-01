@@ -31,6 +31,7 @@ return {
             end,
             desc = "Search & Replace (current word)",
         },
+        { "<leader>ri", ":GrugFarWithin<cr>", mode = "v", desc = "Search & Replace within range" },
     },
     opts = {
         headerMaxWidth = 80,

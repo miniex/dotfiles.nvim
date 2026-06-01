@@ -106,6 +106,10 @@ end, "n", "Toggle undotree")
 
 map("<leader>qR", "<cmd>restart<cr>", "n", "Restart Neovim")
 
+-- Quickfix stack history (older/newer lists from :grep, LSP, etc.).
+map("<leader>x<", "<cmd>colder<cr>", "n", "Quickfix older")
+map("<leader>x>", "<cmd>cnewer<cr>", "n", "Quickfix newer")
+
 -- Yank file path to `+` — absolute / relative variants.
 map("<leader>yp", function()
     local path = vim.fn.expand("%:p")
