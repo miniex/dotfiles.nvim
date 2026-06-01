@@ -51,21 +51,21 @@ Plugin specs are discovered by `lazy.setup({ spec = { { import = "plugins.coding
 
 ## Single sources of truth
 
-| Concern                 | Lives in                                               | Why                                                                                                             |
-| ----------------------- | ------------------------------------------------------ | --------------------------------------------------------------------------------------------------------------- |
-| LSP per-server settings | `lsp/<server>.lua`                                     | Neovim's native discovery; don't restate in `nvim-lspconfig.opts.servers.<name>`.                               |
-| Lang → server mapping   | `lua/config/lang_servers.lua`                          | One place to ask "what servers does this language enable?"                                                      |
-| Enabled languages       | `lua/config/langs.lua` (+ `langs_local.lua`)           | `langs_local.lua` is gitignored and wins per-machine.                                                           |
-| Diagnostic UI           | `lua/plugins/lsp/init.lua` `vim.diagnostic.config`     | tiny-inline-diagnostic owns `virtual_text`; everything else (signs, float) lives here.                          |
-| Modal float mutual-ex   | `lua/config/modal-floats.lua` `OWNER` table            | Same `owner` keeps sibling windows of one plugin together; opening another owner closes prior.                  |
-| Float config decorators | `lua/config/modal-floats.lua` `add_decorator()`        | Single global `nvim_open_win` / `nvim_win_set_config` patch — plugins register name-keyed transforms.           |
-| Modal float geometry    | `lua/config/modal-geom.lua`                            | Shared 0.85 × 0.85 chrome-aware rectangle; tracks `VimResized`. Change `M.RATIO` to resize every modal at once. |
-| Border characters       | `lua/config/globals.lua` `vim.g.flower_border`         | Every plugin reads this; theme/border consistency in one place.                                                 |
-| Palette & brand accents | `lua/config/palette.lua`                               | Cached `mocha()` parse + the `blue` / `pink` / git accents every UI plugin reads.                               |
-| UI chrome filetypes     | `lua/config/chrome_filetypes.lua`                      | `pickers` / `panels` lists; scrollbar / smear / cursor-bloom / incline build exclusions from one source.        |
-| Treesitter grammars     | `lua/plugins/editor/treesitter.lua` `ensure_installed` | Central grammar list; lang files don't extend it.                                                               |
-| CodeLLDB DAP adapter    | `lua/config/codelldb.lua`                              | Resolves the Mason codelldb binary once; shared by C/C++ and Zig.                                               |
-| Formatter width ruler   | `lua/config/format-width.lua`                          | Reads `rustfmt.toml` `max_width` / `ruff` `line-length` upward; `colorcolumn` tracks the per-project width.     |
+| Concern                 | Lives in                                               | Why                                                                                                                           |
+| ----------------------- | ------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------- |
+| LSP per-server settings | `lsp/<server>.lua`                                     | Neovim's native discovery; don't restate in `nvim-lspconfig.opts.servers.<name>`.                                             |
+| Lang → server mapping   | `lua/config/lang_servers.lua`                          | One place to ask "what servers does this language enable?"                                                                    |
+| Enabled languages       | `lua/config/langs.lua` (+ `langs_local.lua`)           | `langs_local.lua` is gitignored and wins per-machine.                                                                         |
+| Diagnostic UI           | `lua/plugins/lsp/init.lua` `vim.diagnostic.config`     | tiny-inline-diagnostic owns `virtual_text`; everything else (signs, float) lives here.                                        |
+| Modal float mutual-ex   | `lua/config/modal-floats.lua` `OWNER` table            | Same `owner` keeps sibling windows of one plugin together; opening another owner closes prior.                                |
+| Float config decorators | `lua/config/modal-floats.lua` `add_decorator()`        | Single global `nvim_open_win` / `nvim_win_set_config` patch — plugins register name-keyed transforms.                         |
+| Modal float geometry    | `lua/config/modal-geom.lua`                            | Shared 0.85 × 0.85 chrome-aware rectangle; tracks `VimResized`. Change `M.RATIO` to resize every modal at once.               |
+| Border characters       | `lua/config/globals.lua` `vim.g.flower_border`         | Every plugin reads this; theme/border consistency in one place.                                                               |
+| Palette & brand accents | `lua/config/palette.lua`                               | Cached `mocha()` parse + the `blue` / `pink` / git accents every UI plugin reads.                                             |
+| UI chrome filetypes     | `lua/config/chrome_filetypes.lua`                      | `pickers` / `panels` lists; scrollbar / smear / cursor-bloom / incline build exclusions from one source.                      |
+| Treesitter grammars     | `lua/plugins/editor/treesitter.lua` `ensure_installed` | Central grammar list; lang files don't extend it.                                                                             |
+| CodeLLDB DAP adapter    | `lua/config/codelldb.lua`                              | Resolves the Mason codelldb binary once; shared by C/C++ and Zig.                                                             |
+| Formatter width ruler   | `lua/config/format-width.lua`                          | Per-filetype `colorcolumn` from the project formatter config (`rustfmt.toml`, `stylua`, `.clang-format`, …), searched upward. |
 
 ## Plugin spec categories (`lua/plugins/`)
 

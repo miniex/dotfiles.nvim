@@ -32,8 +32,9 @@ function M.guide(sources, default)
             break
         end
     end
+    -- 0 (e.g. clang-format ColumnLimit: 0 = unlimited) means no ruler.
     vim.opt_local.textwidth = width
-    vim.opt_local.colorcolumn = tostring(width + 1)
+    vim.opt_local.colorcolumn = width > 0 and tostring(width + 1) or ""
     return width
 end
 

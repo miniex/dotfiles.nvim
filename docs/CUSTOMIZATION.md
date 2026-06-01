@@ -49,8 +49,30 @@ Drop Lua files in `~/.config/nvim/snippets/`. Filetype-scoped by filename (e.g. 
 
 ## Per-filetype options
 
-- `after/ftplugin/<ft>.lua` — buffer-local options Neovim auto-sources on `FileType`. Used for `go` / `make` (tabs, overriding the global `expandtab`) and `gitcommit` / `markdown` (spell, wrap, 72-col). Add a file named after the filetype to set its own buffer options.
-- `rust` / `python` set `colorcolumn` to the project formatter's width — `rustfmt.toml` `max_width` or `ruff` / `pyproject.toml` `line-length`, searched upward, else 100 / 88. Resolver: `lua/config/format-width.lua` (add a `{ names, pattern }` source to extend).
+- `after/ftplugin/<ft>.lua` — buffer-local options Neovim auto-sources on `FileType` (after the built-in / plugin ftplugins, so it wins). Used for `go` / `make` (tabs, overriding the global `expandtab`) and `gitcommit` / `markdown` (spell, wrap, 72-col). Add a file named after the filetype to set its own buffer options.
+
+## Formatter width ruler
+
+`colorcolumn` / `textwidth` follow each project's formatter width. On `FileType`, `after/ftplugin/<ft>.lua` calls `require("config.format-width").guide(...)`, which searches upward for the nearest config below and uses its width, else the formatter default. Width `0` (e.g. clang-format `ColumnLimit: 0`) draws no ruler.
+
+| Filetype    | Config (searched upward)                      | Key               | Default |
+| ----------- | --------------------------------------------- | ----------------- | ------- |
+| `rust`      | `rustfmt.toml` / `.rustfmt.toml`              | `max_width`       | 100     |
+| `python`    | `ruff.toml` / `.ruff.toml` / `pyproject.toml` | `line-length`     | 88      |
+| `lua`       | `stylua.toml` / `.stylua.toml`                | `column_width`    | 120     |
+| `elixir`    | `.formatter.exs`                              | `line_length`     | 98      |
+| `ocaml`     | `.ocamlformat`                                | `margin`          | 80      |
+| `c` / `cpp` | `.clang-format`                               | `ColumnLimit`     | 80      |
+| `sql`       | `.sqlfluff` / `pyproject.toml`                | `max_line_length` | 80      |
+| `toml`      | `taplo.toml` / `.taplo.toml`                  | `column_width`    | 80      |
+
+Add a language: drop an `after/ftplugin/<ft>.lua` with one `{ names, pattern }` source, where `pattern` captures the width as a single `(%d+)` group:
+
+```lua
+require("config.format-width").guide({
+    { names = { "<config>" }, pattern = "^%s*<key>%s*[:=]%s*(%d+)" },
+}, <default>)
+```
 
 ## Keymaps / autocmds
 
