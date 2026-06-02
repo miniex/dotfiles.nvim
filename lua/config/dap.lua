@@ -7,8 +7,7 @@ function M.setup(opts, fn)
     table.insert(opts.setups, fn)
 end
 
--- Resolve a Mason binary under the data dir; returns the path, or nil with a
--- one-shot warning (label is the :MasonInstall package name).
+-- Resolve a Mason binary; returns the path, or nil and warns (label = :MasonInstall pkg).
 function M.mason_bin(rel, label)
     local path = vim.fn.stdpath("data") .. "/mason/" .. rel
     if vim.fn.executable(path) ~= 1 then

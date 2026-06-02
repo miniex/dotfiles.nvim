@@ -182,9 +182,6 @@ return {
                             end
                             return table.concat(names, ", ")
                         end,
-                        cond = function()
-                            return next(vim.lsp.get_clients({ bufnr = 0 })) ~= nil
-                        end,
                         color = { fg = damin_blue },
                     },
                     {

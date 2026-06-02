@@ -228,7 +228,6 @@ Inside the menu: `q`/`<Esc>` close, `h` parent (no-op at top), `l` open entry.
 | `<leader>gvo/gvc/gvr`          | Diffview: open / close / refresh                                                                  |
 | `<leader>gvf/gvF/gvh`          | Diffview file history: current / repo / stash                                                     |
 | `<leader>gvt` / `<leader>gvp`  | Diffview: toggle / focus files panel                                                              |
-| `<leader>gvm`                  | Diffview: open merge tool (conflicts)                                                             |
 | `<leader>gvg` / `<leader>gvG`  | gitgraph.nvim: all branches / current (`<cr>` → diffview)                                         |
 | `<leader>gvs` / `<leader>gvA`  | gitgraph.nvim: prompt for `--since` / `--author` filter                                           |
 | `[h` / `]h`                    | Prev / next hunk                                                                                  |

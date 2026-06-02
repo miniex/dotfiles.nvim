@@ -74,6 +74,7 @@ function M.scratch(lines, opts)
     local buf = vim.api.nvim_create_buf(false, true)
     vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
     vim.bo[buf].buftype = "nofile"
+    vim.bo[buf].bufhidden = "wipe" -- else the scratch buf lingers after the window closes
     vim.bo[buf].modifiable = false
     if opts.filetype then
         vim.bo[buf].filetype = opts.filetype

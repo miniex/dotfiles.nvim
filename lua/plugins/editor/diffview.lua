@@ -16,10 +16,9 @@ return {
         { "<leader>gvf", "<cmd>DiffviewFileHistory %<cr>", desc = "File History (current file)" },
         { "<leader>gvF", "<cmd>DiffviewFileHistory<cr>", desc = "File History (repo)" },
         { "<leader>gvr", "<cmd>DiffviewRefresh<cr>", desc = "Diffview Refresh" },
-        { "<leader>gvh", "<cmd>DiffviewFileHistory % --range=stash<cr>", desc = "File History (stash)" },
+        { "<leader>gvh", "<cmd>DiffviewFileHistory % -g --range=stash<cr>", desc = "File History (stash)" },
         { "<leader>gvt", "<cmd>DiffviewToggleFiles<cr>", desc = "Diffview Toggle Files Panel" },
         { "<leader>gvp", "<cmd>DiffviewFocusFiles<cr>", desc = "Diffview Focus Files Panel" },
-        { "<leader>gvm", "<cmd>DiffviewOpen<cr>", desc = "Diffview Merge (conflicts)" },
     },
     opts = {
         enhanced_diff_hl = true,
