@@ -4,19 +4,34 @@ local M = {}
 
 -- Nearest config among `names` upward from `dir`; first `pattern` capture as a
 -- number, or nil. vim.fs.find's default limit = 1, so the nearest config wins.
+-- Memoized per (dir, names, pattern); formatter config rarely changes mid-session.
+-- false = scanned, nothing found (vs nil = not scanned yet).
+local cache = {}
+
 local function scan_up(names, pattern, dir)
+    local key = dir .. "\0" .. table.concat(names, ",") .. "\0" .. pattern
+    local cached = cache[key]
+    if cached ~= nil then
+        return cached or nil
+    end
+    local found
     for _, path in ipairs(vim.fs.find(names, { upward = true, path = dir, type = "file" })) do
         local ok, lines = pcall(vim.fn.readfile, path)
         if ok then
             for _, line in ipairs(lines) do
                 local n = line:match(pattern)
                 if n then
-                    return tonumber(n)
+                    found = tonumber(n)
+                    break
                 end
             end
         end
+        if found then
+            break
+        end
     end
-    return nil
+    cache[key] = found or false
+    return found
 end
 
 -- Set textwidth + colorcolumn (width + 1) from the first matching source, else
