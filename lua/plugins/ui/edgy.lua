@@ -21,9 +21,11 @@ return {
             { ft = "spectre_panel", size = { height = 0.4 } },
             { ft = "dap-repl", size = { height = 0.25 }, title = "DAP REPL" },
             { ft = "dapui_console", title = "DAP Console" },
+            { ft = "neotest-output-panel", size = { height = 0.25 }, title = "Test Output" },
         },
         right = {
             { ft = "aerial", title = "Outline", size = { width = 30 } },
+            { ft = "neotest-summary", title = "Test Summary", size = { width = 40 } },
             { ft = "dapui_scopes", title = "Scopes" },
             { ft = "dapui_breakpoints", title = "Breakpoints" },
             { ft = "dapui_stacks", title = "Stacks" },

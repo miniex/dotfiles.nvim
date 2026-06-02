@@ -14,6 +14,7 @@ return {
         local select = require("nvim-treesitter-textobjects.select")
         local move = require("nvim-treesitter-textobjects.move")
         local swap = require("nvim-treesitter-textobjects.swap")
+        local ts_repeat = require("nvim-treesitter-textobjects.repeatable_move")
 
         local function map_select(lhs, capture, desc)
             vim.keymap.set({ "x", "o" }, lhs, function()
@@ -74,5 +75,20 @@ return {
         vim.keymap.set("n", "<leader>cS", function()
             swap.swap_previous("@parameter.inner", "textobjects")
         end, { desc = "Swap parameter with prev" })
+
+        -- `;`/`,` repeat the last move; goto_* are auto-wrapped by the move module,
+        -- with builtin f/t/F/T fallback (their expr maps record themselves).
+        -- flash char mode is disabled (flash.lua) to cede f/t/;/, here.
+        vim.keymap.set({ "n", "x", "o" }, ";", ts_repeat.repeat_last_move_next, { desc = "Repeat last move (next)" })
+        vim.keymap.set(
+            { "n", "x", "o" },
+            ",",
+            ts_repeat.repeat_last_move_previous,
+            { desc = "Repeat last move (prev)" }
+        )
+        vim.keymap.set({ "n", "x", "o" }, "f", ts_repeat.builtin_f_expr, { expr = true })
+        vim.keymap.set({ "n", "x", "o" }, "F", ts_repeat.builtin_F_expr, { expr = true })
+        vim.keymap.set({ "n", "x", "o" }, "t", ts_repeat.builtin_t_expr, { expr = true })
+        vim.keymap.set({ "n", "x", "o" }, "T", ts_repeat.builtin_T_expr, { expr = true })
     end,
 }

@@ -11,7 +11,13 @@ end
 return {
     "folke/flash.nvim",
     event = "VeryLazy",
-    opts = {},
+    -- Char mode off: f/t/F/T/;/, go to treesitter-textobjects' repeatable moves.
+    -- flash's s/S/r/R jumps (its primary role) stay enabled.
+    opts = {
+        modes = {
+            char = { enabled = false },
+        },
+    },
     -- Set highlights on load (not at spec-import); re-apply on colorscheme change.
     config = function(_, opts)
         require("flash").setup(opts)

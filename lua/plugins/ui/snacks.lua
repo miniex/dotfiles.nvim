@@ -338,7 +338,16 @@ return {
         },
         dim = { enabled = true },
         gitbrowse = { enabled = true },
-        image = { enabled = vim.env.TERM == "xterm-kitty" or vim.env.KITTY_WINDOW_ID ~= nil },
+        -- kitty graphics protocol: kitty, WezTerm, and Ghostty all support it.
+        image = {
+            enabled = vim.env.TERM == "xterm-kitty"
+                or vim.env.KITTY_WINDOW_ID ~= nil
+                or vim.env.WEZTERM_EXECUTABLE ~= nil
+                or vim.env.WEZTERM_PANE ~= nil
+                or vim.env.GHOSTTY_RESOURCES_DIR ~= nil
+                or vim.env.GHOSTTY_BIN_DIR ~= nil
+                or vim.env.TERM == "xterm-ghostty",
+        },
         indent = {
             enabled = true,
             indent = { char = "┊" },

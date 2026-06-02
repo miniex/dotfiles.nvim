@@ -77,6 +77,30 @@ return {
                     snacks_input = { "buffer" },
                 },
             },
+            -- Cmdline completion (sources picked from getcmdtype).
+            cmdline = {
+                keymap = { preset = "cmdline" },
+                sources = function()
+                    local type = vim.fn.getcmdtype()
+                    -- `/`,`?` search → buffer words; `:` → commands/paths.
+                    if type == "/" or type == "?" then
+                        return { "buffer" }
+                    end
+                    if type == ":" or type == "@" then
+                        return { "cmdline", "path" }
+                    end
+                    return {}
+                end,
+                completion = {
+                    -- Auto-open the menu for `:`; search stays manual (<C-Space>).
+                    menu = {
+                        auto_show = function()
+                            return vim.fn.getcmdtype() == ":"
+                        end,
+                    },
+                    ghost_text = { enabled = true },
+                },
+            },
         },
     },
 }

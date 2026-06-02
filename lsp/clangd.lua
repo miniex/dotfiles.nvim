@@ -16,9 +16,10 @@ return {
         completeUnimported = true,
         clangdFileStatus = true,
     },
-    root_dir = function(bufnr, on_dir)
-        local fname = vim.api.nvim_buf_get_name(bufnr)
-        local primary = vim.fs.root(fname, {
+    -- Priority-grouped (0.11+): each nested table is one tier, outer order is
+    -- priority. Build system beats compile DB beats .git.
+    root_markers = {
+        {
             ".clangd",
             "CMakeLists.txt",
             "Makefile",
@@ -29,12 +30,11 @@ return {
             "meson_options.txt",
             "build.ninja",
             "xmake.lua",
-        })
-        local secondary = vim.fs.root(fname, {
+        },
+        {
             "compile_commands.json",
             "compile_flags.txt",
-        })
-        local fallback = vim.fs.root(fname, ".git")
-        on_dir(primary or secondary or fallback)
-    end,
+        },
+        ".git",
+    },
 }

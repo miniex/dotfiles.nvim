@@ -84,16 +84,18 @@ for t in jq taplo yamlfmt; do
 done
 
 section "Terminal / Fonts"
-case "${TERM:-}" in
-    xterm-kitty) ok "TERM=xterm-kitty (kitty detected)" ;;
-    *)
-        if have kitty; then
-            warn "kitty installed but TERM=${TERM:-unset} — image previews / symbol_map may not apply"
-        else
-            warn "not running under kitty — inline image previews / MDI font fallback disabled"
-        fi
-        ;;
-esac
+# kitty graphics protocol: kitty, WezTerm, and Ghostty all qualify.
+if [ "${TERM:-}" = "xterm-kitty" ] || [ -n "${KITTY_WINDOW_ID:-}" ]; then
+    ok "kitty detected (kitty graphics protocol available)"
+elif [ -n "${WEZTERM_EXECUTABLE:-}" ] || [ -n "${WEZTERM_PANE:-}" ]; then
+    ok "WezTerm detected (kitty graphics protocol available)"
+elif [ "${TERM:-}" = "xterm-ghostty" ] || [ -n "${GHOSTTY_RESOURCES_DIR:-}" ] || [ -n "${GHOSTTY_BIN_DIR:-}" ]; then
+    ok "Ghostty detected (kitty graphics protocol available)"
+elif have kitty; then
+    warn "kitty installed but TERM=${TERM:-unset} — image previews / symbol_map may not apply"
+else
+    warn "no graphics terminal (kitty/WezTerm/Ghostty) — inline image previews / MDI font fallback disabled"
+fi
 
 if have fc-list; then
     nerd_count=$(fc-list 2>/dev/null | grep -ciE "nerd font|symbols nerd font" || true)

@@ -63,6 +63,7 @@ Per-project file slots under `~/.local/share/nvim/harpoon/`.
 | `<leader>ma` / `<leader>mm` | Add file / toggle quick menu |
 | `<leader>mn` / `<leader>mp` | Next / previous slot         |
 | `<leader>m1` … `<leader>m5` | Jump to slot 1–5             |
+| `<leader>md`                | Remove current file          |
 
 ## Multi-Cursors (multicursor.nvim)
 
@@ -125,7 +126,7 @@ Bare `nvim` auto-restores the cwd session (skipped in headless or when the sessi
 
 ## LSP / Diagnostics
 
-> Neovim 0.11+ also auto-binds `grr`/`gri`/`grn`/`gra`/`gK`/`gO` on `LspAttach`.
+> Neovim 0.11+ also auto-binds `grr`/`gri`/`grn`/`gra`/`gK` on `LspAttach` (`gO` is remapped to Trouble below).
 > `gd`/`gr`/`gi`/`gy` open an fzf-lua picker (auto-jumps on a single result).
 >
 > Severity-sorted; gutter signs `✗`/`!`/`i`/`?` mirror lualine; colors match the scrollbar marks. Diag float shows source when ambiguous.
@@ -149,6 +150,8 @@ Bare `nvim` auto-restores the cwd session (skipped in headless or when the sessi
 | `[o` / `]o`                 | aerial: previous / next symbol                                     |
 | `<leader>cm`                | Open Mason                                                         |
 | `<leader>xx/xd/xq/xl`       | Trouble: diagnostics / buf / qf / loclist                          |
+| `<leader>xr` / `<leader>xs` | Trouble: LSP references / symbols                                  |
+| `gO`                        | Trouble: LSP defs / refs (overrides the 0.11 default)              |
 | `<leader>x<` / `<leader>x>` | Quickfix stack: older / newer list                                 |
 | `<leader>xQ` / `<leader>xL` | quicker.nvim: editable quickfix / loclist (`>`/`<` expand context) |
 | `<leader>xt` / `<leader>xT` | Trouble: TODOs / TODO+FIX+FIXME                                    |
@@ -176,6 +179,7 @@ Bare `nvim` auto-restores the cwd session (skipped in headless or when the sessi
 | `]F` / `[F`                 | n/x/o | Next / prev function end                                                  |
 | `]C` / `[C`                 | n/x/o | Next / prev class start (lowercase `]c`/`[c` left for diff change motion) |
 | `]a` / `[a`                 | n/x/o | Next / prev parameter                                                     |
+| `;` / `,`                   | n/x/o | Repeat last move forward / backward (TS goto / `f` / `t`)                 |
 | `<leader>cA` / `<leader>cS` | n     | Swap parameter with next / prev                                           |
 | `gnn`                       | n     | Init incremental selection                                                |
 | `gnm` / `gnM`               | x     | Expand / shrink node                                                      |
@@ -276,22 +280,22 @@ Python (pytest), Go (gotestsum), Elixir (mix), C/C++ (gtest), Lua (busted), Rust
 
 In the toggle terminal, `$EDITOR`/`$VISUAL`/`$GIT_EDITOR` forward to the parent Neovim via `scripts/term-bin/nvim` — `git commit` opens a split in the outer instance.
 
-| Key                                     | Description                                                                                                               |
-| --------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
-| `<leader>t` (n/t)                       | Toggle terminal (centered float)                                                                                          |
-| `<C-x>`                                 | Hide terminal                                                                                                             |
-| `<leader>w`                             | Smart buffer delete (last file → dashboard; on dashboard → file buf if any, else `:qall`)                                 |
-| `:q` / `:wq` / `:x` / `:exit` / `ZZ`    | Smart quit: bufdelete on last window, else `:quit`. `!` keeps force semantics. On dashboard → `:qall`; in `q:` → `:quit`. |
-| `ZQ`                                    | Force smart quit (no save)                                                                                                |
-| `<leader>;`                             | Toggle dashboard (peek; press again to return)                                                                            |
-| `<leader>bd` / `<leader>bD`             | Snacks.bufdelete: confirm-on-modified / force                                                                             |
-| `<leader>.` / `<leader>bS`              | Snacks scratch: toggle / select buffer                                                                                    |
-| `<leader>1` … `<leader>9` · `<leader>0` | Jump to bufferline position 1–9 / 10                                                                                      |
-| `[b` / `]b` · `<S-h>` / `<S-l>`         | Prev / next buffer (open-order)                                                                                           |
-| `<leader>cn` / `<leader>un`             | Notification history / dismiss all                                                                                        |
-| `<leader>yp` / `<leader>yP`             | Yank file path to `+`: absolute / relative                                                                                |
-| `]]` / `[[`                             | LSP word: next / previous reference                                                                                       |
-| `[i` / `]i`                             | Snacks scope: jump to top / bottom edge                                                                                   |
+| Key                                        | Description                                                                                                               |
+| ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------- |
+| `<leader>t` (n/t)                          | Toggle terminal (centered float)                                                                                          |
+| `<C-x>`                                    | Hide terminal                                                                                                             |
+| `<leader>w`                                | Smart buffer delete (last file → dashboard; on dashboard → file buf if any, else `:qall`)                                 |
+| `:q` / `:wq` / `:x` / `:exit` / `ZZ`       | Smart quit: bufdelete on last window, else `:quit`. `!` keeps force semantics. On dashboard → `:qall`; in `q:` → `:quit`. |
+| `ZQ`                                       | Force smart quit (no save)                                                                                                |
+| `<leader>;`                                | Toggle dashboard (peek; press again to return)                                                                            |
+| `<leader>bd` / `<leader>bD`                | Snacks.bufdelete: confirm-on-modified / force                                                                             |
+| `<leader>.` / `<leader>bS`                 | Snacks scratch: toggle / select buffer                                                                                    |
+| `<leader>1` … `<leader>9` · `<leader>0`    | Jump to bufferline position 1–9 / 10                                                                                      |
+| `[b` / `]b` · `<S-h>` / `<S-l>`            | Prev / next buffer (open-order)                                                                                           |
+| `<leader>cn` / `<leader>un`                | Notification history / dismiss all                                                                                        |
+| `<leader>yp` / `<leader>yP` / `<leader>yl` | Yank file path to `+`: absolute / relative / relative:line                                                                |
+| `]]` / `[[`                                | LSP word: next / previous reference                                                                                       |
+| `[i` / `]i`                                | Snacks scope: jump to top / bottom edge                                                                                   |
 
 ## Language-specific
 

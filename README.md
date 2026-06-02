@@ -2,7 +2,7 @@
 
 Lean, fast, easy on the eyes. Native LSP via `lsp/<server>.lua` discovery, Rust-backed completion (blink.cmp), aggressive lazy-loading.
 
-> **Targets Linux/macOS in [Kitty](https://sw.kovidgoyal.net/kitty/).** WSL2 supported via `clip.exe`. Other terminals work, minus inline image previews and the Material Design Icons fallback.
+> **Targets Linux/macOS in [Kitty](https://sw.kovidgoyal.net/kitty/)** (image previews also work in WezTerm / Ghostty via the kitty graphics protocol). WSL2 supported via `clip.exe`. Other terminals work, minus inline image previews and the Material Design Icons fallback.
 >
 > Pairs with [`miniex/dotfiles.kitty`](https://github.com/miniex/dotfiles.kitty) for matching font fallback / theme / keymaps.
 

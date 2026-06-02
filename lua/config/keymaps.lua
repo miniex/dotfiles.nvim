@@ -108,17 +108,27 @@ map("<leader>qR", "<cmd>restart<cr>", "n", "Restart Neovim")
 map("<leader>x<", "<cmd>colder<cr>", "n", "Quickfix older")
 map("<leader>x>", "<cmd>cnewer<cr>", "n", "Quickfix newer")
 
--- Yank file path to `+` — absolute / relative variants.
-map("<leader>yp", function()
-    local path = vim.fn.expand("%:p")
+-- Yank file path to `+` — absolute / relative / relative:line variants.
+local function yank_path(transform)
+    local path = transform()
     vim.fn.setreg("+", path)
     vim.notify(path, vim.log.levels.INFO, { title = "yanked path" })
+end
+map("<leader>yp", function()
+    yank_path(function()
+        return vim.fn.expand("%:p")
+    end)
 end, "n", "Yank file path (absolute)")
 map("<leader>yP", function()
-    local path = vim.fn.fnamemodify(vim.fn.expand("%"), ":~:.")
-    vim.fn.setreg("+", path)
-    vim.notify(path, vim.log.levels.INFO, { title = "yanked path" })
+    yank_path(function()
+        return vim.fn.fnamemodify(vim.fn.expand("%"), ":~:.")
+    end)
 end, "n", "Yank file path (relative)")
+map("<leader>yl", function()
+    yank_path(function()
+        return vim.fn.expand("%:.") .. ":" .. vim.fn.line(".")
+    end)
+end, "n", "Yank file path:line (relative)")
 
 -- Buffer nav keymaps live on the bufferline.nvim spec.
 

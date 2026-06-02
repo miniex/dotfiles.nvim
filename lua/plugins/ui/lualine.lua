@@ -174,6 +174,20 @@ return {
                 },
                 lualine_x = {
                     {
+                        -- Attached LSP client name(s) for the current buffer.
+                        function()
+                            local names = {}
+                            for _, client in ipairs(vim.lsp.get_clients({ bufnr = 0 })) do
+                                names[#names + 1] = client.name
+                            end
+                            return table.concat(names, ", ")
+                        end,
+                        cond = function()
+                            return next(vim.lsp.get_clients({ bufnr = 0 })) ~= nil
+                        end,
+                        color = { fg = damin_blue },
+                    },
+                    {
                         require("lazy.status").updates,
                         cond = require("lazy.status").has_updates,
                         color = { fg = damin_pink },
@@ -189,6 +203,20 @@ return {
                     },
                 },
                 lualine_y = {
+                    {
+                        -- Search match count, shown only while hlsearch is on.
+                        function()
+                            local s = vim.fn.searchcount({ maxcount = 999 })
+                            if not s.total or s.total == 0 then
+                                return ""
+                            end
+                            return ("⌕ %d/%d"):format(s.current, s.total)
+                        end,
+                        cond = function()
+                            return vim.v.hlsearch == 1
+                        end,
+                        color = { fg = p.overlay1 },
+                    },
                     { "progress", color = { fg = p.overlay1 } },
                     { "location", color = { fg = p.overlay2 } },
                 },

@@ -121,11 +121,36 @@ function M.apply(ft)
 end
 
 -- One FileType autocmd for all registered fts (replaces the per-ft stubs).
+local group = vim.api.nvim_create_augroup("format-width", { clear = true })
 vim.api.nvim_create_autocmd("FileType", {
-    group = vim.api.nvim_create_augroup("format-width", { clear = true }),
+    group = group,
     pattern = vim.tbl_keys(M.specs),
     callback = function(args)
         M.apply(vim.bo[args.buf].filetype)
+    end,
+})
+
+-- Drop the cache when a formatter config is saved so the ruler re-scans.
+vim.api.nvim_create_autocmd("BufWritePost", {
+    group = group,
+    pattern = {
+        ".clang-format",
+        "_clang-format",
+        "rustfmt.toml",
+        ".rustfmt.toml",
+        "stylua.toml",
+        ".stylua.toml",
+        "pyproject.toml",
+        "ruff.toml",
+        ".ruff.toml",
+        ".ocamlformat",
+        ".formatter.exs",
+        ".sqlfluff",
+        "taplo.toml",
+        ".taplo.toml",
+    },
+    callback = function()
+        cache = {}
     end,
 })
 

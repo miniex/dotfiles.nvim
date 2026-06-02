@@ -115,6 +115,12 @@ return {
             if ok_blink then
                 capabilities = blink.get_lsp_capabilities({}, false)
             end
+            -- Folding: many servers (lua_ls/gopls) only emit ranges when advertised; foldexpr is wired below.
+            capabilities.textDocument = capabilities.textDocument or {}
+            capabilities.textDocument.foldingRange = { dynamicRegistration = false, lineFoldingOnly = true }
+            -- File watching: nvim defaults this off on Linux/BSD, so opt in for all servers.
+            capabilities.workspace = capabilities.workspace or {}
+            capabilities.workspace.didChangeWatchedFiles = { dynamicRegistration = true }
             vim.lsp.config("*", { capabilities = capabilities, root_markers = { ".git" } })
 
             -- virtual_text is off — tiny-inline-diagnostic owns it.
@@ -223,11 +229,10 @@ return {
                         vim.wo[win][0].foldexpr = "v:lua.vim.lsp.foldexpr()"
                     end
                 end
-                -- Color swatches (0.12), tailwindcss only: colorizer owns hex and leaves
-                -- tailwind classes uncolored. documentColor registers dynamically after
-                -- init, so poll until the capability lands, then enable.
-                if vim.lsp.document_color and client.name == "tailwindcss" and not vim.b[bufnr]._doccolor_polling then
-                    vim.b[bufnr]._doccolor_polling = true
+                -- Color swatches (0.12) on any documentColor-capable server (colorizer
+                -- owns hex). The capability registers post-init, so poll per client.
+                if vim.lsp.document_color and not vim.b[bufnr]["_doccolor_polling_" .. client.id] then
+                    vim.b[bufnr]["_doccolor_polling_" .. client.id] = true
                     local cid, tries = client.id, 0
                     local function enable_color()
                         if not vim.api.nvim_buf_is_valid(bufnr) then
@@ -236,13 +241,13 @@ return {
                         local c = vim.lsp.get_client_by_id(cid)
                         if c and c:supports_method("textDocument/documentColor", bufnr) then
                             pcall(vim.lsp.document_color.enable, true, { bufnr = bufnr })
-                            vim.b[bufnr]._doccolor_polling = nil
+                            vim.b[bufnr]["_doccolor_polling_" .. cid] = nil
                         elseif c and tries < 20 then
                             tries = tries + 1
                             vim.defer_fn(enable_color, 250)
                         else
                             -- client gone / gave up — clear so a fresh attach (restart) re-polls.
-                            vim.b[bufnr]._doccolor_polling = nil
+                            vim.b[bufnr]["_doccolor_polling_" .. cid] = nil
                         end
                     end
                     enable_color()
@@ -327,8 +332,26 @@ return {
                     map("n", "<leader>ci", toggle_inlay, "Toggle Inlay Hints")
                     map("n", "<leader>uh", toggle_inlay, "Toggle Inlay Hints")
                     map("n", "<leader>cL", vim.lsp.codelens.run, "Run CodeLens")
+                    -- Prefer one formatter per ft when >1 client formats (e.g. python:
+                    -- ruff). Single-formatter buffers fall through unfiltered.
+                    local format_prefs = { python = "ruff" }
                     map("n", "<leader>cf", function()
-                        vim.lsp.buf.format({ async = true })
+                        local b = vim.api.nvim_get_current_buf()
+                        local formatters = vim.tbl_filter(function(c)
+                            return c:supports_method("textDocument/formatting", b)
+                        end, vim.lsp.get_clients({ bufnr = b }))
+                        local opts_fmt = { async = true, bufnr = b }
+                        local preferred = format_prefs[vim.bo[b].filetype]
+                        local has_preferred = preferred
+                            and vim.iter(formatters):any(function(c)
+                                return c.name == preferred
+                            end)
+                        if #formatters > 1 and has_preferred then
+                            opts_fmt.filter = function(c)
+                                return c.name == preferred
+                            end
+                        end
+                        vim.lsp.buf.format(opts_fmt)
                     end, "Format (LSP)")
                     map("n", "<leader>cs", "<cmd>LspRestart<cr>", "LSP Restart")
                     map("n", "<leader>rn", vim.lsp.buf.rename, "Rename")

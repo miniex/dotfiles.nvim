@@ -37,7 +37,7 @@ Drop Lua files in `~/.config/nvim/snippets/`. Filetype-scoped by filename (e.g. 
 
 ## Sidebar layout
 
-- `lua/plugins/ui/edgy.lua` pins aerial → right, trouble / qf / dap-repl → bottom.
+- `lua/plugins/ui/edgy.lua` pins aerial + neotest-summary → right, trouble / qf / dap-repl + neotest-output → bottom.
 
 ## Scroll animation
 

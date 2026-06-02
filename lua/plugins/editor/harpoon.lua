@@ -27,6 +27,13 @@ return {
                 desc = "Harpoon Menu",
             },
             {
+                "<leader>md",
+                function()
+                    h():list():remove()
+                end,
+                desc = "Harpoon Remove",
+            },
+            {
                 "<leader>mn",
                 function()
                     h():list():next()
