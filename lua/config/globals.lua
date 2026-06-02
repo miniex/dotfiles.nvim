@@ -16,7 +16,8 @@ vim.g.flower_title = function(s)
 end
 
 -- Pin every plugin's float Normal/Border/Title groups to one look.
-local pink = require("config.palette").pink
+local palette = require("config.palette")
+local pink = palette.pink
 local function unify_floats()
     local function setn(name)
         vim.api.nvim_set_hl(0, name, { bg = "NONE" })
@@ -88,7 +89,7 @@ local function unify_floats()
     sett("BqfPreviewTitle")
 
     -- snacks indent guides → muted damin tones (indent dim, scope pink).
-    vim.api.nvim_set_hl(0, "SnacksIndent", { fg = "#3a2a35" })
+    vim.api.nvim_set_hl(0, "SnacksIndent", { fg = palette.indent })
     vim.api.nvim_set_hl(0, "SnacksIndentScope", { fg = pink })
 end
 -- ColorScheme fires on the initial catppuccin load too — no eager call needed.

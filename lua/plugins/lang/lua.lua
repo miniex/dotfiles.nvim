@@ -13,7 +13,10 @@ return {
         optional = true,
         opts = {
             sources = {
-                default = { "lsp", "path", "snippets", "buffer", "lazydev" },
+                -- inherit_defaults extends (not replaces) the global sources.
+                per_filetype = {
+                    lua = { "lazydev", inherit_defaults = true },
+                },
                 providers = {
                     lazydev = {
                         name = "LazyDev",

@@ -6,6 +6,7 @@ local M = {
     -- Git accents (shared by themes + scrollbar marks).
     git_add = "#A8DBB6", -- mint
     git_delete = "#D8788C", -- rose
+    indent = "#3a2a35", -- snacks indent guide
 }
 
 function M.mocha()

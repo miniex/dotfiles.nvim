@@ -48,6 +48,7 @@ return {
                     vim.cmd.RustLsp("codeAction")
                 end,
                 desc = "Rust Code Action",
+                ft = "rust",
             },
             {
                 "<leader>cD",
@@ -55,6 +56,7 @@ return {
                     vim.cmd.RustLsp("debuggables")
                 end,
                 desc = "Rust Debuggables",
+                ft = "rust",
             },
             {
                 "<leader>cT",
@@ -62,6 +64,7 @@ return {
                     vim.cmd.RustLsp("testables")
                 end,
                 desc = "Rust Testables",
+                ft = "rust",
             },
             {
                 "<leader>cE",
@@ -69,6 +72,7 @@ return {
                     vim.cmd.RustLsp("expandMacro")
                 end,
                 desc = "Rust Expand Macro",
+                ft = "rust",
             },
             {
                 "<leader>cP",
@@ -76,6 +80,7 @@ return {
                     vim.cmd.RustLsp("parentModule")
                 end,
                 desc = "Rust Parent Module",
+                ft = "rust",
             },
         },
         opts = {

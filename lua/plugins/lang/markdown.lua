@@ -13,7 +13,7 @@ return {
     -- Inline render of headings/lists/checkboxes/tables/code. Raw in i/v.
     {
         "MeanderingProgrammer/render-markdown.nvim",
-        ft = { "markdown", "mdx", "norg", "rmd", "org" },
+        ft = { "markdown", "mdx" },
         dependencies = {
             "nvim-treesitter/nvim-treesitter",
             "nvim-tree/nvim-web-devicons",
