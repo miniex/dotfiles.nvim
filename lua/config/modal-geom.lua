@@ -67,6 +67,31 @@ function M.inner_rect()
     return { width = w - 2, height = h - 2, row = r, col = c }
 end
 
+-- Scratch modal: nomodifiable `nofile` buffer of `lines` in a centered flower
+-- float; `opts.filetype`/`opts.title`; `q`/`<Esc>` close. Returns win, buf.
+function M.scratch(lines, opts)
+    opts = opts or {}
+    local buf = vim.api.nvim_create_buf(false, true)
+    vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
+    vim.bo[buf].buftype = "nofile"
+    vim.bo[buf].modifiable = false
+    if opts.filetype then
+        vim.bo[buf].filetype = opts.filetype
+    end
+    local rect = M.inner_rect()
+    rect.relative = "editor"
+    rect.border = vim.g.flower_border
+    rect.style = "minimal"
+    if opts.title then
+        rect.title = vim.g.flower_title(opts.title)
+        rect.title_pos = "center"
+    end
+    local win = vim.api.nvim_open_win(buf, true, rect)
+    vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = buf, silent = true })
+    vim.keymap.set("n", "<Esc>", "<cmd>close<cr>", { buffer = buf, silent = true })
+    return win, buf
+end
+
 -- Modals whose APIs ignore explicit row/col — snapped on FileType (synchronous,
 -- no flash). neo-tree is handled separately (nui nested popup; see VimResized).
 local ALIGNED_FT = {

@@ -87,12 +87,12 @@ See [`lua/config/modal-floats.lua`](../lua/config/modal-floats.lua) for the mutu
 - **mason-tool-installer** — single source of truth for non-LSP tools (shellcheck, golangci-lint, eslint_d, selene, markdownlint, statix, hadolint, sqlfluff, yamllint, …).
 - **DAP** — Rust (rustaceanvim's codelldb) / C-C++ (codelldb) / Python (debugpy) / Go (delve) / Zig (codelldb) / Elixir (elixir-ls debug adapter) / JS-TS (js-debug-adapter, Node). C/C++ and Zig share the codelldb resolver in `lua/config/codelldb.lua`. Persistent breakpoints per-cwd.
 - **neotest** — Python (pytest) / Go (gotestsum) / Elixir (mix) / C/C++ (gtest) / Lua (busted) / Rust (rustaceanvim) / Zig. Summary window state restored across sessions.
-- **health check** — `./tools/health.sh` reports prereq status.
+- **health check** — `./tools/health.sh` reports prereq status and runs a headless config-load smoke test.
 
 ## Markdown
 
 - `render-markdown.nvim` inline rendering of headings / lists / tables / code blocks.
-- `mdx_analyzer` handles `.mdx`; `marksman` handles `.md`.
+- `mdx_analyzer` handles `.mdx`; `marksman` handles `.md`; `harper_ls` adds prose grammar / spell on markdown.
 
 ## Database
 

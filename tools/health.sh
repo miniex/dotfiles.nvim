@@ -124,4 +124,20 @@ for c in wl-copy xclip pbcopy clip.exe; do
 done
 [ -n "$bridge" ] || warn "no clipboard tool found (wl-copy / xclip / pbcopy / clip.exe)"
 
+section "Config load (headless smoke test)"
+if have nvim; then
+    runner="nvim"
+    have timeout && runner="timeout 30 nvim"
+    load_out=$($runner --headless "+lua print('NVIM_CONFIG_OK')" +qa 2>&1) || true
+    if printf '%s' "$load_out" | grep -q "NVIM_CONFIG_OK" \
+        && ! printf '%s' "$load_out" | grep -qiE "error|E[0-9]+:"; then
+        ok "config loads clean (headless)"
+    else
+        first=$(printf '%s\n' "$load_out" | grep -iE "error|E[0-9]+:" | head -n1)
+        warn "config emitted errors on load: ${first:-no sentinel (NVIM_CONFIG_OK) printed}"
+    fi
+else
+    warn "nvim not on PATH — skipping config load test"
+fi
+
 printf "\nDone.\n"

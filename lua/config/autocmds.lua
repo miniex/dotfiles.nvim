@@ -183,26 +183,8 @@ vim.api.nvim_create_user_command("Messages", function()
         vim.notify("no messages", vim.log.levels.INFO)
         return
     end
-    local mgeom = require("config.modal-geom")
-    local w, h, r, c = mgeom.geom()
-    local buf = vim.api.nvim_create_buf(false, true)
-    vim.api.nvim_buf_set_lines(buf, 0, -1, false, lines)
-    vim.bo[buf].buftype = "nofile"
-    vim.bo[buf].modifiable = false
-    vim.bo[buf].filetype = "messages"
-    local win = vim.api.nvim_open_win(buf, true, {
-        relative = "editor",
-        border = vim.g.flower_border,
-        style = "minimal",
-        width = w - 2,
-        height = h - 2,
-        row = r,
-        col = c,
-        title = " ✿ messages ✿ ",
-        title_pos = "center",
-    })
+    local win = require("config.modal-geom").scratch(lines, { filetype = "messages", title = "messages" })
     vim.api.nvim_win_set_cursor(win, { #lines, 0 })
-    vim.keymap.set("n", "q", "<cmd>close<cr>", { buffer = buf, silent = true })
 end, { desc = "Show :messages in a centered modal" })
 vim.cmd([[cnoreabbrev <expr> messages getcmdtype() == ':' && getcmdline() == 'messages' ? 'Messages' : 'messages']])
 

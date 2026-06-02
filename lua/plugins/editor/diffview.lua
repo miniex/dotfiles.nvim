@@ -19,6 +19,7 @@ return {
         { "<leader>gvh", "<cmd>DiffviewFileHistory % --range=stash<cr>", desc = "File History (stash)" },
         { "<leader>gvt", "<cmd>DiffviewToggleFiles<cr>", desc = "Diffview Toggle Files Panel" },
         { "<leader>gvp", "<cmd>DiffviewFocusFiles<cr>", desc = "Diffview Focus Files Panel" },
+        { "<leader>gvm", "<cmd>DiffviewOpen<cr>", desc = "Diffview Merge (conflicts)" },
     },
     opts = {
         enhanced_diff_hl = true,
