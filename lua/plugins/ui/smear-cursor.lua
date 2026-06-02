@@ -15,8 +15,11 @@ return {
         smear_terminal_mode = false,
     },
     config = function(_, opts)
-        require("smear_cursor").setup(opts)
+        local smear = require("smear_cursor")
+        smear.setup(opts)
 
+        -- enabled lives on the module (__newindex toggles listen/unlisten);
+        -- smear_terminal_mode is a config key.
         local sc = require("smear_cursor.config")
         local grp = vim.api.nvim_create_augroup("SmearCursorAutocmds", { clear = true })
 
@@ -59,19 +62,19 @@ return {
             group = grp,
             callback = function()
                 if should_stay_disabled(0) then
-                    sc.enabled = false
+                    smear.enabled = false
                     float_gen = float_gen + 1
                     return
                 end
                 if vim.api.nvim_win_get_config(0).relative == "" then
                     return
                 end
-                sc.enabled = false
+                smear.enabled = false
                 float_gen = float_gen + 1
                 local mine = float_gen
                 vim.defer_fn(function()
                     if mine == float_gen and not should_stay_disabled(0) then
-                        sc.enabled = true
+                        smear.enabled = true
                     end
                 end, 80)
             end,
@@ -82,7 +85,7 @@ return {
             group = grp,
             callback = function(event)
                 if should_stay_disabled(event.buf) then
-                    sc.enabled = false
+                    smear.enabled = false
                     float_gen = float_gen + 1
                 end
             end,
@@ -95,7 +98,7 @@ return {
                 if should_stay_disabled(0) then
                     vim.schedule(function()
                         if not should_stay_disabled(0) then
-                            sc.enabled = true
+                            smear.enabled = true
                         end
                     end)
                 end

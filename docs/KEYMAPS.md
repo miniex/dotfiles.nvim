@@ -14,8 +14,9 @@ Leader: `<Space>`. `<localleader>` also `<Space>` (most localleader bindings liv
 | `<Esc>`             | N    | Clear search highlight                              |
 | `<leader>bs`        | N    | Save (writes auto-mkdir parent dirs)                |
 | `<leader>D`         | N/V  | Delete without yank (`<leader>d` reserved for dap)  |
+| `<leader>p`         | N    | Paste + auto-reindent (`=` over pasted lines)       |
 | `<leader>p`         | V    | Paste without overwriting register                  |
-| `<leader>P`         | N/V  | Paste + auto-reindent (`=` over pasted lines)       |
+| `<leader>P`         | V    | Paste over + auto-reindent                          |
 | `<` / `>`           | V    | Indent / outdent (keep selection)                   |
 
 > `n`, `N`, `*`, `#`, `g*`, `g#`, `<C-o>`, `<C-i>`, `[c`, `]c`, `[m`, `]m` auto-center the cursor (`zvzz`).

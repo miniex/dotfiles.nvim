@@ -376,7 +376,9 @@ return {
                     vim.schedule(function()
                         require("mason-lspconfig").setup({
                             ensure_installed = servers,
-                            automatic_enable = true,
+                            -- We enable servers ourselves above (lang + executable gated);
+                            -- automatic_enable = true would enable every installed package.
+                            automatic_enable = false,
                         })
                     end)
                 end,

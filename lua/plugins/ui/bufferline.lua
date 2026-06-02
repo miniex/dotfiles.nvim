@@ -63,8 +63,9 @@ local function pinned_set()
     if not items then
         return pinned
     end
+    -- harpoon stores item.value relative to its root (cwd); buf.path is absolute.
     for _, item in ipairs(items) do
-        pinned[item.value] = true
+        pinned[vim.fn.fnamemodify(item.value, ":p")] = true
     end
     return pinned
 end

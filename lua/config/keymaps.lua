@@ -91,11 +91,9 @@ map("<leader>bs", ":w<CR>", "n", "Save file")
 -- delete without yank (D, not d: <leader>d is dap)
 map("<leader>D", '"_d', { "n", "x" }, "Delete (no yank)")
 
--- paste without yank
+-- normal <leader>P left free for the snacks profiler group
+map("<leader>p", "p`[v`]=", "n", "Paste + reindent")
 map("<leader>p", '"_dP', "x", "Paste over (no yank)")
-
--- paste + reindent (uppercase P; lowercase still belongs to paste-without-yank).
-map("<leader>P", "p`[v`]=", "n", "Paste + reindent")
 map("<leader>P", '"_dP`[v`]=', "x", "Paste over + reindent")
 
 -- 0.12 built-in undo tree (opt package, needs packadd before first use).
