@@ -1,7 +1,5 @@
-local ls = require("luasnip")
-local s = ls.snippet
-local i = ls.insert_node
-local fmt = require("luasnip.extras.fmt").fmt
+local u = require("config.snippets")
+local s, i, fmt = u.s, u.i, u.fmt
 
 return {
     s("let", fmt("let {} = {}", { i(1, "x"), i(0) })),

@@ -1,18 +1,13 @@
+local code_action_only = require("config.lang").code_action_only
+
 return {
     {
         "mfussenegger/nvim-dap-python",
         ft = "python",
         dependencies = { "mfussenegger/nvim-dap" },
         config = function()
-            local mason_path = vim.fn.stdpath("data") .. "/mason/packages/debugpy/venv/bin/python"
-            if vim.fn.executable(mason_path) ~= 1 then
-                vim.schedule(function()
-                    vim.notify(
-                        "debugpy not found at " .. mason_path .. "\nRun :MasonInstall debugpy",
-                        vim.log.levels.WARN,
-                        { title = "nvim-dap-python" }
-                    )
-                end)
+            local mason_path = require("config.dap").mason_bin("packages/debugpy/venv/bin/python", "debugpy")
+            if not mason_path then
                 return
             end
             require("dap-python").setup(mason_path)
@@ -42,23 +37,13 @@ return {
         keys = {
             {
                 "<leader>cI",
-                function()
-                    vim.lsp.buf.code_action({
-                        context = { only = { "source.organizeImports" }, diagnostics = {} },
-                        apply = true,
-                    })
-                end,
+                code_action_only("source.organizeImports"),
                 desc = "Python: Organize Imports",
                 ft = "python",
             },
             {
                 "<leader>cX",
-                function()
-                    vim.lsp.buf.code_action({
-                        context = { only = { "source.fixAll" }, diagnostics = {} },
-                        apply = true,
-                    })
-                end,
+                code_action_only("source.fixAll"),
                 desc = "Python: Fix All",
                 ft = "python",
             },

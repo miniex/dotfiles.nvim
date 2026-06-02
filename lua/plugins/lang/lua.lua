@@ -8,23 +8,14 @@ return {
             },
         },
     },
-    {
-        "saghen/blink.cmp",
-        optional = true,
-        opts = {
-            sources = {
-                -- inherit_defaults extends (not replaces) the global sources.
-                per_filetype = {
-                    lua = { "lazydev", inherit_defaults = true },
-                },
-                providers = {
-                    lazydev = {
-                        name = "LazyDev",
-                        module = "lazydev.integrations.blink",
-                        score_offset = 100,
-                    },
-                },
-            },
+    -- inherit_defaults extends (not replaces) the global sources.
+    require("config.lang").blink({
+        lua = { "lazydev", inherit_defaults = true },
+    }, {
+        lazydev = {
+            name = "LazyDev",
+            module = "lazydev.integrations.blink",
+            score_offset = 100,
         },
-    },
+    }),
 }

@@ -12,7 +12,10 @@ if [ ! -f "$defaults_file" ]; then
     exit 1
 fi
 
-if [ -t 1 ]; then
+# Shared palette; fall back to inline definitions if it can't be resolved.
+if [ -r "$config_dir/scripts/_colors.sh" ]; then
+    . "$config_dir/scripts/_colors.sh"
+elif [ -t 1 ]; then
     RESET=$(printf '\033[0m')
     BOLD=$(printf '\033[1m')
     DIM=$(printf '\033[2m')

@@ -1,8 +1,5 @@
-local ls = require("luasnip")
-local s = ls.snippet
-local i = ls.insert_node
-local rep = require("luasnip.extras").rep
-local fmt = require("luasnip.extras.fmt").fmt
+local u = require("config.snippets")
+local s, i, rep, fmt = u.s, u.i, u.rep, u.fmt
 
 return {
     s("tbl", fmt("[{}]\n{} = {}", { i(1, "section"), i(2, "key"), i(0, '"value"') })),

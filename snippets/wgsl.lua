@@ -1,7 +1,5 @@
-local ls = require("luasnip")
-local s = ls.snippet
-local i = ls.insert_node
-local fmt = require("luasnip.extras.fmt").fmt
+local u = require("config.snippets")
+local s, i, fmt = u.s, u.i, u.fmt
 -- `{}` fmt delimiters (not `<>`): WGSL uses `<>` itself (vec3<f32>), so `{`/`}` escape as `{{`/`}}`.
 
 return {

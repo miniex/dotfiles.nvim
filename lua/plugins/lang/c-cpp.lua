@@ -39,8 +39,7 @@ return {
         "mfussenegger/nvim-dap",
         optional = true,
         opts = function(_, opts)
-            opts.setups = opts.setups or {}
-            table.insert(opts.setups, function(dap)
+            require("config.dap").setup(opts, function(dap)
                 dap.adapters.codelldb = dap.adapters.codelldb or require("config.codelldb").adapter("c/c++")
                 if not dap.adapters.codelldb then
                     return

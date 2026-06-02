@@ -1,15 +1,9 @@
 vim.filetype.add({ extension = { mdx = "mdx" } })
 
 return {
-    {
-        "nvim-treesitter/nvim-treesitter",
-        opts = function(_, opts)
-            opts.ensure_installed = opts.ensure_installed or {}
-            -- No dedicated mdx parser in nvim-treesitter; alias to markdown so
-            -- prose/headings/code fences still highlight (JSX islands won't).
-            vim.treesitter.language.register("markdown", "mdx")
-        end,
-    },
+    -- No dedicated mdx parser in nvim-treesitter; alias to markdown so
+    -- prose/headings/code fences still highlight (JSX islands won't).
+    require("config.lang").treesitter(nil, { markdown = "mdx" }),
     -- Inline render of headings/lists/checkboxes/tables/code. Raw in i/v.
     {
         "MeanderingProgrammer/render-markdown.nvim",

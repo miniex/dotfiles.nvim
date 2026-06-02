@@ -35,58 +35,59 @@ local function unify_floats()
     sett("FloatTitle")
     sett("FloatFooter")
 
-    -- neo-tree
-    setn("NeoTreeNormal")
-    setn("NeoTreeNormalNC")
-    setn("NeoTreeFloatNormal")
-    setb("NeoTreeFloatBorder")
-    sett("NeoTreeFloatTitle")
-
-    -- snacks
-    for _, k in ipairs({ "Normal", "Border", "Title" }) do
-        for _, kind in ipairs({ "Picker", "Notifier", "Input", "Scratch", "Zen", "Terminal", "Dashboard", "" }) do
-            local g = "Snacks" .. kind .. k
-            if k == "Border" then
-                setb(g)
-            elseif k == "Title" then
-                sett(g)
-            else
-                setn(g)
-            end
-        end
+    -- Snacks splits Normal/Border/Title across many window styles.
+    local snacks_n, snacks_b, snacks_t = {}, {}, {}
+    for _, kind in ipairs({ "Picker", "Notifier", "Input", "Scratch", "Zen", "Terminal", "Dashboard", "" }) do
+        table.insert(snacks_n, "Snacks" .. kind .. "Normal")
+        table.insert(snacks_b, "Snacks" .. kind .. "Border")
+        table.insert(snacks_t, "Snacks" .. kind .. "Title")
     end
 
-    -- which-key
-    setn("WhichKeyNormal")
-    setn("WhichKeyFloat")
-    setb("WhichKeyBorder")
-    sett("WhichKeyTitle")
-
-    -- fzf-lua
-    setn("FzfLuaNormal")
-    setn("FzfLuaPreviewNormal")
-    setb("FzfLuaBorder")
-    setb("FzfLuaPreviewBorder")
-    sett("FzfLuaTitle")
-    sett("FzfLuaPreviewTitle")
-
-    -- dropbar
-    setn("DropBarMenuNormalFloat")
-    setb("DropBarMenuFloatBorder")
-    sett("DropBarMenuFloatTitle")
-
-    -- blink.cmp
-    setn("BlinkCmpMenu")
-    setn("BlinkCmpDoc")
-    setn("BlinkCmpSignatureHelp")
-    setb("BlinkCmpMenuBorder")
-    setb("BlinkCmpDocBorder")
-    setb("BlinkCmpSignatureHelpBorder")
-
-    -- bqf preview & nvim-cmp legacy
-    setn("BqfPreviewFloat")
-    setb("BqfPreviewBorder")
-    sett("BqfPreviewTitle")
+    -- Per-plugin float groups: n = Normal, b = Border, t = Title.
+    local groups = {
+        NeoTree = {
+            n = { "NeoTreeNormal", "NeoTreeNormalNC", "NeoTreeFloatNormal" },
+            b = { "NeoTreeFloatBorder" },
+            t = { "NeoTreeFloatTitle" },
+        },
+        Snacks = { n = snacks_n, b = snacks_b, t = snacks_t },
+        WhichKey = {
+            n = { "WhichKeyNormal", "WhichKeyFloat" },
+            b = { "WhichKeyBorder" },
+            t = { "WhichKeyTitle" },
+        },
+        FzfLua = {
+            n = { "FzfLuaNormal", "FzfLuaPreviewNormal" },
+            b = { "FzfLuaBorder", "FzfLuaPreviewBorder" },
+            t = { "FzfLuaTitle", "FzfLuaPreviewTitle" },
+        },
+        DropBar = {
+            n = { "DropBarMenuNormalFloat" },
+            b = { "DropBarMenuFloatBorder" },
+            t = { "DropBarMenuFloatTitle" },
+        },
+        BlinkCmp = {
+            n = { "BlinkCmpMenu", "BlinkCmpDoc", "BlinkCmpSignatureHelp" },
+            b = { "BlinkCmpMenuBorder", "BlinkCmpDocBorder", "BlinkCmpSignatureHelpBorder" },
+        },
+        -- bqf preview & nvim-cmp legacy
+        Bqf = {
+            n = { "BqfPreviewFloat" },
+            b = { "BqfPreviewBorder" },
+            t = { "BqfPreviewTitle" },
+        },
+    }
+    for _, g in pairs(groups) do
+        for _, name in ipairs(g.n or {}) do
+            setn(name)
+        end
+        for _, name in ipairs(g.b or {}) do
+            setb(name)
+        end
+        for _, name in ipairs(g.t or {}) do
+            sett(name)
+        end
+    end
 
     -- snacks indent guides → muted damin tones (indent dim, scope pink).
     vim.api.nvim_set_hl(0, "SnacksIndent", { fg = palette.indent })

@@ -1,8 +1,5 @@
 return {
-    {
-        "WhoIsSethDaniel/mason-tool-installer.nvim",
-        opts = { ensure_installed = { "rust-analyzer" } },
-    },
+    require("config.lang").mason({ "rust-analyzer" }),
     {
         "Saecki/crates.nvim",
         event = { "BufRead Cargo.toml" },

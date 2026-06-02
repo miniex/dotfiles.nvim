@@ -4,17 +4,9 @@ return {
         "mfussenegger/nvim-dap",
         optional = true,
         opts = function(_, opts)
-            opts.setups = opts.setups or {}
-            table.insert(opts.setups, function(dap)
-                local adapter = vim.fn.stdpath("data") .. "/mason/packages/elixir-ls/debug_adapter.sh"
-                if vim.fn.executable(adapter) ~= 1 then
-                    vim.schedule(function()
-                        vim.notify(
-                            "elixir-ls debug adapter not found at " .. adapter .. "\nRun :MasonInstall elixir-ls",
-                            vim.log.levels.WARN,
-                            { title = "nvim-dap (elixir)" }
-                        )
-                    end)
+            require("config.dap").setup(opts, function(dap)
+                local adapter = require("config.dap").mason_bin("packages/elixir-ls/debug_adapter.sh", "elixir-ls")
+                if not adapter then
                     return
                 end
 

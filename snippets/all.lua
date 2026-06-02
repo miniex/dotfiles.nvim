@@ -1,23 +1,5 @@
-local ls = require("luasnip")
-local s = ls.snippet
-local i = ls.insert_node
-local f = ls.function_node
-local fmt = require("luasnip.extras.fmt").fmt
-
-math.randomseed(os.time() + math.floor((os.clock() or 0) * 1e6))
-local function uuid_v4()
-    return (
-        string.gsub("xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx", "[xy]", function(c)
-            local r = math.random(0, 15)
-            local v = (c == "x") and r or (r % 4 + 8)
-            return string.format("%x", v)
-        end)
-    )
-end
-
-local function today()
-    return os.date("%Y-%m-%d")
-end
+local u = require("config.snippets")
+local s, i, f, fmt, today, uuid = u.s, u.i, u.f, u.fmt, u.today, u.uuid
 
 return {
     s("date", f(today)),
@@ -33,7 +15,7 @@ return {
             return os.date("!%Y-%m-%dT%H:%M:%SZ")
         end)
     ),
-    s("uuid", f(uuid_v4)),
+    s("uuid", f(uuid)),
     s("todo", fmt("TODO({}): {}", { f(today), i(0) })),
     s("fixme", fmt("FIXME({}): {}", { f(today), i(0) })),
     s("note", fmt("NOTE({}): {}", { f(today), i(0) })),

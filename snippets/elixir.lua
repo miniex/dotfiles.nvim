@@ -1,8 +1,5 @@
-local ls = require("luasnip")
-local s = ls.snippet
-local i = ls.insert_node
-local rep = require("luasnip.extras").rep
-local fmt = require("luasnip.extras.fmt").fmt
+local u = require("config.snippets")
+local s, i, rep, fmt = u.s, u.i, u.rep, u.fmt
 
 return {
     s("defmod", fmt("defmodule {} do\n  {}\nend", { i(1, "Name"), i(0) })),

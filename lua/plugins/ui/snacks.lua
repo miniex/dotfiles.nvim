@@ -202,8 +202,9 @@ local DASH_KEYS = {
     { key = "q", icon = "\u{F011}", icon_hl = "ErrorMsg", desc = "Quit", action = ":qa" },
 }
 
--- damin 5-step gradient (#98ABCC → #E890B0) for the NEOVIM header.
-local header_gradient = { "#98ABCC", "#ACA4C5", "#C09DBE", "#D496B7", "#E890B0" }
+-- damin 5-step gradient (blue → pink) for the NEOVIM header.
+local pal = require("config.palette")
+local header_gradient = { pal.blue, "#ACA4C5", pal.mid, "#D496B7", pal.pink }
 local function set_header_hl()
     for i, color in ipairs(header_gradient) do
         vim.api.nvim_set_hl(0, "DashHeader" .. i, { fg = color, bold = true })

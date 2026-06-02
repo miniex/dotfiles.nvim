@@ -36,9 +36,9 @@ end
 -- damin 3-stop gradient (matches kitty tab_bar + tmux window list)
 local pal = require("config.palette")
 local damin_blue = pal.blue
-local damin_mid = "#C09DBE"
+local damin_mid = pal.mid
 local damin_pink = pal.pink
-local damin_dim = "#6E7A95"
+local damin_dim = pal.bufferline_dim
 
 -- 50ms cache: name_formatter fires per buffer per redraw.
 -- Tristate so a failed require doesn't retry forever (nil → try, false → give up).

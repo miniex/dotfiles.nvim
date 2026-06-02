@@ -15,24 +15,15 @@ return {
             vim.g.db_ui_show_database_icon = 1
         end,
     },
-    {
-        "saghen/blink.cmp",
-        optional = true,
-        opts = {
-            sources = {
-                -- Only per_filetype/providers; setting `default` here clobbers the global.
-                per_filetype = {
-                    sql = { "lsp", "dadbod", "snippets", "buffer" },
-                    mysql = { "lsp", "dadbod", "snippets", "buffer" },
-                    plsql = { "lsp", "dadbod", "snippets", "buffer" },
-                },
-                providers = {
-                    dadbod = {
-                        name = "Dadbod",
-                        module = "vim_dadbod_completion.blink",
-                    },
-                },
-            },
+    -- inherit_defaults extends (not replaces) the global sources.
+    require("config.lang").blink({
+        sql = { "dadbod", inherit_defaults = true },
+        mysql = { "dadbod", inherit_defaults = true },
+        plsql = { "dadbod", inherit_defaults = true },
+    }, {
+        dadbod = {
+            name = "Dadbod",
+            module = "vim_dadbod_completion.blink",
         },
-    },
+    }),
 }

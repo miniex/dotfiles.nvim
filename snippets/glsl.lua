@@ -1,11 +1,6 @@
-local ls = require("luasnip")
-local s = ls.snippet
-local i = ls.insert_node
-local fmt = require("luasnip.extras.fmt").fmt
--- `<>` delimiters so `{}` braces stay literal.
-local function f(str, nodes)
-    return fmt(str, nodes, { delimiters = "<>" })
-end
+local u = require("config.snippets")
+-- `f` uses `<>` delimiters so `{}` braces stay literal.
+local s, i, f = u.s, u.i, u.fmtd
 
 return {
     s("ver", f("#version <>", { i(0, "450") })),

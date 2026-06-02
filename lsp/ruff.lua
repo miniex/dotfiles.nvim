@@ -1,14 +1,7 @@
+local markers = require("config.lsp_markers")
+
 return {
-    root_markers = {
-        "pyproject.toml",
-        "setup.py",
-        "setup.cfg",
-        "requirements.txt",
-        "Pipfile",
-        "ruff.toml",
-        ".ruff.toml",
-        ".git",
-    },
+    root_markers = vim.list_extend(vim.list_extend({}, markers.python), { "ruff.toml", ".ruff.toml", ".git" }),
     init_options = {
         settings = { logLevel = "error" },
     },

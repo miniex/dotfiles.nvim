@@ -1,3 +1,10 @@
+-- color-heavy filetypes: full color syntaxes incl. 0xAARRGGBB and the
+-- 3/4-digit shorthand (valid CSS) that the global default turns off.
+local css = { rgb_fn = true, hsl_fn = true, css = true, css_fn = true, AARRGGBB = true, RGB = true, RGBA = true }
+local markup = { names = false, AARRGGBB = true }
+-- code files: hex colors only, no names (avoid false positives on plain identifiers/numbers).
+local code = { names = false }
+
 return {
     "catgoose/nvim-colorizer.lua",
     event = { "BufReadPost", "BufNewFile" },
@@ -9,18 +16,15 @@ return {
         filetypes = {
             "*",
             "!lazy",
-            -- color-heavy filetypes: full color syntaxes incl. 0xAARRGGBB and the
-            -- 3/4-digit shorthand (valid CSS) that the global default turns off.
-            css = { rgb_fn = true, hsl_fn = true, css = true, css_fn = true, AARRGGBB = true, RGB = true, RGBA = true },
-            scss = { rgb_fn = true, hsl_fn = true, css = true, css_fn = true, AARRGGBB = true, RGB = true, RGBA = true },
-            sass = { rgb_fn = true, hsl_fn = true, css = true, css_fn = true, AARRGGBB = true, RGB = true, RGBA = true },
-            less = { rgb_fn = true, hsl_fn = true, css = true, css_fn = true, AARRGGBB = true, RGB = true, RGBA = true },
-            html = { names = false, AARRGGBB = true },
-            xml = { names = false, AARRGGBB = true },
-            -- code files: hex colors only, no names (avoid false positives on plain identifiers/numbers).
-            lua = { names = false },
-            toml = { names = false },
-            json = { names = false },
+            css = css,
+            scss = css,
+            sass = css,
+            less = css,
+            html = markup,
+            xml = markup,
+            lua = code,
+            toml = code,
+            json = code,
         },
         user_default_options = {
             names = false,

@@ -7,7 +7,13 @@ REPO_URL="https://github.com/miniex/dotfiles.nvim.git"
 NVIM_CONFIG="${XDG_CONFIG_HOME:-$HOME/.config}/nvim"
 NVIM_DATA="${XDG_DATA_HOME:-$HOME/.local/share}/nvim"
 
-if [ -t 1 ]; then
+# Shared palette. When bootstrapped via `curl | sh` the repo isn't on disk yet,
+# so fall back to inline definitions if scripts/_colors.sh can't be resolved.
+# shellcheck disable=SC1007 # `CDPATH=` is a deliberate env prefix for `cd`
+script_dir=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd 2>/dev/null) || script_dir=''
+if [ -n "$script_dir" ] && [ -r "$script_dir/scripts/_colors.sh" ]; then
+    . "$script_dir/scripts/_colors.sh"
+elif [ -t 1 ]; then
     RESET=$(printf '\033[0m')
     BOLD=$(printf '\033[1m')
     DIM=$(printf '\033[2m')

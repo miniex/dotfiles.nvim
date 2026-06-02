@@ -1,12 +1,5 @@
 -- JS/TS code-action shortcuts. `source.*` kinds are LSP-standard (no VtslsExec needed).
-local function code_action_only(kind)
-    return function()
-        vim.lsp.buf.code_action({
-            context = { only = { kind }, diagnostics = {} },
-            apply = true,
-        })
-    end
-end
+local code_action_only = require("config.lang").code_action_only
 
 local ts_fts = { "javascript", "javascriptreact", "typescript", "typescriptreact" }
 
@@ -33,17 +26,9 @@ return {
         "mfussenegger/nvim-dap",
         optional = true,
         opts = function(_, opts)
-            opts.setups = opts.setups or {}
-            table.insert(opts.setups, function(dap)
-                local cmd = vim.fn.stdpath("data") .. "/mason/bin/js-debug-adapter"
-                if vim.fn.executable(cmd) ~= 1 then
-                    vim.schedule(function()
-                        vim.notify(
-                            "js-debug-adapter not found — run :MasonInstall js-debug-adapter",
-                            vim.log.levels.WARN,
-                            { title = "JS/TS DAP" }
-                        )
-                    end)
+            require("config.dap").setup(opts, function(dap)
+                local cmd = require("config.dap").mason_bin("bin/js-debug-adapter", "js-debug-adapter")
+                if not cmd then
                     return
                 end
                 dap.adapters["pwa-node"] = {
@@ -76,11 +61,5 @@ return {
             end)
         end,
     },
-    {
-        "WhoIsSethDaniel/mason-tool-installer.nvim",
-        opts = function(_, opts)
-            opts.ensure_installed = opts.ensure_installed or {}
-            vim.list_extend(opts.ensure_installed, { "js-debug-adapter" })
-        end,
-    },
+    require("config.lang").mason({ "js-debug-adapter" }),
 }

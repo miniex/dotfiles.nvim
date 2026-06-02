@@ -53,4 +53,80 @@ function M.guide(sources, default)
     return width
 end
 
+-- Per-filetype { sources, default } for M.guide. A string value aliases another
+-- filetype's spec (e.g. cpp → c).
+M.specs = {
+    c = {
+        sources = {
+            { names = { ".clang-format", "_clang-format" }, pattern = "^%s*ColumnLimit%s*:%s*(%d+)" },
+        },
+        default = 80,
+    },
+    cpp = "c",
+    elixir = {
+        sources = {
+            { names = { ".formatter.exs" }, pattern = "line_length%s*:%s*(%d+)" },
+        },
+        default = 98,
+    },
+    lua = {
+        sources = {
+            { names = { "stylua.toml", ".stylua.toml" }, pattern = "^%s*column_width%s*=%s*(%d+)" },
+        },
+        default = 120,
+    },
+    ocaml = {
+        sources = {
+            { names = { ".ocamlformat" }, pattern = "^%s*margin%s*=%s*(%d+)" },
+        },
+        default = 80,
+    },
+    python = {
+        sources = {
+            { names = { "ruff.toml", ".ruff.toml" }, pattern = "^%s*line%-length%s*=%s*(%d+)" },
+            { names = { "pyproject.toml" }, pattern = "^%s*line%-length%s*=%s*(%d+)" },
+        },
+        default = 88,
+    },
+    rust = {
+        sources = {
+            { names = { "rustfmt.toml", ".rustfmt.toml" }, pattern = "^%s*max_width%s*=%s*(%d+)" },
+        },
+        default = 100,
+    },
+    sql = {
+        sources = {
+            { names = { ".sqlfluff" }, pattern = "^%s*max_line_length%s*=%s*(%d+)" },
+            { names = { "pyproject.toml" }, pattern = "^%s*max_line_length%s*=%s*(%d+)" },
+        },
+        default = 80,
+    },
+    toml = {
+        sources = {
+            { names = { "taplo.toml", ".taplo.toml" }, pattern = "^%s*column_width%s*=%s*(%d+)" },
+        },
+        default = 80,
+    },
+}
+
+-- Resolve `ft`'s spec (following one alias hop) and apply its guide.
+function M.apply(ft)
+    local spec = M.specs[ft]
+    if type(spec) == "string" then
+        spec = M.specs[spec]
+    end
+    if spec then
+        return M.guide(spec.sources, spec.default)
+    end
+end
+
+-- One FileType autocmd for all registered fts (replaces the per-ft stubs).
+vim.api.nvim_create_autocmd("FileType", {
+    group = vim.api.nvim_create_augroup("format-width", { clear = true }),
+    pattern = vim.tbl_keys(M.specs),
+    callback = function(args)
+        M.apply(vim.bo[args.buf].filetype)
+    end,
+})
+
 return M

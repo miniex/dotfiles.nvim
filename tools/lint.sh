@@ -22,7 +22,7 @@ stylua --check .
 lua-language-server --check . --logpath /tmp/lua-ls-check
 selene .
 
-sh_files="install.sh set-lang.sh tools/format.sh tools/lint.sh tools/health.sh scripts/term-bin/nvim"
+sh_files="install.sh set-lang.sh tools/format.sh tools/lint.sh tools/health.sh scripts/_colors.sh scripts/term-bin/nvim"
 # shellcheck disable=SC2086 # word-splitting the file list is intentional
 shfmt -d -i 4 -ci -bn -s $sh_files
 # shellcheck disable=SC2086

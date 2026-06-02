@@ -19,11 +19,11 @@ Re-enabling a language installs its Mason tools automatically on the next launch
 3. `lua/plugins/lang/<name>.lua` — DAP, `vim.filetype.add`, lang-specific plugins. Register the module name in `lua/config/langs.lua`.
 4. Treesitter grammar → add it to the central `ensure_installed` list in `lua/plugins/editor/treesitter.lua` (lang files no longer extend it themselves).
 
-Linters → `lua/plugins/lsp/lint.lua`. Non-LSP CLI tools → `mason-tool-installer.nvim` `ensure_installed`. CodeLLDB-based DAP (C/C++, Zig) → shared resolver `lua/config/codelldb.lua`.
+Linters → `lua/plugins/lsp/lint.lua`. Non-LSP CLI tools → `mason-tool-installer.nvim` `ensure_installed`. CodeLLDB-based DAP (C/C++, Zig) → shared resolver `lua/config/codelldb.lua`. Repeated lang-spec fragments (mason / treesitter / blink / lint) have one-line helpers in `lua/config/lang.lua`; DAP mason-binary guards in `lua/config/dap.lua`.
 
 ## Snippets
 
-Drop Lua files in `~/.config/nvim/snippets/`. Filetype-scoped by filename (e.g. `lua.lua`), plus `all.lua` for cross-filetype tokens (`uuid` / `iso` / `todo` / `fixme` / `note`). VSCode JSON snippets via friendly-snippets run in parallel. Many languages ship snippet sets too (`cmake` / `just` / `terraform` / `proto` / `graphql` / `typst` / `helm` / `wgsl` / `glsl` / `asm` / `ocaml` / `dune` / `json`).
+Drop Lua files in `~/.config/nvim/snippets/`. Filetype-scoped by filename (e.g. `lua.lua`), plus `all.lua` for cross-filetype tokens (`uuid` / `iso` / `todo` / `fixme` / `note`). VSCode JSON snippets via friendly-snippets run in parallel. Many languages ship snippet sets too (`cmake` / `just` / `terraform` / `proto` / `graphql` / `typst` / `helm` / `wgsl` / `glsl` / `asm` / `ocaml` / `dune` / `json`). Shared node constructors (`s` / `i` / `fmt` / `today` / …) come from `require("config.snippets")`.
 
 ## Theme
 
@@ -53,7 +53,7 @@ Drop Lua files in `~/.config/nvim/snippets/`. Filetype-scoped by filename (e.g. 
 
 ## Formatter width ruler
 
-`colorcolumn` / `textwidth` follow each project's formatter width. On `FileType`, `after/ftplugin/<ft>.lua` calls `require("config.format-width").guide(...)`, which searches upward for the nearest config below and uses its width, else the formatter default. Width `0` (e.g. clang-format `ColumnLimit: 0`) draws no ruler.
+`colorcolumn` / `textwidth` follow each project's formatter width. A `FileType` autocmd in `lua/config/format-width.lua` reads a per-filetype `M.specs` registry, searches upward for the nearest config below, and uses its width (else the formatter default). Width `0` (e.g. clang-format `ColumnLimit: 0`) draws no ruler.
 
 | Filetype    | Config (searched upward)                      | Key               | Default |
 | ----------- | --------------------------------------------- | ----------------- | ------- |
@@ -66,12 +66,13 @@ Drop Lua files in `~/.config/nvim/snippets/`. Filetype-scoped by filename (e.g. 
 | `sql`       | `.sqlfluff` / `pyproject.toml`                | `max_line_length` | 80      |
 | `toml`      | `taplo.toml` / `.taplo.toml`                  | `column_width`    | 80      |
 
-Add a language: drop an `after/ftplugin/<ft>.lua` with one `{ names, pattern }` source, where `pattern` captures the width as a single `(%d+)` group:
+Add a language: add an entry to the `M.specs` table in `lua/config/format-width.lua` — one or more `{ names, pattern }` sources (each `pattern` captures the width as a single `(%d+)` group) plus a `default`. A string value aliases another filetype's spec (e.g. `cpp = "c"`):
 
 ```lua
-require("config.format-width").guide({
-    { names = { "<config>" }, pattern = "^%s*<key>%s*[:=]%s*(%d+)" },
-}, <default>)
+<ft> = {
+    sources = { { names = { "<config>" }, pattern = "^%s*<key>%s*[:=]%s*(%d+)" } },
+    default = <default>,
+},
 ```
 
 ## Keymaps / autocmds
@@ -120,4 +121,4 @@ require("config.format-width").guide({
 
 ## Completion sources
 
-`blink.cmp` sources filtered per filetype in `lua/plugins/coding/completion.lua` (`per_filetype` table). Add an entry when a filetype needs its own source mix. A lang plugin can add its own sources via an `optional = true` `blink.cmp` spec — set only `per_filetype` / `providers`, not `default` (e.g. `lua/plugins/lang/sql.lua` for SQL/dadbod).
+`blink.cmp` sources filtered per filetype in `lua/plugins/coding/completion.lua` (`per_filetype` table). Add an entry when a filetype needs its own source mix. A lang plugin adds its own sources via the `require("config.lang").blink(per_filetype, providers)` helper — extend the global defaults with `inherit_defaults = true` rather than restating `default` (e.g. `lua/plugins/lang/lua.lua`, `sql.lua`).
