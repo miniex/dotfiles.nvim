@@ -1,10 +1,3 @@
-return {
-    settings = {
-        evenBetterToml = {
-            schema = {
-                catalogs = { "https://www.schemastore.org/api/json/catalog.json" },
-                enabled = true,
-            },
-        },
-    },
-}
+-- taplo uses the schemastore catalog by default; per-project schemas go in
+-- .taplo.toml (the VSCode evenBetterToml.* namespace is ignored here).
+return {}

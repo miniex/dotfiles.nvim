@@ -9,7 +9,6 @@ return {
         opts = function(_, opts)
             opts.linters_by_ft = opts.linters_by_ft or {}
             opts.linters_by_ft.terraform = { "tflint" }
-            opts.linters_by_ft.tf = { "tflint" }
         end,
     },
 }

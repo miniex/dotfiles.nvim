@@ -30,10 +30,6 @@ return {
             preview_position = "right",
             preview_size = 0.5,
         },
-        ui = {
-            wrap_paths = true,
-            path_position = "tail",
-        },
         hl = { title = "FloatTitle" },
     },
     config = function(_, opts)
