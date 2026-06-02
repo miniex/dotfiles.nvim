@@ -1,8 +1,6 @@
 return {
     "ibhagwan/fzf-lua",
     dependencies = { "nvim-tree/nvim-web-devicons" },
-    -- Preload after startup so the first <leader>z opens instantly.
-    event = "VeryLazy",
     cmd = "FzfLua",
     keys = {
         {

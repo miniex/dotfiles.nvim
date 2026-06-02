@@ -26,11 +26,11 @@ if command -v jq >/dev/null 2>&1; then
     # lazy-lock.json is plugin-managed; never touch.
     git ls-files '*.json' 2>/dev/null | while IFS= read -r f; do
         [ "$f" = "lazy-lock.json" ] && continue
-        tmp=$(mktemp)
-        if jq --indent 4 . "$f" >"$tmp"; then
-            mv "$tmp" "$f"
+        # In-place rewrite preserves mode/owner (mktemp+mv would reset to 0600);
+        # capture first so $f is only written on jq success.
+        if formatted=$(jq --indent 4 . "$f"); then
+            printf '%s\n' "$formatted" >"$f"
         else
-            rm -f "$tmp"
             echo "warn: jq failed on $f" >&2
         fi
     done

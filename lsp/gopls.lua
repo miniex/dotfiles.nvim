@@ -3,7 +3,7 @@ return {
     settings = {
         gopls = {
             codelenses = {
-                gcDetails = false,
+                gc_details = false,
                 generate = true,
                 regenerate_cgo = true,
                 run_govulncheck = true,

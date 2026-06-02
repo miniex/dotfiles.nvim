@@ -54,6 +54,7 @@ Plugin specs are discovered by `lazy.setup({ spec = { { import = "plugins.coding
 | Concern                 | Lives in                                               | Why                                                                                                                           |
 | ----------------------- | ------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------- |
 | LSP per-server settings | `lsp/<server>.lua`                                     | Neovim's native discovery; don't restate in `nvim-lspconfig.opts.servers.<name>`.                                             |
+| JSON/YAML schemas       | `lua/config/lsp_schemastore.lua`                       | Shared SchemaStore wiring for jsonls/yamlls `before_init`; cached once, json append vs yaml merge in one place.               |
 | Lang → server mapping   | `lua/config/lang_servers.lua`                          | One place to ask "what servers does this language enable?"                                                                    |
 | Enabled languages       | `lua/config/langs.lua` (+ `langs_local.lua`)           | `langs_local.lua` is gitignored and wins per-machine.                                                                         |
 | Diagnostic UI           | `lua/plugins/lsp/init.lua` `vim.diagnostic.config`     | tiny-inline-diagnostic owns `virtual_text`; everything else (signs, float) lives here.                                        |

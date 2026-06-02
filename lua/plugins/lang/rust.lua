@@ -82,9 +82,6 @@ return {
         },
         opts = {
             server = {
-                on_attach = function(client, _)
-                    client.server_capabilities.didChangeWatchedFilesDynamicRegistration = true
-                end,
                 default_settings = {
                     ["rust-analyzer"] = {
                         cargo = {
