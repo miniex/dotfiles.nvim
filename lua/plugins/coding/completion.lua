@@ -23,6 +23,8 @@ return {
                     ls.filetype_extend("typescript", { "javascript" })
                     ls.filetype_extend("bash", { "sh" })
                     ls.filetype_extend("zsh", { "sh" })
+                    ls.filetype_extend("nasm", { "asm" })
+                    ls.filetype_extend("masm", { "asm" })
                 end,
             },
         },

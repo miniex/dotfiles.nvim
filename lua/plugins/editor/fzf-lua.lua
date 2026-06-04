@@ -154,9 +154,9 @@ return {
                         table.insert(items, string.format("%-4s [%s] %s\t%s", id, scope, snip.trigger, desc))
                     end
                 end
-                collect(ft)
-                if ft ~= "all" then
-                    collect("all")
+                -- Honor filetype_extend chains (e.g. tsx → ts → js → all), matching completion.
+                for _, scope in ipairs(ls.get_snippet_filetypes()) do
+                    collect(scope)
                 end
                 if #items == 0 then
                     vim.notify("No snippets for filetype: " .. ft, vim.log.levels.INFO)
