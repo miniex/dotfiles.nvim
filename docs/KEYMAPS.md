@@ -189,7 +189,6 @@ Bare `nvim` auto-restores the cwd session (skipped in headless or when the sessi
 | `gnm` / `gnM`               | x     | Expand / shrink node                                                      |
 | `<leader>uc`                | n     | Toggle treesitter context                                                 |
 | `<leader>uC`                | n     | Toggle nvim-colorizer                                                     |
-| `<leader>um`                | n     | Toggle render-markdown                                                    |
 | `<leader>uU`                | n     | Toggle undotree                                                           |
 | `<leader>uz` / `<leader>uZ` | n     | Snacks zen / zen zoom                                                     |
 | `<leader>uD`                | n     | Toggle database UI (dadbod-ui)                                            |

@@ -91,8 +91,7 @@ See [`lua/config/modal-floats.lua`](../lua/config/modal-floats.lua) for the mutu
 
 ## Markdown
 
-- `render-markdown.nvim` inline rendering of headings / lists / tables / code blocks.
-- `mdx_analyzer` handles `.mdx`; `marksman` handles `.md`; `harper_ls` adds prose grammar / spell on markdown.
+- `mdx_analyzer` handles `.mdx`; `marksman` handles `.md`; `harper_ls` adds prose grammar / spell on markdown. Highlighting via treesitter.
 
 ## Database
 
