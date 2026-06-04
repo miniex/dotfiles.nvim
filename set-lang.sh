@@ -130,7 +130,10 @@ while :; do
     key=$(dd if=/dev/tty bs=1 count=1 2>/dev/null)
     case "$key" in
         "$ESC")
+            # Lone ESC has no trailing bytes; VTIME avoids blocking.
+            stty min 0 time 1
             rest=$(dd if=/dev/tty bs=1 count=2 2>/dev/null)
+            stty min 1 time 0
             case "$rest" in
                 '[A') if [ "$cursor" -gt 0 ]; then cursor=$((cursor - 1)); fi ;;
                 '[B') if [ "$cursor" -lt $((n - 1)) ]; then cursor=$((cursor + 1)); fi ;;

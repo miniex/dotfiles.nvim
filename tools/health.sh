@@ -52,7 +52,7 @@ fi
 section "Tree-sitter"
 if have tree-sitter; then
     ts_v=$(tree-sitter --version 2>/dev/null | awk '{print $NF}')
-    if version_ge "$ts_v" "0.26.1"; then
+    if version_ge "${ts_v%%-*}" "0.26.1"; then
         ok "tree-sitter ${ts_v} (>= 0.26.1)"
     else
         warn "tree-sitter ${ts_v} — need >= 0.26.1 (not the npm build)"
@@ -129,11 +129,13 @@ if have nvim; then
     runner="nvim"
     have timeout && runner="timeout 30 nvim"
     load_out=$($runner --headless "+lua print('NVIM_CONFIG_OK')" +qa 2>&1) || true
+    # Match real nvim error formats, not a bare "error" substring.
+    err_re='E[0-9]+:|Error detected|Error executing'
     if printf '%s' "$load_out" | grep -q "NVIM_CONFIG_OK" \
-        && ! printf '%s' "$load_out" | grep -qiE "error|E[0-9]+:"; then
+        && ! printf '%s' "$load_out" | grep -qE "$err_re"; then
         ok "config loads clean (headless)"
     else
-        first=$(printf '%s\n' "$load_out" | grep -iE "error|E[0-9]+:" | head -n1)
+        first=$(printf '%s\n' "$load_out" | grep -E "$err_re" | head -n1)
         warn "config emitted errors on load: ${first:-no sentinel (NVIM_CONFIG_OK) printed}"
     fi
 else
