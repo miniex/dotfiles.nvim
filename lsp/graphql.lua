@@ -1,5 +1,5 @@
 return {
-    filetypes = { "graphql", "gql", "typescriptreact", "javascriptreact" },
+    filetypes = { "graphql", "typescriptreact", "javascriptreact" },
     -- Scope to graphql projects; .git deliberately omitted so plain React/TS repos don't attach.
     root_markers = {
         ".graphqlrc",

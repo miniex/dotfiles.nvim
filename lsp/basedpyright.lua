@@ -12,8 +12,7 @@ return {
                 inlayHints = {
                     variableTypes = true,
                     functionReturnTypes = true,
-                    callArgumentNames = "partial",
-                    pytestParameters = true,
+                    callArgumentNames = true,
                     genericTypes = false,
                 },
             },
