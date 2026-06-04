@@ -199,14 +199,28 @@ return {
                     if not vim.b[bufnr]._lsp_codelens_done then
                         vim.b[bufnr]._lsp_codelens_done = true
                         vim.lsp.codelens.enable(true, { bufnr = bufnr })
-                        -- codelens.enable wires LspAttach/BufEnter/InsertLeave; add
-                        -- BufWritePost to catch new testables/run lenses after save.
                         local cl_group = vim.api.nvim_create_augroup("lsp-codelens-" .. bufnr, { clear = true })
+                        -- BufWritePost catches new testables/run lenses after save.
                         vim.api.nvim_create_autocmd("BufWritePost", {
                             buffer = bufnr,
                             group = cl_group,
                             callback = function()
                                 vim.lsp.codelens.refresh({ bufnr = bufnr })
+                            end,
+                        })
+                        -- Pause during insert: codelens refreshes per change (buf on_lines), like inlay hints.
+                        vim.api.nvim_create_autocmd("InsertEnter", {
+                            buffer = bufnr,
+                            group = cl_group,
+                            callback = function()
+                                vim.lsp.codelens.enable(false, { bufnr = bufnr })
+                            end,
+                        })
+                        vim.api.nvim_create_autocmd("InsertLeave", {
+                            buffer = bufnr,
+                            group = cl_group,
+                            callback = function()
+                                vim.lsp.codelens.enable(true, { bufnr = bufnr })
                             end,
                         })
                     end

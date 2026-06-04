@@ -4,7 +4,7 @@
 
 - **Native LSP** — `vim.lsp.config` + `lsp/<server>.lua` discovery; mason-lspconfig installs, the config enables servers itself (gated by enabled langs + executable presence). Workspace root anchors on language manifests, `.git` as fallback.
 - **Inlay hints** — toggle per buffer with `<leader>ci`; suppressed automatically during insert mode.
-- **CodeLens** — enabled on capable servers (gopls, rust-analyzer, lua_ls, ocamllsp, elixir-ls). `BufWritePost` refreshes lens count.
+- **CodeLens** — enabled on capable servers (gopls, rust-analyzer, lua_ls, ocamllsp, elixir-ls). `BufWritePost` refreshes lens count; paused during insert mode (like inlay hints).
 - **LSP folding** — capable servers fold via `vim.lsp.foldexpr`; treesitter folds everything else.
 - **Navigation** — `gd` / `gr` / `gi` / `gy` open an fzf-lua picker (auto-jumps on a single result).
 - **Formatting** — `<leader>cf` runs `vim.lsp.buf.format` (native LSP; no formatter plugin).
