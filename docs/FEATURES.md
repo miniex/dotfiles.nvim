@@ -26,7 +26,7 @@
 
 - **fff.nvim** — Rust-backed file finder. `<leader>ff` for cwd, `<leader>fF` for current dir.
 - **snacks.picker** — grep / recent / buffers / help / TODOs. `<leader>fg` / `<leader>fr` / `<leader>fb` / `<leader>fh` / `<leader>ft`.
-- **fzf-lua** — git / LSP / lines / snippets / history. `<leader>z*` namespace.
+- **fzf-lua** — git / LSP / grep / lines / snippets / history. `<leader>z*` namespace.
 - fff and snacks share the same 0.85 × 0.85 chrome-aware rectangle. The snacks picker's preview overlaps the list's right border by 1 column so a single `✿│✿` divider is drawn between them (matches fff's "shared middle flower" effect).
 
 ## Editor
@@ -85,8 +85,8 @@ See [`lua/config/modal-floats.lua`](../lua/config/modal-floats.lua) for the mutu
 
 - **nvim-lint** — runs on save / read (not `InsertLeave`) with a per-buffer 250ms debounce; skips run if you switched away.
 - **mason-tool-installer** — single source of truth for non-LSP tools (shellcheck, golangci-lint, eslint_d, selene, markdownlint, statix, hadolint, sqlfluff, yamllint, …).
-- **DAP** — Rust (rustaceanvim's codelldb) / C-C++ (codelldb) / Python (debugpy) / Go (delve) / Zig (codelldb) / Elixir (elixir-ls debug adapter) / JS-TS (js-debug-adapter, Node). C/C++ and Zig share the codelldb resolver in `lua/config/codelldb.lua`. Persistent breakpoints per-cwd.
-- **neotest** — Python (pytest) / Go (gotestsum) / Elixir (mix) / C/C++ (gtest) / Lua (busted) / Rust (rustaceanvim) / Zig. Summary window state restored across sessions.
+- **DAP** — Rust (rustaceanvim's codelldb) / C-C++ (codelldb) / Python (debugpy) / Go (delve) / Zig (codelldb) / Elixir (elixir-ls debug adapter) / JS-TS (js-debug-adapter, Node). C/C++ and Zig share the codelldb resolver in `lua/config/codelldb.lua`. Persistent breakpoints per-cwd; reads project `.vscode/launch.json`.
+- **neotest** — Python (pytest) / Go (gotestsum) / Elixir (mix) / C/C++ (gtest) / Lua (busted) / Rust (rustaceanvim) / Zig / JS-TS (vitest). Summary window state restored across sessions.
 - **health check** — `./tools/health.sh` reports prereq status, enabled languages + missing Mason LSP servers, and runs a headless config-load smoke test.
 
 ## Markdown

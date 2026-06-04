@@ -13,6 +13,7 @@ return {
             "alfaix/neotest-gtest",
             "MisanthropicBit/neotest-busted",
             "lawrence-laz/neotest-zig",
+            "marilari88/neotest-vitest",
         },
         keys = {
             {
@@ -130,6 +131,7 @@ return {
                 require("neotest-gtest").setup({}),
                 require("neotest-busted"),
                 require("neotest-zig")({}),
+                require("neotest-vitest"),
             }
             -- Only when rustaceanvim is already loaded (ft=rust) — don't force-load it.
             if package.loaded["rustaceanvim"] then

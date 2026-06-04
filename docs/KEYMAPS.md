@@ -19,7 +19,7 @@ Leader: `<Space>`. `<localleader>` also `<Space>` (most localleader bindings liv
 | `<leader>P`         | V    | Paste over + auto-reindent                               |
 | `<` / `>`           | V    | Indent / outdent (keep selection)                        |
 
-> `n`, `N`, `*`, `#`, `g*`, `g#`, `<C-o>`, `<C-i>`, `[c`, `]c`, `[m`, `]m` auto-center the cursor (`zvzz`).
+> `n`, `N`, `*`, `#`, `g*`, `g#`, `<C-o>`, `<C-i>`, `[c`, `]c` auto-center the cursor (`zvzz`).
 > Yank → system clipboard via `wl-copy` / `xclip` / `pbcopy` / `clip.exe` (first available), else OSC52 over SSH.
 > Macro recording shows a `recording @a` / `saved @a` toast plus `● @a` in the statusline while active.
 
@@ -45,14 +45,15 @@ Leader: `<Space>`. `<localleader>` also `<Space>` (most localleader bindings liv
 
 Native `fzf` binary. `<C-q>` → quickfix; `<C-d>`/`<C-u>` paginate preview.
 
-| Key                   | Description                                               |
-| --------------------- | --------------------------------------------------------- |
-| `<leader>z` / `z'`    | Builtin picker menu / resume last                         |
-| `<leader>zg/zc/zC/zb` | Git: status / buffer commits / project commits / branches |
-| `<leader>zs` / `zS`   | LSP: document / live workspace symbols                    |
-| `<leader>zd` / `zD`   | Diagnostics: buffer / workspace                           |
-| `<leader>zl/zk/zm/zr` | blines / keymaps / marks / registers                      |
-| `<leader>z:` / `z/`   | Command / search history                                  |
+| Key                      | Description                                                       |
+| ------------------------ | ----------------------------------------------------------------- |
+| `<leader>z` / `z'`       | Builtin picker menu / resume last                                 |
+| `<leader>zw`             | Grep word under cursor (n) / visual selection (x)                 |
+| `<leader>zg/zc/zC/zb/zh` | Git: status / buffer commits / project commits / branches / stash |
+| `<leader>zs` / `zS`      | LSP: document / live workspace symbols                            |
+| `<leader>zd` / `zD`      | Diagnostics: buffer / workspace                                   |
+| `<leader>zl/zk/zm/zr`    | blines / keymaps / marks / registers                              |
+| `<leader>z:` / `z/`      | Command / search history                                          |
 
 ## Marks (harpoon v2)
 
@@ -62,6 +63,7 @@ Per-project file slots under `~/.local/share/nvim/harpoon/`.
 | --------------------------- | ---------------------------- |
 | `<leader>ma` / `<leader>mm` | Add file / toggle quick menu |
 | `<leader>mn` / `<leader>mp` | Next / previous slot         |
+| `]m` / `[m`                 | Next / previous slot (alias) |
 | `<leader>m1` … `<leader>m5` | Jump to slot 1–5             |
 | `<leader>md`                | Remove current file          |
 
@@ -182,6 +184,7 @@ Bare `nvim` auto-restores the cwd session (skipped in headless or when the sessi
 | `]a` / `[a`                 | n/x/o | Next / prev parameter                                                     |
 | `;` / `,`                   | n/x/o | Repeat last move forward / backward (TS goto / `f` / `t`)                 |
 | `<leader>cA` / `<leader>cS` | n     | Swap parameter with next / prev                                           |
+| `<leader>cj` / `<leader>ck` | n     | Swap function with next / prev sibling                                    |
 | `gnn`                       | n     | Init incremental selection                                                |
 | `gnm` / `gnM`               | x     | Expand / shrink node                                                      |
 | `<leader>uc`                | n     | Toggle treesitter context                                                 |
@@ -295,6 +298,7 @@ In the toggle terminal, `$EDITOR`/`$VISUAL`/`$GIT_EDITOR` forward to the parent 
 | `[b` / `]b` · `<S-h>` / `<S-l>`            | Prev / next buffer (open-order)                                                                                           |
 | `<leader>cn` / `<leader>un`                | Notification history / dismiss all                                                                                        |
 | `<leader>yp` / `<leader>yP` / `<leader>yl` | Yank file path to `+`: absolute / relative / relative:line                                                                |
+| `<leader>yg`                               | Yank git permalink for the current line                                                                                   |
 | `]]` / `[[`                                | LSP word: next / previous reference                                                                                       |
 | `[i` / `]i`                                | Snacks scope: jump to top / bottom edge                                                                                   |
 

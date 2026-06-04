@@ -47,6 +47,21 @@ return {
                 end,
                 desc = "Harpoon Prev",
             },
+            -- Bracket aliases, matching the config's `[x`/`]x` nav convention.
+            {
+                "]m",
+                function()
+                    h():list():next()
+                end,
+                desc = "Harpoon Next",
+            },
+            {
+                "[m",
+                function()
+                    h():list():prev()
+                end,
+                desc = "Harpoon Prev",
+            },
         }
         for i = 1, 5 do
             table.insert(keys, {

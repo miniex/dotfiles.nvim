@@ -17,7 +17,7 @@ Lean, fast, easy on the eyes. Native LSP via `lsp/<server>.lua` discovery, Rust-
 - **Editor** — Neo-tree, flash, Trouble, harpoon v2, dial, multicursor, quicker, grug-far, …
 - **UI** — Catppuccin Mocha retoned to a 2-color damin palette (`#98ABCC` / `#E890B0`); flower-cornered borders on every floating window
 - **Modal floats** — pickers / terminal / lazy / Mason / harpoon / lazygit / Neo-tree are mutually exclusive and land in the exact same 0.85 × 0.85 chrome-aware rectangle
-- **Tooling** — nvim-lint, mason-tool-installer, DAP (6 langs), neotest (6 langs), vim-dadbod-ui (SQL client)
+- **Tooling** — nvim-lint, mason-tool-installer, DAP (6 langs), neotest (7 langs), vim-dadbod-ui (SQL client)
 - **Git** — gitsigns, fugitive, lazygit, Diffview, gitgraph.nvim
 - **Clipboard** — yank → wl-copy / xclip / pbcopy / clip.exe (whichever is on PATH first), else OSC52 over SSH
 

@@ -10,6 +10,14 @@ return {
                 pcall(setup, dap)
             end
 
+            -- Project-local .vscode/launch.json, if present.
+            pcall(function()
+                require("dap.ext.vscode").load_launchjs(nil, {
+                    codelldb = { "c", "cpp", "rust", "zig" },
+                    ["pwa-node"] = { "javascript", "typescript", "javascriptreact", "typescriptreact" },
+                })
+            end)
+
             -- Flower-themed signs (defaults clash with the ✿ UI).
             local pal = require("config.palette")
             for name, text in pairs({

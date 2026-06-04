@@ -63,8 +63,6 @@ for _, key in ipairs({
     "<C-i>",
     "[c",
     "]c",
-    "[m",
-    "]m",
 }) do
     vim.keymap.set("n", key, key .. "zvzz", { silent = true })
 end
@@ -121,6 +119,16 @@ map("<leader>yl", function()
         return vim.fn.expand("%:.") .. ":" .. vim.fn.line(".")
     end)
 end, "n", "Yank file path:line (relative)")
+map("<leader>yg", function()
+    require("snacks").gitbrowse({
+        open = function(url)
+            yank_path(function()
+                return url
+            end)
+        end,
+        notify = false,
+    })
+end, "n", "Yank git permalink (current line)")
 
 -- Buffer nav keymaps live on the bufferline.nvim spec.
 

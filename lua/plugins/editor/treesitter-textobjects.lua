@@ -76,6 +76,14 @@ return {
             swap.swap_previous("@parameter.inner", "textobjects")
         end, { desc = "Swap parameter with prev" })
 
+        -- Reorder sibling functions/methods (j = down/next, k = up/prev).
+        vim.keymap.set("n", "<leader>cj", function()
+            swap.swap_next("@function.outer", "textobjects")
+        end, { desc = "Swap function with next" })
+        vim.keymap.set("n", "<leader>ck", function()
+            swap.swap_previous("@function.outer", "textobjects")
+        end, { desc = "Swap function with prev" })
+
         -- `;`/`,` repeat the last move; goto_* are auto-wrapped by the move module,
         -- with builtin f/t/F/T fallback (their expr maps record themselves).
         -- flash char mode is disabled (flash.lua) to cede f/t/;/, here.

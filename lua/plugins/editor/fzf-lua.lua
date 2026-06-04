@@ -18,11 +18,33 @@ return {
             desc = "Fzf Resume",
         },
         {
+            "<leader>zw",
+            function()
+                require("fzf-lua").grep_cword()
+            end,
+            desc = "Grep word under cursor",
+        },
+        {
+            "<leader>zw",
+            function()
+                require("fzf-lua").grep_visual()
+            end,
+            mode = "x",
+            desc = "Grep visual selection",
+        },
+        {
             "<leader>zg",
             function()
                 require("fzf-lua").git_status()
             end,
             desc = "Git Status",
+        },
+        {
+            "<leader>zh",
+            function()
+                require("fzf-lua").git_stash()
+            end,
+            desc = "Git Stash",
         },
         {
             "<leader>zc",
