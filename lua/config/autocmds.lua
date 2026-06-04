@@ -110,9 +110,11 @@ vim.schedule(function()
                     if not timer:is_closing() then
                         timer:close()
                     end
-                    if pending_timer == timer then
-                        pending_timer = nil
+                    -- A newer yank may have superseded this timer; only the current one copies.
+                    if pending_timer ~= timer then
+                        return
                     end
+                    pending_timer = nil
                     copy(pending_content)
                 end)
             )

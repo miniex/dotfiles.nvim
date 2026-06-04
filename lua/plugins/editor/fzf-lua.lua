@@ -144,14 +144,16 @@ return {
                 local ft = vim.bo.filetype
                 local lookup, items = {}, {}
                 local function collect(scope)
-                    for _, snip in ipairs(ls.get_snippets(scope) or {}) do
-                        local id = tostring(#items + 1)
-                        lookup[id] = snip
-                        local desc = snip.name or snip.dscr or ""
-                        if type(desc) == "table" then
-                            desc = table.concat(desc, " ")
+                    for _, kind in ipairs({ "snippets", "autosnippets" }) do
+                        for _, snip in ipairs(ls.get_snippets(scope, { type = kind }) or {}) do
+                            local id = tostring(#items + 1)
+                            lookup[id] = snip
+                            local desc = snip.dscr or snip.name or ""
+                            if type(desc) == "table" then
+                                desc = table.concat(desc, " ")
+                            end
+                            table.insert(items, string.format("%-4s [%s] %s\t%s", id, scope, snip.trigger, desc))
                         end
-                        table.insert(items, string.format("%-4s [%s] %s\t%s", id, scope, snip.trigger, desc))
                     end
                 end
                 -- Honor filetype_extend chains (e.g. tsx → ts → js → all), matching completion.

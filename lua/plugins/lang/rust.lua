@@ -86,7 +86,6 @@ return {
                     ["rust-analyzer"] = {
                         cargo = {
                             allFeatures = false,
-                            loadOutDirsFromCheck = true,
                             buildScripts = {
                                 enable = true,
                             },

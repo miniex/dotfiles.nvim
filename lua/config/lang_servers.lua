@@ -8,7 +8,7 @@ return {
     dockerfile = { "dockerls", "docker_compose_language_service" },
     elixir = { "elixirls" },
     fish = { "fish_lsp" },
-    -- templ: Go HTML templating (.templ); the html LSP also attaches via lsp/html.lua.
+    -- templ: Go HTML templating; HTML/Tailwind in .templ need the `web` servers too.
     go = { "gopls", "templ" },
     graphql = { "graphql" },
     helm = { "helm_ls" },

@@ -121,6 +121,7 @@ map("<leader>yl", function()
 end, "n", "Yank file path:line (relative)")
 map("<leader>yg", function()
     require("snacks").gitbrowse({
+        what = "permalink",
         open = function(url)
             yank_path(function()
                 return url

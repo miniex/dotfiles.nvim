@@ -20,7 +20,6 @@ return {
             { i(1, "en"), i(2, "Document"), i(0) }
         )
     ),
-    s("a", fmt('<a href="{}">{}</a>', { i(1, "#"), i(2, "text") })),
     s("img", fmt('<img src="{}" alt="{}" />', { i(1, "src"), i(2, "alt") })),
     s("link", fmt('<link rel="stylesheet" href="{}" />', { i(1, "style.css") })),
     s("script", fmt('<script src="{}"></script>', { i(1, "main.js") })),

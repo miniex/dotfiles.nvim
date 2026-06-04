@@ -9,14 +9,7 @@ return {
             for _, setup in ipairs(opts.setups or {}) do
                 pcall(setup, dap)
             end
-
-            -- Project-local .vscode/launch.json, if present.
-            pcall(function()
-                require("dap.ext.vscode").load_launchjs(nil, {
-                    codelldb = { "c", "cpp", "rust", "zig" },
-                    ["pwa-node"] = { "javascript", "typescript", "javascriptreact", "typescriptreact" },
-                })
-            end)
+            -- .vscode/launch.json is read on-demand by dap (no load_launchjs needed).
 
             -- Flower-themed signs (defaults clash with the ✿ UI).
             local pal = require("config.palette")
