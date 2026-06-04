@@ -396,7 +396,14 @@ return {
                     return false
                 end
 
+                -- nvim-lspconfig's bundled lsp/<name>.lua wins the rtp merge over ours for
+                -- array keys (cmd/filetypes/root_markers); re-apply ours so it takes effect.
+                local lsp_dir = vim.fn.stdpath("config") .. "/lsp/"
                 for _, name in ipairs(servers) do
+                    local ok_cfg, repo_cfg = pcall(dofile, lsp_dir .. name .. ".lua")
+                    if ok_cfg and type(repo_cfg) == "table" then
+                        vim.lsp.config(name, repo_cfg)
+                    end
                     local cfg = vim.lsp.config[name]
                     if cfg and cmd_executable(cfg.cmd) then
                         vim.lsp.enable(name)
