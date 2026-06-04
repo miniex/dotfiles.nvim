@@ -7,8 +7,15 @@ local function enabled_servers()
     if cached_servers then
         return cached_servers
     end
-    local langs = require("config.langs")
-    local map = require("config.lang_servers")
+    local ok_langs, langs = pcall(require, "config.langs")
+    local ok_map, map = pcall(require, "config.lang_servers")
+    if not ok_langs or not ok_map then
+        vim.schedule(function()
+            vim.notify("Failed to load lang config; no LSP servers enabled", vim.log.levels.ERROR, { title = "lsp" })
+        end)
+        cached_servers = {}
+        return cached_servers
+    end
     local out, seen, undefined = {}, {}, {}
     for lang, on in pairs(langs) do
         if on then

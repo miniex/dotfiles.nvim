@@ -130,25 +130,28 @@ vim.api.nvim_create_autocmd("FileType", {
     end,
 })
 
+-- Derive the cache-clear filenames from M.specs so they can't drift.
+local config_names = {}
+do
+    local seen = {}
+    for _, spec in pairs(M.specs) do
+        if type(spec) == "table" then
+            for _, src in ipairs(spec.sources) do
+                for _, n in ipairs(src.names) do
+                    if not seen[n] then
+                        seen[n] = true
+                        config_names[#config_names + 1] = n
+                    end
+                end
+            end
+        end
+    end
+end
+
 -- Drop the cache when a formatter config is saved so the ruler re-scans.
 vim.api.nvim_create_autocmd("BufWritePost", {
     group = group,
-    pattern = {
-        ".clang-format",
-        "_clang-format",
-        "rustfmt.toml",
-        ".rustfmt.toml",
-        "stylua.toml",
-        ".stylua.toml",
-        "pyproject.toml",
-        "ruff.toml",
-        ".ruff.toml",
-        ".ocamlformat",
-        ".formatter.exs",
-        ".sqlfluff",
-        "taplo.toml",
-        ".taplo.toml",
-    },
+    pattern = config_names,
     callback = function()
         cache = {}
     end,

@@ -1,7 +1,10 @@
 return {
     {
         "numToStr/Comment.nvim",
-        event = "VeryLazy",
+        keys = {
+            { "gc", mode = { "n", "x" }, desc = "Comment toggle" },
+            { "gb", mode = { "n", "x" }, desc = "Comment toggle (block)" },
+        },
         dependencies = { "JoosepAlviste/nvim-ts-context-commentstring" },
         opts = function()
             return {

@@ -8,7 +8,6 @@ local code = { names = false }
 return {
     "catgoose/nvim-colorizer.lua",
     event = { "BufReadPost", "BufNewFile" },
-    cmd = { "ColorizerToggle", "ColorizerAttachToBuffer", "ColorizerReloadAllBuffers" },
     keys = {
         { "<leader>uC", "<cmd>ColorizerToggle<cr>", desc = "Toggle Colorizer" },
     },

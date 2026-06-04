@@ -18,6 +18,50 @@ end
 -- Pin every plugin's float Normal/Border/Title groups to one look.
 local palette = require("config.palette")
 local pink = palette.pink
+
+-- Snacks splits Normal/Border/Title across many window styles.
+local snacks_n, snacks_b, snacks_t = {}, {}, {}
+for _, kind in ipairs({ "Picker", "Notifier", "Input", "Scratch", "Zen", "Terminal", "Dashboard", "" }) do
+    table.insert(snacks_n, "Snacks" .. kind .. "Normal")
+    table.insert(snacks_b, "Snacks" .. kind .. "Border")
+    table.insert(snacks_t, "Snacks" .. kind .. "Title")
+end
+
+-- Per-plugin float groups (built once): n = Normal, b = Border, t = Title.
+local float_groups = {
+    NeoTree = {
+        n = { "NeoTreeNormal", "NeoTreeNormalNC", "NeoTreeFloatNormal" },
+        b = { "NeoTreeFloatBorder" },
+        t = { "NeoTreeFloatTitle" },
+    },
+    Snacks = { n = snacks_n, b = snacks_b, t = snacks_t },
+    WhichKey = {
+        n = { "WhichKeyNormal", "WhichKeyFloat" },
+        b = { "WhichKeyBorder" },
+        t = { "WhichKeyTitle" },
+    },
+    FzfLua = {
+        n = { "FzfLuaNormal", "FzfLuaPreviewNormal" },
+        b = { "FzfLuaBorder", "FzfLuaPreviewBorder" },
+        t = { "FzfLuaTitle", "FzfLuaPreviewTitle" },
+    },
+    DropBar = {
+        n = { "DropBarMenuNormalFloat" },
+        b = { "DropBarMenuFloatBorder" },
+        t = { "DropBarMenuFloatTitle" },
+    },
+    BlinkCmp = {
+        n = { "BlinkCmpMenu", "BlinkCmpDoc", "BlinkCmpSignatureHelp" },
+        b = { "BlinkCmpMenuBorder", "BlinkCmpDocBorder", "BlinkCmpSignatureHelpBorder" },
+    },
+    -- bqf preview & nvim-cmp legacy
+    Bqf = {
+        n = { "BqfPreviewFloat" },
+        b = { "BqfPreviewBorder" },
+        t = { "BqfPreviewTitle" },
+    },
+}
+
 local function unify_floats()
     local function setn(name)
         vim.api.nvim_set_hl(0, name, { bg = "NONE" })
@@ -35,49 +79,7 @@ local function unify_floats()
     sett("FloatTitle")
     sett("FloatFooter")
 
-    -- Snacks splits Normal/Border/Title across many window styles.
-    local snacks_n, snacks_b, snacks_t = {}, {}, {}
-    for _, kind in ipairs({ "Picker", "Notifier", "Input", "Scratch", "Zen", "Terminal", "Dashboard", "" }) do
-        table.insert(snacks_n, "Snacks" .. kind .. "Normal")
-        table.insert(snacks_b, "Snacks" .. kind .. "Border")
-        table.insert(snacks_t, "Snacks" .. kind .. "Title")
-    end
-
-    -- Per-plugin float groups: n = Normal, b = Border, t = Title.
-    local groups = {
-        NeoTree = {
-            n = { "NeoTreeNormal", "NeoTreeNormalNC", "NeoTreeFloatNormal" },
-            b = { "NeoTreeFloatBorder" },
-            t = { "NeoTreeFloatTitle" },
-        },
-        Snacks = { n = snacks_n, b = snacks_b, t = snacks_t },
-        WhichKey = {
-            n = { "WhichKeyNormal", "WhichKeyFloat" },
-            b = { "WhichKeyBorder" },
-            t = { "WhichKeyTitle" },
-        },
-        FzfLua = {
-            n = { "FzfLuaNormal", "FzfLuaPreviewNormal" },
-            b = { "FzfLuaBorder", "FzfLuaPreviewBorder" },
-            t = { "FzfLuaTitle", "FzfLuaPreviewTitle" },
-        },
-        DropBar = {
-            n = { "DropBarMenuNormalFloat" },
-            b = { "DropBarMenuFloatBorder" },
-            t = { "DropBarMenuFloatTitle" },
-        },
-        BlinkCmp = {
-            n = { "BlinkCmpMenu", "BlinkCmpDoc", "BlinkCmpSignatureHelp" },
-            b = { "BlinkCmpMenuBorder", "BlinkCmpDocBorder", "BlinkCmpSignatureHelpBorder" },
-        },
-        -- bqf preview & nvim-cmp legacy
-        Bqf = {
-            n = { "BqfPreviewFloat" },
-            b = { "BqfPreviewBorder" },
-            t = { "BqfPreviewTitle" },
-        },
-    }
-    for _, g in pairs(groups) do
+    for _, g in pairs(float_groups) do
         for _, name in ipairs(g.n or {}) do
             setn(name)
         end
