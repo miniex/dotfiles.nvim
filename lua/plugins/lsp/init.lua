@@ -151,7 +151,11 @@ return {
             -- tied to attach order (e.g. ruff before basedpyright). Buffer-global
             -- augroups are guarded to create once per buffer.
             local function setup_client_features(client, bufnr)
-                if opts.inlay_hints.enabled and client:supports_method("textDocument/inlayHint", bufnr) then
+                if
+                    opts.inlay_hints
+                    and opts.inlay_hints.enabled
+                    and client:supports_method("textDocument/inlayHint", bufnr)
+                then
                     if not vim.b[bufnr]._lsp_inlay_done then
                         vim.b[bufnr]._lsp_inlay_done = true
                         -- Enable once: re-enabling on a 2nd client / :LspRestart would override the user's toggle.

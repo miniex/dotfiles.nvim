@@ -77,6 +77,10 @@ vim.schedule(function()
                 return
             end
             pending_content = table.concat(vim.v.event.regcontents, "\n")
+            -- table.concat drops the line-wise trailing newline.
+            if vim.v.event.regtype == "V" then
+                pending_content = pending_content .. "\n"
+            end
             if pending_timer and not pending_timer:is_closing() then
                 pending_timer:stop()
                 pending_timer:close()
@@ -109,7 +113,7 @@ vim.api.nvim_create_autocmd("BufWritePre", {
         if args.match:match("^%w%w+:[\\/][\\/]") then
             return
         end
-        vim.fn.mkdir(vim.fn.fnamemodify(args.file, ":p:h"), "p")
+        pcall(vim.fn.mkdir, vim.fn.fnamemodify(args.file, ":p:h"), "p")
     end,
 })
 

@@ -20,7 +20,8 @@ function M.today()
     return os.date("%Y-%m-%d")
 end
 
-math.randomseed(os.time() + math.floor((os.clock() or 0) * 1e6))
+-- Nanosecond seed avoids same-second UUID collisions.
+math.randomseed((vim.uv or vim.loop).hrtime() % 2147483647)
 function M.uuid()
     return (
         string.gsub("xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx", "[xy]", function(c)

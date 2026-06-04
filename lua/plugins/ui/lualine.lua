@@ -203,8 +203,8 @@ return {
                     {
                         -- Search match count, shown only while hlsearch is on.
                         function()
-                            local s = vim.fn.searchcount({ maxcount = 999 })
-                            if not s.total or s.total == 0 then
+                            local ok, s = pcall(vim.fn.searchcount, { maxcount = 999 })
+                            if not ok or not s.total or s.total == 0 then
                                 return ""
                             end
                             return ("⌕ %d/%d"):format(s.current, s.total)

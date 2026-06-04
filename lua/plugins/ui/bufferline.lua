@@ -86,7 +86,7 @@ return {
     -- Deferred past startup [No Name] so the dashboard appears with a clean top edge.
     event = { "BufReadPost", "BufNewFile" },
     dependencies = { "nvim-tree/nvim-web-devicons", "catppuccin" },
-    keys = vim.list_extend(buf_jump_keys, {
+    keys = vim.list_extend(vim.list_extend({}, buf_jump_keys), {
         { "[b", "<cmd>BufferLineCyclePrev<cr>", desc = "Previous buffer" },
         { "]b", "<cmd>BufferLineCycleNext<cr>", desc = "Next buffer" },
         -- S-h/l overrides vim's H/L screen jumps.
