@@ -91,7 +91,7 @@ See [`lua/config/modal-floats.lua`](../lua/config/modal-floats.lua) for the mutu
 
 ## Markdown
 
-- `mdx_analyzer` handles `.mdx`; `marksman` handles `.md`; `harper_ls` adds prose grammar / spell on markdown. Highlighting via treesitter.
+- `mdx_analyzer` handles `.mdx`; `marksman` handles `.md`. Highlighting via treesitter; spell-check via vim's built-in `spell`.
 
 ## Database
 

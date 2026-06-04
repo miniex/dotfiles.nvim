@@ -54,7 +54,7 @@ Prerequisites, manual install, and recovery: [docs/SETUP.md](docs/SETUP.md).
 | Protobuf / TOML     | buf_ls / taplo                                       | -                | -                       |
 | RON                 | -                                                    | -                | -                       |
 | Typst               | tinymist                                             | -                | -                       |
-| Markdown / MDX      | marksman / mdx_analyzer / harper_ls                  | markdownlint     | -                       |
+| Markdown / MDX      | marksman / mdx_analyzer                              | markdownlint     | -                       |
 | CMake / Nix         | neocmake / nil_ls                                    | - / statix       | -                       |
 | Dockerfile / Helm   | dockerls / docker_compose_language_service / helm_ls | hadolint         | -                       |
 | Terraform / HCL     | terraformls                                          | tflint           | -                       |

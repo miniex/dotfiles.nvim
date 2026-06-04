@@ -15,7 +15,7 @@ return {
     json = { "jsonls" },
     just = { "just" },
     lua = { "lua_ls" },
-    markdown = { "harper_ls", "marksman", "mdx_analyzer" },
+    markdown = { "marksman", "mdx_analyzer" },
     nix = { "nil_ls" },
     ocaml = { "ocamllsp" },
     protobuf = { "buf_ls" },
