@@ -62,6 +62,8 @@ Prerequisites, manual install, and recovery: [docs/SETUP.md](docs/SETUP.md).
 | Just                | just-lsp                                             | -                | -                       |
 
 > Formatting is manual via `<leader>cf` (native LSP), not on save.
+>
+> `typos_lsp` spell-checks all filetypes (low false-positive), independent of the table above.
 
 ## Essential Keymaps
 

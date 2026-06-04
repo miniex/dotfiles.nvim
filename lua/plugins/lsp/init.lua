@@ -43,6 +43,8 @@ local function enabled_servers()
         end)
     end
     table.sort(out)
+    -- typos_lsp is language-agnostic, so it's always on rather than per-lang.
+    out[#out + 1] = "typos_lsp"
     cached_servers = out
     return out
 end

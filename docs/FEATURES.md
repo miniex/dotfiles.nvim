@@ -11,6 +11,7 @@
 - **Semantic tokens** — toggle per buffer with `<leader>uy` (e.g. when they clash with treesitter highlight).
 - **Document colors** — LSP color swatches via native `vim.lsp.document_color` on any capable server (tailwindcss, cssls, …); colorizer still owns hex.
 - **Diagnostics** — single config in `lua/plugins/lsp/init.lua`; `tiny-inline-diagnostic.nvim` owns virtual text. Severity-sorted, signs `✗`/`!`/`i`/`?`.
+- **Spell check** — `typos_lsp` across all filetypes: low false-positive (only known typos), surfaced at `Info` severity.
 - **Completion** — [blink.cmp](https://github.com/Saghen/blink.cmp) with Rust fuzzy matching + inline ghost-text preview. Sources: LSP / snippets (LuaSnip + friendly-snippets) / path / buffer; filtered per filetype (no LSP in `gitcommit` / `gitrebase`, buffer-only in snacks input prompts). Cmdline completion on `:` (commands / paths) and `/` `?` (search).
 - **LSP restart** — `<leader>cs` for when a server hangs.
 
@@ -91,7 +92,7 @@ See [`lua/config/modal-floats.lua`](../lua/config/modal-floats.lua) for the mutu
 
 ## Markdown
 
-- `mdx_analyzer` handles `.mdx`; `marksman` handles `.md`. Highlighting via treesitter; spell-check via vim's built-in `spell`.
+- `mdx_analyzer` handles `.mdx`; `marksman` handles `.md`. Highlighting via treesitter; spelling via `typos_lsp`.
 
 ## Database
 
