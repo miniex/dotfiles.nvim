@@ -4,20 +4,20 @@ Leader: `<Space>`. `<localleader>` also `<Space>` (most localleader bindings liv
 
 ## Global
 
-| Key                 | Mode | Description                                         |
-| ------------------- | ---- | --------------------------------------------------- |
-| `<C-h/j/k/l>`       | N/T  | Pane navigation with tmux-style return-to-last      |
-| `<A-h/j/k/l>`       | N/V  | mini.move: shuffle line / block (reindents on h/l)  |
-| `<C-a>` / `<C-x>`   | N/V  | dial: smart inc/dec (bools, dates, semver, &&↔\|\|) |
-| `g<C-a>` / `g<C-x>` | V    | dial: cumulative inc/dec across selection           |
-| `<leader>h`         | N    | Clear search highlight                              |
-| `<Esc>`             | N    | Clear search highlight                              |
-| `<leader>bs`        | N    | Save (writes auto-mkdir parent dirs)                |
-| `<leader>D`         | N/V  | Delete without yank (`<leader>d` reserved for dap)  |
-| `<leader>p`         | N    | Paste + auto-reindent (`=` over pasted lines)       |
-| `<leader>p`         | V    | Paste without overwriting register                  |
-| `<leader>P`         | V    | Paste over + auto-reindent                          |
-| `<` / `>`           | V    | Indent / outdent (keep selection)                   |
+| Key                 | Mode | Description                                              |
+| ------------------- | ---- | -------------------------------------------------------- |
+| `<C-h/j/k/l>`       | N/T  | Pane navigation with tmux-style return-to-last           |
+| `<A-h/j/k/l>`       | N/V  | mini.move: shuffle line / block (reindents on h/l)       |
+| `<C-a>` / `<C-x>`   | N/V  | dial: smart inc/dec (bools, dates, semver, hex, &&↔\|\|) |
+| `g<C-a>` / `g<C-x>` | V    | dial: cumulative inc/dec across selection                |
+| `<leader>h`         | N    | Clear search highlight                                   |
+| `<Esc>`             | N    | Clear search highlight                                   |
+| `<leader>bs`        | N    | Save (writes auto-mkdir parent dirs)                     |
+| `<leader>D`         | N/V  | Delete without yank (`<leader>d` reserved for dap)       |
+| `<leader>p`         | N    | Paste + auto-reindent (`=` over pasted lines)            |
+| `<leader>p`         | V    | Paste without overwriting register                       |
+| `<leader>P`         | V    | Paste over + auto-reindent                               |
+| `<` / `>`           | V    | Indent / outdent (keep selection)                        |
 
 > `n`, `N`, `*`, `#`, `g*`, `g#`, `<C-o>`, `<C-i>`, `[c`, `]c`, `[m`, `]m` auto-center the cursor (`zvzz`).
 > Yank → system clipboard via `wl-copy` / `xclip` / `pbcopy` / `clip.exe` (first available).
@@ -144,6 +144,7 @@ Bare `nvim` auto-restores the cwd session (skipped in headless or when the sessi
 | `<leader>uy`                | Toggle LSP semantic tokens                                         |
 | `<leader>cd` / `<leader>cl` | Toggle inline diagnostic / `virtual_lines`                         |
 | `<leader>cM`                | Toggle multi-diagnostic on cursorline                              |
+| `<leader>ud`                | Toggle all diagnostics (Snacks)                                    |
 | `<leader>cL`                | Run CodeLens (rust-analyzer, gopls, elixir-ls, ocamllsp, lua_ls)   |
 | `<leader>cs`                | `:LspRestart` (recover from a hung server)                         |
 | `<leader>cO` / `<leader>cN` | aerial: outline / outline nav                                      |

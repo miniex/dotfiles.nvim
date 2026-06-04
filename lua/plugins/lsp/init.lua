@@ -336,12 +336,7 @@ return {
                     map("n", "gy", lsp_pick("lsp_typedefs", vim.lsp.buf.type_definition), "Goto Type Definition")
                     map("n", "<leader>cc", vim.diagnostic.open_float, "Line Diagnostics")
                     map("n", "<leader>ca", vim.lsp.buf.code_action, "Code Action")
-                    local toggle_inlay = function()
-                        local on = vim.lsp.inlay_hint.is_enabled({ bufnr = bufnr })
-                        vim.lsp.inlay_hint.enable(not on, { bufnr = bufnr })
-                    end
-                    map("n", "<leader>ci", toggle_inlay, "Toggle Inlay Hints")
-                    map("n", "<leader>uh", toggle_inlay, "Toggle Inlay Hints")
+                    -- Inlay toggle (<leader>ci/uh) lives in snacks.lua.
                     map("n", "<leader>cL", vim.lsp.codelens.run, "Run CodeLens")
                     -- Prefer one formatter per ft when >1 client formats (e.g. python:
                     -- ruff). Single-formatter buffers fall through unfiltered.

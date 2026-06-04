@@ -9,6 +9,30 @@ return {
             for _, setup in ipairs(opts.setups or {}) do
                 pcall(setup, dap)
             end
+
+            -- Flower-themed signs (defaults clash with the ✿ UI).
+            local pal = require("config.palette")
+            for name, text in pairs({
+                DapBreakpoint = "●",
+                DapBreakpointCondition = "◆",
+                DapBreakpointRejected = "○",
+                DapLogPoint = "◆",
+                DapStopped = "▶",
+            }) do
+                vim.fn.sign_define(name, { text = text, texthl = name })
+            end
+            local function set_hl()
+                vim.api.nvim_set_hl(0, "DapBreakpoint", { fg = pal.pink, bg = "NONE" })
+                vim.api.nvim_set_hl(0, "DapBreakpointCondition", { fg = pal.pink, bg = "NONE" })
+                vim.api.nvim_set_hl(0, "DapBreakpointRejected", { fg = pal.bufferline_dim, bg = "NONE" })
+                vim.api.nvim_set_hl(0, "DapLogPoint", { fg = pal.blue, bg = "NONE" })
+                vim.api.nvim_set_hl(0, "DapStopped", { fg = pal.blue, bg = "NONE", bold = true })
+            end
+            set_hl()
+            vim.api.nvim_create_autocmd("ColorScheme", {
+                group = vim.api.nvim_create_augroup("DapSignsDamin", { clear = true }),
+                callback = set_hl,
+            })
         end,
         dependencies = {
             {

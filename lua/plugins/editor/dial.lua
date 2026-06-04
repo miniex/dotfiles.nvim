@@ -14,11 +14,14 @@ return {
         local bool = cyclic({ "true", "false" }, true)
         local logical = cyclic({ "&&", "||" })
         local eq = cyclic({ "==", "!=" })
+        local cmp = cyclic({ "<=", ">=" })
+        local andor = cyclic({ "and", "or" }, true)
 
         -- Shared base; per-filetype lists extend it (TS keeps numbers/dates too).
         local common = {
             augend.integer.alias.decimal_int,
             augend.integer.alias.hex,
+            augend.hexcolor.new({ case = "lower" }),
             augend.constant.alias.alpha,
             augend.constant.alias.Alpha,
             augend.date.alias["%Y-%m-%d"],
@@ -28,6 +31,8 @@ return {
             bool,
             logical,
             eq,
+            cmp,
+            andor,
         }
         local ts = vim.list_extend({ cyclic({ "let", "const" }, true) }, common)
         local markdown = vim.list_extend({ augend.misc.alias.markdown_header }, common)

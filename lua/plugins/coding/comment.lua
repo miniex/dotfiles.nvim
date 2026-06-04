@@ -4,6 +4,9 @@ return {
         keys = {
             { "gc", mode = { "n", "x" }, desc = "Comment toggle" },
             { "gb", mode = { "n", "x" }, desc = "Comment toggle (block)" },
+            { "gco", desc = "Comment line below" },
+            { "gcO", desc = "Comment line above" },
+            { "gcA", desc = "Comment at end of line" },
         },
         dependencies = { "JoosepAlviste/nvim-ts-context-commentstring" },
         opts = function()

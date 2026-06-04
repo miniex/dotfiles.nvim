@@ -468,6 +468,8 @@ return {
         Snacks.toggle.line_number():map("<leader>ul")
         Snacks.toggle.option("conceallevel", { off = 0, on = 2 }):map("<leader>uo")
         Snacks.toggle.treesitter():map("<leader>uT")
+        Snacks.toggle.diagnostics():map("<leader>ud")
+        Snacks.toggle.inlay_hints():map("<leader>ci"):map("<leader>uh")
     end,
     keys = {
         {
