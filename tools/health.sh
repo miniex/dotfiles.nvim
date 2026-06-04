@@ -19,6 +19,7 @@ ok() { printf "  %s[OK]%s   %s\n" "$green" "$reset" "$1"; }
 warn() { printf "  %s[WARN]%s %s\n" "$yellow" "$reset" "$1"; }
 miss() { printf "  %s[MISS]%s %s\n" "$red" "$reset" "$1"; }
 have() { command -v "$1" >/dev/null 2>&1; }
+na() { printf "  [--]   %s\n" "$1"; }
 section() { printf "\n%s\n" "$1"; }
 
 # $1 >= $2 (dotted versions).
@@ -61,12 +62,72 @@ else
     miss "tree-sitter CLI not on PATH (install via cargo or distro, NOT npm)"
 fi
 
+section "Languages (enabled via langs.lua + langs_local.lua)"
+enabled_langs=""
+servers=""
+if have nvim; then
+    lsp_query=$(nvim --headless +'lua
+local okl,langs=pcall(require,"config.langs")
+local oks,map=pcall(require,"config.lang_servers")
+if not (okl and oks) then return end
+local okm,mlsp=pcall(require,"mason-lspconfig")
+local inst={}
+if okm then for _,s in ipairs(mlsp.get_installed_servers()) do inst[s]=true end end
+local en={}
+for lang,on in pairs(langs) do if on then en[#en+1]=lang end end
+table.sort(en)
+io.write("LANGS "..table.concat(en," ").."\n")
+local seen,srv={},{}
+for lang,on in pairs(langs) do if on and map[lang] then for _,s in ipairs(map[lang]) do if not seen[s] then seen[s]=true srv[#srv+1]=s..(inst[s] and ":1" or ":0") end end end end
+table.sort(srv)
+io.write("SERVERS "..table.concat(srv," ").."\n")' +qa 2>/dev/null)
+    enabled_langs=$(printf '%s\n' "$lsp_query" | sed -n 's/^LANGS //p')
+    servers=$(printf '%s\n' "$lsp_query" | sed -n 's/^SERVERS //p')
+fi
+if [ -n "$enabled_langs" ]; then
+    ok "enabled: $enabled_langs"
+else
+    warn "could not query enabled languages (config load failed?)"
+fi
+
+# True when $1 is enabled (or the query failed, to avoid false skips).
+lang_on() {
+    [ -z "$enabled_langs" ] && return 0
+    case " $enabled_langs " in
+        *" $1 "*) return 0 ;;
+        *) return 1 ;;
+    esac
+}
+
+section "Mason LSP servers (enabled langs)"
+if [ -n "$servers" ]; then
+    # shellcheck disable=SC2086 # word-split the space-separated server list
+    for entry in $servers; do
+        if [ "${entry##*:}" = "1" ]; then
+            ok "${entry%:*}"
+        else
+            miss "${entry%:*} not installed — :LspInstall ${entry%:*}"
+        fi
+    done
+else
+    warn "no server data (Mason or config not loaded)"
+fi
+
 section "Toolchains (Mason / per-lang)"
 if have node; then ok "node $(node --version)"; else warn "node missing — npm-based Mason packages won't install"; fi
 if have npm; then ok "npm $(npm --version)"; else warn "npm missing"; fi
-if have python3; then ok "python3 $(python3 --version 2>&1 | awk '{print $2}')"; else warn "python3 missing — debugpy / pynvim affected"; fi
-if have pip3 || have pip; then ok "pip available"; else warn "pip missing"; fi
-if have go; then ok "go $(go version | awk '{print $3}')"; else warn "go missing — gopls / delve affected"; fi
+if lang_on python; then
+    if have python3; then ok "python3 $(python3 --version 2>&1 | awk '{print $2}')"; else warn "python3 missing — debugpy affected"; fi
+    if have pip3 || have pip; then ok "pip available"; else warn "pip missing"; fi
+else
+    na "python3 / pip (python disabled)"
+fi
+if lang_on go; then
+    if have go; then ok "go $(go version | awk '{print $3}')"; else warn "go missing — gopls / delve affected"; fi
+else
+    na "go (go disabled)"
+fi
+# cargo unconditional: fff.nvim build needs it regardless of rust.
 if have cargo; then ok "cargo $(cargo --version | awk '{print $2}')"; else warn "cargo missing — rustaceanvim / fff.nvim build affected"; fi
 
 section "Optional"

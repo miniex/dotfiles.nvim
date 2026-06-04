@@ -87,7 +87,7 @@ See [`lua/config/modal-floats.lua`](../lua/config/modal-floats.lua) for the mutu
 - **mason-tool-installer** — single source of truth for non-LSP tools (shellcheck, golangci-lint, eslint_d, selene, markdownlint, statix, hadolint, sqlfluff, yamllint, …).
 - **DAP** — Rust (rustaceanvim's codelldb) / C-C++ (codelldb) / Python (debugpy) / Go (delve) / Zig (codelldb) / Elixir (elixir-ls debug adapter) / JS-TS (js-debug-adapter, Node). C/C++ and Zig share the codelldb resolver in `lua/config/codelldb.lua`. Persistent breakpoints per-cwd.
 - **neotest** — Python (pytest) / Go (gotestsum) / Elixir (mix) / C/C++ (gtest) / Lua (busted) / Rust (rustaceanvim) / Zig. Summary window state restored across sessions.
-- **health check** — `./tools/health.sh` reports prereq status and runs a headless config-load smoke test.
+- **health check** — `./tools/health.sh` reports prereq status, enabled languages + missing Mason LSP servers, and runs a headless config-load smoke test.
 
 ## Markdown
 
@@ -108,7 +108,7 @@ See [`lua/config/modal-floats.lua`](../lua/config/modal-floats.lua) for the mutu
 
 ## Clipboard
 
-Yank → system clipboard auto-routed via `wl-copy` (Wayland), `xclip` (X11), `pbcopy` (macOS), or `clip.exe` (WSL2) — whichever lands on `PATH` first.
+Yank → system clipboard auto-routed via `wl-copy` (Wayland), `xclip` (X11), `pbcopy` (macOS), or `clip.exe` (WSL2) — whichever lands on `PATH` first, falling back to OSC52 (works over SSH) when none is present.
 
 ## snacks.nvim modules in use
 

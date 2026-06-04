@@ -84,21 +84,43 @@ else
     warn "nvim not installed — install Neovim ≥ 0.12.0 before launching"
 fi
 
-step "Backup existing"
+step "Existing config"
+already_cloned=
 if [ -e "$NVIM_CONFIG" ]; then
-    bk=$(backup_path "$NVIM_CONFIG")
-    if prompt_yes "Move $NVIM_CONFIG → $bk?"; then
-        mv "$NVIM_CONFIG" "$bk"
-        ok "config moved to $bk"
-    else
-        err "aborted — config already exists at $NVIM_CONFIG"
-        exit 1
-    fi
+    origin=
+    [ -d "$NVIM_CONFIG/.git" ] && origin=$(git -C "$NVIM_CONFIG" remote get-url origin 2>/dev/null || true)
+    case "$origin" in
+        *miniex/dotfiles.nvim*)
+            # Already this repo → update in place instead of backup-or-abort.
+            if prompt_yes "$NVIM_CONFIG is already this config. Pull latest?"; then
+                if git -C "$NVIM_CONFIG" pull --ff-only; then
+                    ok "updated $NVIM_CONFIG"
+                else
+                    warn "pull failed (local changes / diverged) — resolve manually"
+                fi
+            else
+                info "left as-is"
+            fi
+            already_cloned=1
+            ;;
+        *)
+            bk=$(backup_path "$NVIM_CONFIG")
+            if prompt_yes "Move $NVIM_CONFIG → $bk?"; then
+                mv "$NVIM_CONFIG" "$bk"
+                ok "config moved to $bk"
+            else
+                err "aborted — config already exists at $NVIM_CONFIG"
+                exit 1
+            fi
+            ;;
+    esac
 else
     info "no existing $NVIM_CONFIG"
 fi
 
-if [ -e "$NVIM_DATA" ]; then
+if [ -n "$already_cloned" ]; then
+    info "keeping existing plugin data (update)"
+elif [ -e "$NVIM_DATA" ]; then
     bk=$(backup_path "$NVIM_DATA")
     if prompt_yes "Move $NVIM_DATA → $bk? (recommended for clean plugin install)"; then
         mv "$NVIM_DATA" "$bk"
@@ -111,8 +133,12 @@ else
 fi
 
 step "Clone repository"
-git clone --depth 1 "$REPO_URL" "$NVIM_CONFIG"
-ok "cloned to $NVIM_CONFIG"
+if [ -n "$already_cloned" ]; then
+    info "using existing clone"
+else
+    git clone --depth 1 "$REPO_URL" "$NVIM_CONFIG"
+    ok "cloned to $NVIM_CONFIG"
+fi
 
 step "Language selection"
 if [ -r /dev/tty ] && prompt_yes "Run interactive language picker now?"; then

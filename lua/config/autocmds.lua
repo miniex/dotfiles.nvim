@@ -65,7 +65,21 @@ vim.schedule(function()
     elseif vim.fn.executable("/mnt/c/Windows/System32/clip.exe") == 1 then
         clip_cmd = { "/mnt/c/Windows/System32/clip.exe" }
     end
-    if not clip_cmd then
+    local copy
+    if clip_cmd then
+        copy = function(content)
+            vim.system(clip_cmd, { stdin = content })
+        end
+    else
+        -- No clipboard binary (e.g. SSH): emit OSC52 so the terminal copies.
+        local ok, osc52 = pcall(require, "vim.ui.clipboard.osc52")
+        if ok then
+            copy = function(content)
+                osc52.copy("+")(vim.split(content, "\n"))
+            end
+        end
+    end
+    if not copy then
         return
     end
     -- Yank-only + 50ms debounce so macros don't fork dozens of clipboard processes.
@@ -99,7 +113,7 @@ vim.schedule(function()
                     if pending_timer == timer then
                         pending_timer = nil
                     end
-                    vim.system(clip_cmd, { stdin = pending_content })
+                    copy(pending_content)
                 end)
             )
         end,

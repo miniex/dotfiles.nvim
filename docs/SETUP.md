@@ -20,7 +20,7 @@ Mason auto-installs plugins, LSPs, linters, and DAP adapters on first launch —
 
 ### One-shot installer
 
-Backs up existing config, optionally picks langs:
+Backs up an existing config (or updates in place if it's already this repo), optionally picks langs:
 
 ```bash
 sh -c "$(curl -fsSL https://raw.githubusercontent.com/miniex/dotfiles.nvim/main/install.sh)"

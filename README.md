@@ -19,7 +19,7 @@ Lean, fast, easy on the eyes. Native LSP via `lsp/<server>.lua` discovery, Rust-
 - **Modal floats** — pickers / terminal / lazy / Mason / harpoon / lazygit / Neo-tree are mutually exclusive and land in the exact same 0.85 × 0.85 chrome-aware rectangle
 - **Tooling** — nvim-lint, mason-tool-installer, DAP (6 langs), neotest (6 langs), vim-dadbod-ui (SQL client)
 - **Git** — gitsigns, fugitive, lazygit, Diffview, gitgraph.nvim
-- **Clipboard** — yank → wl-copy / xclip / pbcopy / clip.exe (whichever is on PATH first)
+- **Clipboard** — yank → wl-copy / xclip / pbcopy / clip.exe (whichever is on PATH first), else OSC52 over SSH
 
 Full breakdown: [docs/FEATURES.md](docs/FEATURES.md).
 
