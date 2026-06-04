@@ -6,6 +6,7 @@ local defaults = {
     cmake = true,
     dockerfile = true,
     elixir = true,
+    fish = true,
     go = true,
     graphql = true,
     helm = true,

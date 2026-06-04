@@ -27,6 +27,7 @@ return {
                 "css",
                 "javascript",
                 "typescript",
+                "templ",
                 "heex",
                 "eex",
                 -- API / Query

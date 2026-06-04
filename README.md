@@ -36,10 +36,11 @@ Prerequisites, manual install, and recovery: [docs/SETUP.md](docs/SETUP.md).
 | Language            | LSP                                                  | Linter           | Debugger                |
 | ------------------- | ---------------------------------------------------- | ---------------- | ----------------------- |
 | Shell (sh/bash)     | bashls                                               | shellcheck       | -                       |
-| Zsh / Fish          | -                                                    | zsh -n / fish -n | -                       |
+| Zsh / Fish          | - / fish-lsp                                         | zsh -n / fish -n | -                       |
 | Assembly            | asm-lsp                                              | -                | -                       |
 | C/C++               | clangd                                               | -                | codelldb                |
 | Go                  | gopls                                                | golangci-lint    | delve                   |
+| Templ               | templ (+ html)                                       | -                | -                       |
 | Rust                | rust-analyzer (rustaceanvim)                         | -                | codelldb                |
 | Zig                 | zls                                                  | -                | codelldb                |
 | OCaml               | ocamllsp                                             | -                | -                       |

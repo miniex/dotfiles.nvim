@@ -7,7 +7,9 @@ return {
     cmake = { "neocmake" },
     dockerfile = { "dockerls", "docker_compose_language_service" },
     elixir = { "elixirls" },
-    go = { "gopls" },
+    fish = { "fish_lsp" },
+    -- templ: Go HTML templating (.templ); the html LSP also attaches via lsp/html.lua.
+    go = { "gopls", "templ" },
     graphql = { "graphql" },
     helm = { "helm_ls" },
     json = { "jsonls" },
