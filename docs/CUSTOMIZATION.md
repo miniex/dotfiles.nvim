@@ -89,13 +89,13 @@ Add a language: add an entry to the `M.specs` table in `lua/config/format-width.
 ## DAP
 
 - Adapters & language launch configs in `lua/plugins/lang/<lang>.lua` (e.g. zig, elixir, c-cpp).
-- For a new language that configures `nvim-dap` directly, append a setup function to **`opts.setups`** (run once by the single `config` in `lua/plugins/lsp/dap.lua`):
+- For a new language that configures `nvim-dap` directly, return `require("config.dap").spec(setup_fn)` — the shared `optional` fragment whose `setup_fn(dap)` registers adapters/configs (run once by the single `config` in `lua/plugins/lsp/dap.lua`):
 
     ```lua
-    { "mfussenegger/nvim-dap", optional = true, opts = function(_, opts)
-        opts.setups = opts.setups or {}
-        table.insert(opts.setups, function(dap) dap.configurations.X = { ... } end)
-    end }
+    require("config.dap").spec(function(dap)
+        dap.adapters.X = { ... }
+        dap.configurations.X = { ... }
+    end)
     ```
 
     Do **not** add a second `config` to `nvim-dap` from a lang file — lazy runs only one `config` per plugin, so they would collide nondeterministically. (Languages with their own plugin — `nvim-dap-go`, `nvim-dap-python` — keep `config` there.)

@@ -69,4 +69,24 @@ function M.code_action_only(kind)
     end
 end
 
+-- nvim-lspconfig code-action keys: `<leader>c<letter>` from the set below, gated to `ft`.
+local CODE_ACTIONS = {
+    I = { kind = "source.organizeImports", desc = "Organize Imports" },
+    X = { kind = "source.fixAll", desc = "Fix All" },
+    U = { kind = "source.removeUnused", desc = "Remove Unused" },
+}
+function M.code_action_keys(label, letters, ft)
+    local keys = {}
+    for _, letter in ipairs(letters) do
+        local a = CODE_ACTIONS[letter]
+        keys[#keys + 1] = {
+            "<leader>c" .. letter,
+            M.code_action_only(a.kind),
+            desc = label .. ": " .. a.desc,
+            ft = ft,
+        }
+    end
+    return { "neovim/nvim-lspconfig", keys = keys }
+end
+
 return M

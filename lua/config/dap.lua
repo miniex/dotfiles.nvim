@@ -7,6 +7,17 @@ function M.setup(opts, fn)
     table.insert(opts.setups, fn)
 end
 
+-- The shared `optional` nvim-dap fragment; `setup_fn(dap)` registers adapters/configs.
+function M.spec(setup_fn)
+    return {
+        "mfussenegger/nvim-dap",
+        optional = true,
+        opts = function(_, opts)
+            M.setup(opts, setup_fn)
+        end,
+    }
+end
+
 -- Resolve a Mason binary; returns the path, or nil and warns (label = :MasonInstall pkg).
 function M.mason_bin(rel, label)
     local path = vim.fn.stdpath("data") .. "/mason/" .. rel

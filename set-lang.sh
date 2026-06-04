@@ -12,26 +12,8 @@ if [ ! -f "$defaults_file" ]; then
     exit 1
 fi
 
-# Shared palette; fall back to inline definitions if it can't be resolved.
-if [ -r "$config_dir/scripts/_colors.sh" ]; then
-    . "$config_dir/scripts/_colors.sh"
-elif [ -t 1 ]; then
-    RESET=$(printf '\033[0m')
-    BOLD=$(printf '\033[1m')
-    DIM=$(printf '\033[2m')
-    SKY=$(printf '\033[38;2;135;206;235m')
-    PINK=$(printf '\033[38;2;255;182;193m')
-    SKY2=$(printf '\033[38;2;165;200;225m')
-    YELLOW=$(printf '\033[33m')
-else
-    RESET=''
-    BOLD=''
-    DIM=''
-    SKY=''
-    PINK=''
-    SKY2=''
-    YELLOW=''
-fi
+# Shared palette (always present alongside this script in a clone).
+. "$config_dir/scripts/_colors.sh"
 
 # Extract enabled language names from langs.lua.
 # (Two greps + sort because BSD grep on macOS mishandles this alternation.)

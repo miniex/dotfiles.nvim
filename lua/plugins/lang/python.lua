@@ -1,5 +1,3 @@
-local code_action_only = require("config.lang").code_action_only
-
 return {
     {
         "mfussenegger/nvim-dap-python",
@@ -31,22 +29,6 @@ return {
             },
         },
     },
-    {
-        -- Ruff code actions (mirrors lang/web.lua for TS).
-        "neovim/nvim-lspconfig",
-        keys = {
-            {
-                "<leader>cI",
-                code_action_only("source.organizeImports"),
-                desc = "Python: Organize Imports",
-                ft = "python",
-            },
-            {
-                "<leader>cX",
-                code_action_only("source.fixAll"),
-                desc = "Python: Fix All",
-                ft = "python",
-            },
-        },
-    },
+    -- Ruff code actions.
+    require("config.lang").code_action_keys("Python", { "I", "X" }, "python"),
 }

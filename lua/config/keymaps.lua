@@ -42,22 +42,14 @@ end
 
 _G._NavPane = nav
 
-map("<C-h>", function()
-    nav("h")
-end, "n", "Move to left pane")
-map("<C-j>", function()
-    nav("j")
-end, "n", "Move to bottom pane")
-map("<C-k>", function()
-    nav("k")
-end, "n", "Move to top pane")
-map("<C-l>", function()
-    nav("l")
-end, "n", "Move to right pane")
-map("<C-h>", [[<C-\><C-n><Cmd>lua _NavPane('h')<CR>]], "t", "Move to left pane (term)")
-map("<C-j>", [[<C-\><C-n><Cmd>lua _NavPane('j')<CR>]], "t", "Move to bottom pane (term)")
-map("<C-k>", [[<C-\><C-n><Cmd>lua _NavPane('k')<CR>]], "t", "Move to top pane (term)")
-map("<C-l>", [[<C-\><C-n><Cmd>lua _NavPane('l')<CR>]], "t", "Move to right pane (term)")
+local pane_dir = { h = "left", j = "bottom", k = "top", l = "right" }
+for _, dir in ipairs({ "h", "j", "k", "l" }) do
+    local desc = "Move to " .. pane_dir[dir] .. " pane"
+    map("<C-" .. dir .. ">", function()
+        nav(dir)
+    end, "n", desc)
+    map("<C-" .. dir .. ">", ([[<C-\><C-n><Cmd>lua _NavPane('%s')<CR>]]):format(dir), "t", desc .. " (term)")
+end
 
 -- zvzz after jumps. gg/G excluded — races with snacks.scroll (folke/snacks.nvim#2672).
 for _, key in ipairs({
