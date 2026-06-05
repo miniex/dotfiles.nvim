@@ -6,7 +6,6 @@
 - **File watching** — client-side `didChangeWatchedFiles` is on for every server (off by default on Linux); rust-analyzer watches server-side so large projects don't stall on open.
 - **Inlay hints** — toggle per buffer with `<leader>ci`; suppressed automatically during insert mode.
 - **CodeLens** — enabled on capable servers (gopls, rust-analyzer, lua_ls, ocamllsp, elixir-ls); refreshes on edit, paused during insert mode (like inlay hints).
-- **LSP folding** — capable servers fold via `vim.lsp.foldexpr`; treesitter folds everything else.
 - **Navigation** — `gd` / `gr` / `gi` / `gy` open an fzf-lua picker (auto-jumps on a single result); `<leader>cI` / `cG` / `cH` for incoming / outgoing calls + type hierarchy.
 - **Rename** — `<leader>rn` via inc-rename with a live in-buffer preview (`grn` stays plain native).
 - **Formatting** — `<leader>cf` runs `vim.lsp.buf.format` (native LSP; no formatter plugin).
@@ -36,7 +35,8 @@
 
 - **Files** — Neo-tree (floating). `<leader>e` toggle, `<leader>o` reveal current file. Directory rows show recursive total size instead of the default `-`.
 - **Navigation** — flash (`s` / `S`), Trouble (`<leader>xx`), aerial (`<leader>cO`), harpoon v2 (`<leader>m*`).
-- **Search & replace** — grug-far (`<leader>rr`).
+- **Search & replace** — grug-far (`<leader>rr`) for regex; ssr (`<leader>rs`) for structural AST-aware replace.
+- **Structural edits & yank ring** — treesj split/join a node (`<leader>cJ`); yanky yank history (`]y` / `[y` after paste); various-textobjs indentation / value / key objects (`iI` / `iv` / `ik`).
 - **Multi-cursor** — multicursor.nvim under `<leader>M*` + `<C-Up>` / `<C-Down>`.
 - **Smart inc/dec** — dial.nvim. `<C-a>`/`<C-x>` flips bools, dates, semver, hex colors, `&&↔||` (plus `let↔const` in JS/TS and headers in markdown).
 - **Quickfix** — quicker.nvim (editable QF), nvim-bqf (preview), Trouble (`auto_close` on jump, main-window preview).

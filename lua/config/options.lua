@@ -68,14 +68,8 @@ opt.diffopt:append("linematch:60")
 -- Trusted per-project config (.nvim.lua / .exrc); managed by vim.secure.
 opt.exrc = true
 
--- folding: treesitter expr by default; LSP buffers swap to vim.lsp.foldexpr on
--- attach. Start fully expanded (zc/zo to fold/unfold).
-opt.foldmethod = "expr"
-opt.foldexpr = "v:lua.vim.treesitter.foldexpr()"
-opt.foldtext = ""
-opt.foldlevel = 99
-opt.foldlevelstart = 99
-opt.foldenable = true
+-- Folding disabled.
+opt.foldenable = false
 
 -- ui2: native floating cmdline/msg (0.12+). `vim.g.disable_ui2=true` to opt out.
 if not vim.g.disable_ui2 then

@@ -124,9 +124,6 @@ return {
             if ok_blink then
                 capabilities = blink.get_lsp_capabilities({}, false)
             end
-            -- Folding: many servers (lua_ls/gopls) only emit ranges when advertised; foldexpr is wired below.
-            capabilities.textDocument = capabilities.textDocument or {}
-            capabilities.textDocument.foldingRange = { dynamicRegistration = false, lineFoldingOnly = true }
             -- File watching: nvim defaults this off on Linux/BSD, so opt in for all servers.
             capabilities.workspace = capabilities.workspace or {}
             capabilities.workspace.didChangeWatchedFiles = { dynamicRegistration = true }
@@ -241,13 +238,6 @@ return {
                 then
                     pcall(vim.lsp.linked_editing_range.enable, true, { bufnr = bufnr })
                 end
-                -- LSP folding where the server supports it; treesitter stays the default.
-                -- foldexpr is per-window, so set it for every window showing the buffer.
-                if vim.lsp.foldexpr and client:supports_method("textDocument/foldingRange", bufnr) then
-                    for _, win in ipairs(vim.fn.win_findbuf(bufnr)) do
-                        vim.wo[win][0].foldexpr = "v:lua.vim.lsp.foldexpr()"
-                    end
-                end
                 -- Color swatches (0.12) on any documentColor-capable server (colorizer
                 -- owns hex). The capability registers post-init, so poll per client.
                 if vim.lsp.document_color and not vim.b[bufnr]["_doccolor_polling_" .. client.id] then
@@ -285,28 +275,6 @@ return {
                     end
                 end
             end
-
-            -- Revert foldexpr to treesitter when the last folding client detaches (else it lingers, folds nothing).
-            vim.api.nvim_create_autocmd("LspDetach", {
-                group = vim.api.nvim_create_augroup("lsp-fold-detach", { clear = true }),
-                callback = function(args)
-                    vim.schedule(function()
-                        if not vim.api.nvim_buf_is_valid(args.buf) then
-                            return
-                        end
-                        for _, c in ipairs(vim.lsp.get_clients({ bufnr = args.buf })) do
-                            if c:supports_method("textDocument/foldingRange") then
-                                return
-                            end
-                        end
-                        for _, win in ipairs(vim.fn.win_findbuf(args.buf)) do
-                            if vim.wo[win][0].foldexpr == "v:lua.vim.lsp.foldexpr()" then
-                                vim.wo[win][0].foldexpr = "v:lua.vim.treesitter.foldexpr()"
-                            end
-                        end
-                    end)
-                end,
-            })
 
             local group = vim.api.nvim_create_augroup("lsp-attach-keys", { clear = true })
             vim.api.nvim_create_autocmd("LspAttach", {

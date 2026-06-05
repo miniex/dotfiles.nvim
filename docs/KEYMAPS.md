@@ -24,6 +24,7 @@ Leader: `<Space>`. `<localleader>` also `<Space>` (most localleader bindings liv
 > `n`, `N`, `*`, `#`, `g*`, `g#`, `<C-o>`, `<C-i>` auto-center the cursor (`zvzz`); `[c`/`]c` do too, in diff mode.
 > `:s/…` shows a live split preview (`inccommand`); `:grep` uses ripgrep; visual-block edits extend past line-end.
 > Yank → system clipboard via `wl-copy` / `xclip` / `pbcopy` / `clip.exe` (first available), else OSC52 over SSH.
+> `p` / `P` feed a yank ring (yanky); `]y` / `[y` cycle to a newer / older yank right after pasting.
 > Macro recording shows a `recording @a` / `saved @a` toast plus `● @a` in the statusline while active.
 
 ## Find & Navigate
@@ -105,6 +106,7 @@ Inside the grug-far buffer: `<localleader>r` replace, `<localleader>s` sync to d
 | `<leader>rf` | n    | Scoped to current file               |
 | `<leader>rw` | n    | Prefilled with `<cword>`             |
 | `<leader>ri` | v    | Search & replace within range        |
+| `<leader>rs` | n/x  | Structural (AST-aware) replace — ssr |
 
 ## Session (persistence.nvim)
 
@@ -183,6 +185,9 @@ Bare `nvim` auto-restores the cwd session (skipped in headless or when the sessi
 | `am` / `im`                 | x/o   | Call                                                                      |
 | `aB` / `iB`                 | x/o   | Block (capital — `b` is word-back)                                        |
 | `aS`                        | x/o   | Statement                                                                 |
+| `iI` / `aI`                 | x/o   | Indentation block (various-textobjs)                                      |
+| `iv` / `av`                 | x/o   | Config value after `:` / `=` (various-textobjs)                           |
+| `ik` / `ak`                 | x/o   | Config key (various-textobjs)                                             |
 | `]f` / `[f`                 | n/x/o | Next / prev function start                                                |
 | `]F` / `[F`                 | n/x/o | Next / prev function end                                                  |
 | `]C` / `[C`                 | n/x/o | Next / prev class start (lowercase `]c`/`[c` left for diff change motion) |
@@ -190,6 +195,7 @@ Bare `nvim` auto-restores the cwd session (skipped in headless or when the sessi
 | `;` / `,`                   | n/x/o | Repeat last move forward / backward (TS goto / `f` / `t`)                 |
 | `<leader>cA` / `<leader>cS` | n     | Swap parameter with next / prev                                           |
 | `<leader>cj` / `<leader>ck` | n     | Swap function with next / prev sibling                                    |
+| `<leader>cJ`                | n     | Split/join node — toggle one-line ↔ multi-line (treesj)                   |
 | `gnn`                       | n     | Init incremental selection                                                |
 | `gnm` / `gnM`               | x     | Expand / shrink node                                                      |
 | `<leader>uc`                | n     | Toggle treesitter context                                                 |
@@ -204,18 +210,6 @@ Bare `nvim` auto-restores the cwd session (skipped in headless or when the sessi
 | `[x`                        | n     | Jump to context start                                                     |
 
 > **mini.ai** adds bracket/quote/tag textobjects (`a(` / `i"` / `at`) with next/last search — `an(` / `in"` (next), `aL(` / `iL"` (last).
-
-## Folding
-
-`foldexpr = vim.treesitter.foldexpr()` by default; LSP buffers whose server supports `foldingRange` swap to `vim.lsp.foldexpr()` on attach. `foldlevelstart = 99` — files open fully unfolded; fold on demand.
-
-| Key         | Description                    |
-| ----------- | ------------------------------ |
-| `zc` / `zo` | Close / open fold under cursor |
-| `zC` / `zO` | Close / open recursively       |
-| `za`        | Toggle fold                    |
-| `zR` / `zM` | Open / close **all** folds     |
-| `zj` / `zk` | Move to next / prev fold       |
 
 ## Winbar Breadcrumb (dropbar)
 

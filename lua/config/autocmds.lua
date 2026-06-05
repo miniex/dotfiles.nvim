@@ -152,10 +152,7 @@ vim.api.nvim_create_autocmd("BufReadPost", {
         local mark = vim.api.nvim_buf_get_mark(args.buf, '"')
         local last = vim.api.nvim_buf_line_count(args.buf)
         if mark[1] > 0 and mark[1] <= last then
-            if pcall(vim.api.nvim_win_set_cursor, 0, mark) then
-                -- open enclosing folds.
-                pcall(vim.cmd, "normal! zv")
-            end
+            pcall(vim.api.nvim_win_set_cursor, 0, mark)
         end
     end,
 })
