@@ -12,8 +12,12 @@ vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
         -- Stat for size once per buffer, not on every BufEnter.
         local skip = vim.b[args.buf].checktime_skip_large
         if skip == nil then
-            skip = vim.fn.getfsize(vim.api.nvim_buf_get_name(args.buf)) > 10 * 1024 * 1024
-            vim.b[args.buf].checktime_skip_large = skip
+            local size = vim.fn.getfsize(vim.api.nvim_buf_get_name(args.buf))
+            skip = size > 10 * 1024 * 1024
+            -- Don't cache for a not-yet-written buffer (size -1); re-check once it exists.
+            if size >= 0 then
+                vim.b[args.buf].checktime_skip_large = skip
+            end
         end
         if skip then
             return

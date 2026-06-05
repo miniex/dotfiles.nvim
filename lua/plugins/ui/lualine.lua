@@ -9,6 +9,27 @@ return {
         local damin_blue = palette.blue
         local damin_pink = palette.pink
 
+        -- Cache attached LSP client names; refresh on attach/detach, not every render.
+        local lsp_names_cache = {}
+        local function lsp_client_names()
+            local buf = vim.api.nvim_get_current_buf()
+            if lsp_names_cache[buf] ~= nil then
+                return lsp_names_cache[buf]
+            end
+            local names = {}
+            for _, client in ipairs(vim.lsp.get_clients({ bufnr = buf })) do
+                names[#names + 1] = client.name
+            end
+            lsp_names_cache[buf] = table.concat(names, ", ")
+            return lsp_names_cache[buf]
+        end
+        vim.api.nvim_create_autocmd({ "LspAttach", "LspDetach", "BufWipeout" }, {
+            group = vim.api.nvim_create_augroup("LualineLspNames", { clear = true }),
+            callback = function(args)
+                lsp_names_cache[args.buf] = nil
+            end,
+        })
+
         -- damin: text-on-transparent. ✿ glyph color = mode (blue/pink/red/dim).
         local damin_theme = {
             normal = {
@@ -174,14 +195,7 @@ return {
                 },
                 lualine_x = {
                     {
-                        -- Attached LSP client name(s) for the current buffer.
-                        function()
-                            local names = {}
-                            for _, client in ipairs(vim.lsp.get_clients({ bufnr = 0 })) do
-                                names[#names + 1] = client.name
-                            end
-                            return table.concat(names, ", ")
-                        end,
+                        lsp_client_names,
                         color = { fg = damin_blue },
                     },
                     {

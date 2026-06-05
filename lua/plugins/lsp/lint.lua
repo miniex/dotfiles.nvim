@@ -60,6 +60,12 @@ return {
         },
         config = function(_, opts)
             local lint = require("lint")
+            -- Drop zsh/fish (interpreter -n linters) when the binary is absent; nvim-lint swallows the error.
+            for ft, exe in pairs({ zsh = "zsh", fish = "fish" }) do
+                if vim.fn.executable(exe) ~= 1 then
+                    opts.linters_by_ft[ft] = nil
+                end
+            end
             lint.linters_by_ft = opts.linters_by_ft
 
             -- Coalesce bursts, keyed per buffer.

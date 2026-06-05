@@ -19,7 +19,7 @@ Leader: `<Space>`. `<localleader>` also `<Space>` (most localleader bindings liv
 | `<leader>P`         | V    | Paste over + auto-reindent                               |
 | `<` / `>`           | V    | Indent / outdent (keep selection)                        |
 
-> `n`, `N`, `*`, `#`, `g*`, `g#`, `<C-o>`, `<C-i>`, `[c`, `]c` auto-center the cursor (`zvzz`).
+> `n`, `N`, `*`, `#`, `g*`, `g#`, `<C-o>`, `<C-i>` auto-center the cursor (`zvzz`); `[c`/`]c` do too, in diff mode.
 > Yank → system clipboard via `wl-copy` / `xclip` / `pbcopy` / `clip.exe` (first available), else OSC52 over SSH.
 > Macro recording shows a `recording @a` / `saved @a` toast plus `● @a` in the statusline while active.
 

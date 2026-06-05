@@ -23,8 +23,9 @@ function M.geom()
     local top_edge = has_tabline and 1 or 0
     local bottom_edge = vim.o.lines - vim.o.cmdheight - (has_statusline and 1 or 0)
     local usable = bottom_edge - top_edge
-    local h = math.min(math.floor(vim.o.lines * M.RATIO), usable)
-    local w = math.floor(vim.o.columns * M.RATIO)
+    -- Clamp to >=1: a short terminal (large cmdheight) can make usable negative → invalid geometry.
+    local h = math.max(1, math.min(math.floor(vim.o.lines * M.RATIO), usable))
+    local w = math.max(1, math.floor(vim.o.columns * M.RATIO))
     local r = top_edge + math.floor((usable - h) / 2) + 1
     local c = math.floor((vim.o.columns - w) / 2)
     cache.key, cache.w, cache.h, cache.r, cache.c = key, w, h, r, c

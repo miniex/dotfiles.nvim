@@ -61,10 +61,14 @@ for _, key in ipairs({
     "g#",
     "<C-o>",
     "<C-i>",
-    "[c",
-    "]c",
 }) do
     vim.keymap.set("n", key, key .. "zvzz", { silent = true })
+end
+-- [c/]c are diff-only motions; recenter just in diff mode (they error elsewhere).
+for _, key in ipairs({ "[c", "]c" }) do
+    vim.keymap.set("n", key, function()
+        return vim.wo.diff and key .. "zvzz" or key
+    end, { silent = true, expr = true })
 end
 
 -- clear search highlight (<Esc> falls back here until multicursor overrides it).

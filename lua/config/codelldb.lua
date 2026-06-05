@@ -3,16 +3,21 @@
 local M = {}
 
 -- Returns a dap.adapters.codelldb spec, or nil (with a warning) if not installed.
+local warned = false
 function M.adapter(lang)
     local path = vim.fn.stdpath("data") .. "/mason/packages/codelldb/extension/adapter/codelldb"
     if vim.fn.executable(path) ~= 1 then
-        vim.schedule(function()
-            vim.notify(
-                "codelldb not found at " .. path .. "\nRun :MasonInstall codelldb",
-                vim.log.levels.WARN,
-                { title = "nvim-dap (" .. lang .. ")" }
-            )
-        end)
+        -- Warn once: C/C++ and Zig both call this, else two identical toasts.
+        if not warned then
+            warned = true
+            vim.schedule(function()
+                vim.notify(
+                    "codelldb not found at " .. path .. "\nRun :MasonInstall codelldb",
+                    vim.log.levels.WARN,
+                    { title = "nvim-dap (" .. lang .. ")" }
+                )
+            end)
+        end
         return nil
     end
     return {

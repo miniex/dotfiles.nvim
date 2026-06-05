@@ -76,7 +76,20 @@ local function schedule_refresh()
     )
 end
 
+local bloom_group = vim.api.nvim_create_augroup("CursorBloomSign", { clear = true })
 vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI", "ModeChanged", "BufEnter" }, {
-    group = vim.api.nvim_create_augroup("CursorBloomSign", { clear = true }),
+    group = bloom_group,
     callback = schedule_refresh,
+})
+-- Reset trackers on wipe, else a reused bufnr on the same line skips the sign.
+vim.api.nvim_create_autocmd("BufWipeout", {
+    group = bloom_group,
+    callback = function(args)
+        if args.buf == last_buf then
+            last_buf, last_line = nil, nil
+        end
+        if args.buf == last_id_buf then
+            last_id, last_id_buf = nil, nil
+        end
+    end,
 })
