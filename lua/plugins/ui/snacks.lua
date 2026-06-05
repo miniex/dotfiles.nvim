@@ -466,6 +466,7 @@ return {
         Snacks.toggle.option("spell", { name = "Spelling" }):map("<leader>us")
         Snacks.toggle.option("relativenumber", { name = "Relative Number" }):map("<leader>ur")
         Snacks.toggle.line_number():map("<leader>ul")
+        Snacks.toggle.option("list", { name = "List Chars" }):map("<leader>ui")
         Snacks.toggle.option("conceallevel", { off = 0, on = 2 }):map("<leader>uo")
         Snacks.toggle.treesitter():map("<leader>uT")
         Snacks.toggle.diagnostics():map("<leader>ud")

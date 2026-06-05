@@ -90,6 +90,20 @@ map("<leader>p", "p`[v`]=", "n", "Paste + reindent")
 map("<leader>p", '"_dP', "x", "Paste over (no yank)")
 map("<leader>P", '"_dP`[v`]=', "x", "Paste over + reindent")
 
+-- join keeping cursor position; gJ (no inserted space) on <leader>j
+map("J", "mzJ`z", "n", "Join lines (keep cursor)")
+map("<leader>j", "gJ", "n", "Join lines (no space)")
+
+-- open URL / file under cursor (netrw's gx is disabled)
+map("gx", function()
+    local cword = vim.fn.expand("<cWORD>")
+    local url = cword:match("https?://[%w%-_%.%?:/%+=&#@!~,;'%%]+")
+    local target = url or vim.fn.expand("<cfile>")
+    if target ~= "" then
+        vim.ui.open(target)
+    end
+end, "n", "Open URL/file under cursor")
+
 -- 0.12 built-in undo tree (opt package, needs packadd before first use).
 map("<leader>uU", function()
     vim.cmd("packadd nvim.undotree")
@@ -101,6 +115,10 @@ map("<leader>qR", "<cmd>restart<cr>", "n", "Restart Neovim")
 -- Quickfix stack history (older/newer lists from :grep, LSP, etc.).
 map("<leader>x<", "<cmd>colder<cr>", "n", "Quickfix older")
 map("<leader>x>", "<cmd>cnewer<cr>", "n", "Quickfix newer")
+
+-- Diagnostics into the native quickfix / loclist (feeds colder/cnewer + bqf).
+map("<leader>xE", vim.diagnostic.setqflist, "n", "Diagnostics → quickfix")
+map("<leader>xe", vim.diagnostic.setloclist, "n", "Buffer diagnostics → loclist")
 
 -- Yank file path to `+` — absolute / relative / relative:line variants.
 local function yank_path(transform)

@@ -13,6 +13,10 @@ opt.linebreak = true
 opt.incsearch = true
 opt.ignorecase = true
 opt.smartcase = true
+-- live :s/.../ preview; :grep backed by ripgrep
+opt.inccommand = "split"
+opt.grepprg = "rg --vimgrep --smart-case"
+opt.grepformat = "%f:%l:%c:%m"
 
 -- visual
 opt.number = true
@@ -20,6 +24,11 @@ opt.relativenumber = true
 opt.termguicolors = true
 opt.signcolumn = "yes:2"
 opt.fillchars:append({ eob = " " })
+-- block-wise visual edits past line end (column / table editing)
+opt.virtualedit = "block"
+-- whitespace shown on demand; toggle with <leader>ui
+opt.list = false
+opt.listchars = { tab = "» ", trail = "·", nbsp = "␣", extends = "›", precedes = "‹" }
 
 -- etc
 opt.encoding = "UTF-8"

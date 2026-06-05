@@ -18,8 +18,11 @@ Leader: `<Space>`. `<localleader>` also `<Space>` (most localleader bindings liv
 | `<leader>p`         | V    | Paste without overwriting register                       |
 | `<leader>P`         | V    | Paste over + auto-reindent                               |
 | `<` / `>`           | V    | Indent / outdent (keep selection)                        |
+| `J` / `<leader>j`   | N    | Join lines keeping cursor / without a space (`gJ`)       |
+| `gx`                | N    | Open URL / file under cursor (`vim.ui.open`)             |
 
 > `n`, `N`, `*`, `#`, `g*`, `g#`, `<C-o>`, `<C-i>` auto-center the cursor (`zvzz`); `[c`/`]c` do too, in diff mode.
+> `:s/…` shows a live split preview (`inccommand`); `:grep` uses ripgrep; visual-block edits extend past line-end.
 > Yank → system clipboard via `wl-copy` / `xclip` / `pbcopy` / `clip.exe` (first available), else OSC52 over SSH.
 > Macro recording shows a `recording @a` / `saved @a` toast plus `● @a` in the statusline while active.
 
@@ -157,6 +160,7 @@ Bare `nvim` auto-restores the cwd session (skipped in headless or when the sessi
 | `gO`                        | Trouble: LSP defs / refs (overrides the 0.11 default)              |
 | `<leader>x<` / `<leader>x>` | Quickfix stack: older / newer list                                 |
 | `<leader>xQ` / `<leader>xL` | quicker.nvim: editable quickfix / loclist (`>`/`<` expand context) |
+| `<leader>xE` / `<leader>xe` | Diagnostics → native quickfix / buffer loclist                     |
 | `<leader>xt` / `<leader>xT` | Trouble: TODOs / TODO+FIX+FIXME                                    |
 | `[q` / `]q`                 | Prev / next item (Trouble + qf fallback)                           |
 | `[d` / `]d`                 | Prev / next diagnostic (any severity)                              |
@@ -194,6 +198,7 @@ Bare `nvim` auto-restores the cwd session (skipped in headless or when the sessi
 | `<leader>uD`                | n     | Toggle database UI (dadbod-ui)                                            |
 | `<leader>us` / `<leader>ur` | n     | Snacks toggle: spell / relative number                                    |
 | `<leader>ul` / `<leader>uo` | n     | Snacks toggle: line number / conceal                                      |
+| `<leader>ui`                | n     | Snacks toggle: list chars (whitespace)                                    |
 | `<leader>uT` / `<leader>ux` | n     | Toggle treesitter highlight (Snacks) / hex view                           |
 | `[x`                        | n     | Jump to context start                                                     |
 
