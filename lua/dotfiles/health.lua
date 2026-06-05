@@ -56,32 +56,43 @@ function M.check()
                 installed[s] = true
             end
         end
-        local enabled = {}
+        local enabled, want, seen = {}, {}, {}
         for lang, on in pairs(langs) do
             if on then
                 enabled[#enabled + 1] = lang
-            end
-        end
-        table.sort(enabled)
-        h.info("enabled: " .. table.concat(enabled, ", "))
-        local seen, missing = {}, 0
-        for lang, on in pairs(langs) do
-            if on and map[lang] then
-                for _, s in ipairs(map[lang]) do
+                for _, s in ipairs(map[lang] or {}) do
                     if not seen[s] then
                         seen[s] = true
-                        if installed[s] then
-                            h.ok(s)
-                        else
-                            missing = missing + 1
-                            h.warn(s .. " not installed — :LspInstall " .. s)
-                        end
+                        want[#want + 1] = s
                     end
                 end
             end
         end
-        if missing == 0 then
-            h.ok("all enabled-lang servers installed")
+        -- typos_lsp is language-agnostic — appended unconditionally in lsp/init.lua.
+        if not seen["typos_lsp"] then
+            want[#want + 1] = "typos_lsp"
+        end
+        table.sort(enabled)
+        table.sort(want)
+        h.info("enabled: " .. table.concat(enabled, ", "))
+        if next(installed) == nil then
+            -- Empty in a cold session = mason-lspconfig not loaded yet, not "none installed".
+            h.warn(
+                "mason-lspconfig reports nothing installed — likely not loaded yet (open :Mason or re-run after startup)"
+            )
+        else
+            local missing = 0
+            for _, s in ipairs(want) do
+                if installed[s] then
+                    h.ok(s)
+                else
+                    missing = missing + 1
+                    h.warn(s .. " not installed — :LspInstall " .. s)
+                end
+            end
+            if missing == 0 then
+                h.ok("all enabled-lang servers installed")
+            end
         end
     end
 
