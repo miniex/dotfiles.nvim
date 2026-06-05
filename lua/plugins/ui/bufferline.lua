@@ -92,6 +92,8 @@ return {
         -- S-h/l overrides vim's H/L screen jumps.
         { "<S-h>", "<cmd>BufferLineCyclePrev<cr>", desc = "Previous buffer" },
         { "<S-l>", "<cmd>BufferLineCycleNext<cr>", desc = "Next buffer" },
+        { "<leader>bp", "<cmd>BufferLinePick<cr>", desc = "Pick buffer (letter)" },
+        { "<leader>bc", "<cmd>BufferLinePickClose<cr>", desc = "Pick buffer to close" },
     }),
     opts = function()
         local p = pal.mocha()

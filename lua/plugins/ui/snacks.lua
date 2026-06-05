@@ -206,7 +206,11 @@ local DASH_KEYS = {
 local pal = require("config.palette")
 local header_gradient = { pal.blue, "#ACA4C5", pal.mid, "#D496B7", pal.pink }
 local function set_header_hl()
-    for i, color in ipairs(header_gradient) do
+    -- Rotate the gradient phase by weekday so the header bloom shifts day to day.
+    local shift = tonumber(os.date("%w")) or 0
+    local n = #header_gradient
+    for i = 1, n do
+        local color = header_gradient[((i - 1 + shift) % n) + 1]
         vim.api.nvim_set_hl(0, "DashHeader" .. i, { fg = color, bold = true })
     end
 end
@@ -352,7 +356,8 @@ return {
             enabled = true,
             indent = { char = "┊" },
             scope = { char = "╎", underline = false },
-            chunk = { enabled = false },
+            -- Chunk bracket around the active scope (animate is on by default → blooms in).
+            chunk = { enabled = true },
         },
         input = { enabled = true },
         notifier = {
@@ -448,7 +453,21 @@ return {
             },
         },
         words = { enabled = true },
-        zen = { enabled = true },
+        zen = {
+            enabled = true,
+            -- Drop chrome on enter; bufferline is the tabline. Toggle incline too.
+            show = { statusline = false, tabline = false },
+            on_open = function()
+                pcall(function()
+                    require("incline").disable()
+                end)
+            end,
+            on_close = function()
+                pcall(function()
+                    require("incline").enable()
+                end)
+            end,
+        },
         -- Override snacks's built-in window styles. Each style has its own default
         -- border; pinning them all to flower keeps the UI consistent.
         styles = {

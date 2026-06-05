@@ -94,6 +94,7 @@ local function unify_floats()
     -- snacks indent guides → muted damin tones (indent dim, scope pink).
     vim.api.nvim_set_hl(0, "SnacksIndent", { fg = palette.indent })
     vim.api.nvim_set_hl(0, "SnacksIndentScope", { fg = pink })
+    vim.api.nvim_set_hl(0, "SnacksIndentChunk", { fg = pink })
 end
 -- ColorScheme fires on the initial catppuccin load too — no eager call needed.
 vim.api.nvim_create_autocmd("ColorScheme", {
