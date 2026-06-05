@@ -103,6 +103,41 @@ return {
         config = function(_, opts)
             require("mason-tool-installer").setup(opts)
             require("mason-tool-installer").run_on_start()
+            -- auto_update stays off; surface a one-shot "updates available" toast (missing tools → run_on_start).
+            vim.defer_fn(function()
+                local ok, registry = pcall(require, "mason-registry")
+                if not ok then
+                    return
+                end
+                -- refresh() loads the index once; get_*_version() are then local/sync.
+                registry.refresh(function()
+                    local outdated = {}
+                    for _, p in ipairs(registry.get_installed_packages()) do
+                        local oi, installed = pcall(function()
+                            return p:get_installed_version()
+                        end)
+                        local ol, latest = pcall(function()
+                            return p:get_latest_version()
+                        end)
+                        if oi and ol and installed and latest and installed ~= latest then
+                            outdated[#outdated + 1] = p.name
+                        end
+                    end
+                    if #outdated > 0 then
+                        table.sort(outdated)
+                        vim.schedule(function()
+                            vim.notify(
+                                ("%d Mason tool(s) have updates — :MasonToolsUpdate\n%s"):format(
+                                    #outdated,
+                                    table.concat(outdated, ", ")
+                                ),
+                                vim.log.levels.INFO,
+                                { title = "Mason" }
+                            )
+                        end)
+                    end
+                end)
+            end, 8000)
         end,
     },
     {
