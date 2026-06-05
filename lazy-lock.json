@@ -27,6 +27,7 @@
   "grug-far.nvim": { "branch": "main", "commit": "5506c2f59dc9ab2ed6c233585412b24d31d51521" },
   "harpoon": { "branch": "harpoon2", "commit": "87b1a3506211538f460786c23f98ec63ad9af4e5" },
   "hex.nvim": { "branch": "master", "commit": "b46e63356a69e8d6f046c38a9708d55d17f15038" },
+  "inc-rename.nvim": { "branch": "main", "commit": "0074b551a17338ccdcd299bd86687cc651bcb33d" },
   "incline.nvim": { "branch": "main", "commit": "debd628e9395f7a9da57bdc31ce75ca6b40a880b" },
   "lazy.nvim": { "branch": "main", "commit": "306a05526ada86a7b30af95c5cc81ffba93fef97" },
   "lazydev.nvim": { "branch": "main", "commit": "ff2cbcba459b637ec3fd165a2be59b7bbaeedf0d" },

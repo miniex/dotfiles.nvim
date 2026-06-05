@@ -53,9 +53,10 @@ return {
                 "<leader>cl",
                 function()
                     virt_lines_on = not virt_lines_on
-                    vim.diagnostic.config({ virtual_lines = virt_lines_on })
+                    -- current_line: full diagnostic only on the cursor line (tiny-inline owns the rest).
+                    vim.diagnostic.config({ virtual_lines = virt_lines_on and { current_line = true } or false })
                 end,
-                desc = "Toggle Virtual Lines (multi-line diagnostics)",
+                desc = "Toggle Virtual Lines (current line)",
             },
             {
                 "<leader>cM",

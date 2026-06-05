@@ -342,8 +342,20 @@ return {
                     map("n", "gr", lsp_pick("lsp_references", vim.lsp.buf.references), "References")
                     map("n", "gi", lsp_pick("lsp_implementations", vim.lsp.buf.implementation), "Goto Implementation")
                     map("n", "gy", lsp_pick("lsp_typedefs", vim.lsp.buf.type_definition), "Goto Type Definition")
+                    -- Call/type hierarchy (gci/gco clash with the gc comment operator → <leader>c*).
+                    map("n", "<leader>cI", lsp_pick("lsp_incoming_calls", vim.lsp.buf.incoming_calls), "Incoming Calls")
+                    map("n", "<leader>cG", lsp_pick("lsp_outgoing_calls", vim.lsp.buf.outgoing_calls), "Outgoing Calls")
+                    map("n", "<leader>cH", function()
+                        vim.lsp.buf.typehierarchy("subtypes")
+                    end, "Type Hierarchy (subtypes)")
                     map("n", "<leader>cc", vim.diagnostic.open_float, "Line Diagnostics")
-                    map("n", "<leader>ca", vim.lsp.buf.code_action, "Code Action")
+                    -- fzf-lua picker + visual-mode range actions.
+                    map(
+                        { "n", "x" },
+                        "<leader>ca",
+                        lsp_pick("lsp_code_actions", vim.lsp.buf.code_action),
+                        "Code Action"
+                    )
                     -- Inlay toggle (<leader>ci/uh) lives in snacks.lua.
                     map("n", "<leader>cL", vim.lsp.codelens.run, "Run CodeLens")
                     -- Prefer one formatter per ft when >1 client formats (e.g. python:
@@ -368,7 +380,10 @@ return {
                         vim.lsp.buf.format(opts_fmt)
                     end, "Format (LSP)")
                     map("n", "<leader>cs", "<cmd>LspRestart<cr>", "LSP Restart")
-                    map("n", "<leader>rn", vim.lsp.buf.rename, "Rename")
+                    -- inc-rename: live in-buffer preview; :IncRename lazy-loads on use. grn stays native.
+                    vim.keymap.set("n", "<leader>rn", function()
+                        return ":IncRename " .. vim.fn.expand("<cword>")
+                    end, { buffer = bufnr, expr = true, desc = "Rename" })
                     -- Semantic tokens can clash with treesitter highlight; toggle per buffer.
                     map("n", "<leader>uy", function()
                         local b = vim.api.nvim_get_current_buf()

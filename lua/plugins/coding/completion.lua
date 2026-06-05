@@ -66,10 +66,20 @@ return {
                     },
                 },
             },
-            signature = { enabled = true, window = { border = vim.g.flower_border } },
+            signature = {
+                enabled = true,
+                trigger = { show_on_insert = true },
+                -- Keep the signature compact; docs go to the completion window.
+                window = { border = vim.g.flower_border, show_documentation = false },
+            },
             snippets = { preset = "luasnip" },
             sources = {
                 default = { "lsp", "path", "snippets", "buffer" },
+                -- Rank LSP above snippets/buffer; cap buffer-word noise.
+                providers = {
+                    snippets = { score_offset = -1 },
+                    buffer = { score_offset = -3, max_items = 5 },
+                },
                 per_filetype = {
                     -- Drop LSP on commit/log buffers — completions are noise.
                     gitcommit = { "path", "buffer" },

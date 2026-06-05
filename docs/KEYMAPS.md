@@ -142,12 +142,13 @@ Bare `nvim` auto-restores the cwd session (skipped in headless or when the sessi
 | `K` / `<C-k>` (i)           | Hover / signature help                                             |
 | `gd` / `gD`                 | Definition / declaration                                           |
 | `gr` / `gi` / `gy`          | References / implementation / type definition                      |
-| `<leader>rn`                | Rename                                                             |
-| `<leader>cc` / `<leader>ca` | Diagnostics float / code action                                    |
+| `<leader>cI` / `cG` / `cH`  | Incoming / outgoing calls / type hierarchy                         |
+| `<leader>rn`                | Rename (inc-rename live preview; `grn` plain native)               |
+| `<leader>cc` / `<leader>ca` | Diagnostics float / code action (n+x, fzf picker)                  |
 | `<leader>cf`                | Format buffer (native LSP)                                         |
 | `<leader>ci` / `<leader>uh` | Toggle inlay hints (alias)                                         |
 | `<leader>uy`                | Toggle LSP semantic tokens                                         |
-| `<leader>cd` / `<leader>cl` | Toggle inline diagnostic / `virtual_lines`                         |
+| `<leader>cd` / `<leader>cl` | Toggle inline diagnostic / virtual_lines (current line)            |
 | `<leader>cM`                | Toggle multi-diagnostic on cursorline                              |
 | `<leader>ud`                | Toggle all diagnostics (Snacks)                                    |
 | `<leader>cL`                | Run CodeLens (rust-analyzer, gopls, elixir-ls, ocamllsp, lua_ls)   |
