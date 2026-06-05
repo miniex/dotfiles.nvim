@@ -385,7 +385,8 @@ return {
                     map("n", "<leader>cs", "<cmd>LspRestart<cr>", "LSP Restart")
                     -- inc-rename: live in-buffer preview; :IncRename lazy-loads on use. grn stays native.
                     vim.keymap.set("n", "<leader>rn", function()
-                        return ":IncRename " .. vim.fn.expand("<cword>")
+                        local w = vim.fn.expand("<cword>")
+                        return w ~= "" and (":IncRename " .. w) or ""
                     end, { buffer = bufnr, expr = true, desc = "Rename" })
                     -- Semantic tokens can clash with treesitter highlight; toggle per buffer.
                     map("n", "<leader>uy", function()

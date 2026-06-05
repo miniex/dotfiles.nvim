@@ -1,7 +1,7 @@
 -- In-editor REST/HTTP client for `.http` / `.rest` files (env, GraphQL).
 return {
     "mistweaverco/kulala.nvim",
-    ft = { "http", "rest" },
+    ft = { "http" },
     -- Register the filetype so opening a .http file triggers the ft lazy-load.
     init = function()
         vim.filetype.add({ extension = { http = "http", rest = "http" } })

@@ -34,7 +34,7 @@ function M.check()
     end
     if exe("tree-sitter") then
         local v = ver("tree-sitter"):match("%d+%.%d+%.%d+")
-        if v and pcall(vim.version.ge, v, "0.26.1") and vim.version.ge(v, "0.26.1") then
+        if v and vim.version.ge(v, "0.26.1") then
             h.ok("tree-sitter " .. v)
         else
             h.warn("tree-sitter " .. (v or "?") .. " — need >= 0.26.1 (cargo/distro, not npm)")

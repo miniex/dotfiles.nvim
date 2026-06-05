@@ -357,7 +357,7 @@ return {
             indent = { char = "┊" },
             scope = { char = "╎", underline = false },
             -- Chunk bracket around the active scope (animate is on by default → blooms in).
-            chunk = { enabled = true },
+            chunk = { enabled = true, char = { vertical = "╎" } },
         },
         input = { enabled = true },
         notifier = {

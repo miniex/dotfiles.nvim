@@ -97,7 +97,7 @@ map("<leader>j", "gJ", "n", "Join lines (no space)")
 -- open URL / file under cursor (netrw's gx is disabled)
 map("gx", function()
     local cword = vim.fn.expand("<cWORD>")
-    local url = cword:match("https?://[%w%-_%.%?:/%+=&#@!~,;'%%]+")
+    local url = cword:match("https?://[%w%-_%.%?:/%+=&#@!~,;'()%%]+")
     local target = url or vim.fn.expand("<cfile>")
     if target ~= "" then
         vim.ui.open(target)
