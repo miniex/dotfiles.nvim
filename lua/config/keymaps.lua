@@ -112,6 +112,15 @@ end, "n", "Toggle undotree")
 
 map("<leader>qR", "<cmd>restart<cr>", "n", "Restart Neovim")
 
+-- View the current file in `less` — read-only, streamed, no whole-file load.
+map("<leader>L", function()
+    if vim.bo.buftype ~= "" or vim.fn.expand("%:p") == "" then
+        vim.notify("Not a file buffer", vim.log.levels.WARN)
+        return
+    end
+    require("config.pager").view(vim.fn.expand("%:p"))
+end, "n", "View current file in less")
+
 -- Quickfix stack history (older/newer lists from :grep, LSP, etc.).
 map("<leader>x<", "<cmd>colder<cr>", "n", "Quickfix older")
 map("<leader>x>", "<cmd>cnewer<cr>", "n", "Quickfix newer")

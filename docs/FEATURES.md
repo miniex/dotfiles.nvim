@@ -22,7 +22,7 @@
 - Modules: textobjects (`af`/`if`/`ac`/`ic`/`aa`/`ia` + jumps), sticky context (`treesitter-context`), `nvim-ts-autotag`, `ts-context-commentstring`.
 - Custom incremental selection (`gnn` / `gnm` / `gnM`).
 - Auto-installs missing parsers on first launch with an early-exit poll.
-- Big-file guard — skips highlight/indent on files >1 MB or with a >2000-char first line (snacks.bigfile handles >1.5 MB).
+- Big-file guard — skips highlight/indent on files >1 MiB or with a >2000-char first line (snacks.bigfile degrades >2 MiB).
 
 ## Pickers
 
@@ -33,7 +33,8 @@
 
 ## Editor
 
-- **Files** — Neo-tree (floating). `<leader>e` toggle, `<leader>o` reveal current file. Directory rows show recursive total size instead of the default `-`.
+- **Files** — Neo-tree (floating). `<leader>e` toggle, `<leader>o` reveal current file. Directory rows show recursive total size instead of the default `-`; sizes use IEC binary units (KiB/MiB).
+- **Big files** — opening a file >8 MiB prompts: view in `less` (default) / edit / cancel (binary skips the pager). `<leader>L` views the current file in `less` anytime. Size tiers in [CUSTOMIZATION](CUSTOMIZATION.md#big-file-handling).
 - **Navigation** — flash (`s` / `S`), Trouble (`<leader>xx`), aerial (`<leader>cO`), harpoon v2 (`<leader>m*`).
 - **Search & replace** — grug-far (`<leader>rr`) for regex; ssr (`<leader>rs`) for structural AST-aware replace.
 - **Structural edits & yank ring** — treesj split/join a node (`<leader>cJ`); yanky yank history (`]y` / `[y` after paste); various-textobjs indentation / value / key objects (`iI` / `iv` / `ik`).

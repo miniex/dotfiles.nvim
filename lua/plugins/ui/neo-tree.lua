@@ -12,6 +12,22 @@ vim.api.nvim_create_autocmd("ColorScheme", {
     callback = apply_hl,
 })
 
+-- neo-tree's filesize lib divides by 1024 but labels it with SI symbols
+-- (KB/MB/…). Remap to IEC units so the value and label agree (KiB/MiB/…).
+local function patch_iec_units()
+    local utils = require("neo-tree.utils")
+    if utils._damin_iec then
+        return
+    end
+    utils._damin_iec = true
+    local filesize = require("neo-tree.utils.filesize.filesize")
+    local IEC = { KB = "KiB", MB = "MiB", GB = "GiB", TB = "TiB", PB = "PiB", EB = "EiB", ZB = "ZiB", YB = "YiB" }
+    -- file_size (files) and patch_recursive_dir_size (dirs) both call this.
+    utils.human_size = function(size)
+        return filesize(size, { output = "string", suffixes = IEC })
+    end
+end
+
 -- Show recursive size on directory rows (neo-tree's default is "-").
 -- Budget-capped so a giant subtree can't stall the render.
 local function patch_recursive_dir_size()
@@ -120,6 +136,7 @@ return {
     },
     config = function(_, opts)
         require("neo-tree").setup(opts)
+        patch_iec_units()
         patch_recursive_dir_size()
     end,
     opts = {

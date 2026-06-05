@@ -43,6 +43,7 @@ Leader: `<Space>`. `<localleader>` also `<Space>` (most localleader bindings liv
 | `<leader>zz` / `z'`               | fzf-lua: builtin menu / resume last picker                     |
 | `<leader>e` / `<leader>o`         | Neo-tree: toggle / reveal                                      |
 | `<cr>` / `l` (in Neo-tree)        | Open file in main window; folder expand/collapse               |
+| `<leader>L`                       | View current file in `less` (read-only, own tab)               |
 | `s` / `S` (n/x/o)                 | flash: jump / treesitter jump                                  |
 | `<leader>?`                       | which-key: all keymaps (`<C-d>`/`<C-u>` flip pages)            |
 

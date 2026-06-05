@@ -226,7 +226,7 @@ return {
     lazy = false,
     ---@type snacks.Config
     opts = {
-        bigfile = { enabled = true },
+        bigfile = { enabled = true, size = 2 * 1024 * 1024 }, -- 2 MiB
         bufdelete = { enabled = true },
         dashboard = {
             enabled = true,

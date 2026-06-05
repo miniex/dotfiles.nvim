@@ -218,9 +218,9 @@ vim.api.nvim_create_autocmd("FileType", {
             return
         end
         -- Big-file guard: skip TS on huge/minified buffers (per-keystroke re-parse
-        -- stalls). snacks.bigfile handles >1.5MB; this catches the smaller rest.
+        -- stalls). snacks.bigfile degrades >2 MiB; this catches the 1-2 MiB rest.
         local name = vim.api.nvim_buf_get_name(args.buf)
-        if name ~= "" and vim.fn.getfsize(name) > 1024 * 1024 then
+        if name ~= "" and vim.fn.getfsize(name) > 1 * 1024 * 1024 then -- 1 MiB
             return
         end
         local first = vim.api.nvim_buf_get_lines(args.buf, 0, 1, false)[1]
@@ -244,6 +244,80 @@ vim.api.nvim_create_autocmd("FileType", {
             then
                 vim.bo[args.buf].indentexpr = expr
             end
+        end)
+    end,
+})
+
+-- Past 8 MiB, ask before opening: view in less (default) / edit / cancel.
+-- Neovim reads the file once before any autocmd can stop it, so this gates the
+-- editing, not the read; <leader>L (pager.lua) is the only true no-read path.
+local BIG_FILE_LIMIT = 8 * 1024 * 1024 -- 8 MiB
+
+-- snacks.bufdelete handles the sole-buffer case (startup `nvim hugefile`);
+-- fall back to a forced wipe if snacks isn't loaded.
+local function big_file_close(buf)
+    if not vim.api.nvim_buf_is_valid(buf) then
+        return
+    end
+    local ok = pcall(function()
+        require("snacks").bufdelete(buf)
+    end)
+    if not ok and vim.api.nvim_buf_is_valid(buf) then
+        pcall(vim.api.nvim_buf_delete, buf, { force = true })
+    end
+end
+
+-- NUL byte in the first KB → binary (the git/grep heuristic). less only mangles
+-- binary and exits non-zero on it, so we drop the "view" option for those.
+local function is_binary(file)
+    local uv = vim.uv or vim.loop
+    local fd = uv.fs_open(file, "r", 438)
+    if not fd then
+        return false
+    end
+    local data = uv.fs_read(fd, 1024, 0)
+    uv.fs_close(fd)
+    return type(data) == "string" and data:find("\0", 1, true) ~= nil
+end
+
+vim.api.nvim_create_autocmd("BufReadPre", {
+    group = vim.api.nvim_create_augroup("big-file-guard", { clear = true }),
+    callback = function(args)
+        if vim.bo[args.buf].buftype ~= "" then
+            return
+        end
+        local size = vim.fn.getfsize(args.file)
+        if size < BIG_FILE_LIMIT then
+            return
+        end
+        local name = vim.fn.fnamemodify(args.file, ":t")
+        local mib = string.format("%.1f MiB", size / 1024 / 1024)
+        local file, buf = args.file, args.buf
+
+        -- Binary: less errors / shows garbage, so no pager option.
+        if is_binary(file) then
+            if
+                vim.fn.confirm(("%s is %s (binary)."):format(name, mib), "&Edit anyway\n&Cancel", 2, "Question") == 1
+            then
+                return
+            end
+            vim.schedule(function()
+                big_file_close(buf)
+            end)
+            return
+        end
+
+        local choice =
+            vim.fn.confirm(("%s is %s."):format(name, mib), "&View in less\n&Edit anyway\n&Cancel", 1, "Question")
+        if choice == 2 then
+            return -- edit anyway
+        end
+        -- Defer: deleting during BufReadPre errors (E201) + breaks other Read handlers.
+        vim.schedule(function()
+            if choice ~= 3 then
+                require("config.pager").view(file)
+            end
+            big_file_close(buf)
         end)
     end,
 })

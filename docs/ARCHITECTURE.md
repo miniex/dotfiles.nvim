@@ -67,6 +67,7 @@ Plugin specs are discovered by `lazy.setup({ spec = { { import = "plugins.coding
 | Treesitter grammars     | `lua/plugins/editor/treesitter.lua` `ensure_installed` | Central grammar list; lang files don't extend it.                                                                             |
 | CodeLLDB DAP adapter    | `lua/config/codelldb.lua`                              | Resolves the Mason codelldb binary once; shared by C/C++ and Zig.                                                             |
 | Formatter width ruler   | `lua/config/format-width.lua`                          | Per-filetype `colorcolumn` from the project formatter config (`rustfmt.toml`, `stylua`, `.clang-format`, …), searched upward. |
+| Pager (`less`) view     | `lua/config/pager.lua`                                 | `less` in its own tab (read-only, streamed); shared by `<leader>L` and the >8 MiB big-file open gate.                         |
 
 ## Plugin spec categories (`lua/plugins/`)
 

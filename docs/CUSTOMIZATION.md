@@ -85,6 +85,16 @@ Add a language: add an entry to the `M.specs` table in `lua/config/format-width.
 - Autocmds in `lua/config/autocmds.lua`.
 - Per-LSP-buffer maps in `lua/plugins/lsp/init.lua` (LspAttach callback).
 
+## Big-file handling
+
+Three size tiers, smallest first:
+
+- **> 1 MiB** (or a >2000-char first line) — treesitter is skipped. `ts-attach` autocmd in `lua/config/autocmds.lua`.
+- **> 2 MiB** — `snacks.bigfile` degrades features (LSP / treesitter / syntax / folds / matchparen). Tune `size` in `lua/plugins/ui/snacks.lua`.
+- **> 8 MiB** — opening prompts _view in `less`_ (default) / _edit anyway_ / _cancel_; binary files (NUL byte in the first KB) drop the pager option. Tune `BIG_FILE_LIMIT` in `lua/config/autocmds.lua`.
+
+The "view" action and `<leader>L` open `less` in its own tab via `lua/config/pager.lua` (read-only, streamed — the only true no-read path). Needs `less` on `$PATH`.
+
 ## Modal floats
 
 - `lua/config/modal-floats.lua` — mutual-exclusion registry + shared float-config decorator hook. Extend `OWNER` (`ft = "owner"`) to register a new modal; same `owner` keeps siblings together. Use `add_decorator(name, { open, set_config })` to rewrite float configs (border, title, geometry) without patching the APIs yourself.
