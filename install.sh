@@ -88,7 +88,8 @@ step "Existing config"
 already_cloned=
 if [ -e "$NVIM_CONFIG" ]; then
     origin=
-    [ -d "$NVIM_CONFIG/.git" ] && origin=$(git -C "$NVIM_CONFIG" remote get-url origin 2>/dev/null || true)
+    [ -d "$NVIM_CONFIG/.git" ] && origin=$(git -C "$NVIM_CONFIG" remote get-url origin 2>/dev/null \
+        || git -C "$NVIM_CONFIG" config --get remote.origin.url 2>/dev/null || true)
     case "$origin" in
         *miniex/dotfiles.nvim*)
             # Already this repo → update in place instead of backup-or-abort.

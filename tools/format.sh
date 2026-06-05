@@ -37,9 +37,9 @@ if command -v jq >/dev/null 2>&1; then
 fi
 
 if command -v taplo >/dev/null 2>&1; then
-    git ls-files '*.toml' 2>/dev/null | xargs -r taplo fmt
+    git ls-files -z '*.toml' 2>/dev/null | xargs -0r taplo fmt
 fi
 
 if command -v yamlfmt >/dev/null 2>&1; then
-    git ls-files '*.yml' '*.yaml' 2>/dev/null | xargs -r yamlfmt
+    git ls-files -z '*.yml' '*.yaml' 2>/dev/null | xargs -0r yamlfmt
 fi

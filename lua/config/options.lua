@@ -72,7 +72,7 @@ opt.foldenable = true
 if not vim.g.disable_ui2 then
     local ok, ui2 = pcall(require, "vim._core.ui2")
     if ok and ui2.enable then
-        ui2.enable({
+        pcall(ui2.enable, {
             enable = true,
             msg = { target = "cmd", timeout = 4000 },
         })

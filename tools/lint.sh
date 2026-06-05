@@ -19,7 +19,7 @@ if [ -n "$missing" ]; then
 fi
 
 stylua --check .
-lua-language-server --check . --logpath /tmp/lua-ls-check
+lua-language-server --check . --logpath "${TMPDIR:-/tmp}/lua-ls-check.$$"
 selene .
 
 sh_files="install.sh set-lang.sh tools/format.sh tools/lint.sh tools/health.sh scripts/_colors.sh scripts/term-bin/nvim"
@@ -30,10 +30,9 @@ shellcheck $sh_files
 
 # Parse-only check on any tracked files matching $1 using `$2 -n`. Warn-if-absent.
 check_parse() {
-    files=$(git ls-files "$1" 2>/dev/null || true)
-    [ -z "$files" ] && return
+    [ -n "$(git ls-files "$1" 2>/dev/null)" ] || return
     if command -v "$2" >/dev/null 2>&1; then
-        echo "$files" | xargs -n1 "$2" -n
+        git ls-files -z "$1" 2>/dev/null | xargs -0 -n1 "$2" -n
     else
         echo "warn: $1 present but '$2' not on PATH" >&2
     fi

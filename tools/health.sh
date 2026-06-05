@@ -22,9 +22,22 @@ have() { command -v "$1" >/dev/null 2>&1; }
 na() { printf "  [--]   %s\n" "$1"; }
 section() { printf "\n%s\n" "$1"; }
 
-# $1 >= $2 (dotted versions).
+# $1 >= $2 (dotted versions). sort -V is GNU-only; fall back to awk on BSD/macOS.
 version_ge() {
-    [ "$(printf '%s\n%s\n' "$2" "$1" | sort -V | head -n1)" = "$2" ]
+    if printf '' | sort -V >/dev/null 2>&1; then
+        [ "$(printf '%s\n%s\n' "$2" "$1" | sort -V | head -n1)" = "$2" ]
+    else
+        awk -v a="$1" -v b="$2" 'BEGIN {
+            na = split(a, x, "."); nb = split(b, y, ".")
+            n = (na > nb ? na : nb)
+            for (i = 1; i <= n; i++) {
+                xi = x[i] + 0; yi = y[i] + 0
+                if (xi > yi) exit 0
+                if (xi < yi) exit 1
+            }
+            exit 0
+        }'
+    fi
 }
 
 section "Required"

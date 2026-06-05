@@ -4,7 +4,8 @@
 # wrapper is also named `nvim` and would shadow the real binary.
 set -eu
 
-SELF_DIR=$(cd "$(dirname "$0")" && pwd)
+# shellcheck disable=SC1007 # `CDPATH=` is a deliberate env prefix for `cd`
+SELF_DIR=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
 REAL_NVIM=""
 OLDIFS=$IFS
 IFS=:

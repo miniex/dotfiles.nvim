@@ -1,4 +1,4 @@
-vim.cmd("language en_US.UTF-8")
+pcall(vim.cmd, "language en_US.UTF-8")
 
 require("config.globals")
 require("config.options")

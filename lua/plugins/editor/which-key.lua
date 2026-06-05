@@ -10,8 +10,12 @@ return {
         vim.schedule_wrap = function(fn)
             return fn
         end
-        require("which-key").setup(opts)
+        local ok, err = pcall(require("which-key").setup, opts)
         vim.schedule_wrap = orig
+        if not ok then
+            vim.notify("which-key setup failed: " .. tostring(err), vim.log.levels.ERROR)
+            return
+        end
 
         local function install_triggers(buf)
             local mode = require("which-key.buf").get({ buf = buf, mode = "n" })
