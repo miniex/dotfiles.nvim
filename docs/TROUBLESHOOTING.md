@@ -4,6 +4,7 @@
 | ------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | LSP not attaching                                 | `:Mason`, `:LspInfo`, `:LspLog`                                                                                                                                        |
 | LSP settings not applied                          | `lsp/<server>.lua` exists; server is in `lang_servers.lua` under an enabled lang; not restated via `nvim-lspconfig.opts.servers.<name>`                                |
+| Input freezes opening a large project             | rust-analyzer watches server-side; the global client-watch opt-in can stall a huge tree, scoped off per server                                                         |
 | Lint not running                                  | linter on `$PATH`, see `lua/plugins/lsp/lint.lua`. Fires on save / read (250ms debounce); save to re-run after edits.                                                  |
 | Mason tools missing                               | Auto-installed ~3s after launch (incl. newly enabled langs). To force now: `:MasonToolsInstall` (or `:MasonToolsUpdate`), then `:Mason`                                |
 | Python debug fails                                | `:MasonInstall debugpy` — `nvim-dap-python` warns and skips setup if missing                                                                                           |

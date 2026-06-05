@@ -98,7 +98,8 @@ return {
                             enable = true,
                         },
                         files = {
-                            watcher = "client",
+                            -- Server-side: client watching makes nvim walk the whole tree, stalling large projects.
+                            watcher = "server",
                             excludeDirs = {
                                 ".direnv",
                                 ".git",

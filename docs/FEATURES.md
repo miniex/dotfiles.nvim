@@ -3,6 +3,7 @@
 ## LSP & Completion
 
 - **Native LSP** — `vim.lsp.config` + `lsp/<server>.lua` discovery; mason-lspconfig installs, the config enables servers itself (gated by enabled langs + executable presence). Workspace root anchors on language manifests, `.git` as fallback.
+- **File watching** — client-side `didChangeWatchedFiles` is on for every server (off by default on Linux); rust-analyzer watches server-side so large projects don't stall on open.
 - **Inlay hints** — toggle per buffer with `<leader>ci`; suppressed automatically during insert mode.
 - **CodeLens** — enabled on capable servers (gopls, rust-analyzer, lua_ls, ocamllsp, elixir-ls); refreshes on edit, paused during insert mode (like inlay hints).
 - **LSP folding** — capable servers fold via `vim.lsp.foldexpr`; treesitter folds everything else.
