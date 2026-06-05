@@ -502,6 +502,13 @@ return {
             desc = "Help Tags",
         },
         {
+            "<leader>fp",
+            function()
+                Snacks.picker.projects()
+            end,
+            desc = "Projects",
+        },
+        {
             "<leader>w",
             function()
                 -- Dashboard → file buf if any, else exit.
@@ -635,6 +642,13 @@ return {
                 Snacks.scratch.select()
             end,
             desc = "Select Scratch Buffer",
+        },
+        {
+            "<leader>sn",
+            function()
+                Snacks.scratch({ name = "notes", ft = "markdown" })
+            end,
+            desc = "Project Notes (scratch)",
         },
         {
             "<leader>uz",

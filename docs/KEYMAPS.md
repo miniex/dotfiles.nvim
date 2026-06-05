@@ -37,6 +37,7 @@ Leader: `<Space>`. `<localleader>` also `<Space>` (most localleader bindings liv
 | `<leader>fF`                      | fff.nvim: find files in current directory                      |
 | `<leader>fg` / `fr` / `fb` / `fh` | snacks.picker: grep / recent / buffers / help                  |
 | `<leader>ft`                      | TODO comments                                                  |
+| `<leader>fp`                      | snacks.picker: recent projects (cd + restore)                  |
 | `<leader>fR`                      | Rename current file (LSP-aware)                                |
 | `<leader>fS`                      | Snippets (LuaSnip, ft + inherited + all)                       |
 | `<leader>zz` / `z'`               | fzf-lua: builtin menu / resume last picker                     |
@@ -233,6 +234,7 @@ Inside the menu: `q`/`<Esc>` close, `h` parent (no-op at top), `l` open entry.
 | `<leader>gvt` / `<leader>gvp`  | Diffview: toggle / focus files panel                                                              |
 | `<leader>gvg` / `<leader>gvG`  | gitgraph.nvim: all branches / current (`<cr>` → diffview)                                         |
 | `<leader>gvs` / `<leader>gvA`  | gitgraph.nvim: prompt for `--since` / `--author` filter                                           |
+| `<leader>gH`                   | advanced-git-search: search history by content (log -S/-G/-L)                                     |
 | `[h` / `]h`                    | Prev / next hunk                                                                                  |
 | `<leader>ghs/r/S/R/p/b/c/d/D`  | Stage (toggle) / reset / stage-buf / reset-buf / preview / blame-line / blame-file / diff / diff~ |
 | `<leader>ghq`                  | gitsigns: hunks (attached buffers) to quickfix                                                    |
@@ -290,6 +292,18 @@ Send-to-REPL for python / lua / sh / elixir / js-ts.
 | `<leader>il` / `if` | n    | Send line / file        |
 | `<leader>iq` / `ic` | n    | Exit / clear REPL       |
 
+## REST (kulala)
+
+HTTP client for `.http` / `.rest` files.
+
+| Key          | Description              |
+| ------------ | ------------------------ |
+| `<leader>kr` | Run request under cursor |
+| `<leader>ka` | Run all requests in file |
+| `<leader>kp` | Replay last request      |
+| `<leader>ki` | Inspect parsed request   |
+| `<leader>kc` | Copy request as `curl`   |
+
 ## Surround (mini.surround)
 
 `gs*` prefix — flash owns `s`.
@@ -317,6 +331,7 @@ In the toggle terminal, `$EDITOR`/`$VISUAL`/`$GIT_EDITOR` forward to the parent 
 | `<leader>;`                                | Toggle dashboard (peek; press again to return)                                                                            |
 | `<leader>bd` / `<leader>bD`                | Snacks.bufdelete: confirm-on-modified / force                                                                             |
 | `<leader>.` / `<leader>bS`                 | Snacks scratch: toggle / select buffer                                                                                    |
+| `<leader>sn`                               | Snacks scratch: per-project markdown notes                                                                                |
 | `<leader>1` … `<leader>9` · `<leader>0`    | Jump to bufferline position 1–9 / 10                                                                                      |
 | `[b` / `]b` · `<S-h>` / `<S-l>`            | Prev / next buffer (open-order)                                                                                           |
 | `<leader>cn` / `<leader>un`                | Notification history / dismiss all                                                                                        |

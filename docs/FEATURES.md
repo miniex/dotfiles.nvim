@@ -27,7 +27,7 @@
 ## Pickers
 
 - **fff.nvim** — Rust-backed file finder. `<leader>ff` for cwd, `<leader>fF` for current dir.
-- **snacks.picker** — grep / recent / buffers / help / TODOs. `<leader>fg` / `<leader>fr` / `<leader>fb` / `<leader>fh` / `<leader>ft`.
+- **snacks.picker** — grep / recent / buffers / help / TODOs / projects. `<leader>fg` / `<leader>fr` / `<leader>fb` / `<leader>fh` / `<leader>ft` / `<leader>fp` (projects: cd + restore session).
 - **fzf-lua** — git / LSP / grep / lines / snippets / history. `<leader>z*` namespace.
 - fff and snacks share the same 0.85 × 0.85 chrome-aware rectangle. The snacks picker's preview overlaps the list's right border by 1 column so a single `✿│✿` divider is drawn between them (matches fff's "shared middle flower" effect).
 
@@ -82,6 +82,7 @@ See [`lua/config/modal-floats.lua`](../lua/config/modal-floats.lua) for the mutu
 - **lazygit** — `Snacks.lazygit`, auto-themed to the colorscheme. `<leader>gg` open / `<leader>gf` file history / `<leader>gL` log.
 - **Diffview** — file / repo / stash history under `<leader>gv*`.
 - **gitgraph.nvim** — in-buffer branch graph. `<leader>gvg` (all branches), `<leader>gvG` (current), `<leader>gvs` (`--since` prompt).
+- **advanced-git-search** — search git history by content (`<leader>gH`): which commit changed a line, diff a file against any past commit (fzf-lua backed).
 - **git-conflict** — `]X` / `[X` cycle conflicts, `co` / `ct` / `cb` / `c0` resolve.
 
 ## Tooling
@@ -94,6 +95,7 @@ See [`lua/config/modal-floats.lua`](../lua/config/modal-floats.lua) for the mutu
 - **nvim-coverage** — test-coverage gutter signs + summary (`<leader>nc` / `nC`); reads lcov / coverage.xml.
 - **iron** — send-to-REPL for python / lua / sh / elixir / js-ts (`<leader>i*`).
 - **package-info** — npm dependency versions inline in `package.json` (`<leader>cv` / `cu` / `cU` / `cD`).
+- **kulala** — in-editor REST/HTTP client for `.http` / `.rest` files (`<leader>k*`): run / replay / inspect / copy-as-curl.
 - **health check** — `./tools/health.sh` reports prereq status, enabled languages + missing Mason LSP servers, and runs a headless config-load smoke test.
 
 ## Markdown

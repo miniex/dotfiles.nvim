@@ -34,6 +34,7 @@ return {
                 "eex",
                 -- API / Query
                 "graphql",
+                "http",
                 -- Shaders
                 "wgsl",
                 "glsl",
