@@ -25,8 +25,10 @@ return {
                 -- Web
                 "html",
                 "css",
+                "scss",
                 "javascript",
                 "typescript",
+                "tsx",
                 "templ",
                 "heex",
                 "eex",

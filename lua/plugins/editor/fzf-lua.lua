@@ -4,7 +4,7 @@ return {
     cmd = "FzfLua",
     keys = {
         {
-            "<leader>z",
+            "<leader>zz",
             function()
                 require("fzf-lua").builtin()
             end,

@@ -35,7 +35,7 @@ Leader: `<Space>`. `<localleader>` also `<Space>` (most localleader bindings liv
 | `<leader>ft`                      | TODO comments                                                  |
 | `<leader>fR`                      | Rename current file (LSP-aware)                                |
 | `<leader>fS`                      | Snippets (LuaSnip, ft + inherited + all)                       |
-| `<leader>z` / `z'`                | fzf-lua: builtin menu / resume last picker                     |
+| `<leader>zz` / `z'`               | fzf-lua: builtin menu / resume last picker                     |
 | `<leader>e` / `<leader>o`         | Neo-tree: toggle / reveal                                      |
 | `<cr>` / `l` (in Neo-tree)        | Open file in main window; folder expand/collapse               |
 | `s` / `S` (n/x/o)                 | flash: jump / treesitter jump                                  |
@@ -47,7 +47,7 @@ Native `fzf` binary. `<C-q>` → quickfix; `<C-d>`/`<C-u>` paginate preview.
 
 | Key                      | Description                                                       |
 | ------------------------ | ----------------------------------------------------------------- |
-| `<leader>z` / `z'`       | Builtin picker menu / resume last                                 |
+| `<leader>zz` / `z'`      | Builtin picker menu / resume last                                 |
 | `<leader>zw`             | Grep word under cursor (n) / visual selection (x)                 |
 | `<leader>zg/zc/zC/zb/zh` | Git: status / buffer commits / project commits / branches / stash |
 | `<leader>zs` / `zS`      | LSP: document / live workspace symbols                            |

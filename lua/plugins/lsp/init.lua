@@ -394,6 +394,10 @@ return {
                         return vim.fn.executable(cmd[1]) == 1
                     elseif type(cmd) == "string" then
                         return vim.fn.executable(cmd) == 1
+                    elseif type(cmd) == "function" then
+                        -- Function cmd (e.g. jsonls/yamlls) resolves its binary at runtime and
+                        -- can't be stat'd here; enable and let the spawn fail quietly on a miss.
+                        return true
                     end
                     return false
                 end
