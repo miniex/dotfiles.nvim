@@ -89,7 +89,11 @@ See [`lua/config/modal-floats.lua`](../lua/config/modal-floats.lua) for the mutu
 - **nvim-lint** — runs on save / read (not `InsertLeave`) with a per-buffer 250ms debounce; skips run if you switched away.
 - **mason-tool-installer** — single source of truth for non-LSP tools (shellcheck, golangci-lint, eslint_d, selene, markdownlint, statix, hadolint, sqlfluff, yamllint, …).
 - **DAP** — Rust (rustaceanvim's codelldb) / C-C++ (codelldb) / Python (debugpy) / Go (delve) / Zig (codelldb) / Elixir (elixir-ls debug adapter) / JS-TS (js-debug-adapter, Node). C/C++ and Zig share the codelldb resolver in `lua/config/codelldb.lua`. Persistent breakpoints per-cwd; reads project `.vscode/launch.json`.
-- **neotest** — Python (pytest) / Go (gotestsum) / Elixir (mix) / C/C++ (gtest) / Lua (busted) / Rust (rustaceanvim) / Zig / JS-TS (vitest). Summary window state restored across sessions.
+- **neotest** — Python (pytest) / Go (gotestsum) / Elixir (mix) / C/C++ (gtest) / Lua (busted) / Rust (rustaceanvim) / Zig / JS-TS (vitest / jest). Summary window state restored across sessions.
+- **overseer** — task / build runner (`<leader>R*`); auto-detects make / npm / cargo / go / just / cmake templates.
+- **nvim-coverage** — test-coverage gutter signs + summary (`<leader>nc` / `nC`); reads lcov / coverage.xml.
+- **iron** — send-to-REPL for python / lua / sh / elixir / js-ts (`<leader>i*`).
+- **package-info** — npm dependency versions inline in `package.json` (`<leader>cv` / `cu` / `cU` / `cD`).
 - **health check** — `./tools/health.sh` reports prereq status, enabled languages + missing Mason LSP servers, and runs a headless config-load smoke test.
 
 ## Markdown

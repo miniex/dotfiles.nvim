@@ -38,4 +38,27 @@ return {
         end
     end),
     require("config.lang").mason({ "js-debug-adapter" }),
+    -- package.json dependency versions inline (crates.nvim's JS analogue).
+    {
+        "vuki656/package-info.nvim",
+        dependencies = { "MunifTanjim/nui.nvim" },
+        event = "BufRead package.json",
+        opts = { autostart = true, hide_up_to_date = true },
+        init = function()
+            vim.api.nvim_create_autocmd("BufReadPost", {
+                pattern = "package.json",
+                group = vim.api.nvim_create_augroup("PackageInfoKeys", { clear = true }),
+                callback = function(args)
+                    local pi = require("package-info")
+                    local function map(lhs, fn, desc)
+                        vim.keymap.set("n", lhs, fn, { buffer = args.buf, silent = true, desc = desc })
+                    end
+                    map("<leader>cv", pi.show, "Package: versions")
+                    map("<leader>cu", pi.update, "Package: update")
+                    map("<leader>cU", pi.change_version, "Package: change version")
+                    map("<leader>cD", pi.delete, "Package: delete")
+                end,
+            })
+        end,
+    },
 }

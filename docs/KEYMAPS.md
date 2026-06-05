@@ -257,14 +257,38 @@ Inside the menu: `q`/`<Esc>` close, `h` parent (no-op at top), `l` open entry.
 
 ## Test (neotest)
 
-Python (pytest), Go (gotestsum), Elixir (mix), C/C++ (gtest), Lua (busted), Rust (rustaceanvim), Zig. `:RustLsp testables` still works as a Rust-only picker. Summary window state restored across sessions.
+Python (pytest), Go (gotestsum), Elixir (mix), C/C++ (gtest), Lua (busted), Rust (rustaceanvim), Zig, JS-TS (vitest / jest). `:RustLsp testables` still works as a Rust-only picker. Summary window state restored across sessions.
 
 | Key                        | Description                                  |
 | -------------------------- | -------------------------------------------- |
 | `<leader>nr` / `nf` / `nA` | Run nearest / file / all (cwd)               |
 | `<leader>nl` / `nd` / `nx` | Last / debug (DAP) / stop                    |
 | `<leader>ns/no/nO/nw`      | Summary / output / output panel / watch file |
+| `<leader>nc` / `nC`        | Coverage: load & show / summary              |
 | `]T` / `[T`                | Next / prev failed test                      |
+
+## Tasks (overseer)
+
+Build / run via overseer's auto-detected templates (make / npm / cargo / go / just / cmake).
+
+| Key          | Description       |
+| ------------ | ----------------- |
+| `<leader>Rr` | Run a task        |
+| `<leader>Rt` | Toggle task list  |
+| `<leader>Rc` | Run shell command |
+| `<leader>Ra` | Task quick action |
+| `<leader>Ri` | Overseer info     |
+
+## REPL (iron)
+
+Send-to-REPL for python / lua / sh / elixir / js-ts.
+
+| Key                 | Mode | Description             |
+| ------------------- | ---- | ----------------------- |
+| `<leader>ii` / `iR` | n    | Toggle / restart REPL   |
+| `<leader>is`        | n/x  | Send motion / selection |
+| `<leader>il` / `if` | n    | Send line / file        |
+| `<leader>iq` / `ic` | n    | Exit / clear REPL       |
 
 ## Surround (mini.surround)
 
@@ -303,15 +327,16 @@ In the toggle terminal, `$EDITOR`/`$VISUAL`/`$GIT_EDITOR` forward to the parent 
 
 ## Language-specific
 
-| Key                                        | Description                                           |
-| ------------------------------------------ | ----------------------------------------------------- |
-| `<leader>ch`                               | C/C++: switch source ↔ header                         |
-| `<leader>cR` / `<leader>cD` / `<leader>cT` | Rust: code action / debuggables / testables           |
-| `<leader>cE` / `<leader>cP`                | Rust: expand macro / jump to parent module            |
-| `<leader>cI` / `<leader>cU`                | TS/JS: organize imports / remove unused               |
-| `<leader>cI` / `<leader>cX`                | Python: organize imports / fix all (ruff)             |
-| `<leader>cI` / `<leader>cX`                | Go: organize imports / fix all (gopls)                |
-| `<leader>cv/cF/cu/cU/cD` (Cargo.toml)      | crates: versions / features / update / upgrade / docs |
+| Key                                        | Description                                               |
+| ------------------------------------------ | --------------------------------------------------------- |
+| `<leader>ch`                               | C/C++: switch source ↔ header                             |
+| `<leader>cR` / `<leader>cD` / `<leader>cT` | Rust: code action / debuggables / testables               |
+| `<leader>cE` / `<leader>cP`                | Rust: expand macro / jump to parent module                |
+| `<leader>cI` / `<leader>cU`                | TS/JS: organize imports / remove unused                   |
+| `<leader>cI` / `<leader>cX`                | Python: organize imports / fix all (ruff)                 |
+| `<leader>cI` / `<leader>cX`                | Go: organize imports / fix all (gopls)                    |
+| `<leader>cv/cF/cu/cU/cD` (Cargo.toml)      | crates: versions / features / update / upgrade / docs     |
+| `<leader>cv/cu/cU/cD` (package.json)       | package-info: versions / update / change version / delete |
 
 ## Misc
 

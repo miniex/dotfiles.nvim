@@ -56,7 +56,8 @@ return {
             },
             {
                 "theHamsta/nvim-dap-virtual-text",
-                opts = {},
+                -- Inline values at end-of-line; current frame only (less noise).
+                opts = { virt_text_pos = "eol", all_frames = false, show_stop_reason = true },
             },
             {
                 "WhoIsSethDaniel/mason-tool-installer.nvim",
