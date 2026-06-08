@@ -208,6 +208,22 @@ return {
                 end,
                 desc = "Watch Scopes (centered float)",
             },
+            {
+                "<leader>de",
+                function()
+                    require("dapui").eval()
+                end,
+                mode = { "n", "v" },
+                desc = "Eval (cursor / selection)",
+            },
+            {
+                "<leader>dh",
+                function()
+                    require("dap.ui.widgets").hover()
+                end,
+                mode = { "n", "v" },
+                desc = "Hover value",
+            },
         },
     },
 }

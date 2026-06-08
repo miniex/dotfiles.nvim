@@ -149,6 +149,7 @@ Bare `nvim` auto-restores the cwd session (skipped in headless or when the sessi
 | `<leader>cI` / `cG` / `cH`  | Incoming / outgoing calls / type hierarchy                         |
 | `<leader>rn`                | Rename (inc-rename live preview; `grn` plain native)               |
 | `<leader>cc` / `<leader>ca` | Diagnostics float / code action (n+x, fzf picker)                  |
+| `<leader>cr`                | Refactor: extract / inline (n+x picker, refactoring.nvim)          |
 | `<leader>cf`                | Format buffer (native LSP)                                         |
 | `<leader>ci` / `<leader>uh` | Toggle inlay hints (alias)                                         |
 | `<leader>uy`                | Toggle LSP semantic tokens                                         |
@@ -255,6 +256,7 @@ Inside the menu: `q`/`<Esc>` close, `h` parent (no-op at top), `l` open entry.
 | `<leader>dg` / `dj` / `dk`    | Go to line / Down / Up frame                                    |
 | `<leader>dl/dr/dp/dt/ds/du`   | Last / REPL / pause / terminate / session / toggle UI           |
 | `<leader>dW`                  | Scopes as a centered float (dap.ui.widgets)                     |
+| `<leader>de` / `<leader>dh`   | Eval cursor / selection (n+v) / hover value                     |
 | `<leader>dGt` / `<leader>dGl` | Go: nearest test / last test                                    |
 | `<leader>dPt` / `<leader>dPc` | Python: test method / class                                     |
 
@@ -317,6 +319,17 @@ HTTP client for `.http` / `.rest` files.
 | `gsf` / `gsF`       | Find right / left   |                             |
 | `gsh`               | Highlight           |                             |
 | `gsn`               | Update search range |                             |
+
+## Operators (mini.operators)
+
+Uppercase prefixes — lowercase `gr` / `gs` / `gx` are taken (LSP refs / surround / open-URL).
+
+| Key                  | Description                        | Example                  |
+| -------------------- | ---------------------------------- | ------------------------ |
+| `gR{motion}` / `gRR` | Replace with register (no clobber) | `gRiw` → paste over word |
+| `gX{motion}` ×2      | Exchange two regions               | `gXiw` … `gXiw`          |
+| `gS{motion}` / `gSS` | Sort                               | `gSip` → sort paragraph  |
+| `g={motion}`         | Evaluate (replace with Lua result) |                          |
 
 ## Terminal & Buffers
 

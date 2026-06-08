@@ -14,7 +14,7 @@ Lean, fast, easy on the eyes. Native LSP via `lsp/<server>.lua` discovery, Rust-
 - **Completion** — blink.cmp (Rust fuzzy) + tiny-inline-diagnostic
 - **Treesitter** — `main` branch, textobjects, sticky context, ts-autotag, ts-context-commentstring
 - **Pickers** — fff.nvim + snacks.picker + fzf-lua, all sharing one 0.85 × 0.85 rectangle
-- **Editor** — Neo-tree, flash, Trouble, harpoon v2, dial, multicursor, quicker, grug-far, …
+- **Editor** — Neo-tree, flash, Trouble, harpoon v2, dial, multicursor, refactoring, quicker, grug-far, …
 - **UI** — Catppuccin Mocha retoned to a 2-color damin palette (`#98ABCC` / `#E890B0`); flower-cornered borders on every floating window
 - **Modal floats** — pickers / terminal / lazy / Mason / harpoon / lazygit / Neo-tree are mutually exclusive and land in the exact same 0.85 × 0.85 chrome-aware rectangle
 - **Tooling** — nvim-lint, mason-tool-installer, DAP (6 langs), neotest (7 langs), vim-dadbod-ui (SQL client)
