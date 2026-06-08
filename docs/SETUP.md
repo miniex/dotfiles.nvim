@@ -14,6 +14,13 @@
 
 Run `./tools/health.sh` to verify everything in one shot.
 
+## Platform support
+
+Built and tested on **linux-gnu** and **macOS** (incl. Apple Silicon). Others work with caveats:
+
+- **musl (Alpine)** — Mason's glibc binaries won't run on musl; install servers/tools from the system package manager (or `gcompat`). `blink.cmp` falls back to its Lua matcher; `fff.nvim` builds from source (needs Rust).
+- **BSD** — Mason has no BSD support; install language servers via `pkg` / ports.
+
 ## Install
 
 Mason auto-installs plugins, LSPs, linters, and DAP adapters on first launch — and again on later launches for any newly enabled language (no manual step).

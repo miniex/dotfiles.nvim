@@ -36,10 +36,11 @@ if command -v jq >/dev/null 2>&1; then
     done
 fi
 
-if command -v taplo >/dev/null 2>&1; then
-    git ls-files -z '*.toml' 2>/dev/null | xargs -0r taplo fmt
+# `xargs -r` is GNU-only; guard empty input instead so this also works on BSD/macOS.
+if command -v taplo >/dev/null 2>&1 && [ -n "$(git ls-files '*.toml' 2>/dev/null)" ]; then
+    git ls-files -z '*.toml' 2>/dev/null | xargs -0 taplo fmt
 fi
 
-if command -v yamlfmt >/dev/null 2>&1; then
-    git ls-files -z '*.yml' '*.yaml' 2>/dev/null | xargs -0r yamlfmt
+if command -v yamlfmt >/dev/null 2>&1 && [ -n "$(git ls-files '*.yml' '*.yaml' 2>/dev/null)" ]; then
+    git ls-files -z '*.yml' '*.yaml' 2>/dev/null | xargs -0 yamlfmt
 fi
