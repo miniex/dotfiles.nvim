@@ -55,9 +55,9 @@ Drop Lua files in `~/.config/nvim/snippets/`. Filetype-scoped by filename (e.g. 
 
 - `after/ftplugin/<ft>.lua` — buffer-local options Neovim auto-sources on `FileType` (after the built-in / plugin ftplugins, so it wins). Used for `go` / `make` (tabs, overriding the global `expandtab`) and `gitcommit` / `markdown` (wrap, 72-col). Add a file named after the filetype to set its own buffer options.
 
-## Formatter width ruler
+## Formatter width
 
-`colorcolumn` / `textwidth` follow each project's formatter width. A `FileType` autocmd in `lua/config/format-width.lua` reads a per-filetype `M.specs` registry, searches upward for the nearest config below, and uses its width (else the formatter default). Width `0` (e.g. clang-format `ColumnLimit: 0`) draws no ruler.
+`textwidth` (drives `gq` / `gw`) follows each project's formatter width — no visual ruler. A `FileType` autocmd in `lua/config/format-width.lua` reads a per-filetype `M.specs` registry, searches upward for the nearest config below, and uses its width (else the formatter default). Width `0` (e.g. clang-format `ColumnLimit: 0`) means no limit.
 
 | Filetype    | Config (searched upward)                      | Key               | Default |
 | ----------- | --------------------------------------------- | ----------------- | ------- |

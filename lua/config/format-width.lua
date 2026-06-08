@@ -1,5 +1,5 @@
--- colorcolumn guide that follows each project's formatter width (rustfmt.toml,
--- ruff, …) instead of a hardcoded default. Extend via a { names, pattern } source.
+-- textwidth that follows each project's formatter width (rustfmt.toml, ruff, …)
+-- instead of a hardcoded default — drives gq/gw, no visual ruler. Extend M.specs.
 local M = {}
 
 -- Nearest config among `names` upward from `dir`; first `pattern` capture as a
@@ -34,8 +34,8 @@ local function scan_up(names, pattern, dir)
     return found
 end
 
--- Set textwidth + colorcolumn (width + 1) from the first matching source, else
--- `default`. sources: { { names = {…}, pattern = "…(%d+)" }, … }, tried in order.
+-- Set textwidth from the first matching source, else `default`. sources:
+-- { { names = {…}, pattern = "…(%d+)" }, … }, tried in order.
 function M.guide(sources, default)
     local name = vim.api.nvim_buf_get_name(0)
     local dir = name ~= "" and vim.fs.dirname(name) or vim.fn.getcwd()
@@ -47,9 +47,8 @@ function M.guide(sources, default)
             break
         end
     end
-    -- 0 (e.g. clang-format ColumnLimit: 0 = unlimited) means no ruler.
+    -- 0 (e.g. clang-format ColumnLimit: 0 = unlimited) = no limit.
     vim.opt_local.textwidth = width
-    vim.opt_local.colorcolumn = width > 0 and tostring(width + 1) or ""
     return width
 end
 
@@ -148,7 +147,7 @@ do
     end
 end
 
--- Drop the cache when a formatter config is saved so the ruler re-scans.
+-- Drop the cache when a formatter config is saved so textwidth re-scans.
 vim.api.nvim_create_autocmd("BufWritePost", {
     group = group,
     pattern = config_names,

@@ -357,5 +357,5 @@ vim.api.nvim_create_autocmd("VimEnter", {
     end,
 })
 
--- Registers format-width's colorcolumn FileType autocmd.
+-- Registers format-width's textwidth FileType autocmd.
 require("config.format-width")
