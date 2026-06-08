@@ -115,7 +115,7 @@ Inside the grug-far buffer: `<localleader>r` replace, `<localleader>s` sync to d
 
 ## Session (persistence.nvim)
 
-Bare `nvim` auto-restores the cwd session (skipped in headless or when the session has no real files). Only window-visible buffers persist.
+Bare `nvim` auto-restores the cwd session (skipped in headless or when the session has no real files). `nvim <file>` launches don't restore or save it (see Launch modes in FEATURES). Only window-visible buffers persist.
 
 | Key          | Description                 |
 | ------------ | --------------------------- |
@@ -339,25 +339,25 @@ Uppercase prefixes — lowercase `gr` / `gs` / `gx` are taken (LSP refs / surrou
 
 In the toggle terminal, `$EDITOR`/`$VISUAL`/`$GIT_EDITOR` forward to the parent Neovim via `scripts/term-bin/nvim` — `git commit` opens a split in the outer instance.
 
-| Key                                        | Description                                                                                                               |
-| ------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------- |
-| `<leader>t` (n/t)                          | Toggle terminal (centered float)                                                                                          |
-| `<C-x>`                                    | Hide terminal                                                                                                             |
-| `<leader>w`                                | Smart buffer delete (last file → dashboard; on dashboard → file buf if any, else `:qall`)                                 |
-| `:q` / `:wq` / `:x` / `:exit` / `ZZ`       | Smart quit: bufdelete on last window, else `:quit`. `!` keeps force semantics. On dashboard → `:qall`; in `q:` → `:quit`. |
-| `ZQ`                                       | Force smart quit (no save)                                                                                                |
-| `<leader>;`                                | Toggle dashboard (peek; press again to return)                                                                            |
-| `<leader>bd` / `<leader>bD`                | Snacks.bufdelete: confirm-on-modified / force                                                                             |
-| `<leader>.` / `<leader>bS`                 | Snacks scratch: toggle / select buffer                                                                                    |
-| `<leader>sn`                               | Snacks scratch: per-project markdown notes                                                                                |
-| `<leader>1` … `<leader>9` · `<leader>0`    | Jump to bufferline position 1–9 / 10                                                                                      |
-| `[b` / `]b` · `<S-h>` / `<S-l>`            | Prev / next buffer (open-order)                                                                                           |
-| `<leader>bp` / `<leader>bc`                | bufferline: pick buffer by letter / pick to close                                                                         |
-| `<leader>cn` / `<leader>un`                | Notification history / dismiss all                                                                                        |
-| `<leader>yp` / `<leader>yP` / `<leader>yl` | Yank file path to `+`: absolute / relative / relative:line                                                                |
-| `<leader>yg`                               | Yank git permalink for the current line                                                                                   |
-| `]]` / `[[`                                | LSP word: next / previous reference                                                                                       |
-| `[i` / `]i`                                | Snacks scope: jump to top / bottom edge                                                                                   |
+| Key                                        | Description                                                                                                                |
+| ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------- |
+| `<leader>t` (n/t)                          | Toggle terminal (centered float)                                                                                           |
+| `<C-x>`                                    | Hide terminal                                                                                                              |
+| `<leader>w`                                | Smart buffer delete (last file → dashboard, or exit in a single-file launch; on dashboard → file buf if any, else `:qall`) |
+| `:q` / `:wq` / `:x` / `:exit` / `ZZ`       | Smart quit: bufdelete on last window, else `:quit`. `!` keeps force semantics. On dashboard → `:qall`; in `q:` → `:quit`.  |
+| `ZQ`                                       | Force smart quit (no save)                                                                                                 |
+| `<leader>;`                                | Toggle dashboard (peek; press again to return)                                                                             |
+| `<leader>bd` / `<leader>bD`                | Snacks.bufdelete: confirm-on-modified / force                                                                              |
+| `<leader>.` / `<leader>bS`                 | Snacks scratch: toggle / select buffer                                                                                     |
+| `<leader>sn`                               | Snacks scratch: per-project markdown notes                                                                                 |
+| `<leader>1` … `<leader>9` · `<leader>0`    | Jump to bufferline position 1–9 / 10                                                                                       |
+| `[b` / `]b` · `<S-h>` / `<S-l>`            | Prev / next buffer (open-order)                                                                                            |
+| `<leader>bp` / `<leader>bc`                | bufferline: pick buffer by letter / pick to close                                                                          |
+| `<leader>cn` / `<leader>un`                | Notification history / dismiss all                                                                                         |
+| `<leader>yp` / `<leader>yP` / `<leader>yl` | Yank file path to `+`: absolute / relative / relative:line                                                                 |
+| `<leader>yg`                               | Yank git permalink for the current line                                                                                    |
+| `]]` / `[[`                                | LSP word: next / previous reference                                                                                        |
+| `[i` / `]i`                                | Snacks scope: jump to top / bottom edge                                                                                    |
 
 ## Language-specific
 

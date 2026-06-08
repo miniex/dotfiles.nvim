@@ -98,6 +98,10 @@ end
 return {
     "akinsho/bufferline.nvim",
     version = "*",
+    -- No tab bar in single-file mode (`nvim <file>`): one buffer at a time.
+    cond = function()
+        return not vim.g.single_file
+    end,
     -- Deferred past startup [No Name] so the dashboard appears with a clean top edge.
     event = { "BufReadPost", "BufNewFile" },
     dependencies = { "nvim-tree/nvim-web-devicons", "catppuccin" },

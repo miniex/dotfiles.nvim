@@ -101,8 +101,9 @@ return {
     },
     config = function(_, opts)
         require("persistence").setup(opts)
-        -- Don't let headless runs (CI, scripts) overwrite the saved session.
-        if #vim.api.nvim_list_uis() == 0 then
+        -- Don't overwrite the workspace session from a headless run (CI, scripts),
+        -- a file launch (`nvim file…`), or stdin — none are the project session.
+        if #vim.api.nvim_list_uis() == 0 or vim.g.file_launch or vim.g.started_with_stdin then
             require("persistence").stop()
         end
     end,

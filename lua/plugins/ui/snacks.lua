@@ -95,6 +95,12 @@ local function open_dashboard_if_empty(closing)
             return
         end
     end
+    -- Single-file mode (`nvim <file>`) is a throwaway editor: closing the file
+    -- exits instead of falling back to the dashboard.
+    if vim.g.single_file then
+        vim.cmd("qall")
+        return
+    end
     open_dashboard()
 end
 

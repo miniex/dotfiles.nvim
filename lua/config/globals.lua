@@ -7,6 +7,18 @@ vim.g.loaded_ruby_provider = 0
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_node_provider = 0
 
+-- Launch modes (read by bufferline / persistence / autocmds):
+--  • single_file — one file (`nvim x`): no bufferline/dashboard, one buffer at a
+--    time (opening another wipes the previous).
+--  • file_launch — any file arg(s), incl. `nvim a b c`: no session save/restore.
+-- Plain `nvim` / `nvim <dir>` are neither — the full IDE with its saved session.
+do
+    local n = vim.fn.argc(-1)
+    local dir = n == 1 and vim.fn.isdirectory(vim.fn.argv(0)) == 1
+    vim.g.single_file = n == 1 and not dir
+    vim.g.file_launch = n > 0 and not dir
+end
+
 -- Shared floating-window border: ✿ corners. Used by every plugin that opens a
 -- float (LSP hover/signature/diagnostic, neo-tree, snacks, fzf-lua, completion,
 -- dropbar, bqf, neotest…) so the whole UI speaks the same visual language.
