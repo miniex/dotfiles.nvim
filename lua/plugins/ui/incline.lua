@@ -81,7 +81,7 @@ return {
                 local modified = vim.bo[props.buf].modified
                 local readonly = vim.bo[props.buf].readonly
                 -- ⌬ = "zoom": this window owns its tabpage alone.
-                local tab = props.tab or vim.api.nvim_win_get_tabpage(props.win)
+                local tab = vim.api.nvim_win_get_tabpage(props.win)
                 local zoomed = tab_zoomed(tab)
 
                 local accent = props.focused and damin_pink or p.overlay1

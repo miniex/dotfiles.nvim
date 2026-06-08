@@ -137,7 +137,7 @@ Bare `nvim` auto-restores the cwd session (skipped in headless or when the sessi
 
 ## LSP / Diagnostics
 
-> Neovim 0.11+ also auto-binds `grr`/`gri`/`grn`/`gra`/`gK` on `LspAttach` (`gO` is remapped to Trouble below).
+> Neovim 0.11+'s default `grr`/`gri`/`grn`/`gra` are deleted on `LspAttach` so `gr` (References) fires without a `timeoutlen` wait; `gO` is remapped to Trouble below.
 > `gd`/`gr`/`gi`/`gy` open an fzf-lua picker (auto-jumps on a single result).
 >
 > Severity-sorted; gutter signs `✗`/`!`/`i`/`?` mirror lualine; colors match the scrollbar marks. Diag float shows source when ambiguous.
@@ -149,7 +149,7 @@ Bare `nvim` auto-restores the cwd session (skipped in headless or when the sessi
 | `gd` / `gD`                 | Definition / declaration                                           |
 | `gr` / `gi` / `gy`          | References / implementation / type definition                      |
 | `<leader>cI` / `cG` / `cH`  | Incoming / outgoing calls / type hierarchy (sub+super picker)      |
-| `<leader>rn`                | Rename (inc-rename live preview; `grn` plain native)               |
+| `<leader>rn`                | Rename (inc-rename live preview)                                   |
 | `<leader>cc` / `<leader>ca` | Diagnostics float / code action (n+x, fzf picker)                  |
 | `<leader>cr`                | Refactor: extract / inline (n+x picker, refactoring.nvim)          |
 | `<leader>cf`                | Format buffer (native LSP); visual selection = range format        |

@@ -7,7 +7,7 @@
 - **Inlay hints** — toggle per buffer with `<leader>ci`; suppressed automatically during insert mode.
 - **CodeLens** — enabled on capable servers (gopls, rust-analyzer, lua_ls, ocamllsp, elixir-ls); refreshes on edit, paused during insert mode (like inlay hints).
 - **Navigation** — `gd` / `gr` / `gi` / `gy` open an fzf-lua picker (auto-jumps on a single result); `<leader>cI` / `cG` / `cH` for incoming / outgoing calls + type hierarchy.
-- **Rename** — `<leader>rn` via inc-rename with a live in-buffer preview (`grn` stays plain native).
+- **Rename** — `<leader>rn` via inc-rename with a live in-buffer preview.
 - **Formatting** — `<leader>cf` runs `vim.lsp.buf.format` (native LSP; no formatter plugin).
 - **Semantic tokens** — toggle per buffer with `<leader>uy` (e.g. when they clash with treesitter highlight).
 - **Document colors** — LSP color swatches via native `vim.lsp.document_color` on any capable server (tailwindcss, cssls, …); colorizer still owns hex.

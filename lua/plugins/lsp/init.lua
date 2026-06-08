@@ -335,6 +335,13 @@ return {
                 end
             end
 
+            -- Drop the 0.11 default gr* maps: global + share the `gr` prefix with our
+            -- buffer-local gr (References), forcing a timeoutlen wait. gr/gi/<leader>c* cover them.
+            for _, k in ipairs({ "grn", "grr", "gri" }) do
+                pcall(vim.keymap.del, "n", k)
+            end
+            pcall(vim.keymap.del, { "n", "x" }, "gra")
+
             local group = vim.api.nvim_create_augroup("lsp-attach-keys", { clear = true })
             vim.api.nvim_create_autocmd("LspAttach", {
                 group = group,
@@ -355,8 +362,7 @@ return {
                         vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, silent = true, desc = desc })
                     end
 
-                    -- Intentional aliases over 0.11+ defaults (grr/gri/grn/gra/gK)
-                    -- for muscle memory and which-key discovery.
+                    -- Replacements for the deleted 0.11+ gr* defaults; which-key-discoverable.
                     map("n", "K", function()
                         vim.lsp.buf.hover({
                             border = vim.g.flower_border,
@@ -392,12 +398,12 @@ return {
                     -- Prefer one formatter per ft when >1 client formats (e.g. python:
                     -- ruff). Single-formatter buffers fall through unfiltered.
                     local format_prefs = { python = "ruff" }
-                    map("n", "<leader>cf", function()
+                    local function do_format(range)
                         local b = vim.api.nvim_get_current_buf()
                         local formatters = vim.tbl_filter(function(c)
                             return c:supports_method("textDocument/formatting", b)
                         end, vim.lsp.get_clients({ bufnr = b }))
-                        local opts_fmt = { async = true, bufnr = b }
+                        local opts_fmt = { async = true, bufnr = b, range = range }
                         local preferred = format_prefs[vim.bo[b].filetype]
                         local has_preferred = preferred
                             and vim.iter(formatters):any(function(c)
@@ -409,15 +415,15 @@ return {
                             end
                         end
                         vim.lsp.buf.format(opts_fmt)
+                    end
+                    map("n", "<leader>cf", function()
+                        do_format()
                     end, "Format (LSP)")
                     map("x", "<leader>cf", function()
                         vim.cmd("normal! \27") -- leave visual so '< / '> marks are set
-                        vim.lsp.buf.format({
-                            async = true,
-                            range = {
-                                start = vim.api.nvim_buf_get_mark(0, "<"),
-                                ["end"] = vim.api.nvim_buf_get_mark(0, ">"),
-                            },
+                        do_format({
+                            start = vim.api.nvim_buf_get_mark(0, "<"),
+                            ["end"] = vim.api.nvim_buf_get_mark(0, ">"),
                         })
                     end, "Format range (LSP)")
                     map("n", "<leader>cs", "<cmd>LspRestart<cr>", "LSP Restart")
