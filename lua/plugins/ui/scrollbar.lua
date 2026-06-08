@@ -252,8 +252,12 @@ return {
                     local t = i / steps
                     local eased = 1 - (1 - t) * (1 - t) * (1 - t)
                     local cur = math.floor(from + (target - from) * eased + 0.5)
+                    local last = displayed_lines[bufnr]
                     displayed_lines[bufnr] = cur
-                    render_cursor(bufnr, cur)
+                    -- Skip re-render when the interpolated line is unchanged; always render the last frame.
+                    if cur ~= last or i >= steps then
+                        render_cursor(bufnr, cur)
+                    end
                     if i >= steps then
                         displayed_lines[bufnr] = target
                         move_timer = stop(move_timer)

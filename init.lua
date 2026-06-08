@@ -1,3 +1,4 @@
+vim.loader.enable() -- bytecode cache for the startup require() chain
 pcall(vim.cmd, "language en_US.UTF-8")
 
 require("config.globals")
