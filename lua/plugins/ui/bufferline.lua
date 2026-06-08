@@ -1,6 +1,8 @@
 -- Track open order so reopened buffers (reused bufnr) get a fresh tail slot.
 local order_counter = 0
 local order = {}
+-- "named" cache: skip nvim_buf_get_name after a buffer is first seen named.
+local named = {}
 
 local function ensure_order(bufnr)
     if not order[bufnr] then
@@ -24,6 +26,7 @@ vim.api.nvim_create_autocmd({ "BufDelete", "BufWipeout" }, {
     group = group,
     callback = function(args)
         order[args.buf] = nil
+        named[args.buf] = nil
     end,
 })
 
@@ -40,17 +43,17 @@ local damin_mid = pal.mid
 local damin_pink = pal.pink
 local damin_dim = pal.bufferline_dim
 
--- 50ms cache: name_formatter fires per buffer per redraw.
+-- name_formatter runs per buffer per redraw: a 50ms throttle bounds per-render
+-- cost, and a list signature limits `:p` resolution to actual list changes.
 -- Tristate so a failed require doesn't retry forever (nil → try, false → give up).
 local harpoon_state, harpoon_mod
-local pinned, pinned_at = {}, 0
+local pinned, pinned_at, pinned_sig = {}, 0, nil
 local function pinned_set()
     local now = vim.uv.hrtime()
     if now - pinned_at < 50 * 1e6 then
         return pinned
     end
     pinned_at = now
-    pinned = {}
     if harpoon_state == nil then
         local ok, mod = pcall(require, "harpoon")
         harpoon_state, harpoon_mod = ok, ok and mod or nil
@@ -61,8 +64,18 @@ local function pinned_set()
     local list = harpoon_mod:list()
     local items = list and list.items
     if not items then
+        pinned, pinned_sig = {}, nil
         return pinned
     end
+    local sig = tostring(#items)
+    for _, item in ipairs(items) do
+        sig = sig .. "\0" .. (item.value or "")
+    end
+    if sig == pinned_sig then
+        return pinned
+    end
+    pinned_sig = sig
+    pinned = {}
     -- harpoon stores item.value relative to its root (cwd); buf.path is absolute.
     for _, item in ipairs(items) do
         pinned[vim.fn.fnamemodify(item.value, ":p")] = true
@@ -112,11 +125,13 @@ return {
                     return oa < ob
                 end,
                 custom_filter = function(buf)
-                    if vim.api.nvim_buf_get_name(buf) == "" then
-                        return false
+                    if not named[buf] then
+                        if vim.api.nvim_buf_get_name(buf) == "" then
+                            return false
+                        end
+                        named[buf] = true
                     end
-                    -- BufAdd can miss a later-listed buffer; track it on first
-                    -- render so it gets a stable slot, not math.huge.
+                    -- BufAdd can miss a later-listed buffer; track it on first render.
                     ensure_order(buf)
                     return true
                 end,

@@ -12,16 +12,23 @@ return {
         })
         -- Empty `enew`-only sessions trample the dashboard; only restore real files.
         local function session_has_files()
-            local file = require("persistence").current()
-            if vim.fn.filereadable(file) == 0 then
-                return false
-            end
-            for _, line in ipairs(vim.fn.readfile(file)) do
-                if line:match("^badd ") or line:match("^edit ") then
+            local ok, result = pcall(function()
+                local file = require("persistence").current()
+                if vim.fn.filereadable(file) == 0 then
+                    return false
+                end
+                -- A fileless session is tiny; skip reading a large one (it has files).
+                if vim.fn.getfsize(file) > 256 * 1024 then
                     return true
                 end
-            end
-            return false
+                for _, line in ipairs(vim.fn.readfile(file)) do
+                    if line:match("^badd ") or line:match("^edit ") then
+                        return true
+                    end
+                end
+                return false
+            end)
+            return ok and result or false
         end
         vim.api.nvim_create_autocmd("VimEnter", {
             group = group,
