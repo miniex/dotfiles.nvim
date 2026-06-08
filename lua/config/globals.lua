@@ -8,15 +8,33 @@ vim.g.loaded_perl_provider = 0
 vim.g.loaded_node_provider = 0
 
 -- Launch modes (read by bufferline / persistence / autocmds):
---  • single_file — one file (`nvim x`): no bufferline/dashboard, one buffer at a
---    time (opening another wipes the previous).
+--  • single_file — one file (`nvim x`): no bufferline/dashboard, one buffer at a time.
 --  • file_launch — any file arg(s), incl. `nvim a b c`: no session save/restore.
--- Plain `nvim` / `nvim <dir>` are neither — the full IDE with its saved session.
+--  • multi_dir — `nvim dir1 dir2`: per-dir projects; :next/:prev tcd's in.
+-- `nvim` is the full IDE; `nvim <dir>` is a bare launch inside <dir> (same session).
 do
     local n = vim.fn.argc(-1)
-    local dir = n == 1 and vim.fn.isdirectory(vim.fn.argv(0)) == 1
-    vim.g.single_file = n == 1 and not dir
-    vim.g.file_launch = n > 0 and not dir
+    local function is_dir(i)
+        return vim.fn.isdirectory(vim.fn.argv(i)) == 1
+    end
+    if n == 1 and is_dir(0) then
+        -- `nvim <dir>` == `cd <dir> && nvim`: become a bare launch inside <dir> so the
+        -- cwd (hence the session key) matches and the same workspace restores.
+        vim.fn.chdir(vim.fn.argv(0))
+        pcall(vim.cmd, "argdelete *")
+        vim.g.single_file, vim.g.file_launch = false, false
+        vim.g.dir_launch = vim.fn.getcwd() -- a VimEnter drops the stray dir buffer
+    else
+        local files = 0
+        for i = 0, n - 1 do
+            if not is_dir(i) then
+                files = files + 1
+            end
+        end
+        vim.g.single_file = n == 1 and files == 1
+        vim.g.file_launch = files > 0 -- dirs alone never block the session
+        vim.g.multi_dir = n >= 2 and files == 0
+    end
 end
 
 -- Shared floating-window border: ✿ corners. Used by every plugin that opens a

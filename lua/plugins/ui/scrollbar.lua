@@ -310,7 +310,8 @@ return {
             end,
         })
 
-        -- Insert mode fires per keystroke; skip animation to keep typing snappy.
+        -- Insert mode fires per keystroke; skip animation to keep typing snappy, and
+        -- only re-render when the line actually changes (same-line typing = no-op).
         vim.api.nvim_create_autocmd("CursorMovedI", {
             group = scrollbar_group,
             callback = function(event)
@@ -318,7 +319,10 @@ return {
                     return
                 end
                 poke_handle()
-                snap_cursor(event.buf, vim.fn.line(".") - 1)
+                local line = vim.fn.line(".") - 1
+                if displayed_lines[event.buf] ~= line then
+                    snap_cursor(event.buf, line)
+                end
             end,
         })
 

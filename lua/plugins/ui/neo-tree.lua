@@ -82,13 +82,24 @@ local function patch_recursive_dir_size()
         return total
     end
 
-    -- Recursive size of `root` on the libuv worker pool (~4 threads, queues the
-    -- rest). cb(bytes), or cb(nil) if MAX_ENTRIES was hit.
+    -- Recursive size of `root` on a libuv worker thread. Cap concurrent scans so a
+    -- burst of dirs can't hog the shared ~4-thread pool; the rest queue. cb(nil) if capped.
+    local MAX_SCANS = 3
+    local scan_queue, active_scans = {}, 0
+    local function dispatch_scans()
+        while active_scans < MAX_SCANS and #scan_queue > 0 do
+            local job = table.remove(scan_queue, 1)
+            active_scans = active_scans + 1
+            uv.new_work(scan_blocking, function(result)
+                active_scans = active_scans - 1
+                job.cb(result < 0 and nil or result)
+                dispatch_scans()
+            end):queue(job.root, MAX_ENTRIES)
+        end
+    end
     local function compute_async(root, cb)
-        local work = uv.new_work(scan_blocking, function(result)
-            cb(result < 0 and nil or result)
-        end)
-        work:queue(root, MAX_ENTRIES)
+        scan_queue[#scan_queue + 1] = { root = root, cb = cb }
+        dispatch_scans()
     end
 
     -- Braille spinner while sizes compute; render-only redraw (no FS re-scan, unlike
@@ -118,6 +129,14 @@ local function patch_recursive_dir_size()
             end)
         )
     end
+    vim.api.nvim_create_autocmd("VimLeavePre", {
+        callback = function()
+            if spin_timer and not spin_timer:is_closing() then
+                spin_timer:stop()
+                spin_timer:close()
+            end
+        end,
+    })
 
     local original = common.file_size
     common.file_size = function(config, node, state)
@@ -150,8 +169,8 @@ local function patch_recursive_dir_size()
         return original(config, node, state)
     end
 
-    -- Invalidate only the changed dir + ancestors (their totals include it), not
-    -- the whole cache — else every save re-scans every visible dir.
+    -- Invalidate the changed dir + ancestors (totals include it) + descendants (the
+    -- event path is the watched dir, so a change may be deeper) — not the whole cache.
     events.subscribe({
         event = events.FS_EVENT,
         handler = function(args)
@@ -161,7 +180,11 @@ local function patch_recursive_dir_size()
                 return
             end
             for path in pairs(cache) do
-                if path == changed or vim.startswith(changed, path .. "/") then
+                if
+                    path == changed
+                    or vim.startswith(changed, path .. "/") -- ancestors of changed
+                    or vim.startswith(path, changed .. "/") -- descendants of changed
+                then
                     cache[path] = nil
                 end
             end

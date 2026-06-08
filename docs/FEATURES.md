@@ -49,7 +49,7 @@
 
 - **Theme** — Catppuccin Mocha retoned to a 2-color **damin** palette: `#98ABCC` (blue) / `#E890B0` (pink). Mirrors [`fish-theme-damin`](https://github.com/miniex/fish-theme-damin) + [`dotfiles.kitty`](https://github.com/miniex/dotfiles.kitty) + [`dotfiles.tmux`](https://github.com/miniex/dotfiles.tmux).
 - **lualine** — `✧ … ⋆` sparkle bookends, `✿` mode glyph (swaps to `✎` in visual / operator-pending, briefly `✦` on mode change); `● @x` while a macro is recording; attached LSP client names and `searchcount()` on the right.
-- **bufferline** — pink → mid → blue 3-stop gradient, `surface0` card under active, `▎` left bar + ordinal prefix, `♡` on harpoon-pinned, `●` on modified, uniform 16-char tab width. Neo-tree / Outline get sidebar offset labels. Lazy-loads on first real file open, so the dashboard isn't preceded by an empty tabline. `<leader>bp` / `bc` letter-pick a buffer to focus / close.
+- **bufferline** — pink → mid → blue 3-stop gradient, `surface0` card under active, `▎` left bar + ordinal prefix, `♡` on harpoon-pinned, `●` on modified, uniform 16-char tab width. Neo-tree / Outline get sidebar offset labels. Lazy-loads on first real file open, so the dashboard isn't preceded by an empty tabline; single-file launches skip it entirely (see Launch modes). `<leader>bp` / `bc` letter-pick a buffer to focus / close.
 - **incline** — `⌬` when window is zoomed (alone in tabpage); per-window `✗`/`!` diagnostic count.
 - **cursor bloom** — `✿` sign on the current line in mode color (custom autocmd in [`lua/config/cursor-bloom.lua`](../lua/config/cursor-bloom.lua)). Refresh defer skips picker/terminal/chrome buffers.
 - **which-key** — hint floats pinned to the bottom row at 85% editor width (centered); height grows with content. Triggers register synchronously + `timeoutlen=300` so the first `<leader>` press isn't slow ([#912](https://github.com/folke/which-key.nvim/issues/912) workaround).
@@ -131,8 +131,10 @@ Closing the last named file (`<leader>w` / `<leader>bd` / `:q` / `:wq` / `:x` / 
 
 How you start Neovim sets the workspace behavior:
 
-- **`nvim`** (no args) / **`nvim <dir>`** — full IDE: tab bar, dashboard, and the cwd session is auto-restored on start and saved on exit.
-- **`nvim <file>`** — single-file editor: no tab bar, no dashboard, one buffer at a time (opening another file wipes the previous), and the session is left untouched. Closing the file exits Neovim.
-- **`nvim a b c…`** (multiple files) — they open as tabs in argument order and you can still open more, but the session is left untouched (not restored or saved).
+- **`nvim`** (no args) — full IDE: tab bar, dashboard, and the cwd session auto-restores on start and saves on exit.
+- **`nvim <dir>`** — identical to `cd <dir> && nvim`: chdir's into `<dir>` (dropping the stray dir buffer) and keys the session to `<dir>`.
+- **`nvim <file>`** — single-file editor: no tab bar, no dashboard, one buffer at a time (opening another wipes the previous), no session. Closing the file exits Neovim.
+- **`nvim a b c…`** (multiple files) — open as tabs in argument order (more can be opened), but the session is left untouched.
+- **`nvim dir1 dir2…`** (multiple dirs) — each dir is its own project root; `:next` / `:prev` `:tcd` into whichever is current (cwd / pickers / LSP / session key follow). Sessions are **manual**: `<leader>qs` restores the current dir's, exit saves it (no auto-restore, so `:next` / `:prev` stay intact).
 
-This keeps `nvim <file>` a throwaway editor that never disturbs a directory's saved workspace. Set via `vim.g.single_file` / `vim.g.file_launch` in `lua/config/globals.lua`.
+This keeps `nvim <file>` a throwaway editor that never disturbs a directory's saved workspace. Set via `vim.g.single_file` / `vim.g.file_launch` / `vim.g.multi_dir` in `lua/config/globals.lua`.

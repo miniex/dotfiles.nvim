@@ -3,6 +3,10 @@ local M = {}
 -- View a file in `less` in its own tab — read-only, streamed, no whole-file
 -- load. A fresh tab avoids clobbering a special buffer; it closes on quit.
 function M.view(file)
+    if vim.fn.executable("less") ~= 1 then
+        vim.notify("`less` not found on PATH", vim.log.levels.WARN)
+        return
+    end
     vim.cmd("tabnew | term less -- " .. vim.fn.shellescape(file))
     local buf = vim.api.nvim_get_current_buf()
     vim.api.nvim_create_autocmd("TermClose", {

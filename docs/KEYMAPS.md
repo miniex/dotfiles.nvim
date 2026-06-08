@@ -115,7 +115,7 @@ Inside the grug-far buffer: `<localleader>r` replace, `<localleader>s` sync to d
 
 ## Session (persistence.nvim)
 
-Bare `nvim` auto-restores the cwd session (skipped in headless or when the session has no real files). `nvim <file>` launches don't restore or save it (see Launch modes in FEATURES). Only window-visible buffers persist.
+Bare `nvim` (and `nvim <dir>`, which cd's in) auto-restores the cwd session (skipped in headless or when it has no real files). File launches (`nvim <file>` / `nvim a b`) don't; `nvim dir1 dir2` keeps per-dir sessions but manual (`<leader>qs`). See Launch modes in FEATURES. Only window-visible buffers persist.
 
 | Key          | Description                 |
 | ------------ | --------------------------- |

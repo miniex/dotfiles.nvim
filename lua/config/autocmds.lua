@@ -370,5 +370,36 @@ if vim.g.single_file then
     })
 end
 
+-- `nvim <dir>`: globals chdir'd + argdelete'd; drop the leftover directory buffer so
+-- it lands on the dashboard / restored session. Runs before persistence's autoload.
+if vim.g.dir_launch then
+    vim.api.nvim_create_autocmd("VimEnter", {
+        group = vim.api.nvim_create_augroup("dir-launch-clean", { clear = true }),
+        once = true,
+        callback = function()
+            for _, b in ipairs(vim.api.nvim_list_bufs()) do
+                local name = vim.api.nvim_buf_get_name(b)
+                if name ~= "" and vim.fn.isdirectory(name) == 1 then
+                    pcall(vim.api.nvim_buf_delete, b, { force = true })
+                end
+            end
+        end,
+    })
+end
+
+-- `nvim dir1 dir2` (multi_dir): :next/:prev walk the dir args; tcd into whichever is
+-- current so each dir is its own project root (cwd → pickers / LSP / session key).
+if vim.g.multi_dir then
+    vim.api.nvim_create_autocmd({ "VimEnter", "BufEnter" }, {
+        group = vim.api.nvim_create_augroup("multi-dir-tcd", { clear = true }),
+        callback = function(args)
+            local name = vim.api.nvim_buf_get_name(args.buf)
+            if name ~= "" and vim.fn.isdirectory(name) == 1 then
+                pcall(vim.cmd.tcd, vim.fn.fnameescape(name))
+            end
+        end,
+    })
+end
+
 -- Registers format-width's textwidth FileType autocmd.
 require("config.format-width")

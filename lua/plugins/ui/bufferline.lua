@@ -13,28 +13,32 @@ local function ensure_order(bufnr)
     end
 end
 
-local group = vim.api.nvim_create_augroup("BufferlineOpenOrder", { clear = true })
+-- Skip order tracking in single-file mode — the spec module still loads (lazy reads
+-- it) but the plugin (cond) won't, so these autocmds would just run for nothing.
+if not vim.g.single_file then
+    local group = vim.api.nvim_create_augroup("BufferlineOpenOrder", { clear = true })
 
-vim.api.nvim_create_autocmd("BufAdd", {
-    group = group,
-    callback = function(args)
-        if vim.bo[args.buf].buflisted then
-            ensure_order(args.buf)
+    vim.api.nvim_create_autocmd("BufAdd", {
+        group = group,
+        callback = function(args)
+            if vim.bo[args.buf].buflisted then
+                ensure_order(args.buf)
+            end
+        end,
+    })
+
+    vim.api.nvim_create_autocmd("BufWipeout", {
+        group = group,
+        callback = function(args)
+            order[args.buf] = nil
+            named[args.buf] = nil
+        end,
+    })
+
+    for _, b in ipairs(vim.api.nvim_list_bufs()) do
+        if vim.bo[b].buflisted then
+            ensure_order(b)
         end
-    end,
-})
-
-vim.api.nvim_create_autocmd("BufWipeout", {
-    group = group,
-    callback = function(args)
-        order[args.buf] = nil
-        named[args.buf] = nil
-    end,
-})
-
-for _, b in ipairs(vim.api.nvim_list_bufs()) do
-    if vim.bo[b].buflisted then
-        ensure_order(b)
     end
 end
 
