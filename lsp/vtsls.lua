@@ -28,3 +28,4 @@ return {
         javascript = common,
     },
 }
+-- Vue hybrid (vtsls on .vue) is wired in lua/plugins/lsp/init.lua via vim.lsp.config().

@@ -2,6 +2,7 @@
 -- rust: rustaceanvim owns rust_analyzer. ron: no LSP.
 return {
     asm = { "asm_lsp" },
+    astro = { "astro" },
     bash = { "bashls" },
     ["c-cpp"] = { "clangd" },
     cmake = { "neocmake" },
@@ -24,9 +25,12 @@ return {
     rust = {},
     shader = { "wgsl_analyzer", "glsl_analyzer" },
     sql = { "sqls" },
+    svelte = { "svelte" },
     terraform = { "terraformls" },
     toml = { "taplo" },
     typst = { "tinymist" },
+    -- vue_ls for the SFC; vtsls handles the .vue <script> (hybrid, wired in lsp/init.lua).
+    vue = { "vue_ls" },
     web = { "vtsls", "cssls", "html", "emmet_ls", "tailwindcss" },
     yaml = { "yamlls" },
     zig = { "zls" },

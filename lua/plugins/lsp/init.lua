@@ -164,6 +164,30 @@ return {
             capabilities.workspace.didChangeWatchedFiles = { dynamicRegistration = true }
             vim.lsp.config("*", { capabilities = capabilities, root_markers = { ".git" } })
 
+            -- Vue (Volar hybrid): attach vtsls to .vue + load @vue/typescript-plugin when
+            -- installed. Via vim.lsp.config so filetypes outrank lspconfig's bundled list.
+            local vue_loc = vim.fn.stdpath("data")
+                .. "/mason/packages/vue-language-server/node_modules/@vue/language-server"
+            if vim.uv.fs_stat(vue_loc) then
+                vim.lsp.config("vtsls", {
+                    filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact", "vue" },
+                    settings = {
+                        vtsls = {
+                            tsserver = {
+                                globalPlugins = {
+                                    {
+                                        name = "@vue/typescript-plugin",
+                                        location = vue_loc,
+                                        languages = { "vue" },
+                                        configNamespace = "typescript",
+                                    },
+                                },
+                            },
+                        },
+                    },
+                })
+            end
+
             -- virtual_text is off — tiny-inline-diagnostic owns it.
             vim.diagnostic.config({
                 virtual_text = false,

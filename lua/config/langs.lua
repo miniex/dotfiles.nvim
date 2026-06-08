@@ -1,6 +1,7 @@
 -- Lang toggle. Override via gitignored `lua/config/langs_local.lua` (see *.example).
 local defaults = {
     asm = true,
+    astro = true,
     bash = true,
     ["c-cpp"] = true,
     cmake = true,
@@ -22,9 +23,11 @@ local defaults = {
     rust = true,
     shader = true,
     sql = true,
+    svelte = true,
     terraform = true,
     toml = true,
     typst = true,
+    vue = true,
     web = true,
     yaml = true,
     zig = true,

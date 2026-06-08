@@ -49,6 +49,7 @@ Prerequisites, manual install, and recovery: [docs/SETUP.md](docs/SETUP.md).
 | Lua                 | lua_ls                                               | selene           | -                       |
 | CSS / HTML          | cssls / html+emmet                                   | -                | -                       |
 | Tailwind / JS-TS    | tailwindcss / vtsls                                  | eslint_d         | js-debug-adapter (Node) |
+| Svelte/Vue/Astro    | svelte / vue_ls (+ vtsls) / astro                    | -                | -                       |
 | GraphQL / SQL       | graphql / sqls                                       | - / sqlfluff     | -                       |
 | JSON / YAML         | jsonls / yamlls                                      | - / yamllint     | -                       |
 | Protobuf / TOML     | buf_ls / taplo                                       | -                | -                       |
