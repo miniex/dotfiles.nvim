@@ -29,8 +29,8 @@ return {
     terraform = { "terraformls" },
     toml = { "taplo" },
     typst = { "tinymist" },
-    -- vue_ls for the SFC; vtsls handles the .vue <script> (hybrid, wired in lsp/init.lua).
-    vue = { "vue_ls" },
+    -- vue_ls (SFC) + vtsls (.vue <script>, hybrid in lsp/init.lua); vtsls also in web, dedup'd.
+    vue = { "vue_ls", "vtsls" },
     web = { "vtsls", "cssls", "html", "emmet_ls", "tailwindcss" },
     yaml = { "yamlls" },
     zig = { "zls" },
