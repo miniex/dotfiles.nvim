@@ -1,4 +1,6 @@
--- Track open order so reopened buffers (reused bufnr) get a fresh tail slot.
+-- Track open order for stable left-to-right tabs. Cleared only on BufWipeout:
+-- a :bdelete'd buffer is revivable at the same bufnr, so keeping its slot returns
+-- it to its original tab on <C-o>/re-edit instead of the tail.
 local order_counter = 0
 local order = {}
 -- "named" cache: skip nvim_buf_get_name after a buffer is first seen named.
@@ -22,7 +24,7 @@ vim.api.nvim_create_autocmd("BufAdd", {
     end,
 })
 
-vim.api.nvim_create_autocmd({ "BufDelete", "BufWipeout" }, {
+vim.api.nvim_create_autocmd("BufWipeout", {
     group = group,
     callback = function(args)
         order[args.buf] = nil

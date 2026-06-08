@@ -349,5 +349,13 @@ vim.api.nvim_create_autocmd("FileType", {
     end,
 })
 
+-- Clear the shada-restored jumplist at startup so <C-o> stays session-local.
+vim.api.nvim_create_autocmd("VimEnter", {
+    group = vim.api.nvim_create_augroup("session-local-jumps", { clear = true }),
+    callback = function()
+        vim.cmd("clearjumps")
+    end,
+})
+
 -- Registers format-width's colorcolumn FileType autocmd.
 require("config.format-width")

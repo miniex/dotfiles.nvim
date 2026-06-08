@@ -22,6 +22,7 @@ Leader: `<Space>`. `<localleader>` also `<Space>` (most localleader bindings liv
 | `gx`                | N    | Open URL / file under cursor (`vim.ui.open`)             |
 
 > `n`, `N`, `*`, `#`, `g*`, `g#`, `<C-o>`, `<C-i>` auto-center the cursor (`zvzz`); `[c`/`]c` do too, in diff mode.
+> The jumplist is session-local (cleared at startup), so `<C-o>` / `<C-i>` only revisit files opened this session.
 > `:s/…` shows a live split preview (`inccommand`); `:grep` uses ripgrep; visual-block edits extend past line-end.
 > Yank → system clipboard via `wl-copy` / `xclip` / `pbcopy` / `clip.exe` (first available), else OSC52 over SSH.
 > `p` / `P` feed a yank ring (yanky); `]y` / `[y` cycle to a newer / older yank right after pasting.
