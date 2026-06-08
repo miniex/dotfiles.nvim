@@ -30,7 +30,7 @@ shellcheck $sh_files
 
 # Parse-only check on any tracked files matching $1 using `$2 -n`. Warn-if-absent.
 check_parse() {
-    [ -n "$(git ls-files "$1" 2>/dev/null)" ] || return
+    [ -n "$(git ls-files "$1" 2>/dev/null)" ] || return 0
     if command -v "$2" >/dev/null 2>&1; then
         git ls-files -z "$1" 2>/dev/null | xargs -0 -n1 "$2" -n
     else
