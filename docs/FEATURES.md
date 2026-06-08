@@ -104,6 +104,7 @@ See [`lua/config/modal-floats.lua`](../lua/config/modal-floats.lua) for the mutu
 ## Markdown
 
 - `mdx_analyzer` handles `.mdx`; `marksman` handles `.md`. Highlighting via treesitter; spelling via `typos_lsp`.
+- `markdownlint` (nvim-lint) runs a relaxed ruleset — stylistic nags (line length, inline HTML, bare URLs, …) are disabled in `lua/plugins/lsp/lint.lua`; structural / correctness rules stay on.
 
 ## Database
 

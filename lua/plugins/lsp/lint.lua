@@ -60,6 +60,25 @@ return {
         },
         config = function(_, opts)
             local lint = require("lint")
+
+            -- markdownlint's defaults are mostly stylistic nags that bury the rules catching
+            -- real mistakes. Disabling via args (not a config file) keeps it cwd-independent;
+            -- --stdin must precede --disable, which would otherwise eat it into the rule list.
+            lint.linters.markdownlint.args = {
+                "--stdin",
+                "--disable",
+                "MD013", -- line length
+                "MD033", -- inline HTML
+                "MD041", -- first-line H1
+                "MD034", -- bare URLs
+                "MD024", -- duplicate headings
+                "MD040", -- code fence language required
+                "MD036", -- emphasis as heading
+                "MD026", -- trailing punctuation in headings
+                "MD029", -- ordered-list numbering
+                "MD012", -- consecutive blank lines
+            }
+
             -- Drop zsh/fish (interpreter -n linters) when the binary is absent; nvim-lint swallows the error.
             for ft, exe in pairs({ zsh = "zsh", fish = "fish" }) do
                 if vim.fn.executable(exe) ~= 1 then
