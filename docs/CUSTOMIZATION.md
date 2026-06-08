@@ -91,7 +91,7 @@ Three size tiers, smallest first:
 
 - **> 1 MiB** (or a >2000-char first line) — treesitter is skipped. `ts-attach` autocmd in `lua/config/autocmds.lua`.
 - **> 2 MiB** — `snacks.bigfile` degrades features (LSP / treesitter / syntax / folds / matchparen). Tune `size` in `lua/plugins/ui/snacks.lua`.
-- **> 8 MiB** — opening prompts _view in `less`_ (default) / _edit anyway_ / _cancel_; binary files (NUL byte in the first KB) drop the pager option. Tune `BIG_FILE_LIMIT` in `lua/config/autocmds.lua`.
+- **> 8 MiB** — opening prompts _view in `less`_ (default) / _edit anyway_ / _cancel_; binary files (NUL byte in the first KB) drop the pager option. Tune `BIG_FILE_LIMIT` in `lua/config/autocmds.lua`. Declining also drops it from the arglist, so the restored session won't reopen a `nvim hugefile`.
 
 The "view" action and `<leader>L` open `less` in its own tab via `lua/config/pager.lua` (read-only, streamed — the only true no-read path). Needs `less` on `$PATH`.
 

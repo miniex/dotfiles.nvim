@@ -259,6 +259,15 @@ local function big_file_close(buf)
     if not vim.api.nvim_buf_is_valid(buf) then
         return
     end
+    -- Drop it from the arglist too, else the saved session reopens it every
+    -- launch (mksession always stores the arglist, even after the buffer's gone).
+    local target = vim.fn.fnamemodify(vim.api.nvim_buf_get_name(buf), ":p")
+    for _, arg in ipairs(vim.fn.argv()) do
+        if vim.fn.fnamemodify(arg, ":p") == target then
+            pcall(vim.cmd, "argdelete " .. vim.fn.fnameescape(arg))
+            break
+        end
+    end
     local ok = pcall(function()
         require("snacks").bufdelete(buf)
     end)

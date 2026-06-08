@@ -22,5 +22,6 @@
 | `:q` swaps to an unexpected buffer after restore  | Old session file has stale `badd` lines; `:qa` once to overwrite, or `rm` it                                                                                                            |
 | Typing lag in `<leader>t` / pickers (fzf / fff)   | New picker/terminal float? Add its filetype to `pickers` or `panels` in `lua/config/chrome_filetypes.lua` (one source for scrollbar / smear / cursor-bloom / incline).                  |
 | Opening a big file prompts / drops into `less`    | Files >8 MiB ask: view in `less` / edit anyway / cancel (binary skips `less`). `<leader>L` views any file. Needs `less` on `$PATH`; tune `BIG_FILE_LIMIT` in `lua/config/autocmds.lua`. |
+| A huge file reopens on every launch               | Old session saved it in the arglist. The guard `argdelete`s on decline — open once, cancel, exit to clean it, or `rm` the session file.                                                 |
 
 > nvim-treesitter `master` is archived and incompatible with 0.12; pinned to `main`.
