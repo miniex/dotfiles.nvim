@@ -28,9 +28,9 @@ local function patch_iec_units()
     end
 end
 
--- Show recursive size on directory rows (neo-tree's default is "-"), computed
--- async on the libuv pool so the UI never blocks — rows show "…", then fill in.
--- A bounded in-flight pool caps fd/memory; MAX_ENTRIES backstops giant roots.
+-- Show recursive size on directory rows (neo-tree's default is "-"). The scan
+-- runs on a libuv worker thread (vim.uv.new_work) — off the main loop, so no lag.
+-- MAX_ENTRIES backstops giant roots (">…").
 local function patch_recursive_dir_size()
     local common = require("neo-tree.sources.common.components")
     -- Reload-safe: don't wrap an already-wrapped file_size (would re-subscribe
@@ -44,88 +44,77 @@ local function patch_recursive_dir_size()
     local events = require("neo-tree.events")
     local uv = vim.uv or vim.loop
 
-    local MAX_INFLIGHT = 64 -- concurrent scandir/stat ops in flight
     local MAX_ENTRIES = 1000000 -- per-dir backstop; ">…" beyond it
     local cache = {} -- path -> bytes | "capped"
     local inflight = {} -- path -> true while computing
 
-    -- Global bounded work queue shared by all running computes; libuv does the I/O.
-    local queue, active = {}, 0
-    local function pump()
-        while active < MAX_INFLIGHT and #queue > 0 do
-            active = active + 1
-            table.remove(queue)()
+    -- Self-contained (string.dump'able, no upvalues): runs on a libuv worker
+    -- thread. Returns total bytes, or -1 if MAX_ENTRIES is exceeded.
+    local function scan_blocking(root, max_entries)
+        local luv = require("luv")
+        local total, entries = 0, 0
+        local stack = { root }
+        while #stack > 0 do
+            local dir = table.remove(stack)
+            local fd = luv.fs_scandir(dir)
+            if fd then
+                while true do
+                    local name, t = luv.fs_scandir_next(fd)
+                    if not name then
+                        break
+                    end
+                    entries = entries + 1
+                    if entries > max_entries then
+                        return -1
+                    end
+                    local child = dir .. "/" .. name
+                    if t == "directory" then
+                        stack[#stack + 1] = child
+                    elseif t == "file" then
+                        local st = luv.fs_stat(child)
+                        if st then
+                            total = total + st.size
+                        end
+                    end
+                end
+            end
         end
+        return total
     end
 
-    -- Recursive size of `root`, async. cb(bytes), or cb(nil) if MAX_ENTRIES hit.
+    -- Recursive size of `root` on the libuv worker pool (~4 threads, queues the
+    -- rest). cb(bytes), or cb(nil) if MAX_ENTRIES was hit.
     local function compute_async(root, cb)
-        local s = { total = 0, outstanding = 1, entries = 0, capped = false }
-        local make_scan, make_stat
-        local function settle()
-            s.outstanding = s.outstanding - 1
-            active = active - 1
-            if s.outstanding == 0 then
-                cb(s.capped and nil or s.total)
-            end
-            pump()
-        end
-        make_scan = function(dir)
-            return function()
-                uv.fs_scandir(dir, function(_, handle)
-                    while handle do
-                        local name, t = uv.fs_scandir_next(handle)
-                        if not name then
-                            break
-                        end
-                        s.entries = s.entries + 1
-                        if s.entries > MAX_ENTRIES then
-                            s.capped = true
-                            break
-                        end
-                        local child = dir .. "/" .. name
-                        if t == "directory" then
-                            s.outstanding = s.outstanding + 1
-                            queue[#queue + 1] = make_scan(child)
-                        elseif t == "file" then
-                            s.outstanding = s.outstanding + 1
-                            queue[#queue + 1] = make_stat(child)
-                        end
-                    end
-                    settle()
-                end)
-            end
-        end
-        make_stat = function(file)
-            return function()
-                uv.fs_stat(file, function(_, st)
-                    if st then
-                        s.total = s.total + st.size
-                    end
-                    settle()
-                end)
-            end
-        end
-        queue[#queue + 1] = make_scan(root)
-        pump()
+        local work = uv.new_work(scan_blocking, function(result)
+            cb(result < 0 and nil or result)
+        end)
+        work:queue(root, MAX_ENTRIES)
     end
 
-    -- Throttled repaint (≤ ~8/s) so progressive totals show without thrash.
-    local refresh_timer = uv.new_timer()
-    local refresh_pending = false
-    local function request_refresh()
-        if refresh_pending then
+    -- Braille spinner while sizes compute; render-only redraw (no FS re-scan, unlike
+    -- refresh) keeps the cursor put. Runs only while computes are in flight.
+    local SPINNER = { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }
+    local spin = 1
+    local spin_timer = uv.new_timer()
+    local spinning = false
+    local function ensure_spinner()
+        if spinning then
             return
         end
-        refresh_pending = true
-        refresh_timer:start(
-            120,
-            0,
+        spinning = true
+        spin_timer:start(
+            90,
+            90,
             vim.schedule_wrap(function()
-                refresh_pending = false
+                spin = spin % #SPINNER + 1
+                local done = next(inflight) == nil
                 pcall(function()
-                    require("neo-tree.sources.manager").refresh("filesystem")
+                    require("neo-tree.sources.manager").redraw("filesystem")
                 end)
+                if done then
+                    spin_timer:stop()
+                    spinning = false
+                end
             end)
         )
     end
@@ -142,14 +131,14 @@ local function patch_recursive_dir_size()
                 local ok, human = pcall(utils.human_size, entry)
                 text = (ok and human) or "-"
             else
-                text = "…"
+                text = SPINNER[spin]
                 if not inflight[path] then
                     inflight[path] = true
                     compute_async(path, function(bytes)
                         inflight[path] = nil
                         cache[path] = bytes == nil and "capped" or bytes
-                        request_refresh()
                     end)
+                    ensure_spinner()
                 end
             end
             local width = config.width or 12
