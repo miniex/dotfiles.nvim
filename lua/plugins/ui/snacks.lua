@@ -354,11 +354,9 @@ return {
         },
         indent = {
             enabled = true,
-            -- Passive guides dotted; the active scope/chunk go solid so they pop.
             indent = { char = "┊" },
-            scope = { char = "│", underline = false },
-            -- Chunk bracket around the active scope (animate is on by default → blooms in).
-            chunk = { enabled = true, char = { vertical = "│", arrow = "❥" } },
+            scope = { enabled = false },
+            chunk = { enabled = false },
         },
         input = { enabled = true },
         notifier = {
