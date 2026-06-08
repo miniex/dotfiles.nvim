@@ -102,10 +102,23 @@ return {
                 mode = "buffers",
                 numbers = "ordinal",
                 sort_by = function(buf_a, buf_b)
-                    return (order[buf_a.id] or math.huge) < (order[buf_b.id] or math.huge)
+                    local oa = order[buf_a.id] or math.huge
+                    local ob = order[buf_b.id] or math.huge
+                    -- Tiebreaker by bufnr: untracked buffers tie at math.huge, and
+                    -- table.sort is unstable, so their order flips between redraws.
+                    if oa == ob then
+                        return buf_a.id < buf_b.id
+                    end
+                    return oa < ob
                 end,
                 custom_filter = function(buf)
-                    return vim.api.nvim_buf_get_name(buf) ~= ""
+                    if vim.api.nvim_buf_get_name(buf) == "" then
+                        return false
+                    end
+                    -- BufAdd can miss a later-listed buffer; track it on first
+                    -- render so it gets a stable slot, not math.huge.
+                    ensure_order(buf)
+                    return true
                 end,
                 name_formatter = function(buf)
                     return pinned_set()[buf.path] and "♡ " .. buf.name or buf.name
