@@ -331,5 +331,23 @@ vim.api.nvim_create_autocmd("BufReadPre", {
     end,
 })
 
+-- Drop `o` from formatoptions so o/O don't continue comment leaders (ftplugins set it).
+vim.api.nvim_create_autocmd("FileType", {
+    group = vim.api.nvim_create_augroup("formatoptions-no-o", { clear = true }),
+    callback = function()
+        vim.opt_local.formatoptions:remove("o")
+    end,
+})
+
+-- Spell check (camelCase-aware via spelloptions) on prose filetypes only.
+vim.api.nvim_create_autocmd("FileType", {
+    group = vim.api.nvim_create_augroup("spell-prose", { clear = true }),
+    pattern = { "gitcommit", "markdown", "text" },
+    callback = function()
+        vim.opt_local.spell = true
+        vim.opt_local.spelllang = "en_us"
+    end,
+})
+
 -- Registers format-width's colorcolumn FileType autocmd.
 require("config.format-width")

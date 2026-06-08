@@ -362,6 +362,8 @@ return {
         notifier = {
             enabled = true,
             timeout = 3000,
+            top_down = false, -- stack from the bottom
+            style = "compact",
         },
         picker = {
             enabled = true,

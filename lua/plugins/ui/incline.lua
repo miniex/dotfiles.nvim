@@ -86,6 +86,11 @@ return {
 
                 local accent = props.focused and damin_pink or p.overlay1
 
+                -- Per-window diagnostic count (lualine is global, can't show per-split).
+                local diag = vim.diagnostic.count(props.buf)
+                local errs = diag[vim.diagnostic.severity.ERROR] or 0
+                local warns = diag[vim.diagnostic.severity.WARN] or 0
+
                 return {
                     zoomed and { "⌬ ", guifg = damin_pink } or "",
                     ft_icon and { ft_icon, " ", guifg = ft_color } or "",
@@ -96,6 +101,8 @@ return {
                     },
                     modified and { " ✿", guifg = damin_pink } or "",
                     readonly and { " ✗", guifg = p.red } or "",
+                    errs > 0 and { " ✗" .. errs, guifg = p.red } or "",
+                    warns > 0 and { " !" .. warns, guifg = p.yellow } or "",
                     guibg = "NONE",
                 }
             end,

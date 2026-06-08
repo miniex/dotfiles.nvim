@@ -138,6 +138,20 @@ return {
             desc = "Search History",
         },
         {
+            "<leader>z;",
+            function()
+                require("fzf-lua").commands()
+            end,
+            desc = "Commands (palette)",
+        },
+        {
+            "<leader>zt",
+            function()
+                require("fzf-lua").colorschemes()
+            end,
+            desc = "Colorschemes (live preview)",
+        },
+        {
             "<leader>fS",
             function()
                 local ls = require("luasnip")

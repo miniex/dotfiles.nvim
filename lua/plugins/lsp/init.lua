@@ -349,8 +349,12 @@ return {
                     map("n", "<leader>cI", lsp_pick("lsp_incoming_calls", vim.lsp.buf.incoming_calls), "Incoming Calls")
                     map("n", "<leader>cG", lsp_pick("lsp_outgoing_calls", vim.lsp.buf.outgoing_calls), "Outgoing Calls")
                     map("n", "<leader>cH", function()
-                        vim.lsp.buf.typehierarchy("subtypes")
-                    end, "Type Hierarchy (subtypes)")
+                        vim.ui.select({ "subtypes", "supertypes" }, { prompt = "Type hierarchy" }, function(c)
+                            if c then
+                                vim.lsp.buf.typehierarchy(c)
+                            end
+                        end)
+                    end, "Type Hierarchy")
                     map("n", "<leader>cc", vim.diagnostic.open_float, "Line Diagnostics")
                     -- fzf-lua picker + visual-mode range actions.
                     map(
@@ -382,6 +386,16 @@ return {
                         end
                         vim.lsp.buf.format(opts_fmt)
                     end, "Format (LSP)")
+                    map("x", "<leader>cf", function()
+                        vim.cmd("normal! \27") -- leave visual so '< / '> marks are set
+                        vim.lsp.buf.format({
+                            async = true,
+                            range = {
+                                start = vim.api.nvim_buf_get_mark(0, "<"),
+                                ["end"] = vim.api.nvim_buf_get_mark(0, ">"),
+                            },
+                        })
+                    end, "Format range (LSP)")
                     map("n", "<leader>cs", "<cmd>LspRestart<cr>", "LSP Restart")
                     -- inc-rename: live in-buffer preview; :IncRename lazy-loads on use. grn stays native.
                     vim.keymap.set("n", "<leader>rn", function()

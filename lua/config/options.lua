@@ -68,6 +68,12 @@ opt.diffopt:append("linematch:60")
 -- Trusted per-project config (.nvim.lua / .exrc); managed by vim.secure.
 opt.exrc = true
 
+-- Prompt to save on :q/:bd with unsaved changes.
+opt.confirm = true
+
+-- camelCase-aware spell (enabled per-filetype in autocmds.lua, not globally).
+opt.spelloptions = "camel"
+
 -- Folding disabled.
 opt.foldenable = false
 

@@ -26,6 +26,7 @@ Leader: `<Space>`. `<localleader>` also `<Space>` (most localleader bindings liv
 > Yank → system clipboard via `wl-copy` / `xclip` / `pbcopy` / `clip.exe` (first available), else OSC52 over SSH.
 > `p` / `P` feed a yank ring (yanky); `]y` / `[y` cycle to a newer / older yank right after pasting.
 > Macro recording shows a `recording @a` / `saved @a` toast plus `● @a` in the statusline while active.
+> Spell check (camelCase-aware) on `gitcommit` / `markdown` / `text`; `:q` / `:bd` prompt to save on unsaved changes.
 
 ## Find & Navigate
 
@@ -60,6 +61,7 @@ Native `fzf` binary. `<C-q>` → quickfix; `<C-d>`/`<C-u>` paginate preview.
 | `<leader>zd` / `zD`      | Diagnostics: buffer / workspace                                   |
 | `<leader>zl/zk/zm/zr`    | blines / keymaps / marks / registers                              |
 | `<leader>z:` / `z/`      | Command / search history                                          |
+| `<leader>z;` / `zt`      | Commands (palette) / colorschemes (live preview)                  |
 
 ## Marks (harpoon v2)
 
@@ -146,11 +148,11 @@ Bare `nvim` auto-restores the cwd session (skipped in headless or when the sessi
 | `K` / `<C-k>` (i)           | Hover / signature help                                             |
 | `gd` / `gD`                 | Definition / declaration                                           |
 | `gr` / `gi` / `gy`          | References / implementation / type definition                      |
-| `<leader>cI` / `cG` / `cH`  | Incoming / outgoing calls / type hierarchy                         |
+| `<leader>cI` / `cG` / `cH`  | Incoming / outgoing calls / type hierarchy (sub+super picker)      |
 | `<leader>rn`                | Rename (inc-rename live preview; `grn` plain native)               |
 | `<leader>cc` / `<leader>ca` | Diagnostics float / code action (n+x, fzf picker)                  |
 | `<leader>cr`                | Refactor: extract / inline (n+x picker, refactoring.nvim)          |
-| `<leader>cf`                | Format buffer (native LSP)                                         |
+| `<leader>cf`                | Format buffer (native LSP); visual selection = range format        |
 | `<leader>ci` / `<leader>uh` | Toggle inlay hints (alias)                                         |
 | `<leader>uy`                | Toggle LSP semantic tokens                                         |
 | `<leader>cd` / `<leader>cl` | Toggle inline diagnostic / virtual_lines (current line)            |
@@ -257,6 +259,7 @@ Inside the menu: `q`/`<Esc>` close, `h` parent (no-op at top), `l` open entry.
 | `<leader>dl/dr/dp/dt/ds/du`   | Last / REPL / pause / terminate / session / toggle UI           |
 | `<leader>dW`                  | Scopes as a centered float (dap.ui.widgets)                     |
 | `<leader>de` / `<leader>dh`   | Eval cursor / selection (n+v) / hover value                     |
+| `<leader>dL`                  | Log point (message breakpoint)                                  |
 | `<leader>dGt` / `<leader>dGl` | Go: nearest test / last test                                    |
 | `<leader>dPt` / `<leader>dPc` | Python: test method / class                                     |
 

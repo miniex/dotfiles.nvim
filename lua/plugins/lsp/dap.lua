@@ -224,6 +224,13 @@ return {
                 mode = { "n", "v" },
                 desc = "Hover value",
             },
+            {
+                "<leader>dL",
+                function()
+                    require("dap").set_breakpoint(nil, nil, vim.fn.input("Log message: "))
+                end,
+                desc = "Log point",
+            },
         },
     },
 }
