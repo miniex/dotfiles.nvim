@@ -10,9 +10,8 @@ end
 
 return {
     "folke/flash.nvim",
-    event = "VeryLazy",
-    -- Char mode off: f/t/F/T/;/, go to treesitter-textobjects' repeatable moves.
-    -- flash's s/S/r/R jumps (its primary role) stay enabled.
+    -- No event: char mode is off, so the keys (s/S/r/R/<c-s>) are the only entry point.
+    -- f/t/F/T/;/, fall to treesitter-textobjects' repeatable moves instead.
     opts = {
         modes = {
             char = { enabled = false },

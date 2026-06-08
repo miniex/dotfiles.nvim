@@ -175,11 +175,20 @@ if not vim.g._modal_geom_aligner then
         end
     end
     -- Debounce: a drag-resize fires many VimResized; only re-snap once it settles.
+    -- Close a timer left by a previous :source of this module (libuv leak).
+    if _G._modal_geom_resize_timer then
+        pcall(function()
+            _G._modal_geom_resize_timer:stop()
+            _G._modal_geom_resize_timer:close()
+        end)
+        _G._modal_geom_resize_timer = nil
+    end
     local resize_timer
     vim.api.nvim_create_autocmd("VimResized", {
         group = group,
         callback = function()
             resize_timer = resize_timer or (vim.uv or vim.loop).new_timer()
+            _G._modal_geom_resize_timer = resize_timer
             resize_timer:start(50, 0, vim.schedule_wrap(resync_all))
         end,
     })

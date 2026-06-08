@@ -9,14 +9,18 @@ return {
         local p = palette.mocha()
         local damin_pink = palette.pink
         local devicons = require("nvim-web-devicons")
-        local icon_cache = {}
+        local icon_cache, icon_cache_n = {}, 0
         local function icon_for(filename)
             local hit = icon_cache[filename]
             if hit then
                 return hit[1], hit[2]
             end
             local i, c = devicons.get_icon_color(filename)
+            if icon_cache_n >= 256 then -- bound the cache; distinct filenames are few
+                icon_cache, icon_cache_n = {}, 0
+            end
             icon_cache[filename] = { i, c }
+            icon_cache_n = icon_cache_n + 1
             return i, c
         end
 

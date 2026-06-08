@@ -4,6 +4,15 @@ local pal = require("config.palette")
 local damin_blue = pal.blue
 local damin_pink = pal.pink
 
+-- Close a refresh timer left by a previous :source of this module (libuv leak).
+if _G._cursor_bloom_timer then
+    pcall(function()
+        _G._cursor_bloom_timer:stop()
+        _G._cursor_bloom_timer:close()
+    end)
+    _G._cursor_bloom_timer = nil
+end
+
 local mode_color = {
     n = damin_blue,
     i = damin_pink,
@@ -66,6 +75,7 @@ local function schedule_refresh()
     end
     refresh_pending = true
     refresh_timer = refresh_timer or (vim.uv or vim.loop).new_timer()
+    _G._cursor_bloom_timer = refresh_timer
     refresh_timer:start(
         16,
         0,

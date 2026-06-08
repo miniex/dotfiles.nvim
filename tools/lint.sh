@@ -19,7 +19,9 @@ if [ -n "$missing" ]; then
 fi
 
 stylua --check .
-lua-language-server --check . --logpath "${TMPDIR:-/tmp}/lua-ls-check.$$"
+ls_logdir="${TMPDIR:-/tmp}/lua-ls-check.$$"
+trap 'rm -rf "$ls_logdir"' EXIT
+lua-language-server --check . --logpath "$ls_logdir"
 selene .
 
 sh_files="install.sh set-lang.sh tools/format.sh tools/lint.sh tools/health.sh scripts/_colors.sh scripts/term-bin/nvim"
