@@ -335,9 +335,10 @@ return {
                 end
             end
 
-            -- Drop the 0.11 default gr* maps: global + share the `gr` prefix with our
-            -- buffer-local gr (References), forcing a timeoutlen wait. gr/gi/<leader>c* cover them.
-            for _, k in ipairs({ "grn", "grr", "gri" }) do
+            -- Drop the 0.11+ default gr* maps: global + share the `gr` prefix with our
+            -- buffer-local gr (References) → timeoutlen wait on every `gr`. Remapped to:
+            -- grr→gr, gri→gi, grt→gy, gra→<leader>ca, grx→<leader>cL, grn→<leader>rn.
+            for _, k in ipairs({ "grn", "grr", "gri", "grt", "grx" }) do
                 pcall(vim.keymap.del, "n", k)
             end
             pcall(vim.keymap.del, { "n", "x" }, "gra")
@@ -427,7 +428,7 @@ return {
                         })
                     end, "Format range (LSP)")
                     map("n", "<leader>cs", "<cmd>LspRestart<cr>", "LSP Restart")
-                    -- inc-rename: live in-buffer preview; :IncRename lazy-loads on use. grn stays native.
+                    -- inc-rename: live in-buffer preview; :IncRename lazy-loads on use.
                     vim.keymap.set("n", "<leader>rn", function()
                         local w = vim.fn.expand("<cword>")
                         return w ~= "" and (":IncRename " .. w) or ""

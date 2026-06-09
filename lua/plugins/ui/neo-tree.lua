@@ -1,16 +1,11 @@
-local damin_pink = require("config.palette").pink
-
 -- damin polish: pink float border + pink "currently editing" file.
+-- Applied from `config`, not here — module top runs at startup even if neo-tree never opens.
 local function apply_hl()
-    vim.api.nvim_set_hl(0, "NeoTreeFloatBorder", { fg = damin_pink, bg = "NONE" })
-    vim.api.nvim_set_hl(0, "NeoTreeFloatTitle", { fg = damin_pink, bold = true })
-    vim.api.nvim_set_hl(0, "NeoTreeFileNameOpened", { fg = damin_pink, italic = true, bold = true })
+    local pink = require("config.palette").pink
+    vim.api.nvim_set_hl(0, "NeoTreeFloatBorder", { fg = pink, bg = "NONE" })
+    vim.api.nvim_set_hl(0, "NeoTreeFloatTitle", { fg = pink, bold = true })
+    vim.api.nvim_set_hl(0, "NeoTreeFileNameOpened", { fg = pink, italic = true, bold = true })
 end
-apply_hl()
-vim.api.nvim_create_autocmd("ColorScheme", {
-    group = vim.api.nvim_create_augroup("NeoTreeDaminHL", { clear = true }),
-    callback = apply_hl,
-})
 
 -- neo-tree's filesize lib divides by 1024 but labels it with SI symbols
 -- (KB/MB/…). Remap to IEC units so the value and label agree (KiB/MiB/…).
@@ -207,6 +202,11 @@ return {
     },
     config = function(_, opts)
         require("neo-tree").setup(opts)
+        apply_hl()
+        vim.api.nvim_create_autocmd("ColorScheme", {
+            group = vim.api.nvim_create_augroup("NeoTreeDaminHL", { clear = true }),
+            callback = apply_hl,
+        })
         patch_iec_units()
         patch_recursive_dir_size()
     end,

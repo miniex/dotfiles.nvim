@@ -135,6 +135,16 @@ return {
                 end
             end)
         )
+        -- Close the clock timer on exit (timer hygiene).
+        vim.api.nvim_create_autocmd("VimLeavePre", {
+            group = vim.api.nvim_create_augroup("LualineClockTimer", { clear = true }),
+            callback = function()
+                if clock_timer and not clock_timer:is_closing() then
+                    clock_timer:stop()
+                    clock_timer:close()
+                end
+            end,
+        })
 
         require("lualine").setup({
             options = {

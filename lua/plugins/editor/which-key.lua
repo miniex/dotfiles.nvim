@@ -27,6 +27,9 @@ return {
             Triggers.update(mode)
         end
         install_triggers(vim.api.nvim_get_current_buf())
+        -- which-key only *schedules* triggers (deferred a tick) and rebuilds them on
+        -- BufReadPost/LspAttach, so the #912 first-press race recurs on every buffer
+        -- switch. Force a synchronous install; steady-state cost is a few table ops.
         vim.api.nvim_create_autocmd("BufEnter", {
             group = vim.api.nvim_create_augroup("WhichKeyTriggerSync", { clear = true }),
             callback = function(args)
