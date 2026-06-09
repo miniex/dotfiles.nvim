@@ -15,6 +15,26 @@ return {
             -- Cede import organizing to ruff (avoids a duplicate organize-imports action).
             disableOrganizeImports = true,
             analysis = {
+                -- Skip heavy non-source trees so enumeration stays fast (the >10s warning).
+                -- A custom exclude overrides pyright's default, so the first 3 re-add it.
+                exclude = {
+                    "**/node_modules",
+                    "**/__pycache__",
+                    "**/.*", -- .venv / .git / .mypy_cache / .ruff_cache / .pytest_cache / …
+                    "**/venv",
+                    "**/env",
+                    "**/site-packages",
+                    "**/build",
+                    "**/dist",
+                    "**/target", -- Rust / Maven
+                    "**/vendor", -- Go vendored deps
+                    "**/_build", -- Elixir / OCaml (dune)
+                    "**/deps", -- Elixir fetched deps
+                    "**/zig-out", -- Zig
+                    "**/_opam", -- OCaml local opam switch
+                    "**/result", -- Nix build output (symlink → /nix/store)
+                    "**/result-*", -- Nix extra outputs (result-bin, result-dev, …)
+                },
                 typeCheckingMode = "standard",
                 autoImportCompletions = true,
                 useLibraryCodeForTypes = true,
