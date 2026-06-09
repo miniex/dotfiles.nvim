@@ -33,7 +33,7 @@
 
 ## Editor
 
-- **Files** — Neo-tree (floating). `<leader>e` toggle, `<leader>o` reveal current file. Directory rows show recursive total size instead of the default `-` — scanned on a libuv worker thread (off the main loop, so no input lag), rows spin then fill in; sizes use IEC binary units (KiB/MiB). The root row carries the directory's grand total, marked `Σ` (yields to the column's `▲/▼` sort indicator when ordering by size).
+- **Files** — Neo-tree (floating). `<leader>e` toggle, `<leader>o` reveal current file. Directory rows show recursive total size instead of the default `-` — scanned on a libuv worker thread (off the main loop), rows spin then fill in; the spinner redraw yields to navigation, so scrolling stays smooth. Sizes use IEC binary units (KiB/MiB). The root row carries the directory's grand total, marked `Σ` (yields to the column's `▲/▼` sort indicator when ordering by size).
 - **Big files** — opening a file >8 MiB prompts: view in `less` (default) / edit / cancel (binary skips the pager). `<leader>L` views the current file in `less` anytime. Size tiers in [CUSTOMIZATION](CUSTOMIZATION.md#big-file-handling).
 - **Navigation** — flash (`s` / `S`), Trouble (`<leader>xx`), aerial (`<leader>cO`), harpoon v2 (`<leader>m*`).
 - **Search & replace** — grug-far (`<leader>rr`) for regex; ssr (`<leader>rs`) for structural AST-aware replace.

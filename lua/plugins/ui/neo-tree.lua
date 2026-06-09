@@ -103,6 +103,19 @@ local function patch_recursive_dir_size()
     local spin = 1
     local spin_timer = uv.new_timer()
     local spinning = false
+
+    -- Yield spinner redraws to active navigation: the FS scan is off-thread, but the
+    -- per-tick full-tree redraw runs on the main loop and hitches scrolling in big trees.
+    local last_move = 0
+    vim.api.nvim_create_autocmd("CursorMoved", {
+        group = vim.api.nvim_create_augroup("NeoTreeSizeNav", { clear = true }),
+        callback = function(args)
+            if vim.bo[args.buf].filetype == "neo-tree" then
+                last_move = uv.hrtime()
+            end
+        end,
+    })
+
     local function ensure_spinner()
         if spinning then
             return
@@ -114,9 +127,12 @@ local function patch_recursive_dir_size()
             vim.schedule_wrap(function()
                 spin = spin % #SPINNER + 1
                 local done = next(inflight) == nil
-                pcall(function()
-                    require("neo-tree.sources.manager").redraw("filesystem")
-                end)
+                -- Skip the redraw while moving (smooth scroll); always on the final tick.
+                if done or uv.hrtime() - last_move > 120 * 1e6 then
+                    pcall(function()
+                        require("neo-tree.sources.manager").redraw("filesystem")
+                    end)
+                end
                 if done then
                     spin_timer:stop()
                     spinning = false
