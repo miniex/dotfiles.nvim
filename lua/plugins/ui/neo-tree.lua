@@ -134,31 +134,43 @@ local function patch_recursive_dir_size()
         end,
     })
 
+    -- Recursive size of `path` as display text; starts the async scan on first miss.
+    local function size_text(path)
+        local entry = cache[path]
+        if entry == "capped" then
+            return ">…"
+        elseif entry ~= nil then
+            local ok, human = pcall(utils.human_size, entry)
+            return (ok and human) or "-"
+        end
+        if not inflight[path] then
+            inflight[path] = true
+            compute_async(path, function(bytes)
+                inflight[path] = nil
+                cache[path] = bytes == nil and "capped" or bytes
+            end)
+            ensure_spinner()
+        end
+        return SPINNER[spin]
+    end
+
     local original = common.file_size
     common.file_size = function(config, node, state)
-        if node:get_depth() ~= 1 and node.type == "directory" then
-            local path = node:get_id()
-            local entry = cache[path]
-            local text
-            if entry == "capped" then
-                text = ">…"
-            elseif entry ~= nil then
-                local ok, human = pcall(utils.human_size, entry)
-                text = (ok and human) or "-"
-            else
-                text = SPINNER[spin]
-                if not inflight[path] then
-                    inflight[path] = true
-                    compute_async(path, function(bytes)
-                        inflight[path] = nil
-                        cache[path] = bytes == nil and "capped" or bytes
-                    end)
-                    ensure_spinner()
-                end
+        local width = config.width or 12
+        -- Root (header) row: grand total marked Σ (vs. plain per-folder sizes);
+        -- defers to the original Size ▲/▼ header while sorting by size.
+        if node:get_depth() == 1 then
+            if node.type ~= "directory" or (state.sort and state.sort.label == "Size") then
+                return original(config, node, state)
             end
-            local width = config.width or 12
             return {
-                text = vim.fn.printf("%" .. width .. "s  ", text),
+                text = vim.fn.printf("%" .. width .. "s  ", "Σ " .. size_text(node:get_id())),
+                highlight = "NeoTreeFileStatsHeader",
+            }
+        end
+        if node.type == "directory" then
+            return {
+                text = vim.fn.printf("%" .. width .. "s  ", size_text(node:get_id())),
                 highlight = config.highlight or "NeoTreeFileStats",
             }
         end
