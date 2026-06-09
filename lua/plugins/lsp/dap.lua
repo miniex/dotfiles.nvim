@@ -39,10 +39,9 @@ return {
             {
                 "rcarriga/nvim-dap-ui",
                 dependencies = { "nvim-neotest/nvim-nio" },
-                -- Controls + 2-col layout are dap-ui defaults; just add the flower border + wider values.
+                -- Controls + 2-col layout are dap-ui defaults; just match the flower float border.
                 opts = {
                     floating = { border = vim.g.flower_border },
-                    render = { max_value_lines = 100 },
                 },
                 config = function(_, opts)
                     local dap, dapui = require("dap"), require("dapui")
