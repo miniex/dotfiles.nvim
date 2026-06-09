@@ -23,7 +23,7 @@ return {
             lsp_names_cache[buf] = table.concat(names, ", ")
             return lsp_names_cache[buf]
         end
-        vim.api.nvim_create_autocmd({ "LspAttach", "LspDetach", "BufWipeout" }, {
+        vim.api.nvim_create_autocmd({ "LspAttach", "LspDetach", "BufDelete", "BufWipeout" }, {
             group = vim.api.nvim_create_augroup("LualineLspNames", { clear = true }),
             callback = function(args)
                 lsp_names_cache[args.buf] = nil

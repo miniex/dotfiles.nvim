@@ -5,7 +5,8 @@ return {
     event = "LspAttach",
     opts = {
         -- CursorHold only (no CursorHoldI): skip codeAction requests on insert idle.
-        autocmd = { enabled = true, updatetime = 1000, events = { "CursorHold" } },
+        -- updatetime = -1 so lightbulb keeps the global 300ms (options.lua), not its own.
+        autocmd = { enabled = true, updatetime = -1, events = { "CursorHold" } },
         sign = {
             enabled = true,
             text = "❋",

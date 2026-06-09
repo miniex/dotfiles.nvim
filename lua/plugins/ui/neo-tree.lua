@@ -125,6 +125,7 @@ local function patch_recursive_dir_size()
         )
     end
     vim.api.nvim_create_autocmd("VimLeavePre", {
+        group = vim.api.nvim_create_augroup("NeoTreeSizeTimer", { clear = true }),
         callback = function()
             if spin_timer and not spin_timer:is_closing() then
                 spin_timer:stop()
