@@ -521,6 +521,14 @@ return {
             desc = "Buffers",
         },
         {
+            "<leader>fB",
+            function()
+                -- Live grep scoped to open buffers (the tab list), not the whole project.
+                Snacks.picker.grep_buffers()
+            end,
+            desc = "Grep Open Buffers",
+        },
+        {
             "<leader>fh",
             function()
                 Snacks.picker.help()

@@ -3,13 +3,14 @@ local ts_fts = { "javascript", "javascriptreact", "typescript", "typescriptreact
 return {
     -- JS/TS code actions (source.* kinds are LSP-standard, no VtslsExec needed).
     require("config.lang").code_action_keys("TS", { "I", "U" }, ts_fts),
-    -- Node debugging: js-debug-adapter as a DAP server (no extra plugin). Browser would need pwa-chrome.
+    -- JS/TS debugging via js-debug-adapter (DAP server, no extra plugin): Node + Chrome.
     require("config.dap").spec(function(dap)
         local cmd = require("config.dap").mason_bin("bin/js-debug-adapter", "js-debug-adapter")
         if not cmd then
             return
         end
-        dap.adapters["pwa-node"] = {
+        -- One js-debug server backs both Node (pwa-node) and the browser (pwa-chrome).
+        local adapter = {
             type = "server",
             host = "127.0.0.1",
             port = "${port}",
@@ -18,6 +19,8 @@ return {
                 args = { "${port}" },
             },
         }
+        dap.adapters["pwa-node"] = adapter
+        dap.adapters["pwa-chrome"] = adapter
         for _, lang in ipairs(ts_fts) do
             dap.configurations[lang] = {
                 {
@@ -33,6 +36,22 @@ return {
                     name = "Attach to process",
                     processId = require("dap.utils").pick_process,
                     cwd = "${workspaceFolder}",
+                },
+                {
+                    type = "pwa-chrome",
+                    request = "launch",
+                    name = "Launch Chrome against dev server",
+                    url = function()
+                        return vim.fn.input("Dev server URL: ", "http://localhost:3000")
+                    end,
+                    webRoot = "${workspaceFolder}",
+                },
+                {
+                    type = "pwa-chrome",
+                    request = "attach",
+                    name = "Attach to Chrome (--remote-debugging-port=9222)",
+                    port = 9222,
+                    webRoot = "${workspaceFolder}",
                 },
             }
         end

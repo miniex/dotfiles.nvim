@@ -4,6 +4,8 @@ return {
     root_markers = vim.list_extend(vim.list_extend({}, markers.python), { ".git" }),
     settings = {
         basedpyright = {
+            -- Cede import organizing to ruff (avoids a duplicate organize-imports action).
+            disableOrganizeImports = true,
             analysis = {
                 typeCheckingMode = "standard",
                 autoImportCompletions = true,

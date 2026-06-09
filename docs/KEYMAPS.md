@@ -38,6 +38,7 @@ Leader: `<Space>`. `<localleader>` also `<Space>` (most localleader bindings liv
 | `<leader>ff`                      | fff.nvim: find files (Rust-backed, sub-10ms on huge codebases) |
 | `<leader>fF`                      | fff.nvim: find files in current directory                      |
 | `<leader>fg` / `fr` / `fb` / `fh` | snacks.picker: grep / recent / buffers / help                  |
+| `<leader>fB`                      | snacks.picker: live grep across open buffers (the tab list)    |
 | `<leader>ft`                      | TODO comments                                                  |
 | `<leader>fp`                      | snacks.picker: recent projects (cd + restore)                  |
 | `<leader>fR`                      | Rename current file (LSP-aware)                                |
@@ -254,6 +255,7 @@ Inside the menu: `q`/`<Esc>` close, `h` parent (no-op at top), `l` open entry.
 | Key                           | Description                                                     |
 | ----------------------------- | --------------------------------------------------------------- |
 | `<leader>db` / `dB` / `dX`    | Toggle / conditional / clear-all breakpoint (persisted per-cwd) |
+| `<leader>dE`                  | Exception breakpoints (pick the adapter's filters)              |
 | `<leader>dc` / `dC`           | Continue / run-to-cursor                                        |
 | `<leader>di` / `dO` / `do`    | Step into / over / out                                          |
 | `<leader>dg` / `dj` / `dk`    | Go to line / Down / Up frame                                    |

@@ -103,6 +103,14 @@ return {
                 desc = "Clear All Breakpoints",
             },
             {
+                "<leader>dE",
+                function()
+                    -- No args → prompts for the adapter's exception filters.
+                    require("dap").set_exception_breakpoints()
+                end,
+                desc = "Exception Breakpoints",
+            },
+            {
                 "<leader>dc",
                 function()
                     require("dap").continue()
