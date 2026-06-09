@@ -4,22 +4,23 @@ Leader: `<Space>`. `<localleader>` also `<Space>` (most localleader bindings liv
 
 ## Global
 
-| Key                 | Mode | Description                                              |
-| ------------------- | ---- | -------------------------------------------------------- |
-| `<C-h/j/k/l>`       | N/T  | Pane navigation with tmux-style return-to-last           |
-| `<A-h/j/k/l>`       | N/V  | mini.move: shuffle line / block (reindents on h/l)       |
-| `<C-a>` / `<C-x>`   | N/V  | dial: smart inc/dec (bools, dates, semver, hex, &&↔\|\|) |
-| `g<C-a>` / `g<C-x>` | V    | dial: cumulative inc/dec across selection                |
-| `<leader>h`         | N    | Clear search highlight                                   |
-| `<Esc>`             | N    | Clear search highlight                                   |
-| `<leader>bs`        | N    | Save (writes auto-mkdir parent dirs)                     |
-| `<leader>D`         | N/V  | Delete without yank (`<leader>d` reserved for dap)       |
-| `<leader>p`         | N    | Paste + auto-reindent (`=` over pasted lines)            |
-| `<leader>p`         | V    | Paste without overwriting register                       |
-| `<leader>P`         | V    | Paste over + auto-reindent                               |
-| `<` / `>`           | V    | Indent / outdent (keep selection)                        |
-| `J` / `<leader>j`   | N    | Join lines keeping cursor / without a space (`gJ`)       |
-| `gx`                | N    | Open URL / file under cursor (`vim.ui.open`)             |
+| Key                      | Mode | Description                                              |
+| ------------------------ | ---- | -------------------------------------------------------- |
+| `<C-h/j/k/l>`            | N/T  | Pane navigation with tmux-style return-to-last           |
+| `<C-Left/Right/Up/Down>` | N    | Resize the focused edge window (in an edgy sidebar)      |
+| `<A-h/j/k/l>`            | N/V  | mini.move: shuffle line / block (reindents on h/l)       |
+| `<C-a>` / `<C-x>`        | N/V  | dial: smart inc/dec (bools, dates, semver, hex, &&↔\|\|) |
+| `g<C-a>` / `g<C-x>`      | V    | dial: cumulative inc/dec across selection                |
+| `<leader>h`              | N    | Clear search highlight                                   |
+| `<Esc>`                  | N    | Clear search highlight                                   |
+| `<leader>bs`             | N    | Save (writes auto-mkdir parent dirs)                     |
+| `<leader>D`              | N/V  | Delete without yank (`<leader>d` reserved for dap)       |
+| `<leader>p`              | N    | Paste + auto-reindent (`=` over pasted lines)            |
+| `<leader>p`              | V    | Paste without overwriting register                       |
+| `<leader>P`              | V    | Paste over + auto-reindent                               |
+| `<` / `>`                | V    | Indent / outdent (keep selection)                        |
+| `J` / `<leader>j`        | N    | Join lines keeping cursor / without a space (`gJ`)       |
+| `gx`                     | N    | Open URL / file under cursor (`vim.ui.open`)             |
 
 > `n`, `N`, `*`, `#`, `g*`, `g#`, `<C-o>`, `<C-i>` auto-center the cursor (`zvzz`); `[c`/`]c` do too, in diff mode.
 > The jumplist is session-local (cleared at startup), so `<C-o>` / `<C-i>` only revisit files opened this session.
@@ -33,27 +34,28 @@ Leader: `<Space>`. `<localleader>` also `<Space>` (most localleader bindings liv
 
 > Modal floats (pickers, snacks terminal, lazy, Mason, harpoon menu, lazygit, Neo-tree) are mutually exclusive; auxiliary floats (hover, completion, notifier, …) stack on top.
 
-| Key                               | Description                                                    |
-| --------------------------------- | -------------------------------------------------------------- |
-| `<leader>ff`                      | fff.nvim: find files (Rust-backed, sub-10ms on huge codebases) |
-| `<leader>fF`                      | fff.nvim: find files in current directory                      |
-| `<leader>fg` / `fr` / `fb` / `fh` | snacks.picker: grep / recent / buffers / help                  |
-| `<leader>fB`                      | snacks.picker: live grep across open buffers (the tab list)    |
-| `<leader>fi` / `fH`               | snacks.picker: insert icon / inspect highlight groups          |
-| `<leader>ft`                      | TODO comments                                                  |
-| `<leader>fp`                      | snacks.picker: recent projects (cd + restore)                  |
-| `<leader>fR`                      | Rename current file (LSP-aware)                                |
-| `<leader>fS`                      | Snippets (LuaSnip, ft + inherited + all)                       |
-| `<leader>zz` / `z'`               | fzf-lua: builtin menu / resume last picker                     |
-| `<leader>e` / `<leader>o`         | Neo-tree: toggle / reveal                                      |
-| `<cr>` / `l` (in Neo-tree)        | Open file in main window; folder expand/collapse               |
-| `<leader>L`                       | View current file in `less` (read-only, own tab)               |
-| `s` / `S` (n/x/o)                 | flash: jump / treesitter jump                                  |
-| `<leader>?`                       | which-key: all keymaps (`<C-d>`/`<C-u>` flip pages)            |
+| Key                               | Description                                                     |
+| --------------------------------- | --------------------------------------------------------------- |
+| `<leader>ff`                      | fff.nvim: find files (Rust-backed, sub-10ms on huge codebases)  |
+| `<leader>fF`                      | fff.nvim: find files in current directory                       |
+| `<leader>fg` / `fr` / `fb` / `fh` | snacks.picker: grep / recent / buffers / help                   |
+| `<leader>fB`                      | snacks.picker: live grep across open buffers (the tab list)     |
+| `<leader>fi` / `fH`               | snacks.picker: insert icon / inspect highlight groups           |
+| `<leader>ft`                      | TODO comments                                                   |
+| `<leader>fp`                      | snacks.picker: recent projects (cd + restore)                   |
+| `<leader>fR`                      | Rename current file (LSP-aware)                                 |
+| `<leader>fS`                      | Snippets (LuaSnip, ft + inherited + all)                        |
+| `<leader>zz` / `z'`               | fzf-lua: builtin menu / resume last picker                      |
+| `<leader>e` / `<leader>o`         | Neo-tree: toggle / reveal                                       |
+| `<cr>` / `l` / `h` (in Neo-tree)  | Open file in main window; folder expand / collapse              |
+| `<leader>L`                       | View current file in `less` (read-only, own tab)                |
+| `s` / `S` (n/x/o)                 | flash: jump / treesitter jump                                   |
+| `r` / `R` / `<C-s>`               | flash: remote (o) / treesitter search (o/x) / toggle in `/` (c) |
+| `<leader>?`                       | which-key: all keymaps (`<C-d>`/`<C-u>` flip pages)             |
 
 ## fzf-lua (`<leader>z*`)
 
-Native `fzf` binary. `<C-q>` → quickfix; `<C-d>`/`<C-u>` paginate preview.
+Native `fzf` binary. `<C-q>` → quickfix; `<C-d>`/`<C-u>` paginate preview; `<C-/>` toggles the help.
 
 | Key                      | Description                                                       |
 | ------------------------ | ----------------------------------------------------------------- |
@@ -104,7 +106,7 @@ Under `<leader>M` (capital); `<leader>m` belongs to harpoon.
 
 ## Search & Replace (grug-far)
 
-Inside the grug-far buffer: `<localleader>r` replace, `<localleader>s` sync to disk, `<localleader>q` → quickfix.
+Inside the grug-far buffer (`<localleader>` = `<Space>`): `r` replace · `s` / `l` sync all / current line to disk · `q` → quickfix · `<enter>` / `o` go to / open location · `i` preview · `f` refresh · `t` / `a` history open / add · `e` swap engine · `w` toggle command · `c` close · `b` abort · `g?` help.
 
 | Key          | Mode | Description                          |
 | ------------ | ---- | ------------------------------------ |
@@ -269,7 +271,7 @@ Inside the menu: `q`/`<Esc>` close, `h` parent (no-op at top), `l` open entry.
 
 ## Test (neotest)
 
-Python (pytest), Go (gotestsum), Elixir (mix), C/C++ (gtest), Lua (busted), Rust (rustaceanvim), Zig, JS-TS (vitest / jest). `:RustLsp testables` still works as a Rust-only picker. Summary window state restored across sessions.
+Python (pytest), Go (gotestsum), Elixir (mix), C/C++ (gtest), Lua (busted), Rust (rustaceanvim), Zig, JS-TS (vitest / jest). `:RustLsp testables` still works as a Rust-only picker. Summary window state restored across sessions. Inside the summary window: `<Tab>` / `zo` expand, `zR` expand all.
 
 | Key                        | Description                                  |
 | -------------------------- | -------------------------------------------- |
@@ -313,6 +315,17 @@ HTTP client for `.http` / `.rest` files.
 | `<leader>kp` | Replay last request      |
 | `<leader>ki` | Inspect parsed request   |
 | `<leader>kc` | Copy request as `curl`   |
+
+## Comment (Comment.nvim)
+
+ts-context-commentstring picks the right syntax for embedded languages (JSX, Vue, …).
+
+| Key                 | Mode | Description                            |
+| ------------------- | ---- | -------------------------------------- |
+| `gcc` / `gbc`       | n    | Toggle current line — line / block     |
+| `gc{motion}` / `gb` | n/x  | Toggle linewise / blockwise (operator) |
+| `gco` / `gcO`       | n    | Add comment line below / above         |
+| `gcA`               | n    | Add comment at end of line             |
 
 ## Surround (mini.surround)
 
@@ -380,4 +393,5 @@ In the toggle terminal, `$EDITOR`/`$VISUAL`/`$GIT_EDITOR` forward to the parent 
 
 - **Open URL** (`gx`, n/v): `vim.ui.open()` on link / path under cursor.
 - **Hex** (`xxd`): auto for binary files; `<leader>ux` toggle, `:HexDump`, `:HexAssemble`, or `nvim -b <file>`.
-- **Completion** (insert): `<Tab>`/`<S-Tab>` next/prev · `<C-Space>` trigger · `<CR>` confirm · `<C-e>` close · `<C-k>` signature · `<C-f>`/`<C-b>` scroll docs · `<M-e>` wrap pair (autopairs). Menu columns: `label · source · kind`.
+- **Messages** (`:messages`): opens the message log in a centered modal (`q` / `<Esc>` to close).
+- **Completion** (insert): `<Tab>`/`<S-Tab>` (or `<C-n>`/`<C-p>`) next/prev · `<C-Space>` trigger · `<CR>` confirm · `<C-e>` close · `<C-k>` signature · `<C-f>`/`<C-b>` scroll docs · `<M-e>` wrap pair (autopairs). Menu columns: `label · source · kind`.
