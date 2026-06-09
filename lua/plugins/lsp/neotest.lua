@@ -120,47 +120,64 @@ return {
                 },
             }, neotest_ns)
 
-            local adapters = {
-                require("neotest-python")({
-                    runner = "pytest",
-                    dap = { justMyCode = false },
-                }),
-                require("neotest-golang")({
-                    dap_go_enabled = true,
-                }),
-                require("neotest-elixir"),
-                require("neotest-gtest").setup({}),
-                require("neotest-busted"),
-                require("neotest-zig")({}),
-                require("neotest-vitest"),
-                require("neotest-jest"),
-            }
-            -- Only when rustaceanvim is already loaded (ft=rust) — don't force-load it.
-            if package.loaded["rustaceanvim"] then
-                local ok, rust = pcall(require, "rustaceanvim.neotest")
-                if ok then
-                    table.insert(adapters, rust)
+            local function build_adapters()
+                local adapters = {
+                    require("neotest-python")({
+                        runner = "pytest",
+                        dap = { justMyCode = false },
+                    }),
+                    require("neotest-golang")({
+                        dap_go_enabled = true,
+                    }),
+                    require("neotest-elixir"),
+                    require("neotest-gtest").setup({}),
+                    require("neotest-busted"),
+                    require("neotest-zig")({}),
+                    require("neotest-vitest"),
+                    require("neotest-jest"),
+                }
+                -- rustaceanvim is ft=rust lazy; add its adapter only once loaded (no force-load).
+                if package.loaded["rustaceanvim"] then
+                    local ok, rust = pcall(require, "rustaceanvim.neotest")
+                    if ok then
+                        table.insert(adapters, rust)
+                    end
                 end
+                return adapters
             end
 
-            require("neotest").setup({
-                adapters = adapters,
-                status = { virtual_text = true },
-                output = { open_on_run = false },
-                quickfix = {
-                    open = function()
-                        require("trouble").open({ mode = "quickfix", focus = false })
-                    end,
-                },
-                icons = icons,
-                summary = {
-                    animated = false,
-                    mappings = {
-                        expand = { "<Tab>", "zo" },
-                        expand_all = "zR",
+            local function setup_neotest()
+                require("neotest").setup({
+                    adapters = build_adapters(),
+                    status = { virtual_text = true },
+                    output = { open_on_run = false },
+                    quickfix = {
+                        open = function()
+                            require("trouble").open({ mode = "quickfix", focus = false })
+                        end,
                     },
-                },
-                floating = { border = vim.g.flower_border },
+                    icons = icons,
+                    summary = {
+                        animated = false,
+                        mappings = {
+                            expand = { "<Tab>", "zo" },
+                            expand_all = "zR",
+                        },
+                    },
+                    floating = { border = vim.g.flower_border },
+                })
+            end
+
+            setup_neotest()
+
+            -- Rust adapter is missing if neotest set up before rustaceanvim loaded; re-setup on load.
+            vim.api.nvim_create_autocmd("User", {
+                pattern = "LazyLoad",
+                callback = function(ev)
+                    if ev.data == "rustaceanvim" then
+                        vim.schedule(setup_neotest)
+                    end
+                end,
             })
 
             -- Restore summary window across sessions. mksession only saves

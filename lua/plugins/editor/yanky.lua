@@ -14,5 +14,12 @@ return {
         { "P", "<Plug>(YankyPutBefore)", mode = { "n", "x" }, desc = "Put before (yanky)" },
         { "]y", "<Plug>(YankyNextEntry)", desc = "Cycle to newer yank" },
         { "[y", "<Plug>(YankyPreviousEntry)", desc = "Cycle to older yank" },
+        {
+            "<leader>yh",
+            function()
+                require("yanky.picker").select_in_history()
+            end,
+            desc = "Yank history (pick + put)",
+        },
     },
 }

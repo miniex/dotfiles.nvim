@@ -33,34 +33,34 @@ Prerequisites, manual install, and recovery: [docs/SETUP.md](docs/SETUP.md).
 
 ## Language Support
 
-| Language            | LSP                                                  | Linter           | Debugger                         |
-| ------------------- | ---------------------------------------------------- | ---------------- | -------------------------------- |
-| Shell (sh/bash)     | bashls                                               | shellcheck       | -                                |
-| Zsh / Fish          | - / fish-lsp                                         | zsh -n / fish -n | -                                |
-| Assembly            | asm-lsp                                              | -                | -                                |
-| C/C++               | clangd                                               | -                | codelldb                         |
-| Go                  | gopls                                                | golangci-lint    | delve                            |
-| Templ               | templ (+ html)                                       | -                | -                                |
-| Rust                | rust-analyzer (rustaceanvim)                         | -                | codelldb                         |
-| Zig                 | zls                                                  | -                | codelldb                         |
-| OCaml               | ocamllsp                                             | -                | -                                |
-| Elixir              | elixirls                                             | -                | elixir-ls debug adapter          |
-| Python              | basedpyright + ruff                                  | ruff (LSP)       | debugpy                          |
-| Lua                 | lua_ls                                               | selene           | -                                |
-| CSS / HTML          | cssls / html+emmet                                   | -                | -                                |
-| Tailwind / JS-TS    | tailwindcss / vtsls                                  | eslint_d         | js-debug-adapter (Node + Chrome) |
-| Svelte/Vue/Astro    | svelte / vue_ls (+ vtsls) / astro                    | -                | -                                |
-| GraphQL / SQL       | graphql / sqls                                       | - / sqlfluff     | -                                |
-| JSON / YAML         | jsonls / yamlls                                      | - / yamllint     | -                                |
-| Protobuf / TOML     | buf_ls / taplo                                       | -                | -                                |
-| RON                 | -                                                    | -                | -                                |
-| Typst               | tinymist                                             | -                | -                                |
-| Markdown / MDX      | marksman / mdx_analyzer                              | markdownlint     | -                                |
-| CMake / Nix         | neocmake / nil_ls                                    | - / statix       | -                                |
-| Dockerfile / Helm   | dockerls / docker_compose_language_service / helm_ls | hadolint         | -                                |
-| Terraform / HCL     | terraformls                                          | tflint           | -                                |
-| Shaders (WGSL/GLSL) | wgsl-analyzer / glsl_analyzer                        | -                | -                                |
-| Just                | just-lsp                                             | -                | -                                |
+| Language            | LSP                                                  | Linter           | Debugger                                 |
+| ------------------- | ---------------------------------------------------- | ---------------- | ---------------------------------------- |
+| Shell (sh/bash)     | bashls                                               | shellcheck       | -                                        |
+| Zsh / Fish          | - / fish-lsp                                         | zsh -n / fish -n | -                                        |
+| Assembly            | asm-lsp                                              | -                | -                                        |
+| C/C++               | clangd                                               | -                | codelldb                                 |
+| Go                  | gopls                                                | golangci-lint    | delve                                    |
+| Templ               | templ (+ html)                                       | -                | -                                        |
+| Rust                | rust-analyzer (rustaceanvim)                         | -                | codelldb                                 |
+| Zig                 | zls                                                  | -                | codelldb                                 |
+| OCaml               | ocamllsp                                             | -                | -                                        |
+| Elixir              | elixirls                                             | -                | elixir-ls debug adapter                  |
+| Python              | basedpyright + ruff                                  | ruff (LSP)       | debugpy                                  |
+| Lua                 | lua_ls                                               | selene           | -                                        |
+| CSS / HTML          | cssls / html+emmet                                   | -                | -                                        |
+| Tailwind / JS-TS    | tailwindcss / vtsls                                  | eslint_d         | js-debug-adapter (Node) + Chrome/Firefox |
+| Svelte/Vue/Astro    | svelte / vue_ls (+ vtsls) / astro                    | -                | -                                        |
+| GraphQL / SQL       | graphql / sqls                                       | - / sqlfluff     | -                                        |
+| JSON / YAML         | jsonls / yamlls                                      | - / yamllint     | -                                        |
+| Protobuf / TOML     | buf_ls / taplo                                       | -                | -                                        |
+| RON                 | -                                                    | -                | -                                        |
+| Typst               | tinymist                                             | -                | -                                        |
+| Markdown / MDX      | marksman / mdx_analyzer                              | markdownlint     | -                                        |
+| CMake / Nix         | neocmake / nil_ls                                    | - / statix       | -                                        |
+| Dockerfile / Helm   | dockerls / docker_compose_language_service / helm_ls | hadolint         | -                                        |
+| Terraform / HCL     | terraformls                                          | tflint           | -                                        |
+| Shaders (WGSL/GLSL) | wgsl-analyzer / glsl_analyzer                        | -                | -                                        |
+| Just                | just-lsp                                             | -                | -                                        |
 
 > Formatting is manual via `<leader>cf` (native LSP), not on save.
 >

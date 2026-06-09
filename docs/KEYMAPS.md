@@ -39,6 +39,7 @@ Leader: `<Space>`. `<localleader>` also `<Space>` (most localleader bindings liv
 | `<leader>fF`                      | fff.nvim: find files in current directory                      |
 | `<leader>fg` / `fr` / `fb` / `fh` | snacks.picker: grep / recent / buffers / help                  |
 | `<leader>fB`                      | snacks.picker: live grep across open buffers (the tab list)    |
+| `<leader>fi` / `fH`               | snacks.picker: insert icon / inspect highlight groups          |
 | `<leader>ft`                      | TODO comments                                                  |
 | `<leader>fp`                      | snacks.picker: recent projects (cd + restore)                  |
 | `<leader>fR`                      | Rename current file (LSP-aware)                                |
@@ -358,6 +359,7 @@ In the toggle terminal, `$EDITOR`/`$VISUAL`/`$GIT_EDITOR` forward to the parent 
 | `<leader>cn` / `<leader>un`                | Notification history / dismiss all                                                                                         |
 | `<leader>yp` / `<leader>yP` / `<leader>yl` | Yank file path to `+`: absolute / relative / relative:line                                                                 |
 | `<leader>yg`                               | Yank git permalink for the current line                                                                                    |
+| `<leader>yh`                               | Yanky ring history: pick an earlier yank and put it                                                                        |
 | `]]` / `[[`                                | LSP word: next / previous reference                                                                                        |
 | `[i` / `]i`                                | Snacks scope: jump to top / bottom edge                                                                                    |
 

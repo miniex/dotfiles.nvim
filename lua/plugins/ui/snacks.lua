@@ -529,6 +529,20 @@ return {
             desc = "Grep Open Buffers",
         },
         {
+            "<leader>fi",
+            function()
+                Snacks.picker.icons()
+            end,
+            desc = "Icons (nerd-font / emoji)",
+        },
+        {
+            "<leader>fH",
+            function()
+                Snacks.picker.highlights()
+            end,
+            desc = "Highlight groups",
+        },
+        {
             "<leader>fh",
             function()
                 Snacks.picker.help()

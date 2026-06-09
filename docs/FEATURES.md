@@ -9,7 +9,7 @@
 - **Navigation** — `gd` / `gr` / `gi` / `gy` open an fzf-lua picker (auto-jumps on a single result); `<leader>cI` / `cG` / `cH` for incoming / outgoing calls + type hierarchy.
 - **Rename** — `<leader>rn` via inc-rename with a live in-buffer preview.
 - **Formatting** — `<leader>cf` runs `vim.lsp.buf.format` (native LSP; no formatter plugin).
-- **Semantic tokens** — toggle per buffer with `<leader>uy` (e.g. when they clash with treesitter highlight).
+- **Semantic tokens** — off by default on TS (vtsls) and Python (basedpyright), where they clash with treesitter highlight; toggle per buffer with `<leader>uy`.
 - **Document colors** — LSP color swatches via native `vim.lsp.document_color` on any capable server (tailwindcss, cssls, …); colorizer still owns hex.
 - **Diagnostics** — single config in `lua/plugins/lsp/init.lua`; `tiny-inline-diagnostic.nvim` owns virtual text. Severity-sorted, signs `✗`/`!`/`i`/`?`.
 - **Spell check** — `typos_lsp` across all filetypes: low false-positive (only known typos), surfaced at `Info` severity.
@@ -27,7 +27,7 @@
 ## Pickers
 
 - **fff.nvim** — Rust-backed file finder. `<leader>ff` for cwd, `<leader>fF` for current dir.
-- **snacks.picker** — grep / recent / buffers / help / TODOs / projects. `<leader>fg` / `<leader>fr` / `<leader>fb` / `<leader>fh` / `<leader>ft` / `<leader>fp` (projects: cd + restore session). `<leader>fB` live-greps open buffers only.
+- **snacks.picker** — grep / recent / buffers / help / TODOs / projects. `<leader>fg` / `<leader>fr` / `<leader>fb` / `<leader>fh` / `<leader>ft` / `<leader>fp` (projects: cd + restore session). `<leader>fB` live-greps open buffers only; `<leader>fi` / `<leader>fH` insert an icon / inspect highlight groups.
 - **fzf-lua** — git / LSP / grep / lines / snippets / history. `<leader>z*` namespace.
 - fff and snacks share the same 0.85 × 0.85 chrome-aware rectangle. The snacks picker's preview overlaps the list's right border by 1 column so a single `✿│✿` divider is drawn between them (matches fff's "shared middle flower" effect).
 
@@ -37,7 +37,7 @@
 - **Big files** — opening a file >8 MiB prompts: view in `less` (default) / edit / cancel (binary skips the pager). `<leader>L` views the current file in `less` anytime. Size tiers in [CUSTOMIZATION](CUSTOMIZATION.md#big-file-handling).
 - **Navigation** — flash (`s` / `S`), Trouble (`<leader>xx`), aerial (`<leader>cO`), harpoon v2 (`<leader>m*`).
 - **Search & replace** — grug-far (`<leader>rr`) for regex; ssr (`<leader>rs`) for structural AST-aware replace.
-- **Structural edits & yank ring** — treesj split/join a node (`<leader>cJ`); yanky yank history (`]y` / `[y` after paste); various-textobjs indentation / value / key objects (`iI` / `iv` / `ik`).
+- **Structural edits & yank ring** — treesj split/join a node (`<leader>cJ`); yanky yank history (`]y` / `[y` after paste, `<leader>yh` to pick from the ring); various-textobjs indentation / value / key objects (`iI` / `iv` / `ik`).
 - **Multi-cursor** — multicursor.nvim under `<leader>M*` + `<C-Up>` / `<C-Down>`.
 - **Smart inc/dec** — dial.nvim. `<C-a>`/`<C-x>` flips bools, dates, semver, hex colors, `&&↔||` (plus `let↔const` in JS/TS and headers in markdown).
 - **Quickfix** — quicker.nvim (editable QF), nvim-bqf (preview), Trouble (`auto_close` on jump, main-window preview).
@@ -92,7 +92,7 @@ See [`lua/config/modal-floats.lua`](../lua/config/modal-floats.lua) for the mutu
 
 - **nvim-lint** — runs on save / read (not `InsertLeave`) with a per-buffer 250ms debounce; skips run if you switched away.
 - **mason-tool-installer** — single source of truth for non-LSP tools (shellcheck, golangci-lint, eslint_d, selene, markdownlint, statix, hadolint, sqlfluff, yamllint, …). `auto_update` stays off; a startup toast flags tools with updates (`:MasonToolsUpdate`).
-- **DAP** — Rust (rustaceanvim's codelldb) / C-C++ (codelldb) / Python (debugpy) / Go (delve) / Zig (codelldb) / Elixir (elixir-ls debug adapter) / JS-TS (js-debug-adapter, Node + Chrome). C/C++ and Zig share the codelldb resolver in `lua/config/codelldb.lua`. Persistent breakpoints per-cwd; exception breakpoints via `<leader>dE`; reads project `.vscode/launch.json`.
+- **DAP** — Rust (rustaceanvim's codelldb) / C-C++ (codelldb) / Python (debugpy) / Go (delve) / Zig (codelldb) / Elixir (elixir-ls debug adapter) / JS-TS (js-debug-adapter for Node; browser auto-detected from `$PATH` — Chrome, else Firefox). C/C++ and Zig share the codelldb resolver in `lua/config/codelldb.lua`. Persistent breakpoints per-cwd; exception breakpoints via `<leader>dE`; reads project `.vscode/launch.json`.
 - **neotest** — Python (pytest) / Go (gotestsum) / Elixir (mix) / C/C++ (gtest) / Lua (busted) / Rust (rustaceanvim) / Zig / JS-TS (vitest / jest). Summary window state restored across sessions.
 - **overseer** — task / build runner (`<leader>R*`); auto-detects make / npm / cargo / go / just / cmake templates.
 - **nvim-coverage** — test-coverage gutter signs + summary (`<leader>nc` / `nC`); reads lcov / coverage.xml.
