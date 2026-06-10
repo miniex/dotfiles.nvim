@@ -20,7 +20,6 @@ M.panels = {
     "snacks_dashboard",
     "neo-tree",
     "neo-tree-popup",
-    "Trouble",
     "trouble",
     "dap-repl",
     "dapui_console",

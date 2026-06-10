@@ -5,10 +5,6 @@ return {
     event = "VeryLazy",
     opts = {
         bottom = {
-            {
-                ft = "Trouble",
-                size = { height = 0.3 },
-            },
             { ft = "trouble", size = { height = 0.3 } },
             { ft = "qf", title = "Quickfix" },
             {
@@ -18,7 +14,6 @@ return {
                     return vim.bo[buf].buftype == "help"
                 end,
             },
-            { ft = "spectre_panel", size = { height = 0.4 } },
             { ft = "dap-repl", size = { height = 0.25 }, title = "DAP REPL" },
             { ft = "dapui_console", title = "DAP Console" },
             { ft = "neotest-output-panel", size = { height = 0.25 }, title = "Test Output" },

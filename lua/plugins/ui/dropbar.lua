@@ -40,7 +40,7 @@ return {
                     return false
                 end
                 local ft = vim.bo[buf].filetype
-                if ft == "snacks_dashboard" or ft == "neo-tree" or ft == "Trouble" or ft == "dap-repl" then
+                if ft == "snacks_dashboard" or ft == "neo-tree" or ft == "trouble" or ft == "dap-repl" then
                     return false
                 end
                 if vim.api.nvim_buf_get_name(buf) == "" then

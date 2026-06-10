@@ -97,7 +97,7 @@ return {
                     if type == "/" or type == "?" then
                         return { "buffer" }
                     end
-                    if type == ":" or type == "@" then
+                    if type == ":" then
                         return { "cmdline", "path" }
                     end
                     return {}
