@@ -36,31 +36,25 @@ return {
             return bt == "terminal" or bt == "prompt"
         end
 
-        -- Pulse smear on terminal enter only; persistent mode jitters keystrokes.
-        local term_gen = 0
+        -- One WinEnter pass for terminal pulse + float-open skip (was two autocmds).
+        local term_gen, float_gen = 0, 0
         vim.api.nvim_create_autocmd("WinEnter", {
             group = grp,
             callback = function()
-                if vim.bo.buftype ~= "terminal" then
-                    return
+                -- Pulse smear on terminal enter only; persistent mode jitters keystrokes.
+                if vim.bo.buftype == "terminal" then
+                    sc.smear_terminal_mode = true
+                    term_gen = term_gen + 1
+                    local mine = term_gen
+                    vim.defer_fn(function()
+                        if mine == term_gen then
+                            sc.smear_terminal_mode = false
+                        end
+                    end, 300)
                 end
-                sc.smear_terminal_mode = true
-                term_gen = term_gen + 1
-                local mine = term_gen
-                vim.defer_fn(function()
-                    if mine == term_gen then
-                        sc.smear_terminal_mode = false
-                    end
-                end, 300)
-            end,
-        })
 
-        -- Skip smear on float open: the (1,1) landing + the plugin's own
-        -- cursor placement fire back-to-back; 80ms swallows both jumps.
-        local float_gen = 0
-        vim.api.nvim_create_autocmd("WinEnter", {
-            group = grp,
-            callback = function()
+                -- Skip smear on float open: the (1,1) landing + the plugin's own
+                -- cursor placement fire back-to-back; 80ms swallows both jumps.
                 if should_stay_disabled(0) then
                     smear.enabled = false
                     float_gen = float_gen + 1

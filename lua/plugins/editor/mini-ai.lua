@@ -3,7 +3,7 @@
 -- for chars it owns. Last variant remapped off al/il (treesitter loop) → aL/iL.
 return {
     "echasnovski/mini.ai",
-    event = { "BufReadPost", "BufNewFile" },
+    event = "VeryLazy",
     opts = {
         n_lines = 500,
         mappings = {

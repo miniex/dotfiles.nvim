@@ -17,6 +17,7 @@ return {
     just = { "just" },
     lua = { "lua_ls" },
     markdown = { "marksman", "mdx_analyzer" },
+    -- nim_langserver: no lsp/ override; uses bundled lspconfig config.
     nim = { "nim_langserver" },
     nix = { "nil_ls" },
     ocaml = { "ocamllsp" },

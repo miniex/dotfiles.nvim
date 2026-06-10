@@ -42,6 +42,26 @@ return {
             end,
         })
 
+        -- Cache diagnostic counts; vim.diagnostic.count walks the buffer cache each redraw.
+        local ERROR, WARN = vim.diagnostic.severity.ERROR, vim.diagnostic.severity.WARN
+        local diag_by_buf = {}
+        local function diag_counts(buf)
+            local hit = diag_by_buf[buf]
+            if hit then
+                return hit[1], hit[2]
+            end
+            local diag = vim.diagnostic.count(buf)
+            local errs, warns = diag[ERROR] or 0, diag[WARN] or 0
+            diag_by_buf[buf] = { errs, warns }
+            return errs, warns
+        end
+        vim.api.nvim_create_autocmd("DiagnosticChanged", {
+            group = vim.api.nvim_create_augroup("InclineDiagCache", { clear = true }),
+            callback = function(args)
+                diag_by_buf[args.buf] = nil
+            end,
+        })
+
         -- Devicon colors can change with the theme.
         vim.api.nvim_create_autocmd("ColorScheme", {
             group = vim.api.nvim_create_augroup("InclineIconCache", { clear = true }),
@@ -87,9 +107,7 @@ return {
                 local accent = props.focused and damin_pink or p.overlay1
 
                 -- Per-window diagnostic count (lualine is global, can't show per-split).
-                local diag = vim.diagnostic.count(props.buf)
-                local errs = diag[vim.diagnostic.severity.ERROR] or 0
-                local warns = diag[vim.diagnostic.severity.WARN] or 0
+                local errs, warns = diag_counts(props.buf)
 
                 return {
                     zoomed and { "⌬ ", guifg = damin_pink } or "",

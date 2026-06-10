@@ -16,7 +16,7 @@ Enabling a language installs its Mason tools automatically on the next launch (m
 
 ### Add a new language
 
-1. `lsp/<server>.lua` — single source for `cmd` / `root_markers` / `filetypes` / `settings`. Don't restate via `nvim-lspconfig.opts.servers.<name>`.
+1. `lsp/<server>.lua` — single source for `cmd` / `root_markers` / `filetypes` / `settings`. Don't restate via `nvim-lspconfig.opts.servers.<name>`. Optional: omit it to inherit nvim-lspconfig's bundled defaults.
 2. `lua/config/lang_servers.lua` — map `lang = { "server" }`. Empty list = no LSP (or owned by a per-lang plugin like `rust → rustaceanvim`). An enabled lang with **no** key here warns on startup (no silent missing LSP).
 3. `lua/plugins/lang/<name>.lua` — DAP, `vim.filetype.add`, lang-specific plugins. Register the module name in `lua/config/langs.lua`.
 4. Treesitter grammar → add it to the central `ensure_installed` list in `lua/plugins/editor/treesitter.lua` (lang files no longer extend it themselves).
@@ -25,7 +25,7 @@ Language-agnostic servers (e.g. `typos_lsp`) aren't mapped per-language — they
 
 Client-side file watching (`didChangeWatchedFiles`) is on for every server, which can stall a large project on open. Fix per server: a server-side watcher (rust-analyzer's `files.watcher = "server"`) or `dynamicRegistration = false` in its `lsp/<server>.lua`.
 
-Linters → `lua/plugins/lsp/lint.lua`. Non-LSP CLI tools → `mason-tool-installer.nvim` `ensure_installed`. CodeLLDB-based DAP (C/C++, Zig) → shared resolver `lua/config/codelldb.lua`. Repeated lang-spec fragments (mason / treesitter / blink / lint) have one-line helpers in `lua/config/lang.lua`; DAP mason-binary guards in `lua/config/dap.lua`. JSON/YAML SchemaStore wiring → shared `lua/config/lsp_schemastore.lua`.
+Linters → `lua/plugins/lsp/lint.lua`. Non-LSP CLI tools → `mason-tool-installer.nvim` `ensure_installed`. CodeLLDB-based DAP (C/C++, Zig) → shared resolver `lua/config/codelldb.lua`. Repeated lang-spec fragments (mason / treesitter / blink / lint) have one-line helpers in `lua/config/lang.lua`; DAP mason-binary guards in `lua/config/dap.lua`. JSON/YAML SchemaStore wiring → shared `lua/config/lsp_schemastore.lua`. Semantic-tokens-disable `on_attach` (vtsls / basedpyright) → shared `lua/config/lsp_util.lua`.
 
 ## Snippets
 
@@ -91,7 +91,7 @@ Add a language: add an entry to the `M.specs` table in `lua/config/format-width.
 
 Three size tiers, smallest first:
 
-- **> 1 MiB** (or a >2000-char first line) — treesitter is skipped. `ts-attach` autocmd in `lua/config/autocmds.lua`.
+- **> 1 MiB** (or a >2000-char first line) — treesitter (`ts-attach` in `lua/config/autocmds.lua`) and rainbow-delimiters (also >10000 lines) are skipped.
 - **> 2 MiB** — `snacks.bigfile` degrades features (LSP / treesitter / syntax / folds / matchparen). Tune `size` in `lua/plugins/ui/snacks.lua`.
 - **> 8 MiB** — opening prompts _view in `less`_ (default) / _edit anyway_ / _cancel_; binary files (NUL byte in the first KB) drop the pager option. Tune `BIG_FILE_LIMIT` in `lua/config/autocmds.lua`. Declining also drops it from the arglist, so the restored session won't reopen a `nvim hugefile`.
 

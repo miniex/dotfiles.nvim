@@ -39,6 +39,15 @@ return {
                     if vim.api.nvim_buf_line_count(bufnr) > 10000 then
                         return nil
                     end
+                    -- Byte/minified guard (a single huge line slips the line check); see config/autocmds.lua.
+                    local name = vim.api.nvim_buf_get_name(bufnr)
+                    if name ~= "" and vim.fn.getfsize(name) > 1 * 1024 * 1024 then -- 1 MiB
+                        return nil
+                    end
+                    local first = vim.api.nvim_buf_get_lines(bufnr, 0, 1, false)[1]
+                    if first and #first > 2000 then
+                        return nil
+                    end
                     return "rainbow-delimiters.strategy.global"
                 end,
             },

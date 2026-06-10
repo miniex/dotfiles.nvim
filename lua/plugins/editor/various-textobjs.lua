@@ -2,7 +2,7 @@
 -- Defaults off; ai/ii are taken (conditional), so indentation lives on iI/aI.
 return {
     "chrisgrieser/nvim-various-textobjs",
-    event = { "BufReadPost", "BufNewFile" },
+    event = "VeryLazy",
     opts = { keymaps = { useDefaults = false } },
     config = function(_, opts)
         require("various-textobjs").setup(opts)
