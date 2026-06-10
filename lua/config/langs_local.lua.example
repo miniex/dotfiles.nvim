@@ -1,32 +1,12 @@
--- Copy this file to `langs_local.lua` (gitignored) and uncomment lines for
--- languages you do not want loaded. Anything omitted falls through to the
--- defaults in `langs.lua` (all enabled).
+-- Copy to `langs_local.lua` (gitignored) to override langs.lua per-machine:
+-- `name = true` enables an off-by-default language, `name = false` disables a core
+-- one. `set-lang.sh` generates this; omitted langs fall through to langs.lua defaults.
 return {
-    -- asm         = false,
-    -- bash        = false,
-    -- ["c-cpp"]   = false,
-    -- cmake       = false,
-    -- dockerfile  = false,
-    -- elixir      = false,
-    -- go          = false,
-    -- graphql     = false,
-    -- helm        = false,
-    -- json        = false,
-    -- just        = false,
-    -- lua         = false,
-    -- markdown    = false,
-    -- nix         = false,
-    -- ocaml       = false,
-    -- protobuf    = false,
-    -- python      = false,
-    -- ron         = false,
-    -- rust        = false,
-    -- shader      = false,
-    -- sql         = false,
-    -- terraform   = false,
-    -- toml        = false,
-    -- typst       = false,
-    -- web         = false,
-    -- yaml        = false,
-    -- zig         = false,
+    -- enable off-by-default languages:
+    -- elixir = true,
+    -- nix    = true,
+    -- zig    = true,
+    -- ["c-cpp"] = true,
+    -- disable a core one:
+    -- sql    = false,
 }

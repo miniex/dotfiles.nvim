@@ -2,15 +2,17 @@
 
 ## Languages
 
-### Disable
+### Enable / disable
+
+A core set is on by default (`langs.lua`); enable the rest — or turn core ones off — with:
 
 ```bash
 sh ~/.config/nvim/set-lang.sh   # interactive
 ```
 
-Or hand-edit `lua/config/langs_local.lua` (gitignored). Overrides `lua/config/langs.lua` per-machine.
+Or hand-edit `lua/config/langs_local.lua` (gitignored): `name = true` / `name = false` overrides `lua/config/langs.lua` per-machine.
 
-Re-enabling a language installs its Mason tools automatically on the next launch (mason-tool-installer runs on start, ~3s deferred) — no manual `:MasonToolsInstall` needed.
+Enabling a language installs its Mason tools automatically on the next launch (mason-tool-installer runs on start, ~3s deferred) — no manual `:MasonToolsInstall` needed.
 
 ### Add a new language
 

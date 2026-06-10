@@ -64,6 +64,7 @@ Prerequisites, manual install, and recovery: [docs/SETUP.md](docs/SETUP.md).
 | Shaders (WGSL/GLSL) | wgsl-analyzer / glsl_analyzer                        | -                | -                                        |
 | Just                | just-lsp                                             | -                | -                                        |
 
+> A core subset is enabled by default; `set-lang.sh` toggles the full set above.
 > Formatting is manual via `<leader>cf` (native LSP), not on save.
 >
 > `typos_lsp` spell-checks all filetypes (low false-positive), independent of the table above.

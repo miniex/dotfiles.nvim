@@ -39,7 +39,7 @@ sh -c "$(curl -fsSL https://raw.githubusercontent.com/miniex/dotfiles.nvim/main/
 mv ~/.config/nvim ~/.config/nvim.backup
 mv ~/.local/share/nvim ~/.local/share/nvim.backup
 git clone https://github.com/miniex/dotfiles.nvim.git ~/.config/nvim
-sh ~/.config/nvim/set-lang.sh   # optional
+sh ~/.config/nvim/set-lang.sh   # optional: enable more languages
 nvim
 ```
 
