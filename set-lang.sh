@@ -25,13 +25,14 @@ in_list() {
 
 # langs = every available language (picker list, true|false); default_off = the
 # off-by-default ones. (Two greps: BSD grep mishandles the bracket/bare alternation.)
+# `|| true`: a no-match grep exits 1, which under `set -e` would abort the subshell.
 langs=$({
-    grep -E '^[[:space:]]*\["[^"]+"\][[:space:]]*=[[:space:]]*(true|false)' "$defaults_file"
-    grep -E '^[[:space:]]*[a-zA-Z_][a-zA-Z0-9_]*[[:space:]]*=[[:space:]]*(true|false)' "$defaults_file"
+    grep -E '^[[:space:]]*\["[^"]+"\][[:space:]]*=[[:space:]]*(true|false)' "$defaults_file" || true
+    grep -E '^[[:space:]]*[a-zA-Z_][a-zA-Z0-9_]*[[:space:]]*=[[:space:]]*(true|false)' "$defaults_file" || true
 } | sed -E 's/^[[:space:]]*//; s/[[:space:]]*=.*$//; s/^\["//; s/"\]$//' | sort -u | tr '\n' ' ')
 default_off=$({
-    grep -E '^[[:space:]]*\["[^"]+"\][[:space:]]*=[[:space:]]*false' "$defaults_file"
-    grep -E '^[[:space:]]*[a-zA-Z_][a-zA-Z0-9_]*[[:space:]]*=[[:space:]]*false' "$defaults_file"
+    grep -E '^[[:space:]]*\["[^"]+"\][[:space:]]*=[[:space:]]*false' "$defaults_file" || true
+    grep -E '^[[:space:]]*[a-zA-Z_][a-zA-Z0-9_]*[[:space:]]*=[[:space:]]*false' "$defaults_file" || true
 } | sed -E 's/^[[:space:]]*//; s/[[:space:]]*=.*$//; s/^\["//; s/"\]$//' | tr '\n' ' ')
 
 n=$(echo "$langs" | wc -w | tr -d ' ')
