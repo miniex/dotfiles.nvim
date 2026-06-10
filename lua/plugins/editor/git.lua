@@ -60,16 +60,8 @@ return {
     {
         "akinsho/git-conflict.nvim",
         version = "*",
+        -- event-loaded (conflicts auto-highlight on open); default_commands registers the commands.
         event = { "BufReadPre", "BufNewFile" },
-        cmd = {
-            "GitConflictChooseOurs",
-            "GitConflictChooseTheirs",
-            "GitConflictChooseBoth",
-            "GitConflictChooseNone",
-            "GitConflictNextConflict",
-            "GitConflictPrevConflict",
-            "GitConflictListQf",
-        },
         keys = {
             { "<leader>gxq", "<cmd>GitConflictListQf<cr>", desc = "Conflicts to Quickfix" },
             -- ]X/[X: lowercase [x owned by treesitter-context.

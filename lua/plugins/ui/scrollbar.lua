@@ -225,9 +225,14 @@ return {
         end
 
         local snap_jump_threshold = 20
+        local big_buf_lines = 5000 -- above this, snap the mark (skip the 30fps render loop)
         local function animate_cursor(bufnr, target)
             local from = displayed_lines[bufnr]
             if from == nil or from == target then
+                snap_cursor(bufnr, target)
+                return
+            end
+            if vim.api.nvim_buf_line_count(bufnr) > big_buf_lines then
                 snap_cursor(bufnr, target)
                 return
             end
