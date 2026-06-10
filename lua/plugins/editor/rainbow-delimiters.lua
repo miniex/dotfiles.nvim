@@ -1,4 +1,5 @@
--- Bracket-pair coloring (treesitter). 6-color cycle: damin accents + mocha tones.
+-- Bracket-pair coloring (treesitter). 6 distinct depths: damin accents + mocha
+-- tones (peach/green, since the theme collapses mauve/teal onto pink/blue).
 return {
     "HiPhish/rainbow-delimiters.nvim",
     event = { "BufReadPost", "BufNewFile" },
@@ -8,8 +9,8 @@ return {
             "RainbowDelimiterBlue",
             "RainbowDelimiterPink",
             "RainbowDelimiterLavender",
-            "RainbowDelimiterMauve",
-            "RainbowDelimiterTeal",
+            "RainbowDelimiterPeach",
+            "RainbowDelimiterGreen",
             "RainbowDelimiterMid",
         }
         local function set_hl()
@@ -18,8 +19,8 @@ return {
                 RainbowDelimiterBlue = p.blue,
                 RainbowDelimiterPink = p.pink,
                 RainbowDelimiterLavender = m.lavender,
-                RainbowDelimiterMauve = m.mauve,
-                RainbowDelimiterTeal = m.teal,
+                RainbowDelimiterPeach = m.peach,
+                RainbowDelimiterGreen = m.green,
                 RainbowDelimiterMid = p.mid,
             }
             for name, color in pairs(fg) do
@@ -31,6 +32,17 @@ return {
             group = vim.api.nvim_create_augroup("RainbowDelimiterDamin", { clear = true }),
             callback = set_hl,
         })
-        require("rainbow-delimiters.setup").setup({ highlight = groups })
+        require("rainbow-delimiters.setup").setup({
+            -- Disable on huge files; the initial full delimiter query is the costly part.
+            strategy = {
+                [""] = function(bufnr)
+                    if vim.api.nvim_buf_line_count(bufnr) > 10000 then
+                        return nil
+                    end
+                    return "rainbow-delimiters.strategy.global"
+                end,
+            },
+            highlight = groups,
+        })
     end,
 }

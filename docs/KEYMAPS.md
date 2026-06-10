@@ -234,26 +234,26 @@ Inside the menu: `q`/`<Esc>` close, `h` parent (no-op at top), `l` open entry.
 
 ## Git
 
-| Key                                           | Description                                                                                                    |
-| --------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
-| `<leader>gs/gb/gd/gl/gc/gp/gP`                | fugitive: status/blame/diff/log/commit/push/pull                                                               |
-| `<leader>gdv`                                 | fugitive: 3-way diffsplit (`:Gvdiffsplit!`) — for merge conflicts                                              |
-| `<leader>gg/gf/gL`                            | lazygit: open / file history / log                                                                             |
-| `<leader>gB`                                  | gitbrowse: open current line in browser (n/v)                                                                  |
-| `<leader>gvo/gvc/gvr`                         | Diffview: open / close / refresh                                                                               |
-| `<leader>gvf/gvF/gvh`                         | Diffview file history: current / repo / stash                                                                  |
-| `<leader>gvt` / `<leader>gvp`                 | Diffview: toggle / focus files panel                                                                           |
-| `<leader>gvg` / `<leader>gvG`                 | gitgraph.nvim: all branches / current (`<cr>` → diffview)                                                      |
-| `<leader>gvs` / `<leader>gvA`                 | gitgraph.nvim: prompt for `--since` / `--author` filter                                                        |
-| `<leader>gH`                                  | advanced-git-search: search history by content (log -S/-G/-L)                                                  |
-| `[h` / `]h`                                   | Prev / next hunk                                                                                               |
-| `<leader>ghs/r/S/R/u/p/b/c/d/D`               | Stage (toggle) / reset / stage-buf / reset-buf / undo-stage / preview / blame-line / blame-file / diff / diff~ |
-| `<leader>ghq`                                 | gitsigns: hunks (attached buffers) to quickfix                                                                 |
-| `<leader>gtb` / `<leader>gtd` / `<leader>gtw` | Toggle line blame / show deleted / word diff                                                                   |
-| `ih` / `ah` (o/x)                             | gitsigns hunk textobject (`d ih`, `v ah`)                                                                      |
-| `<leader>gxq`                                 | git-conflict: conflicts to quickfix                                                                            |
-| `[X` / `]X`                                   | Prev / next conflict                                                                                           |
-| `co/ct/cb/c0`                                 | Inside conflict: ours / theirs / both / none                                                                   |
+| Key                                           | Description                                                                                       |
+| --------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| `<leader>gs/gb/gd/gl/gc/gp/gP`                | fugitive: status/blame/diff/log/commit/push/pull                                                  |
+| `<leader>gdv`                                 | fugitive: 3-way diffsplit (`:Gvdiffsplit!`) — for merge conflicts                                 |
+| `<leader>gg/gf/gL`                            | lazygit: open / file history / log                                                                |
+| `<leader>gB`                                  | gitbrowse: open current line in browser (n/v)                                                     |
+| `<leader>gvo/gvc/gvr`                         | Diffview: open / close / refresh                                                                  |
+| `<leader>gvf/gvF/gvh`                         | Diffview file history: current / repo / stash                                                     |
+| `<leader>gvt` / `<leader>gvp`                 | Diffview: toggle / focus files panel                                                              |
+| `<leader>gvg` / `<leader>gvG`                 | gitgraph.nvim: all branches / current (`<cr>` → diffview)                                         |
+| `<leader>gvs` / `<leader>gvA`                 | gitgraph.nvim: prompt for `--since` / `--author` filter                                           |
+| `<leader>gH`                                  | advanced-git-search: search history by content (log -S/-G/-L)                                     |
+| `[h` / `]h`                                   | Prev / next hunk                                                                                  |
+| `<leader>ghs/r/S/R/p/b/c/d/D`                 | Stage (toggle) / reset / stage-buf / reset-buf / preview / blame-line / blame-file / diff / diff~ |
+| `<leader>ghq`                                 | gitsigns: hunks (attached buffers) to quickfix                                                    |
+| `<leader>gtb` / `<leader>gtd` / `<leader>gtw` | Toggle line blame / show deleted / word diff                                                      |
+| `ih` / `ah` (o/x)                             | gitsigns hunk textobject (`d ih`, `v ah`)                                                         |
+| `<leader>gxq`                                 | git-conflict: conflicts to quickfix                                                               |
+| `[X` / `]X`                                   | Prev / next conflict                                                                              |
+| `co/ct/cb/c0`                                 | Inside conflict: ours / theirs / both / none                                                      |
 
 ## Debugger (DAP)
 

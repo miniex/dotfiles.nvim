@@ -1,8 +1,9 @@
 -- Unified [/] motions. Only suffixes whose [x/]x aren't already owned elsewhere
 -- are kept: jump ([j/]j), location ([l/]l), undo ([u/]u).
+-- Event-loaded (not keys) so the u/<C-R> undo-ring remaps are active before edits.
 return {
     "echasnovski/mini.bracketed",
-    keys = { "[j", "]j", "[l", "]l", "[u", "]u" },
+    event = { "BufReadPost", "BufNewFile" },
     opts = {
         -- Other 11 suffixes disabled — their [x/]x are already taken: b/c/x/d/f/i/o/q/t/w/y →
         -- bufferline/keymaps/ts-ctx+conflict/diag-ui/ts-objs/snacks/aerial/trouble/todo/dropbar/yanky.

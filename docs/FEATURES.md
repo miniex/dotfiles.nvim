@@ -80,7 +80,7 @@ See [`lua/config/modal-floats.lua`](../lua/config/modal-floats.lua) for the mutu
 
 ## Git
 
-- **gitsigns** — gutter signs, hunk staging (`<leader>gh*`, undo-stage `<leader>ghu`), hunk textobject (`ih`/`ah`), inline blame (`<leader>gtb`), word-diff toggle (`<leader>gtw`), full hunk diff via `<leader>ghp` (centered modal, cursor lands inside).
+- **gitsigns** — gutter signs, hunk staging (`<leader>gh*`, `ghs` toggles stage/unstage), hunk textobject (`ih`/`ah`), inline blame (`<leader>gtb`), word-diff toggle (`<leader>gtw`), full hunk diff via `<leader>ghp` (centered modal, cursor lands inside).
 - **fugitive** — `<leader>gs` status, `<leader>gd` diff, `<leader>gdv` 3-way merge diff.
 - **lazygit** — `Snacks.lazygit`, auto-themed to the colorscheme. `<leader>gg` open / `<leader>gf` file history / `<leader>gL` log.
 - **Diffview** — file / repo / stash history under `<leader>gv*`.
