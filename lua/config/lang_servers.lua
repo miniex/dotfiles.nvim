@@ -1,5 +1,5 @@
 -- lang → LSP server names. Gated by langs.lua; disabled lang = servers skipped.
--- rust: rustaceanvim owns rust_analyzer. ron: no LSP.
+-- rust: rustaceanvim owns rust_analyzer. haskell: haskell-tools owns hls. ron: no LSP.
 return {
     asm = { "asm_lsp" },
     astro = { "astro" },
@@ -12,16 +12,20 @@ return {
     -- templ: Go HTML templating; HTML/Tailwind in .templ need the `web` servers too.
     go = { "gopls", "templ" },
     graphql = { "graphql" },
+    haskell = {},
     helm = { "helm_ls" },
     json = { "jsonls" },
     just = { "just" },
     lua = { "lua_ls" },
     markdown = { "marksman", "mdx_analyzer" },
+    nim = { "nim_langserver" },
     nix = { "nil_ls" },
     ocaml = { "ocamllsp" },
+    php = { "intelephense" },
     protobuf = { "buf_ls" },
     python = { "basedpyright", "ruff" },
     ron = {},
+    ruby = { "ruby_lsp" },
     rust = {},
     shader = { "wgsl_analyzer", "glsl_analyzer" },
     sql = { "sqls" },

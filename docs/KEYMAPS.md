@@ -385,6 +385,7 @@ In the toggle terminal, `$EDITOR`/`$VISUAL`/`$GIT_EDITOR` forward to the parent 
 | `<leader>ch`                               | C/C++: switch source ↔ header                             |
 | `<leader>cR` / `<leader>cD` / `<leader>cT` | Rust: code action / debuggables / testables               |
 | `<leader>cE` / `<leader>cP`                | Rust: expand macro / jump to parent module                |
+| `<leader>cE` / `<leader>cR` (Haskell)      | Haskell: GHCi REPL / Hoogle signature                     |
 | `<leader>cI` / `<leader>cU`                | TS/JS: organize imports / remove unused                   |
 | `<leader>cI` / `<leader>cX`                | Python: organize imports / fix all (ruff)                 |
 | `<leader>cI` / `<leader>cX`                | Go: organize imports / fix all (gopls)                    |

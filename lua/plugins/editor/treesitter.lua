@@ -16,12 +16,18 @@ return {
                 "go",
                 "rust",
                 "zig",
+                "nim",
                 -- Scripting
                 "python",
                 "lua",
                 "elixir",
                 "ocaml",
                 "ocaml_interface",
+                "haskell",
+                "cabal",
+                "ruby",
+                "php",
+                "phpdoc",
                 -- Web
                 "html",
                 "css",
