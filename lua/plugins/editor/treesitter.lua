@@ -23,9 +23,6 @@ return {
                 "elixir",
                 "ocaml",
                 "ocaml_interface",
-                "haskell",
-                "cabal",
-                "ruby",
                 "php",
                 "phpdoc",
                 -- Web

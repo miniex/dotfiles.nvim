@@ -15,10 +15,7 @@ return {
             "lawrence-laz/neotest-zig",
             "marilari88/neotest-vitest",
             "nvim-neotest/neotest-jest",
-            "mrcjkb/neotest-haskell",
             "olimorris/neotest-phpunit",
-            "olimorris/neotest-rspec",
-            "zidhuss/neotest-minitest",
         },
         keys = {
             {
@@ -138,10 +135,7 @@ return {
                 require("neotest-zig")({}),
                 require("neotest-vitest"),
                 require("neotest-jest"),
-                require("neotest-haskell"),
                 require("neotest-phpunit"),
-                require("neotest-rspec"),
-                require("neotest-minitest"),
             }
             -- Force-load rustaceanvim's rust adapter so rust tests are always present (neotest is
             -- keys-lazy, so not a startup cost; a later re-setup would rebuild the client mid-run).
