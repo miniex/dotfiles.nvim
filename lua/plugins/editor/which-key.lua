@@ -83,7 +83,6 @@ return {
             { "<leader>R", group = "task" },
             { "<leader>i", group = "repl" },
             { "<leader>k", group = "rest" },
-            { "<leader>s", group = "scratch" },
             { "gs", group = "surround" },
             { "gn", group = "ts-select" },
             -- Single-key desc labels (not groups; help discovery).

@@ -237,7 +237,7 @@ Inside the menu: `q`/`<Esc>` close, `h` parent (no-op at top), `l` open entry.
 | Key                                           | Description                                                                                       |
 | --------------------------------------------- | ------------------------------------------------------------------------------------------------- |
 | `<leader>gs/gb/gd/gl/gc/gp/gP`                | fugitive: status/blame/diff/log/commit/push/pull                                                  |
-| `<leader>gdv`                                 | fugitive: 3-way diffsplit (`:Gvdiffsplit!`) — for merge conflicts                                 |
+| `<leader>gD`                                  | fugitive: 3-way diffsplit (`:Gvdiffsplit!`) — for merge conflicts                                 |
 | `<leader>gg/gf/gL`                            | lazygit: open / file history / log                                                                |
 | `<leader>gB`                                  | gitbrowse: open current line in browser (n/v)                                                     |
 | `<leader>gvo/gvc/gvr`                         | Diffview: open / close / refresh                                                                  |
