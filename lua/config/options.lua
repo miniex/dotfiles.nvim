@@ -30,8 +30,6 @@ opt.virtualedit = "block"
 opt.list = false
 opt.listchars = { tab = "» ", trail = "·", nbsp = "␣", extends = "›", precedes = "‹" }
 
--- etc
-opt.encoding = "UTF-8"
 -- undofile covers recovery; skip swap/backup files.
 opt.backup = false
 opt.writebackup = false

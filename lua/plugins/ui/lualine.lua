@@ -151,6 +151,24 @@ return {
             end,
         })
 
+        -- searchcount() rescans the buffer; cache it, recompute on cursor
+        -- move / new search instead of every redraw.
+        local search_str = ""
+        local function update_search()
+            if vim.v.hlsearch == 1 then
+                local ok, s = pcall(vim.fn.searchcount, { maxcount = 99, timeout = 80 })
+                if ok and s.total and s.total > 0 then
+                    search_str = ("⌕ %d/%d"):format(s.current, s.total)
+                    return
+                end
+            end
+            search_str = ""
+        end
+        vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI", "CmdlineLeave" }, {
+            group = vim.api.nvim_create_augroup("LualineSearchCount", { clear = true }),
+            callback = update_search,
+        })
+
         require("lualine").setup({
             options = {
                 theme = damin_theme,
@@ -232,14 +250,10 @@ return {
                     {
                         -- Search match count, shown only while hlsearch is on.
                         function()
-                            local ok, s = pcall(vim.fn.searchcount, { maxcount = 999 })
-                            if not ok or not s.total or s.total == 0 then
-                                return ""
-                            end
-                            return ("⌕ %d/%d"):format(s.current, s.total)
+                            return search_str
                         end,
                         cond = function()
-                            return vim.v.hlsearch == 1
+                            return vim.v.hlsearch == 1 and search_str ~= ""
                         end,
                         color = { fg = p.overlay1 },
                     },
