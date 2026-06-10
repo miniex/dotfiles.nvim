@@ -17,10 +17,10 @@ do
     local function is_dir(i)
         return vim.fn.isdirectory(vim.fn.argv(i)) == 1
     end
-    if n == 1 and is_dir(0) then
+    if n == 1 and is_dir(0) and pcall(vim.fn.chdir, vim.fn.argv(0)) then
         -- `nvim <dir>` == `cd <dir> && nvim`: become a bare launch inside <dir> so the
         -- cwd (hence the session key) matches and the same workspace restores.
-        vim.fn.chdir(vim.fn.argv(0))
+        -- chdir guarded: an inaccessible dir falls through to the file-launch branch.
         pcall(vim.cmd, "argdelete *")
         vim.g.single_file, vim.g.file_launch = false, false
         vim.g.dir_launch = vim.fn.getcwd() -- a VimEnter drops the stray dir buffer

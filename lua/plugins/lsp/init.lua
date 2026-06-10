@@ -297,8 +297,9 @@ return {
                 then
                     pcall(vim.lsp.linked_editing_range.enable, true, { bufnr = bufnr })
                 end
-                -- Color swatches (0.12) on any documentColor-capable server (colorizer
-                -- owns hex). The capability registers post-init, so poll per client.
+                -- Color swatches (0.12) on documentColor-capable servers (colorizer owns
+                -- hex). Capability can register post-init (cssls/tailwindcss), so poll —
+                -- bounded to ~1s (4 × 250ms) since it always lands during init handshake.
                 if vim.lsp.document_color and not vim.b[bufnr]["_doccolor_polling_" .. client.id] then
                     vim.b[bufnr]["_doccolor_polling_" .. client.id] = true
                     local cid, tries = client.id, 0
@@ -310,7 +311,7 @@ return {
                         if c and c:supports_method("textDocument/documentColor", bufnr) then
                             pcall(vim.lsp.document_color.enable, true, { bufnr = bufnr })
                             vim.b[bufnr]["_doccolor_polling_" .. cid] = nil
-                        elseif c and tries < 20 then
+                        elseif c and tries < 4 then
                             tries = tries + 1
                             vim.defer_fn(enable_color, 250)
                         else

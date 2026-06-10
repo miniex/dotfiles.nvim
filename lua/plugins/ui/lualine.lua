@@ -27,6 +27,11 @@ return {
             group = vim.api.nvim_create_augroup("LualineLspNames", { clear = true }),
             callback = function(args)
                 lsp_names_cache[args.buf] = nil
+                -- Attach/detach change the client list but don't refresh lualine, so
+                -- the names would show stale until the next redraw — force one.
+                if args.event == "LspAttach" or args.event == "LspDetach" then
+                    vim.schedule(vim.cmd.redrawstatus)
+                end
             end,
         })
 

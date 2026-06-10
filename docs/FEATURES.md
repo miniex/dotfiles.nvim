@@ -10,7 +10,7 @@
 - **Rename** — `<leader>rn` via inc-rename with a live in-buffer preview.
 - **Formatting** — `<leader>cf` runs `vim.lsp.buf.format` (native LSP; no formatter plugin).
 - **Semantic tokens** — off by default on TS (vtsls) and Python (basedpyright), where they clash with treesitter highlight; toggle per buffer with `<leader>uy`.
-- **Document colors** — LSP color swatches via native `vim.lsp.document_color` on any capable server (tailwindcss, cssls, …); colorizer still owns hex.
+- **Document colors** — LSP color swatches via native `vim.lsp.document_color` on any capable server (tailwindcss, cssls, …), enabled by a short bounded poll after attach (capability can register post-init); colorizer still owns hex.
 - **Diagnostics** — single config in `lua/plugins/lsp/init.lua`; `tiny-inline-diagnostic.nvim` owns virtual text. Severity-sorted, signs `✗`/`!`/`i`/`?`.
 - **Spell check** — `typos_lsp` across all filetypes: low false-positive (only known typos), surfaced at `Info` severity.
 - **Completion** — [blink.cmp](https://github.com/Saghen/blink.cmp) with Rust fuzzy matching + inline ghost-text preview. Sources: LSP / snippets (LuaSnip + friendly-snippets) / path / buffer; filtered per filetype (no LSP in `gitcommit` / `gitrebase`, buffer-only in snacks input prompts). Cmdline completion on `:` (commands / paths) and `/` `?` (search).
@@ -48,7 +48,7 @@
 ## UI
 
 - **Theme** — Catppuccin Mocha retoned to a 2-color **damin** palette: `#98ABCC` (blue) / `#E890B0` (pink). Mirrors [`fish-theme-damin`](https://github.com/miniex/fish-theme-damin) + [`dotfiles.kitty`](https://github.com/miniex/dotfiles.kitty) + [`dotfiles.tmux`](https://github.com/miniex/dotfiles.tmux).
-- **lualine** — `✧ … ⋆` sparkle bookends, `✿` mode glyph (swaps to `✎` in visual / operator-pending, briefly `✦` on mode change); `● @x` while a macro is recording; attached LSP client names and `searchcount()` on the right.
+- **lualine** — `✧ … ⋆` sparkle bookends, `✿` mode glyph (swaps to `✎` in visual / operator-pending, briefly `✦` on mode change); `● @x` while a macro is recording; attached LSP client names (refreshed on LSP attach/detach) and `searchcount()` on the right.
 - **bufferline** — pink → mid → blue 3-stop gradient, `surface0` card under active, `▎` left bar + ordinal prefix, `♡` on harpoon-pinned, `●` on modified, uniform 16-char tab width. Tabs keep a stable left-to-right open order; reopening a closed file appends at the tail. Neo-tree / Outline get sidebar offset labels. Lazy-loads on first real file open, so the dashboard isn't preceded by an empty tabline; single-file launches skip it entirely (see Launch modes). `<leader>bp` / `bc` letter-pick a buffer to focus / close.
 - **incline** — `⌬` when window is zoomed (alone in tabpage); per-window `✗`/`!` diagnostic count.
 - **cursor bloom** — `✿` sign on the current line in mode color (custom autocmd in [`lua/config/cursor-bloom.lua`](../lua/config/cursor-bloom.lua)). Refresh defer skips picker/terminal/chrome buffers.
@@ -92,7 +92,7 @@ See [`lua/config/modal-floats.lua`](../lua/config/modal-floats.lua) for the mutu
 
 - **nvim-lint** — runs on save / read (not `InsertLeave`) with a per-buffer 250ms debounce; skips run if you switched away.
 - **mason-tool-installer** — single source of truth for non-LSP tools (shellcheck, golangci-lint, eslint_d, selene, markdownlint, statix, hadolint, sqlfluff, yamllint, …). `auto_update` stays off; a startup toast flags tools with updates (`:MasonToolsUpdate`).
-- **DAP** — Rust (rustaceanvim's codelldb) / C-C++ (codelldb) / Python (debugpy) / Go (delve) / Zig (codelldb) / Elixir (elixir-ls debug adapter) / JS-TS (js-debug-adapter for Node; browser auto-detected from `$PATH` — Chrome, else Firefox). C/C++ and Zig share the codelldb resolver in `lua/config/codelldb.lua`. Persistent breakpoints per-cwd; exception breakpoints via `<leader>dE`; reads project `.vscode/launch.json`.
+- **DAP** — Rust (rustaceanvim's codelldb) / C-C++ (codelldb) / Python (debugpy) / Go (delve) / Zig (codelldb) / Elixir (elixir-ls debug adapter) / JS-TS (js-debug-adapter for Node; browser auto-detected from `$PATH` — Chrome, else Firefox; probed lazily, not at startup). C/C++ and Zig share the codelldb resolver in `lua/config/codelldb.lua`. Persistent breakpoints per-cwd; exception breakpoints via `<leader>dE`; reads project `.vscode/launch.json`.
 - **neotest** — Python (pytest) / Go (gotestsum) / Elixir (mix) / C/C++ (gtest) / Lua (busted) / Rust (rustaceanvim) / Zig / JS-TS (vitest / jest). Summary window state restored across sessions.
 - **overseer** — task / build runner (`<leader>R*`); auto-detects make / npm / cargo / go / just / cmake templates.
 - **nvim-coverage** — test-coverage gutter signs + summary (`<leader>nc` / `nC`); reads lcov / coverage.xml.
@@ -133,7 +133,7 @@ Closing the last named file (`<leader>w` / `<leader>bd` / `:q` / `:wq` / `:x` / 
 How you start Neovim sets the workspace behavior:
 
 - **`nvim`** (no args) — full IDE: tab bar, dashboard, and the cwd session auto-restores on start and saves on exit.
-- **`nvim <dir>`** — identical to `cd <dir> && nvim`: chdir's into `<dir>` (dropping the stray dir buffer) and keys the session to `<dir>`.
+- **`nvim <dir>`** — identical to `cd <dir> && nvim`: chdir's into `<dir>` (dropping the stray dir buffer) and keys the session to `<dir>` (an inaccessible dir falls back to a bare launch).
 - **`nvim <file>`** — single-file editor: no tab bar, no dashboard, one buffer at a time (opening another wipes the previous), no session. Closing the file exits Neovim.
 - **`nvim a b c…`** (multiple files) — open as tabs in argument order (more can be opened), but the session is left untouched.
 - **`nvim dir1 dir2…`** (multiple dirs) — each dir is its own project root; `:next` / `:prev` `:tcd` into whichever is current (cwd / pickers / LSP / session key follow). Sessions are **manual**: `<leader>qs` restores the current dir's, exit saves it (no auto-restore, so `:next` / `:prev` stay intact).

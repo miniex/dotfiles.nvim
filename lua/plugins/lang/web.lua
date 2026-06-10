@@ -1,31 +1,33 @@
 local ts_fts = { "javascript", "javascriptreact", "typescript", "typescriptreact" }
 
 -- Browser DAP target from $PATH: Chrome/Chromium first, else Firefox, else none.
-local function detect_browser()
-    for _, bin in ipairs({ "google-chrome", "google-chrome-stable", "chromium", "chromium-browser" }) do
-        if vim.fn.executable(bin) == 1 then
-            return "chrome"
+-- Memoized + lazy: the $PATH scan runs on first DAP/Mason load, not at startup.
+local _browser
+local function browser()
+    if _browser == nil then
+        _browser = false
+        for _, bin in ipairs({ "google-chrome", "google-chrome-stable", "chromium", "chromium-browser" }) do
+            if vim.fn.executable(bin) == 1 then
+                _browser = "chrome"
+                break
+            end
+        end
+        if not _browser then
+            for _, bin in ipairs({ "firefox", "firefox-developer-edition", "firefox-esr" }) do
+                if vim.fn.executable(bin) == 1 then
+                    _browser = "firefox"
+                    break
+                end
+            end
         end
     end
-    for _, bin in ipairs({ "firefox", "firefox-developer-edition", "firefox-esr" }) do
-        if vim.fn.executable(bin) == 1 then
-            return "firefox"
-        end
-    end
-    return nil
-end
-local browser = detect_browser()
-
--- js-debug covers Node (+ Chrome); add firefox-debug-adapter only for Firefox.
-local dap_tools = { "js-debug-adapter" }
-if browser == "firefox" then
-    table.insert(dap_tools, "firefox-debug-adapter")
+    return _browser
 end
 
 return {
     -- JS/TS code actions (source.* kinds are LSP-standard, no VtslsExec needed).
     require("config.lang").code_action_keys("TS", { "I", "U" }, ts_fts),
-    -- JS/TS debugging: Node always; browser picked by detect_browser().
+    -- JS/TS debugging: Node always; browser auto-detected from $PATH.
     require("config.dap").spec(function(dap)
         local resolve = require("config.dap").mason_bin
         local node = resolve("bin/js-debug-adapter", "js-debug-adapter")
@@ -40,7 +42,7 @@ return {
             dap.adapters["pwa-node"] = jsdebug
             dap.adapters["pwa-chrome"] = jsdebug
         end
-        local ff = browser == "firefox" and resolve("bin/firefox-debug-adapter", "firefox-debug-adapter")
+        local ff = browser() == "firefox" and resolve("bin/firefox-debug-adapter", "firefox-debug-adapter")
         if ff then
             dap.adapters.firefox = { type = "executable", command = ff, args = {} }
         end
@@ -63,7 +65,7 @@ return {
                         cwd = "${workspaceFolder}",
                     },
                 })
-                if browser == "chrome" then
+                if browser() == "chrome" then
                     vim.list_extend(configs, {
                         {
                             type = "pwa-chrome",
@@ -109,7 +111,18 @@ return {
             dap.configurations[lang] = configs
         end
     end),
-    require("config.lang").mason(dap_tools),
+    -- js-debug covers Node (+ Chrome); add firefox-debug-adapter only for Firefox.
+    -- Inlined (not the mason helper) so the browser() probe stays lazy.
+    {
+        "WhoIsSethDaniel/mason-tool-installer.nvim",
+        opts = function(_, opts)
+            opts.ensure_installed = opts.ensure_installed or {}
+            table.insert(opts.ensure_installed, "js-debug-adapter")
+            if browser() == "firefox" then
+                table.insert(opts.ensure_installed, "firefox-debug-adapter")
+            end
+        end,
+    },
     -- package.json dependency versions inline (crates.nvim's JS analogue).
     {
         "vuki656/package-info.nvim",
