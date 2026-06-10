@@ -16,5 +16,15 @@ return {
             goto_left = "",
             goto_right = "",
         },
+        -- Extra objects on free chars: g = whole buffer, d = digit run.
+        custom_textobjects = {
+            g = function()
+                return {
+                    from = { line = 1, col = 1 },
+                    to = { line = vim.fn.line("$"), col = math.max(vim.fn.getline("$"):len(), 1) },
+                }
+            end,
+            d = { "%f[%d]%d+" },
+        },
     },
 }

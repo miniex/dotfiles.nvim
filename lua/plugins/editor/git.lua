@@ -148,6 +148,7 @@ return {
                 end, "Reset Hunk")
                 map("n", "<leader>ghS", gs.stage_buffer, "Stage Buffer")
                 map("n", "<leader>ghR", gs.reset_buffer, "Reset Buffer")
+                map("n", "<leader>ghu", gs.undo_stage_hunk, "Undo Stage Hunk")
                 map("n", "<leader>ghp", function()
                     gs.preview_hunk()
                     focus_gitsigns("hunk")
@@ -170,6 +171,7 @@ return {
                 -- Toggle
                 map("n", "<leader>gtb", gs.toggle_current_line_blame, "Toggle Line Blame")
                 map("n", "<leader>gtd", gs.toggle_deleted, "Toggle Deleted")
+                map("n", "<leader>gtw", gs.toggle_word_diff, "Toggle Word Diff")
 
                 -- Hunk textobject: d ih / v ah.
                 map({ "o", "x" }, "ih", gs.select_hunk, "Inner Hunk")

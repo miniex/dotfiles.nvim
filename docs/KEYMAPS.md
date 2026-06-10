@@ -34,24 +34,26 @@ Leader: `<Space>`. `<localleader>` also `<Space>` (most localleader bindings liv
 
 > Modal floats (pickers, snacks terminal, lazy, Mason, harpoon menu, lazygit, Neo-tree) are mutually exclusive; auxiliary floats (hover, completion, notifier, …) stack on top.
 
-| Key                               | Description                                                     |
-| --------------------------------- | --------------------------------------------------------------- |
-| `<leader>ff`                      | fff.nvim: find files (Rust-backed, sub-10ms on huge codebases)  |
-| `<leader>fF`                      | fff.nvim: find files in current directory                       |
-| `<leader>fg` / `fr` / `fb` / `fh` | snacks.picker: grep / recent / buffers / help                   |
-| `<leader>fB`                      | snacks.picker: live grep across open buffers (the tab list)     |
-| `<leader>fi` / `fH`               | snacks.picker: insert icon / inspect highlight groups           |
-| `<leader>ft`                      | TODO comments                                                   |
-| `<leader>fp`                      | snacks.picker: recent projects (cd + restore)                   |
-| `<leader>fR`                      | Rename current file (LSP-aware)                                 |
-| `<leader>fS`                      | Snippets (LuaSnip, ft + inherited + all)                        |
-| `<leader>zz` / `z'`               | fzf-lua: builtin menu / resume last picker                      |
-| `<leader>e` / `<leader>o`         | Neo-tree: toggle / reveal                                       |
-| `<cr>` / `l` / `h` (in Neo-tree)  | Open file in main window; folder expand / collapse              |
-| `<leader>L`                       | View current file in `less` (read-only, own tab)                |
-| `s` / `S` (n/x/o)                 | flash: jump / treesitter jump                                   |
-| `r` / `R` / `<C-s>`               | flash: remote (o) / treesitter search (o/x) / toggle in `/` (c) |
-| `<leader>?`                       | which-key: all keymaps (`<C-d>`/`<C-u>` flip pages)             |
+| Key                                   | Description                                                     |
+| ------------------------------------- | --------------------------------------------------------------- |
+| `<leader>ff`                          | fff.nvim: find files (Rust-backed, sub-10ms on huge codebases)  |
+| `<leader>fF`                          | fff.nvim: find files in current directory                       |
+| `<leader>fg` / `fr` / `fb` / `fh`     | snacks.picker: grep / recent / buffers / help                   |
+| `<leader>fB`                          | snacks.picker: live grep across open buffers (the tab list)     |
+| `<leader>fi` / `fH`                   | snacks.picker: insert icon / inspect highlight groups           |
+| `<leader>ft`                          | TODO comments                                                   |
+| `<leader>fp`                          | snacks.picker: recent projects (cd + restore)                   |
+| `<leader>fR`                          | Rename current file (LSP-aware)                                 |
+| `<leader>fS`                          | Snippets (LuaSnip, ft + inherited + all)                        |
+| `<leader>zz` / `z'`                   | fzf-lua: builtin menu / resume last picker                      |
+| `<leader>e` / `<leader>o`             | Neo-tree: toggle / reveal                                       |
+| `<cr>` / `l` / `h` (in Neo-tree)      | Open file in main window; folder expand / collapse              |
+| `<leader>L`                           | View current file in `less` (read-only, own tab)                |
+| `s` / `S` (n/x/o)                     | flash: jump / treesitter jump                                   |
+| `r` / `R` / `<C-s>`                   | flash: remote (o) / treesitter search (o/x) / toggle in `/` (c) |
+| `w` / `e` / `b` / `ge` (n/o/x)        | nvim-spider: sub-word (camelCase / snake_case) motion           |
+| `[j` / `]j`, `[l` / `]l`, `[u` / `]u` | mini.bracketed: jumplist / loclist / undo-state nav             |
+| `<leader>?`                           | which-key: all keymaps (`<C-d>`/`<C-u>` flip pages)             |
 
 ## fzf-lua (`<leader>z*`)
 
@@ -219,7 +221,7 @@ Bare `nvim` (and `nvim <dir>`, which cd's in) auto-restores the cwd session (ski
 | `<leader>uT` / `<leader>ux` | n     | Toggle treesitter highlight (Snacks) / hex view                           |
 | `[x`                        | n     | Jump to context start                                                     |
 
-> **mini.ai** adds bracket/quote/tag textobjects (`a(` / `i"` / `at`) with next/last search — `an(` / `in"` (next), `aL(` / `iL"` (last).
+> **mini.ai** adds bracket/quote/tag textobjects (`a(` / `i"` / `at`) with next/last search — `an(` / `in"` (next), `aL(` / `iL"` (last) — plus `ag`/`ig` (whole buffer) and `ad`/`id` (number).
 
 ## Winbar Breadcrumb (dropbar)
 
@@ -232,26 +234,26 @@ Inside the menu: `q`/`<Esc>` close, `h` parent (no-op at top), `l` open entry.
 
 ## Git
 
-| Key                            | Description                                                                                       |
-| ------------------------------ | ------------------------------------------------------------------------------------------------- |
-| `<leader>gs/gb/gd/gl/gc/gp/gP` | fugitive: status/blame/diff/log/commit/push/pull                                                  |
-| `<leader>gdv`                  | fugitive: 3-way diffsplit (`:Gvdiffsplit!`) — for merge conflicts                                 |
-| `<leader>gg/gf/gL`             | lazygit: open / file history / log                                                                |
-| `<leader>gB`                   | gitbrowse: open current line in browser (n/v)                                                     |
-| `<leader>gvo/gvc/gvr`          | Diffview: open / close / refresh                                                                  |
-| `<leader>gvf/gvF/gvh`          | Diffview file history: current / repo / stash                                                     |
-| `<leader>gvt` / `<leader>gvp`  | Diffview: toggle / focus files panel                                                              |
-| `<leader>gvg` / `<leader>gvG`  | gitgraph.nvim: all branches / current (`<cr>` → diffview)                                         |
-| `<leader>gvs` / `<leader>gvA`  | gitgraph.nvim: prompt for `--since` / `--author` filter                                           |
-| `<leader>gH`                   | advanced-git-search: search history by content (log -S/-G/-L)                                     |
-| `[h` / `]h`                    | Prev / next hunk                                                                                  |
-| `<leader>ghs/r/S/R/p/b/c/d/D`  | Stage (toggle) / reset / stage-buf / reset-buf / preview / blame-line / blame-file / diff / diff~ |
-| `<leader>ghq`                  | gitsigns: hunks (attached buffers) to quickfix                                                    |
-| `<leader>gtb` / `<leader>gtd`  | Toggle line blame / show deleted                                                                  |
-| `ih` / `ah` (o/x)              | gitsigns hunk textobject (`d ih`, `v ah`)                                                         |
-| `<leader>gxq`                  | git-conflict: conflicts to quickfix                                                               |
-| `[X` / `]X`                    | Prev / next conflict                                                                              |
-| `co/ct/cb/c0`                  | Inside conflict: ours / theirs / both / none                                                      |
+| Key                                           | Description                                                                                                    |
+| --------------------------------------------- | -------------------------------------------------------------------------------------------------------------- |
+| `<leader>gs/gb/gd/gl/gc/gp/gP`                | fugitive: status/blame/diff/log/commit/push/pull                                                               |
+| `<leader>gdv`                                 | fugitive: 3-way diffsplit (`:Gvdiffsplit!`) — for merge conflicts                                              |
+| `<leader>gg/gf/gL`                            | lazygit: open / file history / log                                                                             |
+| `<leader>gB`                                  | gitbrowse: open current line in browser (n/v)                                                                  |
+| `<leader>gvo/gvc/gvr`                         | Diffview: open / close / refresh                                                                               |
+| `<leader>gvf/gvF/gvh`                         | Diffview file history: current / repo / stash                                                                  |
+| `<leader>gvt` / `<leader>gvp`                 | Diffview: toggle / focus files panel                                                                           |
+| `<leader>gvg` / `<leader>gvG`                 | gitgraph.nvim: all branches / current (`<cr>` → diffview)                                                      |
+| `<leader>gvs` / `<leader>gvA`                 | gitgraph.nvim: prompt for `--since` / `--author` filter                                                        |
+| `<leader>gH`                                  | advanced-git-search: search history by content (log -S/-G/-L)                                                  |
+| `[h` / `]h`                                   | Prev / next hunk                                                                                               |
+| `<leader>ghs/r/S/R/u/p/b/c/d/D`               | Stage (toggle) / reset / stage-buf / reset-buf / undo-stage / preview / blame-line / blame-file / diff / diff~ |
+| `<leader>ghq`                                 | gitsigns: hunks (attached buffers) to quickfix                                                                 |
+| `<leader>gtb` / `<leader>gtd` / `<leader>gtw` | Toggle line blame / show deleted / word diff                                                                   |
+| `ih` / `ah` (o/x)                             | gitsigns hunk textobject (`d ih`, `v ah`)                                                                      |
+| `<leader>gxq`                                 | git-conflict: conflicts to quickfix                                                                            |
+| `[X` / `]X`                                   | Prev / next conflict                                                                                           |
+| `co/ct/cb/c0`                                 | Inside conflict: ours / theirs / both / none                                                                   |
 
 ## Debugger (DAP)
 
