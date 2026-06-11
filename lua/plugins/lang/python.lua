@@ -30,5 +30,5 @@ return {
         },
     },
     -- Ruff code actions.
-    require("config.lang").code_action_keys("Python", { "I", "X" }, "python"),
+    require("config.lang").code_action_keys("Python", { "o", "X" }, "python"),
 }

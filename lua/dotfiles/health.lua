@@ -98,7 +98,8 @@ function M.check()
 
     h.start("Toolchains")
     local function lang_on(name)
-        return select(2, pcall(require, "config.langs"))[name] == true
+        -- Reuse the table above; indexing a pcall error string would mask a load failure as "disabled".
+        return ok_l and langs[name] == true
     end
     if exe("node") then
         h.ok("node " .. ver("node"))

@@ -69,24 +69,30 @@ function M.code_action_only(kind)
     end
 end
 
--- nvim-lspconfig code-action keys: `<leader>c<letter>` from the set below, gated to `ft`.
+-- `<leader>c<letter>` code-action keys, buffer-local per `ft`. Letter `o` (not
+-- `I`): `<leader>cI` is the global Incoming Calls map and would shadow it.
 local CODE_ACTIONS = {
-    I = { kind = "source.organizeImports", desc = "Organize Imports" },
+    o = { kind = "source.organizeImports", desc = "Organize Imports" },
     X = { kind = "source.fixAll", desc = "Fix All" },
     U = { kind = "source.removeUnused", desc = "Remove Unused" },
 }
+-- Buffer-local, not lazy `keys`: there `ft` only gates loading, so the LHS would
+-- leak globally (wrong desc in every buffer). FileType maps confine it to `ft`.
 function M.code_action_keys(label, letters, ft)
-    local keys = {}
-    for _, letter in ipairs(letters) do
-        local a = CODE_ACTIONS[letter]
-        keys[#keys + 1] = {
-            "<leader>c" .. letter,
-            M.code_action_only(a.kind),
-            desc = label .. ": " .. a.desc,
-            ft = ft,
-        }
-    end
-    return { "neovim/nvim-lspconfig", keys = keys }
+    vim.api.nvim_create_autocmd("FileType", {
+        group = vim.api.nvim_create_augroup("code-action-keys-" .. label, { clear = true }),
+        pattern = ft,
+        callback = function(args)
+            for _, letter in ipairs(letters) do
+                local a = CODE_ACTIONS[letter]
+                vim.keymap.set("n", "<leader>c" .. letter, M.code_action_only(a.kind), {
+                    buffer = args.buf,
+                    desc = label .. ": " .. a.desc,
+                })
+            end
+        end,
+    })
+    return { "neovim/nvim-lspconfig" }
 end
 
 return M

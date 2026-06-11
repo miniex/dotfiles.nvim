@@ -21,7 +21,8 @@ return {
         fmt("const [{}, set{}] = useState({});", {
             i(1, "state"),
             f(function(a)
-                return (a[1][1] or ""):gsub("^%l", string.upper)
+                -- Extra parens truncate gsub's 2nd return (count) to the string only.
+                return ((a[1][1] or ""):gsub("^%l", string.upper))
             end, { 1 }),
             i(2),
         })

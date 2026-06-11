@@ -9,8 +9,10 @@ return {
             border = vim.g.flower_border,
             should_preview_cb = function(bufnr, _)
                 -- Skip preview for oversized files and fugitive buffers.
+                -- getfsize returns -1 for unstattable files; treat those as skip, not preview.
                 local bufname = vim.api.nvim_buf_get_name(bufnr)
-                return vim.fn.getfsize(bufname) <= 100 * 1024 and not bufname:match("^fugitive://")
+                local size = vim.fn.getfsize(bufname)
+                return size >= 0 and size <= 100 * 1024 and not bufname:match("^fugitive://")
             end,
         },
         func_map = {

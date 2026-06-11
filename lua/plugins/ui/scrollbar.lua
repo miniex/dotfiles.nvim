@@ -16,7 +16,9 @@ end
 
 return {
     "petertriho/nvim-scrollbar",
-    event = "BufReadPost",
+    -- VeryLazy: keep the heaviest UI plugin (5 autocmds + pulse timer) off the
+    -- first-file path. The initial snap is scheduled, so deferral is transparent.
+    event = "VeryLazy",
     dependencies = { "lewis6991/gitsigns.nvim" },
     config = function()
         require("scrollbar").setup({
@@ -311,7 +313,7 @@ return {
                     return
                 end
                 poke_handle()
-                animate_cursor(event.buf, vim.fn.line(".") - 1)
+                animate_cursor(event.buf, vim.api.nvim_win_get_cursor(0)[1] - 1)
             end,
         })
 
@@ -324,7 +326,7 @@ return {
                     return
                 end
                 poke_handle()
-                local line = vim.fn.line(".") - 1
+                local line = vim.api.nvim_win_get_cursor(0)[1] - 1
                 if displayed_lines[event.buf] ~= line then
                     snap_cursor(event.buf, line)
                 end
@@ -349,7 +351,7 @@ return {
                     return
                 end
                 if vim.api.nvim_buf_is_valid(event.buf) then
-                    snap_cursor(event.buf, vim.fn.line(".") - 1)
+                    snap_cursor(event.buf, vim.api.nvim_win_get_cursor(0)[1] - 1)
                 end
             end,
         })
@@ -415,7 +417,7 @@ return {
         })
 
         vim.schedule(function()
-            snap_cursor(vim.api.nvim_get_current_buf(), vim.fn.line(".") - 1)
+            snap_cursor(vim.api.nvim_get_current_buf(), vim.api.nvim_win_get_cursor(0)[1] - 1)
         end)
     end,
 }

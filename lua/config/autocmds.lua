@@ -48,12 +48,18 @@ local function neotree_git_refresh()
         nt_timer:stop()
         nt_timer:close()
     end
-    nt_timer = vim.defer_fn(function()
-        nt_timer = nil
+    -- Capture the handle so this callback clears only its own timer, not a
+    -- newer one a fast re-fire armed (cf. clipboard debounce below).
+    local handle
+    handle = vim.defer_fn(function()
+        if nt_timer == handle then
+            nt_timer = nil
+        end
         pcall(function()
             require("neo-tree.sources.manager").refresh("filesystem")
         end)
     end, 400)
+    nt_timer = handle
 end
 vim.api.nvim_create_autocmd({ "FocusGained", "TermLeave", "TermClose", "BufWritePost" }, {
     group = git_refresh_grp,

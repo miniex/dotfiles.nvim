@@ -24,5 +24,5 @@ return {
         },
     },
     -- gopls code actions.
-    require("config.lang").code_action_keys("Go", { "I", "X" }, "go"),
+    require("config.lang").code_action_keys("Go", { "o", "X" }, "go"),
 }

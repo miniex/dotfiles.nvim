@@ -26,7 +26,7 @@ end
 
 return {
     -- JS/TS code actions (source.* kinds are LSP-standard, no VtslsExec needed).
-    require("config.lang").code_action_keys("TS", { "I", "U" }, ts_fts),
+    require("config.lang").code_action_keys("TS", { "o", "U" }, ts_fts),
     -- JS/TS debugging: Node always; browser auto-detected from $PATH.
     require("config.dap").spec(function(dap)
         local resolve = require("config.dap").mason_bin

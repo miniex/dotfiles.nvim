@@ -404,9 +404,9 @@ In the toggle terminal, `$EDITOR`/`$VISUAL`/`$GIT_EDITOR` forward to the parent 
 | `<leader>ch`                               | C/C++: switch source ↔ header                             |
 | `<leader>cR` / `<leader>cD` / `<leader>cT` | Rust: code action / debuggables / testables               |
 | `<leader>cE` / `<leader>cP`                | Rust: expand macro / jump to parent module                |
-| `<leader>cI` / `<leader>cU`                | TS/JS: organize imports / remove unused                   |
-| `<leader>cI` / `<leader>cX`                | Python: organize imports / fix all (ruff)                 |
-| `<leader>cI` / `<leader>cX`                | Go: organize imports / fix all (gopls)                    |
+| `<leader>co` / `<leader>cU`                | TS/JS: organize imports / remove unused                   |
+| `<leader>co` / `<leader>cX`                | Python: organize imports / fix all (ruff)                 |
+| `<leader>co` / `<leader>cX`                | Go: organize imports / fix all (gopls)                    |
 | `<leader>cv/cF/cu/cU/cD` (Cargo.toml)      | crates: versions / features / update / upgrade / docs     |
 | `<leader>cv/cu/cU/cD` (package.json)       | package-info: versions / update / change version / delete |
 
