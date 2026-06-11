@@ -354,7 +354,8 @@ return {
             end,
         })
 
-        vim.api.nvim_create_autocmd("BufWipeout", {
+        -- BufDelete too: a reused bufnr would misplace the cursor anim's start line.
+        vim.api.nvim_create_autocmd({ "BufDelete", "BufWipeout" }, {
             group = scrollbar_group,
             callback = function(event)
                 displayed_lines[event.buf] = nil

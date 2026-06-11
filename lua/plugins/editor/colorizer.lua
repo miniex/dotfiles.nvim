@@ -15,6 +15,8 @@ return {
         filetypes = {
             "*",
             "!lazy",
+            -- snacks.bigfile (ft=bigfile, >2 MiB): skip the full-buffer scan.
+            "!bigfile",
             css = css,
             scss = css,
             sass = css,

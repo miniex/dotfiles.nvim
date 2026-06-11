@@ -55,8 +55,16 @@ return {
             diag_by_buf[buf] = { errs, warns }
             return errs, warns
         end
+        local diag_cache_grp = vim.api.nvim_create_augroup("InclineDiagCache", { clear = true })
         vim.api.nvim_create_autocmd("DiagnosticChanged", {
-            group = vim.api.nvim_create_augroup("InclineDiagCache", { clear = true }),
+            group = diag_cache_grp,
+            callback = function(args)
+                diag_by_buf[args.buf] = nil
+            end,
+        })
+        -- Prune on wipe, else entries leak by bufnr.
+        vim.api.nvim_create_autocmd("BufWipeout", {
+            group = diag_cache_grp,
             callback = function(args)
                 diag_by_buf[args.buf] = nil
             end,

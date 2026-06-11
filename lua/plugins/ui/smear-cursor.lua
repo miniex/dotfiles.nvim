@@ -23,6 +23,14 @@ return {
         local sc = require("smear_cursor.config")
         local grp = vim.api.nvim_create_augroup("SmearCursorAutocmds", { clear = true })
 
+        -- Each smear.enabled write re-runs unlisten/listen + a deferred jump_cursor
+        -- even when unchanged; guard so repeated chrome-buffer passes don't churn.
+        local function set_smear(v)
+            if smear.enabled ~= v then
+                smear.enabled = v
+            end
+        end
+
         -- Sticky-off: outlives the 80ms float-open defer below; spring would otherwise
         -- fire per CursorMovedI in snacks_picker_input.
         local chrome = require("config.chrome_filetypes")
@@ -56,19 +64,19 @@ return {
                 -- Skip smear on float open: the (1,1) landing + the plugin's own
                 -- cursor placement fire back-to-back; 80ms swallows both jumps.
                 if should_stay_disabled(0) then
-                    smear.enabled = false
+                    set_smear(false)
                     float_gen = float_gen + 1
                     return
                 end
                 if vim.api.nvim_win_get_config(0).relative == "" then
                     return
                 end
-                smear.enabled = false
+                set_smear(false)
                 float_gen = float_gen + 1
                 local mine = float_gen
                 vim.defer_fn(function()
                     if mine == float_gen and not should_stay_disabled(0) then
-                        smear.enabled = true
+                        set_smear(true)
                     end
                 end, 80)
             end,
@@ -79,7 +87,7 @@ return {
             group = grp,
             callback = function(event)
                 if should_stay_disabled(event.buf) then
-                    smear.enabled = false
+                    set_smear(false)
                     float_gen = float_gen + 1
                 end
             end,
@@ -92,7 +100,7 @@ return {
                 if should_stay_disabled(0) then
                     vim.schedule(function()
                         if not should_stay_disabled(0) then
-                            smear.enabled = true
+                            set_smear(true)
                         end
                     end)
                 end

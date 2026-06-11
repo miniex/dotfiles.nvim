@@ -11,7 +11,8 @@ return {
                     loaded = true
                 end
             end
-            check()
+            -- Defer so launching in a CMake project doesn't force-load mid-startup.
+            vim.schedule(check)
             vim.api.nvim_create_autocmd("DirChanged", {
                 group = vim.api.nvim_create_augroup("CmakeToolsLazyLoad", { clear = true }),
                 callback = function()
