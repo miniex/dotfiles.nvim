@@ -68,6 +68,13 @@ map("<leader>uU", function()
     vim.cmd("Undotree")
 end, "n", "Toggle undotree")
 
+-- 0.12 opt-package command: stub packadds the real :DiffTool on first use, then re-dispatches.
+vim.api.nvim_create_user_command("DiffTool", function(o)
+    vim.api.nvim_del_user_command("DiffTool")
+    vim.cmd("packadd nvim.difftool")
+    vim.cmd.DiffTool(o.fargs)
+end, { nargs = "*", complete = "file", desc = "Diff two files/dirs (0.12 native)" })
+
 -- require() triggers LuaSnip's lazy load, so this works before any InsertEnter.
 map("<leader>fs", function()
     require("luasnip.loaders").edit_snippet_files()
