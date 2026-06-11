@@ -278,7 +278,17 @@ return {
                     },
                 },
             },
-            extensions = { "lazy", "mason", "neo-tree", "trouble" },
+            extensions = {
+                "lazy",
+                "mason",
+                "neo-tree",
+                "trouble",
+                "aerial",
+                "overseer",
+                "quickfix",
+                "nvim-dap-ui",
+                "fugitive",
+            },
         })
     end,
 }

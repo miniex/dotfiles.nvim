@@ -98,6 +98,8 @@ return {
     },
     opts = {
         options = { "curdir", "tabpages", "winsize", "help", "globals", "skiprtp" },
+        -- Per-branch sessions (branch name appended, except main/master).
+        branch = true,
     },
     config = function(_, opts)
         require("persistence").setup(opts)

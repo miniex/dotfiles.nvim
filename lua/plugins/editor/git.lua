@@ -139,6 +139,12 @@ return {
                 map("n", "[h", function()
                     gs.nav_hunk("prev", { preview = true, wrap = true })
                 end, "Prev Hunk")
+                map("n", "]H", function()
+                    gs.nav_hunk("next", { preview = true, wrap = true, target = "staged" })
+                end, "Next Staged Hunk")
+                map("n", "[H", function()
+                    gs.nav_hunk("prev", { preview = true, wrap = true, target = "staged" })
+                end, "Prev Staged Hunk")
 
                 -- Actions
                 map("n", "<leader>ghs", gs.stage_hunk, "Stage Hunk")
@@ -171,6 +177,12 @@ return {
                 map("n", "<leader>ghq", function()
                     gs.setqflist("attached")
                 end, "Hunks to QF (attached)")
+                map("n", "<leader>ghQ", function()
+                    gs.setqflist("all")
+                end, "Hunks to QF (all repo)")
+                map("n", "<leader>ghv", function()
+                    gs.show()
+                end, "Show file at index")
 
                 -- Toggle
                 map("n", "<leader>gtb", gs.toggle_current_line_blame, "Toggle Line Blame")

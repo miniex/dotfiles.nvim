@@ -49,6 +49,7 @@ Leader: `<Space>`. `<localleader>` also `<Space>` (most localleader bindings liv
 | `<leader>zz` / `z'`                   | fzf-lua: builtin menu / resume last picker                      |
 | `<leader>e` / `<leader>o`             | Neo-tree: toggle / reveal                                       |
 | `<cr>` / `l` / `h` (in Neo-tree)      | Open file in main window; folder expand / collapse              |
+| `<` / `>` (in Neo-tree)               | Cycle source (Files / Buffers / Git status)                     |
 | `<leader>L`                           | View current file in `less` (read-only, own tab)                |
 | `s` / `S` (n/x/o)                     | flash: jump / treesitter jump                                   |
 | `r` / `R` / `<C-s>`                   | flash: remote (o) / treesitter search (o/x) / toggle in `/` (c) |
@@ -123,7 +124,7 @@ Inside the grug-far buffer (`<localleader>` = `<Space>`): `r` replace · `s` / `
 
 ## Session (persistence.nvim)
 
-Bare `nvim` (and `nvim <dir>`, which cd's in) auto-restores the cwd session (skipped in headless or when it has no real files). File launches (`nvim <file>` / `nvim a b`) don't; `nvim dir1 dir2` keeps per-dir sessions but manual (`<leader>qs`). See Launch modes in FEATURES. Only window-visible buffers persist.
+Bare `nvim` (and `nvim <dir>`, which cd's in) auto-restores the cwd session (skipped in headless or when it has no real files). File launches (`nvim <file>` / `nvim a b`) don't; `nvim dir1 dir2` keeps per-dir sessions but manual (`<leader>qs`). See Launch modes in FEATURES. Only window-visible buffers persist. Sessions are scoped per git branch — feature branches keep separate layouts (main/master share the base session).
 
 | Key          | Description                 |
 | ------------ | --------------------------- |
@@ -256,8 +257,10 @@ Inside the menu: `q`/`<Esc>` close, `h` parent (no-op at top), `l` open entry.
 | `<leader>gvs` / `<leader>gvA`                 | gitgraph.nvim: prompt for `--since` / `--author` filter                                                            |
 | `<leader>gH`                                  | advanced-git-search: search history by content (log -S/-G/-L)                                                      |
 | `[h` / `]h`                                   | Prev / next hunk (auto-preview on jump)                                                                            |
+| `[H` / `]H`                                   | Prev / next staged hunk                                                                                            |
 | `<leader>ghs/r/S/R/p/i/b/c/d/D`               | Stage (toggle) / reset / stage-buf / reset-buf / preview / inline preview / blame-line / blame-file / diff / diff~ |
-| `<leader>ghq`                                 | gitsigns: hunks (attached buffers) to quickfix                                                                     |
+| `<leader>ghq` / `ghQ`                         | gitsigns: hunks to quickfix — attached buffers / whole repo                                                        |
+| `<leader>ghv`                                 | gitsigns: show the file at the index (read-only)                                                                   |
 | `<leader>gtb` / `<leader>gtd` / `<leader>gtw` | Toggle line blame / show deleted / word diff                                                                       |
 | `ih` / `ah` (o/x)                             | gitsigns hunk textobject (`d ih`, `v ah`)                                                                          |
 | `<leader>gxq`                                 | git-conflict: conflicts to quickfix                                                                                |
