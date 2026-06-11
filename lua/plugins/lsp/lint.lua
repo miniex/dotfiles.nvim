@@ -21,6 +21,8 @@ return {
                 "sqlfluff",
                 -- YAML
                 "yamllint",
+                -- PHP
+                "phpstan",
             },
         },
     },
@@ -56,6 +58,8 @@ return {
                 sql = { "sqlfluff" },
                 -- YAML
                 yaml = { "yamllint" },
+                -- PHP
+                php = { "phpstan" },
             },
         },
         config = function(_, opts)

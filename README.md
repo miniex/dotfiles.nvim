@@ -43,12 +43,12 @@ Prerequisites, manual install, and recovery: [docs/SETUP.md](docs/SETUP.md).
 | Templ               | templ (+ html)                                       | -                | -                                        |
 | Rust                | rust-analyzer (rustaceanvim)                         | -                | codelldb                                 |
 | Zig                 | zls                                                  | -                | codelldb                                 |
-| Nim                 | nim_langserver                                       | -                | -                                        |
+| Nim                 | nim_langserver                                       | -                | codelldb                                 |
 | OCaml               | ocamllsp                                             | -                | -                                        |
 | Elixir              | elixirls                                             | -                | elixir-ls debug adapter                  |
 | Python              | basedpyright + ruff                                  | ruff (LSP)       | debugpy                                  |
 | Lua                 | lua_ls                                               | selene           | -                                        |
-| PHP                 | intelephense                                         | -                | php-debug-adapter (Xdebug)               |
+| PHP                 | intelephense                                         | phpstan          | php-debug-adapter (Xdebug)               |
 | CSS / HTML          | cssls / html+emmet                                   | -                | -                                        |
 | Tailwind / JS-TS    | tailwindcss / vtsls                                  | eslint_d         | js-debug-adapter (Node) + Chrome/Firefox |
 | Svelte/Vue/Astro    | svelte / vue_ls (+ vtsls) / astro                    | -                | -                                        |
