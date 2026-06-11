@@ -78,8 +78,12 @@ return {
             function()
                 local list = h():list()
                 local items = {}
-                for _, item in ipairs(list.items) do
-                    items[#items + 1] = item.value
+                -- list.items is sparse (remove leaves nil holes); walk by length.
+                for i = 1, list:length() do
+                    local item = list.items[i]
+                    if item then
+                        items[#items + 1] = item.value
+                    end
                 end
                 require("fzf-lua").fzf_exec(items, {
                     prompt = "Harpoon> ",

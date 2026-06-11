@@ -14,8 +14,6 @@ return {
         { "<C-k>", move("up"), mode = { "n", "t" }, desc = "Move to top pane" },
         { "<C-l>", move("right"), mode = { "n", "t" }, desc = "Move to right pane" },
     },
-    opts = {
-        -- At an nvim edge, step into the adjacent multiplexer pane (else wrap).
-        at_edge = "wrap",
-    },
+    -- Defaults auto-detect the multiplexer and at_edge per terminal (kitty → stop, else wrap).
+    opts = {},
 }

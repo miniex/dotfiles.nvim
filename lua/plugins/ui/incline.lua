@@ -104,7 +104,8 @@ return {
                     return ""
                 end
                 local bufname = vim.api.nvim_buf_get_name(props.buf)
-                local filename = bufname == "" and "[No Name]" or vim.fn.fnamemodify(bufname, ":t")
+                -- Lua tail instead of fnamemodify(":t") — avoids a vimL call per render.
+                local filename = bufname == "" and "[No Name]" or (bufname:match("[^/]+$") or bufname)
                 local ft_icon, ft_color = icon_for(filename)
                 local modified = vim.bo[props.buf].modified
                 local readonly = vim.bo[props.buf].readonly

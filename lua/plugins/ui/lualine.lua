@@ -164,7 +164,8 @@ return {
             end
             search_str = ""
         end
-        vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI", "CmdlineLeave" }, {
+        -- Not CursorMovedI: searchcount() rescans per insert keystroke while hlsearch is on.
+        vim.api.nvim_create_autocmd({ "CursorMoved", "CmdlineLeave" }, {
             group = vim.api.nvim_create_augroup("LualineSearchCount", { clear = true }),
             callback = update_search,
         })
