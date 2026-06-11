@@ -150,8 +150,8 @@ return {
         dependencies = { "b0o/SchemaStore.nvim" },
         opts = { inlay_hints = { enabled = true } },
         config = function(_, opts)
-            if vim.fn.has("nvim-0.11") ~= 1 then
-                vim.notify("LSP setup needs nvim 0.11+", vim.log.levels.ERROR)
+            if vim.fn.has("nvim-0.12") ~= 1 then
+                vim.notify("LSP setup needs nvim 0.12+", vim.log.levels.ERROR)
                 return
             end
 

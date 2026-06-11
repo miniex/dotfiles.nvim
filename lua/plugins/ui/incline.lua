@@ -86,7 +86,10 @@ return {
                 return hit
             end
             local bufname = vim.api.nvim_buf_get_name(buf)
-            name_by_buf[buf] = bufname
+            -- Don't cache [No Name]: `:w foo` names it without firing BufFilePost.
+            if bufname ~= "" then
+                name_by_buf[buf] = bufname
+            end
             return bufname
         end
         local name_cache_grp = vim.api.nvim_create_augroup("InclineNameCache", { clear = true })

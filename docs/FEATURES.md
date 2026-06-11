@@ -87,7 +87,7 @@ See [`lua/config/modal-floats.lua`](../lua/config/modal-floats.lua) for the mutu
 - **gitgraph.nvim** — in-buffer branch graph. `<leader>gvg` (all branches), `<leader>gvG` (current), `<leader>gvs` (`--since` prompt).
 - **advanced-git-search** — search git history by content (`<leader>gH`): which commit changed a line, diff a file against any past commit (fzf-lua backed).
 - **git-conflict** — `]X` / `[X` cycle conflicts, `co` / `ct` / `cb` / `c0` resolve.
-- **Auto-refresh** — git signs and neo-tree's git column refresh on focus / terminal-exit / save, so external git ops and submodule changes show up without a manual reload.
+- **Auto-refresh** — neo-tree's git column refreshes (debounced) on focus / terminal-exit / save, so external git ops and submodule changes show up without a manual reload.
 
 ## Tooling
 

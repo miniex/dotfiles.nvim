@@ -26,39 +26,38 @@ vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
     end,
 })
 
--- Git status lags after terminal git ops and submodule changes (neo-tree's file
--- watcher doesn't see into submodule worktrees). Nudge gitsigns + neo-tree to refresh.
+-- neo-tree's git column lags on submodule / terminal git changes — its watcher misses
+-- submodule worktrees; gitsigns self-tracks, so only neo-tree needs this (debounced) nudge.
 local git_refresh_grp = vim.api.nvim_create_augroup("git-status-refresh", { clear = true })
+local nt_timer
 local function neotree_git_refresh()
     if not package.loaded["neo-tree"] then
         return
     end
+    local visible = false
     for _, win in ipairs(vim.api.nvim_list_wins()) do
         if vim.bo[vim.api.nvim_win_get_buf(win)].filetype == "neo-tree" then
-            pcall(function()
-                require("neo-tree.sources.manager").refresh("filesystem")
-            end)
-            return
+            visible = true
+            break
         end
     end
+    if not visible then
+        return
+    end
+    if nt_timer and not nt_timer:is_closing() then
+        nt_timer:stop()
+        nt_timer:close()
+    end
+    nt_timer = vim.defer_fn(function()
+        nt_timer = nil
+        pcall(function()
+            require("neo-tree.sources.manager").refresh("filesystem")
+        end)
+    end, 400)
 end
-vim.api.nvim_create_autocmd({ "FocusGained", "TermLeave", "TermClose" }, {
+vim.api.nvim_create_autocmd({ "FocusGained", "TermLeave", "TermClose", "BufWritePost" }, {
     group = git_refresh_grp,
-    callback = function()
-        if package.loaded["gitsigns"] then
-            pcall(function()
-                require("gitsigns").refresh()
-            end)
-        end
-        vim.schedule(neotree_git_refresh)
-    end,
-})
--- Saving inside a submodule changes the parent's status, which the watcher misses.
-vim.api.nvim_create_autocmd("BufWritePost", {
-    group = git_refresh_grp,
-    callback = function()
-        vim.schedule(neotree_git_refresh)
-    end,
+    callback = neotree_git_refresh,
 })
 
 -- Hide ~ at EOB (covers plugins that override winhighlight/fillchars).
