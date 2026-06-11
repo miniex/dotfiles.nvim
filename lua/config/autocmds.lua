@@ -26,6 +26,41 @@ vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
     end,
 })
 
+-- Git status lags after terminal git ops and submodule changes (neo-tree's file
+-- watcher doesn't see into submodule worktrees). Nudge gitsigns + neo-tree to refresh.
+local git_refresh_grp = vim.api.nvim_create_augroup("git-status-refresh", { clear = true })
+local function neotree_git_refresh()
+    if not package.loaded["neo-tree"] then
+        return
+    end
+    for _, win in ipairs(vim.api.nvim_list_wins()) do
+        if vim.bo[vim.api.nvim_win_get_buf(win)].filetype == "neo-tree" then
+            pcall(function()
+                require("neo-tree.sources.manager").refresh("filesystem")
+            end)
+            return
+        end
+    end
+end
+vim.api.nvim_create_autocmd({ "FocusGained", "TermLeave", "TermClose" }, {
+    group = git_refresh_grp,
+    callback = function()
+        if package.loaded["gitsigns"] then
+            pcall(function()
+                require("gitsigns").refresh()
+            end)
+        end
+        vim.schedule(neotree_git_refresh)
+    end,
+})
+-- Saving inside a submodule changes the parent's status, which the watcher misses.
+vim.api.nvim_create_autocmd("BufWritePost", {
+    group = git_refresh_grp,
+    callback = function()
+        vim.schedule(neotree_git_refresh)
+    end,
+})
+
 -- Hide ~ at EOB (covers plugins that override winhighlight/fillchars).
 local function hide_eob()
     local normal = vim.api.nvim_get_hl(0, { name = "Normal" })

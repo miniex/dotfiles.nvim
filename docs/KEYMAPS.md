@@ -50,6 +50,7 @@ Leader: `<Space>`. `<localleader>` also `<Space>` (most localleader bindings liv
 | `<leader>e` / `<leader>o`             | Neo-tree: toggle / reveal                                       |
 | `<cr>` / `l` / `h` (in Neo-tree)      | Open file in main window; folder expand / collapse              |
 | `<` / `>` (in Neo-tree)               | Cycle source (Files / Buffers / Git status)                     |
+| `<leader>-` / `<leader>fy`            | yazi: open at current file / in cwd (needs `yazi` binary)       |
 | `<leader>L`                           | View current file in `less` (read-only, own tab)                |
 | `s` / `S` (n/x/o)                     | flash: jump / treesitter jump                                   |
 | `r` / `R` / `<C-s>`                   | flash: remote (o) / treesitter search (o/x) / toggle in `/` (c) |
@@ -153,40 +154,40 @@ Bare `nvim` (and `nvim <dir>`, which cd's in) auto-restores the cwd session (ski
 > Severity-sorted; gutter signs `✗`/`!`/`i`/`?` mirror lualine; colors match the scrollbar marks. Diag float shows source when ambiguous.
 > nvim-lightbulb: `❋` sign when a code action is available.
 
-| Key                         | Description                                                        |
-| --------------------------- | ------------------------------------------------------------------ |
-| `K` / `<C-k>` (i)           | Hover / signature help                                             |
-| `gd` / `gD`                 | Definition / declaration                                           |
-| `gr` / `gi` / `gy`          | References / implementation / type definition                      |
-| `<leader>cI` / `cG` / `cH`  | Incoming / outgoing calls / type hierarchy (sub+super picker)      |
-| `<leader>rn`                | Rename (inc-rename live preview)                                   |
-| `<leader>cc` / `<leader>ca` | Diagnostics float / code action (n+x, fzf picker)                  |
-| `<leader>cr`                | Refactor: extract / inline (n+x picker, refactoring.nvim)          |
-| `<leader>cf`                | Format buffer (native LSP); visual selection = range format        |
-| `<leader>ci` / `<leader>uh` | Toggle inlay hints (alias)                                         |
-| `<leader>uy`                | Toggle LSP semantic tokens                                         |
-| `<leader>cd` / `<leader>cl` | Toggle inline diagnostic / virtual_lines (current line)            |
-| `<leader>cM`                | Toggle multi-diagnostic on cursorline                              |
-| `<leader>ud`                | Toggle all diagnostics (Snacks)                                    |
-| `<leader>cL`                | Run CodeLens (rust-analyzer, gopls, elixir-ls, ocamllsp, lua_ls)   |
-| `<leader>cs`                | `:LspRestart` (recover from a hung server)                         |
-| `<leader>cO` / `<leader>cN` | aerial: outline / outline nav                                      |
-| `[o` / `]o`                 | aerial: previous / next symbol                                     |
-| `<leader>cm`                | Open Mason                                                         |
-| `<leader>xx/xd/xq/xl`       | Trouble: diagnostics / buf / qf / loclist                          |
-| `<leader>xr` / `<leader>xs` | Trouble: LSP references / symbols                                  |
-| `gO`                        | Trouble: LSP defs / refs (overrides the 0.11 default)              |
-| `<leader>xi` / `<leader>xo` | Trouble: incoming / outgoing calls                                 |
-| `<leader>xy` / `<leader>xm` | Trouble: type definitions / implementations                        |
-| `<leader>x<` / `<leader>x>` | Quickfix stack: older / newer list                                 |
-| `<leader>xQ` / `<leader>xL` | quicker.nvim: editable quickfix / loclist (`>`/`<` expand context) |
-| `<leader>xE` / `<leader>xe` | Diagnostics → native quickfix / buffer loclist                     |
-| `<leader>xt` / `<leader>xT` | Trouble: TODOs / TODO+FIX+FIXME                                    |
-| `[q` / `]q`                 | Prev / next item (Trouble + qf fallback)                           |
-| `[d` / `]d`                 | Prev / next diagnostic (any severity)                              |
-| `[e` / `]e`                 | Prev / next **error** only                                         |
-| `[W` / `]W`                 | Prev / next **warning** only                                       |
-| `[t` / `]t`                 | Prev / next TODO comment                                           |
+| Key                         | Description                                                          |
+| --------------------------- | -------------------------------------------------------------------- |
+| `K` / `<C-k>` (i)           | Hover / signature help                                               |
+| `gd` / `gD`                 | Definition / declaration                                             |
+| `gr` / `gi` / `gy`          | References / implementation / type definition                        |
+| `<leader>cI` / `cG` / `cH`  | Incoming / outgoing calls / type hierarchy (sub+super picker)        |
+| `<leader>rn`                | Rename (inc-rename live preview)                                     |
+| `<leader>cc` / `<leader>ca` | Diagnostics float / code action (n+x, tiny-code-action diff preview) |
+| `<leader>cr`                | Refactor: extract / inline (n+x picker, refactoring.nvim)            |
+| `<leader>cf`                | Format buffer (native LSP); visual selection = range format          |
+| `<leader>ci` / `<leader>uh` | Toggle inlay hints (alias)                                           |
+| `<leader>uy`                | Toggle LSP semantic tokens                                           |
+| `<leader>cd` / `<leader>cl` | Toggle inline diagnostic / virtual_lines (current line)              |
+| `<leader>cM`                | Toggle multi-diagnostic on cursorline                                |
+| `<leader>ud`                | Toggle all diagnostics (Snacks)                                      |
+| `<leader>cL`                | Run CodeLens (rust-analyzer, gopls, elixir-ls, ocamllsp, lua_ls)     |
+| `<leader>cs`                | `:LspRestart` (recover from a hung server)                           |
+| `<leader>cO` / `<leader>cN` | aerial: outline / outline nav                                        |
+| `[o` / `]o`                 | aerial: previous / next symbol                                       |
+| `<leader>cm`                | Open Mason                                                           |
+| `<leader>xx/xd/xq/xl`       | Trouble: diagnostics / buf / qf / loclist                            |
+| `<leader>xr` / `<leader>xs` | Trouble: LSP references / symbols                                    |
+| `gO`                        | Trouble: LSP defs / refs (overrides the 0.11 default)                |
+| `<leader>xi` / `<leader>xo` | Trouble: incoming / outgoing calls                                   |
+| `<leader>xy` / `<leader>xm` | Trouble: type definitions / implementations                          |
+| `<leader>x<` / `<leader>x>` | Quickfix stack: older / newer list                                   |
+| `<leader>xQ` / `<leader>xL` | quicker.nvim: editable quickfix / loclist (`>`/`<` expand context)   |
+| `<leader>xE` / `<leader>xe` | Diagnostics → native quickfix / buffer loclist                       |
+| `<leader>xt` / `<leader>xT` | Trouble: TODOs / TODO+FIX+FIXME                                      |
+| `[q` / `]q`                 | Prev / next item (Trouble + qf fallback)                             |
+| `[d` / `]d`                 | Prev / next diagnostic (any severity)                                |
+| `[e` / `]e`                 | Prev / next **error** only                                           |
+| `[W` / `]W`                 | Prev / next **warning** only                                         |
+| `[t` / `]t`                 | Prev / next TODO comment                                             |
 
 ## Treesitter Textobjects & Context
 
@@ -217,9 +218,13 @@ Bare `nvim` (and `nvim <dir>`, which cd's in) auto-restores the cwd session (ski
 | `<leader>cJ`                | n     | Split/join node — toggle one-line ↔ multi-line (treesj)                   |
 | `gnn`                       | n     | Init incremental selection                                                |
 | `gnm` / `gnM`               | x     | Expand / shrink node                                                      |
+| `<A-Up>` / `<A-Down>`       | n/x   | treewalker: prev / next sibling node                                      |
+| `<A-Left>` / `<A-Right>`    | n/x   | treewalker: out (parent) / in (child) node                                |
+| `<A-S-Up/Down/Left/Right>`  | n     | treewalker: swap node up / down / left / right                            |
 | `<leader>uc`                | n     | Toggle treesitter context                                                 |
 | `<leader>uC`                | n     | Toggle nvim-colorizer                                                     |
 | `<leader>uU`                | n     | Toggle undotree                                                           |
+| `<leader>uP`                | n     | Toggle precognition (motion hints)                                        |
 | `<leader>uz` / `<leader>uZ` | n     | Snacks zen / zen zoom                                                     |
 | `<leader>uD`                | n     | Toggle database UI (dadbod-ui)                                            |
 | `<leader>us` / `<leader>ur` | n     | Snacks toggle: spell / relative number                                    |

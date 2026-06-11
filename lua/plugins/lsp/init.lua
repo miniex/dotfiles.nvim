@@ -391,13 +391,10 @@ return {
                         end)
                     end, "Type Hierarchy")
                     map("n", "<leader>cc", vim.diagnostic.open_float, "Line Diagnostics")
-                    -- fzf-lua picker + visual-mode range actions.
-                    map(
-                        { "n", "x" },
-                        "<leader>ca",
-                        lsp_pick("lsp_code_actions", vim.lsp.buf.code_action),
-                        "Code Action"
-                    )
+                    -- tiny-code-action: picker with per-action diff preview (fzf-lua backend).
+                    map({ "n", "x" }, "<leader>ca", function()
+                        require("tiny-code-action").code_action()
+                    end, "Code Action")
                     -- Inlay toggle (<leader>ci/uh) lives in snacks.lua.
                     map("n", "<leader>cL", vim.lsp.codelens.run, "Run CodeLens")
                     -- Prefer one formatter per ft when >1 client formats (e.g. python:
