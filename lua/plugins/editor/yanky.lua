@@ -14,6 +14,9 @@ return {
         { "P", "<Plug>(YankyPutBefore)", mode = { "n", "x" }, desc = "Put before (yanky)" },
         { "]y", "<Plug>(YankyNextEntry)", desc = "Cycle to newer yank" },
         { "[y", "<Plug>(YankyPreviousEntry)", desc = "Cycle to older yank" },
+        -- Linewise put, reindented to the current line.
+        { "]p", "<Plug>(YankyPutIndentAfterLinewise)", desc = "Put indented (after)" },
+        { "[p", "<Plug>(YankyPutIndentBeforeLinewise)", desc = "Put indented (before)" },
         {
             "<leader>yh",
             function()

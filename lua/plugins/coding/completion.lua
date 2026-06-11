@@ -82,7 +82,7 @@ return {
                 },
                 per_filetype = {
                     -- Drop LSP on commit/log buffers — completions are noise.
-                    gitcommit = { "path", "buffer" },
+                    -- gitcommit's sources live in editor/git.lua (blink per_filetype lists replace, not merge).
                     gitrebase = { "buffer" },
                     -- snacks input prompts: keep it minimal.
                     snacks_input = { "buffer" },

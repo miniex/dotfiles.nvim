@@ -497,6 +497,10 @@ return {
         Snacks.toggle.treesitter():map("<leader>uT")
         Snacks.toggle.diagnostics():map("<leader>ud")
         Snacks.toggle.inlay_hints():map("<leader>ci"):map("<leader>uh")
+        Snacks.toggle.zoom():map("<leader>um")
+        Snacks.toggle.dim():map("<leader>uf")
+        Snacks.toggle.indent():map("<leader>ug")
+        Snacks.toggle.scroll():map("<leader>uS")
     end,
     keys = {
         {

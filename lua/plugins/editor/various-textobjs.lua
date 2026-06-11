@@ -28,5 +28,19 @@ return {
         xo("ak", function()
             vt.key("outer")
         end, "Key (outer)")
+        -- subword segment — `s` is flash and `aS` is a ts statement, so it's on ie/ae.
+        xo("ie", function()
+            vt.subword("inner")
+        end, "Subword (inner)")
+        xo("ae", function()
+            vt.subword("outer")
+        end, "Subword (outer)")
+        -- url has no inner/outer; both keys grab the whole URL.
+        xo("iu", function()
+            vt.url()
+        end, "URL")
+        xo("au", function()
+            vt.url()
+        end, "URL")
     end,
 }

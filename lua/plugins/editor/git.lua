@@ -27,7 +27,9 @@ return {
         opts = {
             sources = {
                 per_filetype = {
-                    gitcommit = { "git", inherit_defaults = true },
+                    -- Explicit list (no inherit_defaults): git source + path/buffer, no
+                    -- LSP/snippets. Owned here since blink per_filetype lists replace, not merge.
+                    gitcommit = { "git", "path", "buffer" },
                 },
                 providers = {
                     git = {
@@ -129,12 +131,12 @@ return {
                     vim.keymap.set(mode, l, r, { buffer = bufnr, desc = desc })
                 end
 
-                -- Navigation
+                -- Navigation (auto-preview on jump, wrap at ends)
                 map("n", "]h", function()
-                    gs.nav_hunk("next")
+                    gs.nav_hunk("next", { preview = true, wrap = true })
                 end, "Next Hunk")
                 map("n", "[h", function()
-                    gs.nav_hunk("prev")
+                    gs.nav_hunk("prev", { preview = true, wrap = true })
                 end, "Prev Hunk")
 
                 -- Actions
@@ -152,6 +154,8 @@ return {
                     gs.preview_hunk()
                     focus_gitsigns("hunk")
                 end, "Preview Hunk")
+                -- Inline (virtual-line) diff; no float to focus.
+                map("n", "<leader>ghi", gs.preview_hunk_inline, "Preview Hunk Inline")
                 map("n", "<leader>ghb", function()
                     gs.blame_line({ full = true }, function()
                         focus_gitsigns("blame")

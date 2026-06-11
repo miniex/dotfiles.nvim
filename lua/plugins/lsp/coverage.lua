@@ -6,6 +6,8 @@ return {
     keys = {
         { "<leader>nc", "<cmd>Coverage<cr>", desc = "Coverage: load & show" },
         { "<leader>nC", "<cmd>CoverageSummary<cr>", desc = "Coverage: summary" },
+        { "<leader>nv", "<cmd>CoverageToggle<cr>", desc = "Coverage: toggle signs" },
+        { "<leader>nX", "<cmd>CoverageClear<cr>", desc = "Coverage: clear" },
     },
     opts = { auto_reload = true },
     config = function(_, opts)

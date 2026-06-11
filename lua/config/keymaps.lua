@@ -2,54 +2,12 @@ local map = function(lhs, rhs, mode, desc)
     vim.keymap.set(mode or "n", lhs, rhs, { silent = true, desc = desc })
 end
 
--- pane navigation with directional memory (tmux-like return-to-last)
-local opposite = { h = "l", l = "h", j = "k", k = "j" }
-local return_to = {}
-local nav_in_progress = false
+-- Pane navigation (<C-hjkl>) → plugins/editor/smart-splits.nvim (crosses into tmux panes).
 
-vim.api.nvim_create_autocmd("WinEnter", {
-    group = vim.api.nvim_create_augroup("PaneNavMemory", { clear = true }),
-    callback = function()
-        if not nav_in_progress then
-            return_to = {}
-        end
-    end,
-})
-
-local function nav(dir)
-    nav_in_progress = true
-    -- pcall so an error can't leave the flag stuck; schedule the reset so a
-    -- deferred WinEnter still sees it set.
-    pcall(function()
-        local cur = vim.api.nvim_get_current_win()
-        local target = return_to[dir]
-        if target and vim.api.nvim_win_is_valid(target) and target ~= cur then
-            return_to[dir] = nil
-            return_to[opposite[dir]] = cur
-            vim.api.nvim_set_current_win(target)
-        else
-            vim.cmd("wincmd " .. dir)
-            local now = vim.api.nvim_get_current_win()
-            if now ~= cur then
-                return_to[opposite[dir]] = cur
-            end
-        end
-    end)
-    vim.schedule(function()
-        nav_in_progress = false
-    end)
-end
-
-_G._NavPane = nav
-
-local pane_dir = { h = "left", j = "bottom", k = "top", l = "right" }
-for _, dir in ipairs({ "h", "j", "k", "l" }) do
-    local desc = "Move to " .. pane_dir[dir] .. " pane"
-    map("<C-" .. dir .. ">", function()
-        nav(dir)
-    end, "n", desc)
-    map("<C-" .. dir .. ">", ([[<C-\><C-n><Cmd>lua _NavPane('%s')<CR>]]):format(dir), "t", desc .. " (term)")
-end
+-- Treesitter tree viewer (debug captures/queries).
+map("<leader>ut", function()
+    vim.treesitter.inspect_tree()
+end, "n", "Inspect TS tree")
 
 -- zvzz after jumps. gg/G excluded — races with snacks.scroll (folke/snacks.nvim#2672).
 for _, key in ipairs({

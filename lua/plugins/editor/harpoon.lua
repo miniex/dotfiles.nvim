@@ -72,6 +72,28 @@ return {
                 desc = "Harpoon Slot " .. i,
             })
         end
+        -- Fuzzy picker over marks (scales past the 5 numbered slots).
+        table.insert(keys, {
+            "<leader>mf",
+            function()
+                local list = h():list()
+                local items = {}
+                for _, item in ipairs(list.items) do
+                    items[#items + 1] = item.value
+                end
+                require("fzf-lua").fzf_exec(items, {
+                    prompt = "Harpoon> ",
+                    actions = {
+                        ["default"] = function(sel)
+                            if sel[1] then
+                                vim.cmd.edit(vim.fn.fnameescape(sel[1]))
+                            end
+                        end,
+                    },
+                })
+            end,
+            desc = "Harpoon Pick (fuzzy)",
+        })
         return keys
     end,
     config = function()

@@ -35,12 +35,12 @@
 
 - **Files** — Neo-tree (floating). `<leader>e` toggle, `<leader>o` reveal current file. Directory rows show recursive total size instead of the default `-` — scanned on a libuv worker thread (off the main loop), rows spin then fill in; the spinner redraw yields to navigation, so scrolling stays smooth. Sizes use IEC binary units (KiB/MiB). The root row carries the directory's grand total, marked `Σ` (yields to the column's `▲/▼` sort indicator when ordering by size).
 - **Big files** — opening a file >8 MiB prompts: view in `less` (default) / edit / cancel (binary skips the pager). `<leader>L` views the current file in `less` anytime. Size tiers in [CUSTOMIZATION](CUSTOMIZATION.md#big-file-handling).
-- **Navigation** — flash (`s` / `S`), Trouble (`<leader>xx`), aerial (`<leader>cO`), harpoon v2 (`<leader>m*`), nvim-spider (camelCase-aware `w`/`e`/`b`/`ge`), mini.bracketed (`[j`/`]j` jumplist, `[u`/`]u` undo, `[l`/`]l` loclist).
+- **Navigation** — flash (`s` / `S`), Trouble (`<leader>xx`), aerial (`<leader>cO`), harpoon v2 (`<leader>m*`), nvim-spider (camelCase-aware `w`/`e`/`b`/`ge`), mini.bracketed (`[j`/`]j` jumplist, `[u`/`]u` undo, `[l`/`]l` loclist), smart-splits (`<C-hjkl>` across nvim splits + tmux/wezterm panes).
 - **Search & replace** — grug-far (`<leader>rr`) for regex; ssr (`<leader>rs`) for structural AST-aware replace.
-- **Structural edits & yank ring** — treesj split/join a node (`<leader>cJ`); yanky yank history (`]y` / `[y` after paste, `<leader>yh` to pick from the ring); various-textobjs indentation / value / key objects (`iI` / `iv` / `ik`).
+- **Structural edits & yank ring** — treesj split/join a node (`<leader>cJ`); yanky yank history (`]y` / `[y` after paste, `]p` / `[p` reindent paste, `<leader>yh` to pick from the ring); various-textobjs indentation / value / key / subword / URL objects (`iI` / `iv` / `ik` / `ie` / `iu`).
 - **Multi-cursor** — multicursor.nvim under `<leader>M*` + `<C-Up>` / `<C-Down>`.
-- **Smart inc/dec** — dial.nvim. `<C-a>`/`<C-x>` flips bools, dates, semver, hex colors, `&&↔||` (plus `let↔const` in JS/TS and headers in markdown).
-- **Quickfix** — quicker.nvim (editable QF), nvim-bqf (preview), Trouble (`auto_close` on jump, main-window preview).
+- **Smart inc/dec** — dial.nvim. `<C-a>`/`<C-x>` flips bools, dates, semver, hex colors, identifier case, `&&↔||` (plus `let↔const` in JS/TS and headers in markdown).
+- **Quickfix** — quicker.nvim (editable QF), nvim-bqf (preview), Trouble (`auto_close` on jump, main-window preview; `<leader>x*` lists diagnostics / refs / symbols / call hierarchy / type defs / implementations).
 - **Misc** — mini.surround (`gs*`), mini.ai (`a`/`i` brackets/quotes/tags + `an`/`aL` next/last, `ag` buffer / `ad` number), mini.move (`<A-hjkl>` line shuffle), mini.operators (`gR` replace-with-register / `gX` exchange / `gS` sort / `g=` eval), Comment.nvim (`gc` toggle), refactoring.nvim (`<leader>cr` extract/inline), todo-comments, dropbar (winbar), git-conflict, nvim-lightbulb (code-action sign), nvim-colorizer (6/8-digit hex everywhere; 3/4-digit `#RGB` shorthand only in CSS-family, so issue/PR refs like `#590` aren't colorized; skipped on big files), rainbow-delimiters (on-theme nested bracket-pair colors; disabled on big/minified files), 0.12 built-in `:Undotree`.
 - **Persistence** — `persistence.nvim` auto-restores on bare `nvim` (skipping headless, empty sessions, and `nvim <file>` launches, which neither restore nor save), re-attaches TS / LSP / linter on restored buffers. Only window-visible buffers persist (no hidden `badd`). Neotest summary window state persists across sessions.
 - **Width-aware `textwidth`** — `rust` / `python` / `lua` / `elixir` / `ocaml` / `c`-`cpp` / `sql` / `toml` set `textwidth` (drives `gq`/`gw`) to the project formatter's line width, searched upward from its config, else the default — no visual ruler. See [CUSTOMIZATION](CUSTOMIZATION.md#formatter-width).
@@ -80,7 +80,7 @@ See [`lua/config/modal-floats.lua`](../lua/config/modal-floats.lua) for the mutu
 
 ## Git
 
-- **gitsigns** — gutter signs, hunk staging (`<leader>gh*`, `ghs` toggles stage/unstage), hunk textobject (`ih`/`ah`), inline blame (`<leader>gtb`), word-diff toggle (`<leader>gtw`), full hunk diff via `<leader>ghp` (centered modal, cursor lands inside).
+- **gitsigns** — gutter signs, hunk staging (`<leader>gh*`, `ghs` toggles stage/unstage), hunk textobject (`ih`/`ah`), inline blame (`<leader>gtb`), word-diff toggle (`<leader>gtw`), full hunk diff via `<leader>ghp` (centered modal, cursor lands inside) or inline via `<leader>ghi`; `]h`/`[h` hunk nav auto-previews.
 - **fugitive** — `<leader>gs` status, `<leader>gd` diff, `<leader>gD` 3-way merge diff.
 - **lazygit** — `Snacks.lazygit`, auto-themed to the colorscheme. `<leader>gg` open / `<leader>gf` file history / `<leader>gL` log.
 - **Diffview** — file / repo / stash history under `<leader>gv*`.
@@ -92,10 +92,10 @@ See [`lua/config/modal-floats.lua`](../lua/config/modal-floats.lua) for the mutu
 
 - **nvim-lint** — runs on save / read (not `InsertLeave`) with a per-buffer 250ms debounce; skips run if you switched away.
 - **mason-tool-installer** — single source of truth for non-LSP tools (shellcheck, golangci-lint, eslint_d, selene, markdownlint, statix, hadolint, sqlfluff, yamllint, …). `auto_update` stays off; a startup toast flags tools with updates (`:MasonToolsUpdate`).
-- **DAP** — Rust (rustaceanvim's codelldb) / C-C++ (codelldb) / Python (debugpy) / Go (delve) / Zig (codelldb) / Elixir (elixir-ls debug adapter) / JS-TS (js-debug-adapter for Node; browser auto-detected from `$PATH` — Chrome, else Firefox; probed lazily, not at startup) / PHP (php-debug-adapter; needs Xdebug). C/C++ and Zig share the codelldb resolver in `lua/config/codelldb.lua`. Persistent breakpoints per-cwd; exception breakpoints via `<leader>dE`; reads project `.vscode/launch.json`.
+- **DAP** — Rust (rustaceanvim's codelldb) / C-C++ (codelldb) / Python (debugpy) / Go (delve) / Zig (codelldb) / Elixir (elixir-ls debug adapter) / JS-TS (js-debug-adapter for Node; browser auto-detected from `$PATH` — Chrome, else Firefox; probed lazily, not at startup) / PHP (php-debug-adapter; needs Xdebug). C/C++ and Zig share the codelldb resolver in `lua/config/codelldb.lua`. Persistent breakpoints per-cwd; conditional / hit-condition / log-point breakpoints (`<leader>dB`/`dH`/`dL`); exception breakpoints via `<leader>dE`; reads project `.vscode/launch.json`.
 - **neotest** — Python (pytest) / Go (gotestsum) / Elixir (mix) / C/C++ (gtest) / Lua (busted) / Rust (rustaceanvim) / Zig / JS-TS (vitest / jest) / PHP (PHPUnit). Summary window state restored across sessions.
 - **overseer** — task / build runner (`<leader>R*`); auto-detects make / npm / cargo / go / just / cmake templates.
-- **nvim-coverage** — test-coverage gutter signs + summary (`<leader>nc` / `nC`); reads lcov / coverage.xml.
+- **nvim-coverage** — test-coverage gutter signs + summary (`<leader>nc` / `nC`, toggle `nv` / clear `nX`); reads lcov / coverage.xml.
 - **iron** — send-to-REPL for python / lua / sh / elixir / js-ts (`<leader>i*`).
 - **package-info** — npm dependency versions inline in `package.json` (`<leader>cv` / `cu` / `cU` / `cD`).
 - **kulala** — in-editor REST/HTTP client for `.http` / `.rest` files (`<leader>k*`): run / replay / inspect / copy-as-curl.

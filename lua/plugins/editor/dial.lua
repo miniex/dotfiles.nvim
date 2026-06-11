@@ -28,6 +28,11 @@ return {
             augend.date.alias["%Y/%m/%d"],
             augend.date.alias["%H:%M"],
             augend.semver.alias.semver,
+            -- Cycle identifier casing: camelCase → snake_case → PascalCase → SCREAMING.
+            augend.case.new({
+                types = { "camelCase", "snake_case", "PascalCase", "SCREAMING_SNAKE_CASE" },
+                cyclic = true,
+            }),
             bool,
             logical,
             eq,

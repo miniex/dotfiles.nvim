@@ -91,6 +91,14 @@ return {
                 desc = "Breakpoint Condition",
             },
             {
+                -- Break on the Nth hit. Non-persistent (like the log point below).
+                "<leader>dH",
+                function()
+                    require("dap").set_breakpoint(nil, vim.fn.input("Hit condition: "), nil)
+                end,
+                desc = "Breakpoint Hit Condition",
+            },
+            {
                 "<leader>db",
                 function()
                     require("persistent-breakpoints.api").toggle_breakpoint()

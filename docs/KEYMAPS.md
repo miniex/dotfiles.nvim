@@ -4,29 +4,29 @@ Leader: `<Space>`. `<localleader>` also `<Space>` (most localleader bindings liv
 
 ## Global
 
-| Key                      | Mode | Description                                              |
-| ------------------------ | ---- | -------------------------------------------------------- |
-| `<C-h/j/k/l>`            | N/T  | Pane navigation with tmux-style return-to-last           |
-| `<C-Left/Right/Up/Down>` | N    | Resize the focused edge window (in an edgy sidebar)      |
-| `<A-h/j/k/l>`            | N/V  | mini.move: shuffle line / block (reindents on h/l)       |
-| `<C-a>` / `<C-x>`        | N/V  | dial: smart inc/dec (bools, dates, semver, hex, &&↔\|\|) |
-| `g<C-a>` / `g<C-x>`      | V    | dial: cumulative inc/dec across selection                |
-| `<leader>h`              | N    | Clear search highlight                                   |
-| `<Esc>`                  | N    | Clear search highlight                                   |
-| `<leader>bs`             | N    | Save (writes auto-mkdir parent dirs)                     |
-| `<leader>D`              | N/V  | Delete without yank (`<leader>d` reserved for dap)       |
-| `<leader>p`              | N    | Paste + auto-reindent (`=` over pasted lines)            |
-| `<leader>p`              | V    | Paste without overwriting register                       |
-| `<leader>P`              | V    | Paste over + auto-reindent                               |
-| `<` / `>`                | V    | Indent / outdent (keep selection)                        |
-| `J` / `<leader>j`        | N    | Join lines keeping cursor / without a space (`gJ`)       |
-| `gx`                     | N    | Open URL / file under cursor (`vim.ui.open`)             |
+| Key                      | Mode | Description                                                      |
+| ------------------------ | ---- | ---------------------------------------------------------------- |
+| `<C-h/j/k/l>`            | N/T  | Pane navigation: nvim splits + tmux/wezterm panes (smart-splits) |
+| `<C-Left/Right/Up/Down>` | N    | Resize the focused edge window (in an edgy sidebar)              |
+| `<A-h/j/k/l>`            | N/V  | mini.move: shuffle line / block (reindents on h/l)               |
+| `<C-a>` / `<C-x>`        | N/V  | dial: smart inc/dec (bools, dates, semver, hex, &&↔\|\|)         |
+| `g<C-a>` / `g<C-x>`      | V    | dial: cumulative inc/dec across selection                        |
+| `<leader>h`              | N    | Clear search highlight                                           |
+| `<Esc>`                  | N    | Clear search highlight                                           |
+| `<leader>bs`             | N    | Save (writes auto-mkdir parent dirs)                             |
+| `<leader>D`              | N/V  | Delete without yank (`<leader>d` reserved for dap)               |
+| `<leader>p`              | N    | Paste + auto-reindent (`=` over pasted lines)                    |
+| `<leader>p`              | V    | Paste without overwriting register                               |
+| `<leader>P`              | V    | Paste over + auto-reindent                                       |
+| `<` / `>`                | V    | Indent / outdent (keep selection)                                |
+| `J` / `<leader>j`        | N    | Join lines keeping cursor / without a space (`gJ`)               |
+| `gx`                     | N    | Open URL / file under cursor (`vim.ui.open`)                     |
 
 > `n`, `N`, `*`, `#`, `g*`, `g#`, `<C-o>`, `<C-i>` auto-center the cursor (`zvzz`); `[c`/`]c` do too, in diff mode.
 > The jumplist is session-local (cleared at startup), so `<C-o>` / `<C-i>` only revisit files opened this session.
 > `:s/…` shows a live split preview (`inccommand`); `:grep` uses ripgrep; visual-block edits extend past line-end.
 > Yank → system clipboard via `wl-copy` / `xclip` / `pbcopy` / `clip.exe` (first available), else OSC52 over SSH.
-> `p` / `P` feed a yank ring (yanky); `]y` / `[y` cycle to a newer / older yank right after pasting.
+> `p` / `P` feed a yank ring (yanky); `]y` / `[y` cycle to a newer / older yank after pasting; `]p` / `[p` put with reindent.
 > Macro recording shows a `recording @a` / `saved @a` toast plus `● @a` in the statusline while active.
 > Spell check (camelCase-aware) on `gitcommit` / `markdown` / `text`; `:q` / `:bd` prompt to save on unsaved changes.
 
@@ -81,6 +81,7 @@ Per-project file slots under `~/.local/share/nvim/harpoon/`.
 | `]m` / `[m`                 | Next / previous slot (alias) |
 | `<leader>m1` … `<leader>m5` | Jump to slot 1–5             |
 | `<leader>md`                | Remove current file          |
+| `<leader>mf`                | Fuzzy pick a mark (fzf-lua)  |
 
 ## Multi-Cursors (multicursor.nvim)
 
@@ -173,6 +174,8 @@ Bare `nvim` (and `nvim <dir>`, which cd's in) auto-restores the cwd session (ski
 | `<leader>xx/xd/xq/xl`       | Trouble: diagnostics / buf / qf / loclist                          |
 | `<leader>xr` / `<leader>xs` | Trouble: LSP references / symbols                                  |
 | `gO`                        | Trouble: LSP defs / refs (overrides the 0.11 default)              |
+| `<leader>xi` / `<leader>xo` | Trouble: incoming / outgoing calls                                 |
+| `<leader>xy` / `<leader>xm` | Trouble: type definitions / implementations                        |
 | `<leader>x<` / `<leader>x>` | Quickfix stack: older / newer list                                 |
 | `<leader>xQ` / `<leader>xL` | quicker.nvim: editable quickfix / loclist (`>`/`<` expand context) |
 | `<leader>xE` / `<leader>xe` | Diagnostics → native quickfix / buffer loclist                     |
@@ -200,6 +203,8 @@ Bare `nvim` (and `nvim <dir>`, which cd's in) auto-restores the cwd session (ski
 | `iI` / `aI`                 | x/o   | Indentation block (various-textobjs)                                      |
 | `iv` / `av`                 | x/o   | Config value after `:` / `=` (various-textobjs)                           |
 | `ik` / `ak`                 | x/o   | Config key (various-textobjs)                                             |
+| `ie` / `ae`                 | x/o   | Subword segment — camelCase / snake / kebab (various-textobjs)            |
+| `iu` / `au`                 | x/o   | URL (various-textobjs)                                                    |
 | `]f` / `[f`                 | n/x/o | Next / prev function start                                                |
 | `]F` / `[F`                 | n/x/o | Next / prev function end                                                  |
 | `]C` / `[C`                 | n/x/o | Next / prev class start (lowercase `]c`/`[c` left for diff change motion) |
@@ -219,6 +224,9 @@ Bare `nvim` (and `nvim <dir>`, which cd's in) auto-restores the cwd session (ski
 | `<leader>ul` / `<leader>uo` | n     | Snacks toggle: line number / conceal                                      |
 | `<leader>ui`                | n     | Snacks toggle: list chars (whitespace)                                    |
 | `<leader>uT` / `<leader>ux` | n     | Toggle treesitter highlight (Snacks) / hex view                           |
+| `<leader>ut`                | n     | Inspect treesitter tree (`:InspectTree`)                                  |
+| `<leader>um` / `<leader>uf` | n     | Snacks toggle: zoom (maximize) / dim                                      |
+| `<leader>ug` / `<leader>uS` | n     | Snacks toggle: indent guides / smooth scroll                              |
 | `[x`                        | n     | Jump to context start                                                     |
 
 > **mini.ai** adds bracket/quote/tag textobjects (`a(` / `i"` / `at`) with next/last search — `an(` / `in"` (next), `aL(` / `iL"` (last) — plus `ag`/`ig` (whole buffer) and `ad`/`id` (number).
@@ -234,26 +242,26 @@ Inside the menu: `q`/`<Esc>` close, `h` parent (no-op at top), `l` open entry.
 
 ## Git
 
-| Key                                           | Description                                                                                       |
-| --------------------------------------------- | ------------------------------------------------------------------------------------------------- |
-| `<leader>gs/gb/gd/gl/gc/gp/gP`                | fugitive: status/blame/diff/log/commit/push/pull                                                  |
-| `<leader>gD`                                  | fugitive: 3-way diffsplit (`:Gvdiffsplit!`) — for merge conflicts                                 |
-| `<leader>gg/gf/gL`                            | lazygit: open / file history / log                                                                |
-| `<leader>gB`                                  | gitbrowse: open current line in browser (n/v)                                                     |
-| `<leader>gvo/gvc/gvr`                         | Diffview: open / close / refresh                                                                  |
-| `<leader>gvf/gvF/gvh`                         | Diffview file history: current / repo / stash                                                     |
-| `<leader>gvt` / `<leader>gvp`                 | Diffview: toggle / focus files panel                                                              |
-| `<leader>gvg` / `<leader>gvG`                 | gitgraph.nvim: all branches / current (`<cr>` → diffview)                                         |
-| `<leader>gvs` / `<leader>gvA`                 | gitgraph.nvim: prompt for `--since` / `--author` filter                                           |
-| `<leader>gH`                                  | advanced-git-search: search history by content (log -S/-G/-L)                                     |
-| `[h` / `]h`                                   | Prev / next hunk                                                                                  |
-| `<leader>ghs/r/S/R/p/b/c/d/D`                 | Stage (toggle) / reset / stage-buf / reset-buf / preview / blame-line / blame-file / diff / diff~ |
-| `<leader>ghq`                                 | gitsigns: hunks (attached buffers) to quickfix                                                    |
-| `<leader>gtb` / `<leader>gtd` / `<leader>gtw` | Toggle line blame / show deleted / word diff                                                      |
-| `ih` / `ah` (o/x)                             | gitsigns hunk textobject (`d ih`, `v ah`)                                                         |
-| `<leader>gxq`                                 | git-conflict: conflicts to quickfix                                                               |
-| `[X` / `]X`                                   | Prev / next conflict                                                                              |
-| `co/ct/cb/c0`                                 | Inside conflict: ours / theirs / both / none                                                      |
+| Key                                           | Description                                                                                                        |
+| --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
+| `<leader>gs/gb/gd/gl/gc/gp/gP`                | fugitive: status/blame/diff/log/commit/push/pull                                                                   |
+| `<leader>gD`                                  | fugitive: 3-way diffsplit (`:Gvdiffsplit!`) — for merge conflicts                                                  |
+| `<leader>gg/gf/gL`                            | lazygit: open / file history / log                                                                                 |
+| `<leader>gB`                                  | gitbrowse: open current line in browser (n/v)                                                                      |
+| `<leader>gvo/gvc/gvr`                         | Diffview: open / close / refresh                                                                                   |
+| `<leader>gvf/gvF/gvh`                         | Diffview file history: current / repo / stash                                                                      |
+| `<leader>gvt` / `<leader>gvp`                 | Diffview: toggle / focus files panel                                                                               |
+| `<leader>gvg` / `<leader>gvG`                 | gitgraph.nvim: all branches / current (`<cr>` → diffview)                                                          |
+| `<leader>gvs` / `<leader>gvA`                 | gitgraph.nvim: prompt for `--since` / `--author` filter                                                            |
+| `<leader>gH`                                  | advanced-git-search: search history by content (log -S/-G/-L)                                                      |
+| `[h` / `]h`                                   | Prev / next hunk (auto-preview on jump)                                                                            |
+| `<leader>ghs/r/S/R/p/i/b/c/d/D`               | Stage (toggle) / reset / stage-buf / reset-buf / preview / inline preview / blame-line / blame-file / diff / diff~ |
+| `<leader>ghq`                                 | gitsigns: hunks (attached buffers) to quickfix                                                                     |
+| `<leader>gtb` / `<leader>gtd` / `<leader>gtw` | Toggle line blame / show deleted / word diff                                                                       |
+| `ih` / `ah` (o/x)                             | gitsigns hunk textobject (`d ih`, `v ah`)                                                                          |
+| `<leader>gxq`                                 | git-conflict: conflicts to quickfix                                                                                |
+| `[X` / `]X`                                   | Prev / next conflict                                                                                               |
+| `co/ct/cb/c0`                                 | Inside conflict: ours / theirs / both / none                                                                       |
 
 ## Debugger (DAP)
 
@@ -268,6 +276,7 @@ Inside the menu: `q`/`<Esc>` close, `h` parent (no-op at top), `l` open entry.
 | `<leader>dW`                  | Scopes as a centered float (dap.ui.widgets)                     |
 | `<leader>de` / `<leader>dh`   | Eval cursor / selection (n+v) / hover value                     |
 | `<leader>dL`                  | Log point (message breakpoint)                                  |
+| `<leader>dH`                  | Hit-condition breakpoint (break on the Nth hit)                 |
 | `<leader>dGt` / `<leader>dGl` | Go: nearest test / last test                                    |
 | `<leader>dPt` / `<leader>dPc` | Python: test method / class                                     |
 
@@ -281,6 +290,7 @@ Python (pytest), Go (gotestsum), Elixir (mix), C/C++ (gtest), Lua (busted), Rust
 | `<leader>nl` / `nd` / `nx` | Last / debug (DAP) / stop                    |
 | `<leader>ns/no/nO/nw`      | Summary / output / output panel / watch file |
 | `<leader>nc` / `nC`        | Coverage: load & show / summary              |
+| `<leader>nv` / `nX`        | Coverage: toggle signs / clear               |
 | `]T` / `[T`                | Next / prev failed test                      |
 
 ## Tasks (overseer)
