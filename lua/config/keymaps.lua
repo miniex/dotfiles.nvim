@@ -68,6 +68,11 @@ map("<leader>uU", function()
     vim.cmd("Undotree")
 end, "n", "Toggle undotree")
 
+-- require() triggers LuaSnip's lazy load, so this works before any InsertEnter.
+map("<leader>fs", function()
+    require("luasnip.loaders").edit_snippet_files()
+end, "n", "Edit snippets (ft)")
+
 map("<leader>qR", "<cmd>restart<cr>", "n", "Restart Neovim")
 
 -- View the current file in `less` — read-only, streamed, no whole-file load.

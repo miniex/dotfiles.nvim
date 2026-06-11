@@ -60,8 +60,9 @@ opt.winborder = "rounded"
 opt.splitkeep = "screen"
 opt.jumpoptions = "view"
 
--- Smarter diff alignment in fugitive/diffview/gitgraph (0.10+).
+-- Smarter diff: line alignment (0.10) + word-level inline highlight (0.12).
 opt.diffopt:append("linematch:60")
+opt.diffopt:append("inline:word")
 
 -- Trusted per-project config (.nvim.lua / .exrc); managed by vim.secure.
 opt.exrc = true
