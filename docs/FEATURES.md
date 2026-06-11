@@ -2,7 +2,7 @@
 
 ## LSP & Completion
 
-- **Native LSP** — `vim.lsp.config` + `lsp/<server>.lua` discovery; mason-lspconfig installs, the config enables servers itself (gated by enabled langs + executable presence). Workspace root anchors on language manifests, `.git` as fallback.
+- **Native LSP** — `vim.lsp.config` + `lsp/<server>.lua` discovery; mason-tool-installer installs the servers, the config enables them itself (gated by enabled langs + executable presence). Workspace root anchors on language manifests, `.git` as fallback.
 - **File watching** — client-side `didChangeWatchedFiles` is on for every server (off by default on Linux); rust-analyzer watches server-side so large projects don't stall on open.
 - **Inlay hints** — toggle per buffer with `<leader>ci`; suppressed automatically during insert mode.
 - **CodeLens** — enabled on capable servers (gopls, rust-analyzer, lua_ls, ocamllsp, elixir-ls); refreshes on edit, paused during insert mode (like inlay hints).
@@ -80,7 +80,7 @@ See [`lua/config/modal-floats.lua`](../lua/config/modal-floats.lua) for the mutu
 
 ## Git
 
-- **gitsigns** — gutter signs, hunk staging (`<leader>gh*`, `ghs` toggles stage/unstage), hunk textobject (`ih`/`ah`), inline blame (`<leader>gtb`), word-diff toggle (`<leader>gtw`), full hunk diff via `<leader>ghp` (centered modal, cursor lands inside) or inline via `<leader>ghi`; `]h`/`[h` hunk nav auto-previews.
+- **gitsigns** — gutter signs, hunk staging (`<leader>gh*`, `ghs` toggles stage/unstage), hunk textobject (`ih`/`ah`), inline blame (off by default — toggle `<leader>gtb`), word-diff toggle (`<leader>gtw`), full hunk diff via `<leader>ghp` (centered modal, cursor lands inside) or inline via `<leader>ghi`; `]h`/`[h` hunk nav auto-previews.
 - **fugitive** — `<leader>gs` status, `<leader>gd` diff, `<leader>gD` 3-way merge diff.
 - **lazygit** — `Snacks.lazygit`, auto-themed to the colorscheme. `<leader>gg` open / `<leader>gf` file history / `<leader>gL` log.
 - **Diffview** — file / repo / stash history under `<leader>gv*`.
@@ -91,7 +91,7 @@ See [`lua/config/modal-floats.lua`](../lua/config/modal-floats.lua) for the mutu
 ## Tooling
 
 - **nvim-lint** — runs on save / read (not `InsertLeave`) with a per-buffer 250ms debounce; skips run if you switched away.
-- **mason-tool-installer** — single source of truth for non-LSP tools (shellcheck, golangci-lint, eslint_d, selene, markdownlint, statix, hadolint, sqlfluff, yamllint, …). `auto_update` stays off; a startup toast flags tools with updates (`:MasonToolsUpdate`).
+- **mason-tool-installer** — single source of truth for Mason installs: LSP servers plus non-LSP tools (shellcheck, golangci-lint, eslint_d, selene, markdownlint, statix, hadolint, sqlfluff, yamllint, …). `auto_update` stays off; a startup toast flags tools with updates (`:MasonToolsUpdate`).
 - **DAP** — Rust (rustaceanvim's codelldb) / C-C++ (codelldb) / Python (debugpy) / Go (delve) / Zig (codelldb) / Elixir (elixir-ls debug adapter) / JS-TS (js-debug-adapter for Node; browser auto-detected from `$PATH` — Chrome, else Firefox; probed lazily, not at startup) / PHP (php-debug-adapter; needs Xdebug). C/C++ and Zig share the codelldb resolver in `lua/config/codelldb.lua`. Persistent breakpoints per-cwd; conditional / hit-condition / log-point breakpoints (`<leader>dB`/`dH`/`dL`); exception breakpoints via `<leader>dE`; reads project `.vscode/launch.json`.
 - **neotest** — Python (pytest) / Go (gotestsum) / Elixir (mix) / C/C++ (gtest) / Lua (busted) / Rust (rustaceanvim) / Zig / JS-TS (vitest / jest) / PHP (PHPUnit). Summary window state restored across sessions.
 - **overseer** — task / build runner (`<leader>R*`); auto-detects make / npm / cargo / go / just / cmake templates.

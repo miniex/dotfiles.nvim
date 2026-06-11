@@ -74,7 +74,27 @@ return {
         vim.api.nvim_create_autocmd("ColorScheme", {
             group = vim.api.nvim_create_augroup("InclineIconCache", { clear = true }),
             callback = function()
-                icon_cache = {}
+                icon_cache, icon_cache_n = {}, 0
+            end,
+        })
+
+        -- Cache buffer name; nvim_buf_get_name allocates a string each redraw.
+        local name_by_buf = {}
+        local function buf_name(buf)
+            local hit = name_by_buf[buf]
+            if hit then
+                return hit
+            end
+            local bufname = vim.api.nvim_buf_get_name(buf)
+            name_by_buf[buf] = bufname
+            return bufname
+        end
+        local name_cache_grp = vim.api.nvim_create_augroup("InclineNameCache", { clear = true })
+        -- Invalidate on rename; prune on wipe, else entries leak by bufnr.
+        vim.api.nvim_create_autocmd({ "BufFilePost", "BufWipeout" }, {
+            group = name_cache_grp,
+            callback = function(args)
+                name_by_buf[args.buf] = nil
             end,
         })
 
@@ -103,7 +123,7 @@ return {
                 if not vim.api.nvim_buf_is_valid(props.buf) then
                     return ""
                 end
-                local bufname = vim.api.nvim_buf_get_name(props.buf)
+                local bufname = buf_name(props.buf)
                 -- Lua tail instead of fnamemodify(":t") — avoids a vimL call per render.
                 local filename = bufname == "" and "[No Name]" or (bufname:match("[^/]+$") or bufname)
                 local ft_icon, ft_color = icon_for(filename)

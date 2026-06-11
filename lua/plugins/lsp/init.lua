@@ -90,16 +90,19 @@ return {
         event = "VeryLazy",
         cmd = { "MasonToolsInstall", "MasonToolsUpdate", "MasonToolsClean" },
         opts_extend = { "ensure_installed" },
-        opts = {
-            ensure_installed = enabled_servers(),
-            auto_update = false,
-            -- Must be true, or the run_on_start() call in config() no-ops (it gates on this flag).
-            run_on_start = true,
-            start_delay = 3000,
-            -- No debounce: it would skip the whole check for hours, so a newly
-            -- enabled lang's tools wouldn't auto-install. auto_update=false keeps
-            -- it to missing-only (no churn).
-        },
+        -- Function form defers enabled_servers() off the lazy spec-build path.
+        opts = function()
+            return {
+                ensure_installed = enabled_servers(),
+                auto_update = false,
+                -- Must be true, or the run_on_start() call in config() no-ops (it gates on this flag).
+                run_on_start = true,
+                start_delay = 3000,
+                -- No debounce: it would skip the whole check for hours, so a newly
+                -- enabled lang's tools wouldn't auto-install. auto_update=false keeps
+                -- it to missing-only (no churn).
+            }
+        end,
         config = function(_, opts)
             require("mason-tool-installer").setup(opts)
             require("mason-tool-installer").run_on_start()
@@ -488,7 +491,7 @@ return {
                 callback = function()
                     vim.schedule(function()
                         require("mason-lspconfig").setup({
-                            ensure_installed = servers,
+                            -- No ensure_installed: mason-tool-installer owns installs (would double-install).
                             -- We enable servers ourselves above (lang + executable gated);
                             -- automatic_enable = true would enable every installed package.
                             automatic_enable = false,

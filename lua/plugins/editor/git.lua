@@ -102,7 +102,8 @@ return {
             })
         end,
         opts = {
-            current_line_blame = true,
+            -- Off by default (async blame on every cursor-hold); toggle <leader>gtb.
+            current_line_blame = false,
             current_line_blame_opts = {
                 virt_text = true,
                 virt_text_pos = "eol",

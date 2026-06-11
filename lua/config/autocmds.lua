@@ -393,9 +393,15 @@ if vim.g.multi_dir then
     vim.api.nvim_create_autocmd({ "VimEnter", "BufEnter" }, {
         group = vim.api.nvim_create_augroup("multi-dir-tcd", { clear = true }),
         callback = function(args)
+            -- Dir-ness never changes; stat each file buffer once (dir buffers still re-tcd).
+            if vim.b[args.buf].multi_dir_notdir then
+                return
+            end
             local name = vim.api.nvim_buf_get_name(args.buf)
             if name ~= "" and vim.fn.isdirectory(name) == 1 then
                 pcall(vim.cmd.tcd, vim.fn.fnameescape(name))
+            else
+                vim.b[args.buf].multi_dir_notdir = true
             end
         end,
     })
