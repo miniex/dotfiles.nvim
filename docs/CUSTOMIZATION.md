@@ -99,7 +99,7 @@ The "view" action and `<leader>L` open `less` in its own tab via `lua/config/pag
 
 ## Modal floats
 
-- `lua/config/modal-floats.lua` — mutual-exclusion registry + shared float-config decorator hook. Extend `OWNER` (`ft = "owner"`) to register a new modal; same `owner` keeps siblings together. Use `add_decorator(name, { open, set_config })` to rewrite float configs (border, title, geometry) without patching the APIs yourself.
+- `lua/config/modal-floats.lua` — mutual-exclusion registry + shared float-config decorator hook. Extend `OWNER` (`ft = "owner"`) to register a new modal; same `owner` keeps siblings together. Use `add_decorator(name, { open, set_config })` to rewrite float configs (border, title, geometry) without patching the APIs yourself. `:checkhealth` uses this: `vim.g.health.style = "float"` (nvim 0.12) makes it a native float, then a `checkhealth` decorator stamps the modal geometry onto it at creation.
 - `lua/config/modal-geom.lua` — shared geometry. Change `M.RATIO` to resize every modal float at once. Add a filetype to `ALIGNED_FT` to snap a new plugin into the same rectangle. The `VimResized` handler re-snaps every visible modal on terminal/tmux resize, so the rectangle holds mid-session too. `M.scratch(lines, opts)` builds a centered flower scratch float (used by `:Messages`).
 
 ## DAP

@@ -53,7 +53,7 @@
 - **incline** — `⌬` when window is zoomed (alone in tabpage); per-window `✗`/`!` diagnostic count.
 - **cursor bloom** — `✿` sign on the current line in mode color (custom autocmd in [`lua/config/cursor-bloom.lua`](../lua/config/cursor-bloom.lua)). Refresh defer skips picker/terminal/chrome buffers.
 - **which-key** — hint floats pinned to the bottom row at 85% editor width (centered); height grows with content. Triggers register synchronously + `timeoutlen=300` so the first `<leader>` press isn't slow ([#912](https://github.com/folke/which-key.nvim/issues/912) workaround).
-- **Floating windows** — every float in the config (LSP hover / signature / diagnostic, Neo-tree, snacks panels, fzf-lua, fff.nvim, blink.cmp menu / signature / docs, fidget, dropbar, bqf, neotest, which-key, harpoon, Mason, lazy, lazygit) shares one look: `✿` flower-cornered border (`✿─✿│✿─✿│`), pink edge, transparent background, centered `✿ title ✿`. Configured in [`lua/config/globals.lua`](../lua/config/globals.lua).
+- **Floating windows** — every float in the config (LSP hover / signature / diagnostic, Neo-tree, snacks panels, fzf-lua, fff.nvim, blink.cmp menu / signature / docs, fidget, dropbar, bqf, neotest, which-key, harpoon, Mason, lazy, lazygit, checkhealth) shares one look: `✿` flower-cornered border (`✿─✿│✿─✿│`), pink edge, transparent background, centered `✿ title ✿`. Configured in [`lua/config/globals.lua`](../lua/config/globals.lua).
 - **flash labels** — damin pink.
 - **nvim-scrollbar** — `♥` cursor mark slides smoothly between rows (snaps on large jumps and in big buffers) and heartbeat-pulses while focused (paused in insert mode, on `FocusLost`, and on chrome buffers like the dashboard / Neo-tree). Handle fades vivid → muted after idle. Git triad in mint/pink/rose; gitsigns gutter + DiagnosticSign share the same palette so both edges agree. Per-keystroke autocmds also skip picker/terminal/prompt buffers so fzf/snacks-picker stay snappy.
 - **snacks.scroll** — viewport glides with `outQuad` easing (150ms one-shot, 40ms while held) so key-repeat doesn't queue behind the animation.
@@ -64,15 +64,16 @@
 
 ## Modal floats
 
-Big floating UIs (pickers / terminal / lazy / Mason / harpoon / lazygit / Neo-tree) are mutually exclusive — opening one closes the others. Hover, completion, signature, and notifications stack freely on top.
+Big floating UIs (pickers / terminal / lazy / Mason / harpoon / lazygit / Neo-tree / checkhealth) are mutually exclusive — opening one closes the others. Hover, completion, signature, and notifications stack freely on top.
 
-All seven modals share a single 0.85 × 0.85 chrome-aware rectangle defined in [`lua/config/modal-geom.lua`](../lua/config/modal-geom.lua):
+All eight modals share a single 0.85 × 0.85 chrome-aware rectangle defined in [`lua/config/modal-geom.lua`](../lua/config/modal-geom.lua):
 
 - snacks picker / terminal read it via function callbacks
 - harpoon / lazy / Mason / lazygit get snapped by a synchronous `FileType` autocmd (no flash because the snap shares a frame with the open)
 - fzf-lua uses its own `winopts.on_create` hook (it sets filetype under `eventignore = all` so the FileType aligner misses it)
 - Neo-tree's popup `size` / `position` are function callbacks; nui resolves them on every open
 - fff.nvim has its own chrome-aware layout that already matches
+- checkhealth opens as a native float (`vim.g.health.style`, nvim 0.12) and is dressed at creation by a `modal-floats` decorator — no report tab to flash
 
 A `VimResized` handler in `modal-geom.lua` also re-snaps every open modal, so the rectangle holds when you resize the terminal mid-session (Neo-tree's nui container + inner tree get reflowed together).
 
@@ -100,7 +101,7 @@ See [`lua/config/modal-floats.lua`](../lua/config/modal-floats.lua) for the mutu
 - **iron** — send-to-REPL for python / lua / sh / elixir / js-ts (`<leader>i*`).
 - **package-info** — npm dependency versions inline in `package.json` (`<leader>cv` / `cu` / `cU` / `cD`).
 - **kulala** — in-editor REST/HTTP client for `.http` / `.rest` files (`<leader>k*`): run / replay / inspect / copy-as-curl.
-- **health check** — `:checkhealth dotfiles` (in-editor: enabled langs → Mason servers, toolchains, clipboard, terminal/fonts) or `./tools/health.sh` (shell — same plus dev-tooling and a config-load smoke test).
+- **health check** — `:checkhealth` opens as a centered flower modal (not a report tab). `:checkhealth dotfiles` is the in-editor host check (enabled langs → Mason servers, toolchains, clipboard, terminal/fonts); `./tools/health.sh` is the shell equivalent plus dev-tooling and a config-load smoke test.
 
 ## Markdown
 

@@ -68,6 +68,7 @@ local OWNER = {
     mason_backdrop = "mason",
     ["neo-tree"] = "neo-tree",
     ["neo-tree-popup"] = "neo-tree",
+    checkhealth = "checkhealth",
 }
 
 local function is_floating(win)
@@ -106,6 +107,73 @@ vim.api.nvim_create_autocmd("FileType", {
             end
             close_other_owners(new_owner, win)
         end)
+    end,
+})
+
+-- `:checkhealth` renders natively in a float (nvim 0.12 `vim.g.health.style`) — no report
+-- tab to flash. That float is a `vim.lsp.util.open_floating_preview`; a flag around _check
+-- lets the decorator claim it and stamp our modal geometry onto its config at creation.
+vim.g.health = vim.tbl_deep_extend("force", vim.g.health or {}, { style = "float" })
+
+local building_health = false
+local health_buf -- the report preview's buffer, claimed on its open
+local function style_health(config)
+    local rect = require("config.modal-geom").inner_rect()
+    -- Force editor-relative NW anchoring: open_floating_preview anchors to the cursor, so
+    -- without this our row/col get read against a SW/SE anchor and the float flies top-left.
+    config.relative = "editor"
+    config.win = nil
+    config.bufpos = nil
+    config.anchor = "NW"
+    config.row, config.col = rect.row, rect.col
+    config.width, config.height = rect.width, rect.height
+    config.border = vim.g.flower_border
+    config.title = vim.g.flower_title("checkhealth")
+    config.title_pos = "center"
+    return config
+end
+M.add_decorator("checkhealth", {
+    -- The report preview is the first editor float _check opens; claim its buffer so we
+    -- style only it — not ui2's progress-message float, which also moves during the run.
+    open = function(buf, c)
+        if building_health and not health_buf and c.relative ~= "" then
+            health_buf = buf
+        end
+        if buf == health_buf then
+            return style_health(c)
+        end
+    end,
+    set_config = function(win, c)
+        if health_buf and vim.api.nvim_win_is_valid(win) and vim.api.nvim_win_get_buf(win) == health_buf then
+            return style_health(c)
+        end
+    end,
+})
+
+local health = require("vim.health")
+local orig_check = health._check
+---@diagnostic disable-next-line: duplicate-set-field
+health._check = function(mods, plugin_names)
+    health_buf = nil
+    building_health = true
+    local ok, err = pcall(orig_check, mods, plugin_names)
+    building_health = false
+    if not ok then
+        error(err, 0)
+    end
+end
+
+vim.api.nvim_create_autocmd("FileType", {
+    group = vim.api.nvim_create_augroup("modal-floats-checkhealth", { clear = true }),
+    pattern = "checkhealth",
+    callback = function(args)
+        local win = vim.fn.bufwinid(args.buf)
+        if win == -1 or not is_floating(win) then
+            return
+        end
+        vim.wo[win].winhighlight =
+            "Normal:NormalFloat,NormalNC:NormalFloat,FloatBorder:FloatBorder,FloatTitle:FloatTitle"
+        vim.keymap.set("n", "<Esc>", "<cmd>close<cr>", { buffer = args.buf, silent = true })
     end,
 })
 

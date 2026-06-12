@@ -32,7 +32,7 @@ Leader: `<Space>`. `<localleader>` also `<Space>` (most localleader bindings liv
 
 ## Find & Navigate
 
-> Modal floats (pickers, snacks terminal, lazy, Mason, harpoon menu, lazygit, Neo-tree) are mutually exclusive; auxiliary floats (hover, completion, notifier, …) stack on top.
+> Modal floats (pickers, snacks terminal, lazy, Mason, harpoon menu, lazygit, Neo-tree, checkhealth) are mutually exclusive; auxiliary floats (hover, completion, notifier, …) stack on top.
 
 | Key                                   | Description                                                      |
 | ------------------------------------- | ---------------------------------------------------------------- |
