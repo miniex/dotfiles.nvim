@@ -1,10 +1,19 @@
--- `:checkhealth dotfiles` — live in-editor port of tools/health.sh (enabled langs → Mason servers).
+-- `:checkhealth dotfiles` — in-editor host check. Mirrors tools/health.sh minus the
+-- shell-only bits (contributor dev-tooling, config-load smoke test).
 local M = {}
 
 local h = vim.health
 
 local function exe(cmd)
     return vim.fn.executable(cmd) == 1
+end
+
+-- Capture a command's stdout (timeout-guarded); "" on failure.
+local function sh(cmd)
+    local ok, res = pcall(function()
+        return vim.system(cmd, { text = true, timeout = 3000 }):wait()
+    end)
+    return (ok and res and res.stdout) or ""
 end
 
 local function ver(cmd)
@@ -28,7 +37,7 @@ function M.check()
     end
 
     h.start("Required tools")
-    for _, t in ipairs({ "git", "rg" }) do
+    for _, t in ipairs({ "git", "tar", "curl", "xxd", "make", "rg" }) do
         if exe(t) then
             h.ok(t)
         else
@@ -114,6 +123,11 @@ function M.check()
     else
         h.warn("node missing — npm-based Mason packages won't install")
     end
+    if exe("npm") then
+        h.ok("npm " .. ver("npm"))
+    else
+        h.warn("npm missing")
+    end
     if lang_on("go") then
         if exe("go") then
             h.ok("go")
@@ -126,6 +140,11 @@ function M.check()
             h.ok("python3")
         else
             h.warn("python3 missing — debugpy affected")
+        end
+        if exe("pip3") or exe("pip") then
+            h.ok("pip available")
+        else
+            h.warn("pip missing")
         end
     end
     -- cargo unconditional: fff.nvim's build needs it regardless of rust.
@@ -155,6 +174,41 @@ function M.check()
         else
             h.warn(t .. " missing")
         end
+    end
+
+    h.start("Terminal & fonts")
+    local term = vim.env.TERM or ""
+    if term == "xterm-kitty" or vim.env.KITTY_WINDOW_ID then
+        h.ok("kitty (kitty graphics protocol)")
+    elseif vim.env.WEZTERM_EXECUTABLE or vim.env.WEZTERM_PANE then
+        h.ok("WezTerm (kitty graphics protocol)")
+    elseif term == "xterm-ghostty" or vim.env.GHOSTTY_RESOURCES_DIR or vim.env.GHOSTTY_BIN_DIR then
+        h.ok("Ghostty (kitty graphics protocol)")
+    elseif exe("kitty") then
+        h.warn("kitty installed but TERM=" .. (term ~= "" and term or "unset") .. " — image previews may not apply")
+    else
+        h.warn("no graphics terminal (kitty/WezTerm/Ghostty) — image previews / MDI fallback disabled")
+    end
+    if exe("fc-list") then
+        local fonts = sh({ "fc-list" }):lower()
+        local count = 0
+        for line in fonts:gmatch("[^\n]+") do
+            if line:find("nerd font", 1, true) then
+                count = count + 1
+            end
+        end
+        if count > 0 then
+            h.ok(("Nerd Font(s) installed (%d faces)"):format(count))
+        else
+            h.warn("no Nerd Font found via fc-list — icons render as boxes")
+        end
+        if fonts:find("symbols nerd font mono", 1, true) then
+            h.ok("Symbols Nerd Font Mono fallback present")
+        else
+            h.warn("Symbols Nerd Font Mono missing — many MDI glyphs won't render")
+        end
+    else
+        h.warn("fc-list missing — cannot verify fonts")
     end
 end
 
