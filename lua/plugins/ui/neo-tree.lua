@@ -246,17 +246,8 @@ return {
         popup_border_style = vim.g.flower_border,
         enable_git_status = true,
         enable_diagnostics = true,
-        -- Extra sources beside filesystem; cycle with < / > or the winbar tabs.
-        sources = { "filesystem", "buffers", "git_status" },
-        source_selector = {
-            winbar = true,
-            content_layout = "center",
-            sources = {
-                { source = "filesystem", display_name = "Files" },
-                { source = "buffers", display_name = "Buffers" },
-                { source = "git_status", display_name = "Git" },
-            },
-        },
+        -- Files only — neo-tree's default also registers buffers/git_status.
+        sources = { "filesystem" },
 
         default_component_configs = {
             container = { enable_character_fade = true },
@@ -327,8 +318,9 @@ return {
                 ["<cr>"] = "open_in_main",
                 ["l"] = "open_in_main",
                 ["h"] = "close_node",
-                ["<"] = "prev_source",
-                [">"] = "next_source",
+                -- Disable neo-tree's default `<`/`>` source-cycling.
+                ["<"] = "none",
+                [">"] = "none",
             },
         },
 

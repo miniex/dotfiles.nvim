@@ -49,7 +49,6 @@ Leader: `<Space>`. `<localleader>` also `<Space>` (most localleader bindings liv
 | `<leader>zz` / `z'`                   | fzf-lua: builtin menu / resume last picker                       |
 | `<leader>e` / `<leader>o`             | Neo-tree: toggle / reveal                                        |
 | `<cr>` / `l` / `h` (in Neo-tree)      | Open file in main window; folder expand / collapse               |
-| `<` / `>` (in Neo-tree)               | Cycle source (Files / Buffers / Git status)                      |
 | `<leader>-` / `<leader>fy`            | yazi: open at current file / in cwd (needs `yazi` binary)        |
 | `<leader>O`                           | oil: edit current dir as a buffer (rename/move/delete via edits) |
 | `<leader>L`                           | View current file in `less` (read-only, own tab)                 |
