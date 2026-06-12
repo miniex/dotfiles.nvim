@@ -392,7 +392,8 @@ In the toggle terminal, `$EDITOR`/`$VISUAL`/`$GIT_EDITOR` forward to the parent 
 | `<leader>.` / `<leader>bS`                 | Snacks scratch: toggle / select buffer                                                                                     |
 | `<leader>sn`                               | Snacks scratch: per-project markdown notes                                                                                 |
 | `<leader>1` … `<leader>9` · `<leader>0`    | Jump to bufferline position 1–9 / 10                                                                                       |
-| `[b` / `]b` · `<S-h>` / `<S-l>`            | Prev / next buffer (open-order)                                                                                            |
+| `[b` / `]b` · `<S-h>` / `<S-l>`            | Prev / next buffer (display order)                                                                                         |
+| `<A-S-h>` / `<A-S-l>`                      | Move buffer left / right (reorder; the position number follows)                                                            |
 | `<leader>bp` / `<leader>bc`                | bufferline: pick buffer by letter / pick to close                                                                          |
 | `<leader>cn` / `<leader>un`                | Notification history / dismiss all                                                                                         |
 | `<leader>yp` / `<leader>yP` / `<leader>yl` | Yank file path to `+`: absolute / relative / relative:line                                                                 |

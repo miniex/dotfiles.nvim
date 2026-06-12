@@ -4,47 +4,11 @@ local order_counter = 0
 local order = {}
 -- "named" cache: skip nvim_buf_get_name after a buffer is first seen named.
 local named = {}
--- Cached tab-number map (buf → 1-based visual position); rebuilt when order changes.
-local pos_by_buf, pos_dirty = {}, true
-
 local function ensure_order(bufnr)
     if not order[bufnr] then
         order_counter = order_counter + 1
         order[bufnr] = order_counter
-        pos_dirty = true
     end
-end
-
--- Visual tab number from open-order. bufferline's "ordinal" caches per buffer and
--- desyncs from a custom sort_by on reopen (Ctrl-O fires no BufAdd) — kept its old number.
-local function tab_number(id)
-    if pos_dirty then
-        pos_dirty = false
-        local bufs = {}
-        for _, b in ipairs(vim.api.nvim_list_bufs()) do
-            -- Match bufferline's shown set (listed, normal buftype, named) so rank = position.
-            local bt = vim.bo[b].buftype
-            if
-                vim.bo[b].buflisted
-                and (bt == "" or bt == "acwrite")
-                and (named[b] or vim.api.nvim_buf_get_name(b) ~= "")
-            then
-                bufs[#bufs + 1] = b
-            end
-        end
-        table.sort(bufs, function(a, c)
-            local oa, oc = order[a] or math.huge, order[c] or math.huge
-            if oa == oc then
-                return a < c
-            end
-            return oa < oc
-        end)
-        pos_by_buf = {}
-        for i, b in ipairs(bufs) do
-            pos_by_buf[b] = i
-        end
-    end
-    return (pos_by_buf[id] or "") .. "."
 end
 
 -- Skip order tracking in single-file mode — the spec module still loads (lazy reads
@@ -65,7 +29,6 @@ if not vim.g.single_file then
         group = group,
         callback = function(args)
             order[args.buf] = nil
-            pos_dirty = true
         end,
     })
 
@@ -74,7 +37,6 @@ if not vim.g.single_file then
         callback = function(args)
             order[args.buf] = nil
             named[args.buf] = nil
-            pos_dirty = true
         end,
     })
 
@@ -158,6 +120,9 @@ return {
         -- S-h/l overrides vim's H/L screen jumps.
         { "<S-h>", "<cmd>BufferLineCyclePrev<cr>", desc = "Previous buffer" },
         { "<S-l>", "<cmd>BufferLineCycleNext<cr>", desc = "Next buffer" },
+        -- A-S-h/l reorders the current tab (vs S-h/l, which just moves the cursor).
+        { "<A-S-h>", "<cmd>BufferLineMovePrev<cr>", desc = "Move buffer left" },
+        { "<A-S-l>", "<cmd>BufferLineMoveNext<cr>", desc = "Move buffer right" },
         { "<leader>bp", "<cmd>BufferLinePick<cr>", desc = "Pick buffer (letter)" },
         { "<leader>bc", "<cmd>BufferLinePickClose<cr>", desc = "Pick buffer to close" },
     }),
@@ -167,7 +132,8 @@ return {
             options = {
                 mode = "buffers",
                 numbers = function(o)
-                    return tab_number(o.id)
+                    -- Visual position (1-based), so a reorder renumbers.
+                    return o.ordinal .. "."
                 end,
                 sort_by = function(buf_a, buf_b)
                     local oa = order[buf_a.id] or math.huge
