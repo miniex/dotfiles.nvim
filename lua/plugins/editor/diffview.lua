@@ -26,7 +26,9 @@ return {
                 local ref = vim.fn.systemlist("git symbolic-ref --quiet --short refs/remotes/origin/HEAD")[1]
                 ref = (ref and ref:gsub("%s+", "")) or ""
                 if ref == "" then
-                    ref = "origin/main"
+                    -- origin/HEAD unset: fall back to whichever of main/master exists.
+                    local main = vim.fn.system({ "git", "rev-parse", "--verify", "--quiet", "origin/main" })
+                    ref = main ~= "" and "origin/main" or "origin/master"
                 end
                 vim.cmd("DiffviewOpen " .. ref .. "...HEAD")
             end,

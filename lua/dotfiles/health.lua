@@ -12,7 +12,8 @@ local function ver(cmd)
     local ok, res = pcall(function()
         return vim.system({ cmd, "--version" }, { text = true, timeout = 2000 }):wait()
     end)
-    if not ok or not res or not res.stdout then
+    -- Empty stdout (e.g. timeout) is a truthy string — check it explicitly.
+    if not ok or not res or not res.stdout or res.stdout == "" then
         return "?"
     end
     return (res.stdout:gsub("\n.*", ""))
