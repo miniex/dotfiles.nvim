@@ -13,8 +13,25 @@ return {
     keys = {
         { "<leader>gvo", "<cmd>DiffviewOpen<cr>", desc = "Diffview Open" },
         { "<leader>gvc", "<cmd>DiffviewClose<cr>", desc = "Diffview Close" },
-        { "<leader>gvf", "<cmd>DiffviewFileHistory %<cr>", desc = "File History (current file)" },
+        {
+            "<leader>gvf",
+            "<cmd>DiffviewFileHistory % --follow<cr>",
+            desc = "File History (current file, follows renames)",
+        },
         { "<leader>gvF", "<cmd>DiffviewFileHistory<cr>", desc = "File History (repo)" },
+        {
+            "<leader>gvm",
+            function()
+                -- Diff the whole branch against the default branch.
+                local ref = vim.fn.systemlist("git symbolic-ref --quiet --short refs/remotes/origin/HEAD")[1]
+                ref = (ref and ref:gsub("%s+", "")) or ""
+                if ref == "" then
+                    ref = "origin/main"
+                end
+                vim.cmd("DiffviewOpen " .. ref .. "...HEAD")
+            end,
+            desc = "Diffview vs default branch",
+        },
         { "<leader>gvr", "<cmd>DiffviewRefresh<cr>", desc = "Diffview Refresh" },
         { "<leader>gvh", "<cmd>DiffviewFileHistory % -g --range=stash<cr>", desc = "File History (stash)" },
         { "<leader>gvt", "<cmd>DiffviewToggleFiles<cr>", desc = "Diffview Toggle Files Panel" },

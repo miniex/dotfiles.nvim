@@ -7,6 +7,7 @@ return {
         { "<leader>gH", "<cmd>AdvancedGitSearch<cr>", desc = "Git: search history" },
     },
     config = function()
-        require("advanced_git_search.fzf").setup({})
+        -- Route diffs through diffview (the rest of the git stack standardizes on it).
+        require("advanced_git_search.fzf").setup({ diff_plugin = "diffview" })
     end,
 }

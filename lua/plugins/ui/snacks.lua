@@ -637,10 +637,19 @@ return {
         {
             "<leader>t",
             function()
+                -- count selects the instance: plain → #1, `2<leader>t` → #2, etc.
                 Snacks.terminal.toggle(nil, { env = TERM_ENV })
             end,
             mode = { "n", "t" },
             desc = "Toggle Terminal",
+        },
+        {
+            "<leader>T",
+            function()
+                Snacks.terminal.toggle(nil, { env = TERM_ENV, count = 2 })
+            end,
+            mode = { "n", "t" },
+            desc = "Toggle Terminal #2",
         },
         {
             "<leader>un",

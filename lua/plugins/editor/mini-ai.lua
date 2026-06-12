@@ -1,6 +1,6 @@
--- Brackets/quotes/tags + next/last search (`cin(`, `dan"`). treesitter-textobjects
--- keeps its exact 2-char maps (af/aa/al/…) — mini.ai's 1-char `a`/`i` only fires
--- for chars it owns. Last variant remapped off al/il (treesitter loop) → aL/iL.
+-- Brackets/quotes/tags. mini.ai's 1-char `a`/`i` only fires for chars it owns
+-- (treesitter-textobjects keeps af/aa/al/…). next/last on aN/iN, aL/iL: frees
+-- 0.12's native node selection (an/in/]n/[n).
 return {
     "echasnovski/mini.ai",
     event = "VeryLazy",
@@ -9,8 +9,8 @@ return {
         mappings = {
             around = "a",
             inside = "i",
-            around_next = "an",
-            inside_next = "in",
+            around_next = "aN",
+            inside_next = "iN",
             around_last = "aL",
             inside_last = "iL",
             goto_left = "",

@@ -92,7 +92,6 @@ return {
             { "<leader>k", group = "rest" },
             { "<leader>s", group = "scratch" },
             { "gs", group = "surround" },
-            { "gn", group = "ts-select" },
             -- Single-key desc labels (not groups; help discovery).
             { "<leader>e", desc = "Neo-tree toggle" },
             { "<leader>o", desc = "Neo-tree reveal" },

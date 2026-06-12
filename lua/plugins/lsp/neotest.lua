@@ -146,6 +146,8 @@ return {
 
             require("neotest").setup({
                 adapters = adapters,
+                -- Single discovery worker: caps the CPU spike when scanning tests on big repos.
+                discovery = { concurrent = 1 },
                 status = { virtual_text = true },
                 output = { open_on_run = false },
                 quickfix = {

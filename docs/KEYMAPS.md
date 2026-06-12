@@ -34,29 +34,30 @@ Leader: `<Space>`. `<localleader>` also `<Space>` (most localleader bindings liv
 
 > Modal floats (pickers, snacks terminal, lazy, Mason, harpoon menu, lazygit, Neo-tree) are mutually exclusive; auxiliary floats (hover, completion, notifier, …) stack on top.
 
-| Key                                   | Description                                                     |
-| ------------------------------------- | --------------------------------------------------------------- |
-| `<leader>ff`                          | fff.nvim: find files (Rust-backed, sub-10ms on huge codebases)  |
-| `<leader>fF`                          | fff.nvim: find files in current directory                       |
-| `<leader>fg` / `fr` / `fb` / `fh`     | snacks.picker: grep / recent / buffers / help                   |
-| `<leader>fB`                          | snacks.picker: live grep across open buffers (the tab list)     |
-| `<leader>fi` / `fH`                   | snacks.picker: insert icon / inspect highlight groups           |
-| `<leader>ft`                          | TODO comments                                                   |
-| `<leader>fp`                          | snacks.picker: recent projects (cd + restore)                   |
-| `<leader>fR`                          | Rename current file (LSP-aware)                                 |
-| `<leader>fS`                          | Snippets (LuaSnip, ft + inherited + all)                        |
-| `<leader>fs`                          | Edit the current filetype's snippet file (LuaSnip)              |
-| `<leader>zz` / `z'`                   | fzf-lua: builtin menu / resume last picker                      |
-| `<leader>e` / `<leader>o`             | Neo-tree: toggle / reveal                                       |
-| `<cr>` / `l` / `h` (in Neo-tree)      | Open file in main window; folder expand / collapse              |
-| `<` / `>` (in Neo-tree)               | Cycle source (Files / Buffers / Git status)                     |
-| `<leader>-` / `<leader>fy`            | yazi: open at current file / in cwd (needs `yazi` binary)       |
-| `<leader>L`                           | View current file in `less` (read-only, own tab)                |
-| `s` / `S` (n/x/o)                     | flash: jump / treesitter jump                                   |
-| `r` / `R` / `<C-s>`                   | flash: remote (o) / treesitter search (o/x) / toggle in `/` (c) |
-| `w` / `e` / `b` / `ge` (n/o/x)        | nvim-spider: sub-word (camelCase / snake_case) motion           |
-| `[j` / `]j`, `[l` / `]l`, `[u` / `]u` | mini.bracketed: jumplist / loclist / undo-state nav             |
-| `<leader>?`                           | which-key: all keymaps (`<C-d>`/`<C-u>` flip pages)             |
+| Key                                   | Description                                                      |
+| ------------------------------------- | ---------------------------------------------------------------- |
+| `<leader>ff`                          | fff.nvim: find files (Rust-backed, sub-10ms on huge codebases)   |
+| `<leader>fF`                          | fff.nvim: find files in current directory                        |
+| `<leader>fg` / `fr` / `fb` / `fh`     | snacks.picker: grep / recent / buffers / help                    |
+| `<leader>fB`                          | snacks.picker: live grep across open buffers (the tab list)      |
+| `<leader>fi` / `fH`                   | snacks.picker: insert icon / inspect highlight groups            |
+| `<leader>ft`                          | TODO comments                                                    |
+| `<leader>fp`                          | snacks.picker: recent projects (cd + restore)                    |
+| `<leader>fR`                          | Rename current file (LSP-aware)                                  |
+| `<leader>fS`                          | Snippets (LuaSnip, ft + inherited + all)                         |
+| `<leader>fs`                          | Edit the current filetype's snippet file (LuaSnip)               |
+| `<leader>zz` / `z'`                   | fzf-lua: builtin menu / resume last picker                       |
+| `<leader>e` / `<leader>o`             | Neo-tree: toggle / reveal                                        |
+| `<cr>` / `l` / `h` (in Neo-tree)      | Open file in main window; folder expand / collapse               |
+| `<` / `>` (in Neo-tree)               | Cycle source (Files / Buffers / Git status)                      |
+| `<leader>-` / `<leader>fy`            | yazi: open at current file / in cwd (needs `yazi` binary)        |
+| `<leader>O`                           | oil: edit current dir as a buffer (rename/move/delete via edits) |
+| `<leader>L`                           | View current file in `less` (read-only, own tab)                 |
+| `s` / `S` (n/x/o)                     | flash: jump / treesitter jump                                    |
+| `r` / `R` / `<C-s>`                   | flash: remote (o) / treesitter search (o/x) / toggle in `/` (c)  |
+| `w` / `e` / `b` / `ge` (n/o/x)        | nvim-spider: sub-word (camelCase / snake_case) motion            |
+| `[j` / `]j`, `[l` / `]l`, `[u` / `]u` | mini.bracketed: jumplist / loclist / undo-state nav              |
+| `<leader>?`                           | which-key: all keymaps (`<C-d>`/`<C-u>` flip pages)              |
 
 ## fzf-lua (`<leader>z*`)
 
@@ -218,8 +219,8 @@ Bare `nvim` (and `nvim <dir>`, which cd's in) auto-restores the cwd session (ski
 | `<leader>cA` / `<leader>cS` | n     | Swap parameter with next / prev                                           |
 | `<leader>cj` / `<leader>ck` | n     | Swap function with next / prev sibling                                    |
 | `<leader>cJ`                | n     | Split/join node — toggle one-line ↔ multi-line (treesj)                   |
-| `gnn`                       | n     | Init incremental selection                                                |
-| `gnm` / `gnM`               | x     | Expand / shrink node                                                      |
+| `an` / `in`                 | x/o   | TS select: expand to parent / shrink to child node (0.12 native)          |
+| `]n` / `[n`                 | x/o   | TS select: next / prev sibling node (0.12 native)                         |
 | `<A-Up>` / `<A-Down>`       | n/x   | treewalker: prev / next sibling node                                      |
 | `<A-Left>` / `<A-Right>`    | n/x   | treewalker: out (parent) / in (child) node                                |
 | `<A-S-Up/Down/Left/Right>`  | n     | treewalker: swap node up / down / left / right                            |
@@ -238,7 +239,7 @@ Bare `nvim` (and `nvim <dir>`, which cd's in) auto-restores the cwd session (ski
 | `<leader>ug` / `<leader>uS` | n     | Snacks toggle: indent guides / smooth scroll                              |
 | `[x`                        | n     | Jump to context start                                                     |
 
-> **mini.ai** adds bracket/quote/tag textobjects (`a(` / `i"` / `at`) with next/last search — `an(` / `in"` (next), `aL(` / `iL"` (last) — plus `ag`/`ig` (whole buffer) and `ad`/`id` (number).
+> **mini.ai** adds bracket/quote/tag textobjects (`a(` / `i"` / `at`) with next/last search — `aN(` / `iN"` (next), `aL(` / `iL"` (last) — plus `ag`/`ig` (whole buffer) and `ad`/`id` (number).
 
 ## Winbar Breadcrumb (dropbar)
 
@@ -258,7 +259,8 @@ Inside the menu: `q`/`<Esc>` close, `h` parent (no-op at top), `l` open entry.
 | `<leader>gg/gf/gL`                            | lazygit: open / file history / log                                                                                 |
 | `<leader>gB`                                  | gitbrowse: open current line in browser (n/v)                                                                      |
 | `<leader>gvo/gvc/gvr`                         | Diffview: open / close / refresh                                                                                   |
-| `<leader>gvf/gvF/gvh`                         | Diffview file history: current / repo / stash                                                                      |
+| `<leader>gvf/gvF/gvh`                         | Diffview file history: current (follows renames) / repo / stash                                                    |
+| `<leader>gvm`                                 | Diffview: review branch (working tree vs default branch)                                                           |
 | `<leader>gvt` / `<leader>gvp`                 | Diffview: toggle / focus files panel                                                                               |
 | `<leader>gvg` / `<leader>gvG`                 | gitgraph.nvim: all branches / current (`<cr>` → diffview)                                                          |
 | `<leader>gvs` / `<leader>gvA`                 | gitgraph.nvim: prompt for `--since` / `--author` filter                                                            |
@@ -380,7 +382,8 @@ In the toggle terminal, `$EDITOR`/`$VISUAL`/`$GIT_EDITOR` forward to the parent 
 
 | Key                                        | Description                                                                                                                |
 | ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------- |
-| `<leader>t` (n/t)                          | Toggle terminal (centered float)                                                                                           |
+| `<leader>t` (n/t)                          | Toggle terminal #1 (centered float; `N<leader>t` → instance N)                                                             |
+| `<leader>T` (n/t)                          | Toggle terminal #2                                                                                                         |
 | `<C-x>`                                    | Hide terminal                                                                                                              |
 | `<leader>w`                                | Smart buffer delete (last file → dashboard, or exit in a single-file launch; on dashboard → file buf if any, else `:qall`) |
 | `:q` / `:wq` / `:x` / `:exit` / `ZZ`       | Smart quit: bufdelete on last window, else `:quit`. `!` keeps force semantics. On dashboard → `:qall`; in `q:` → `:quit`.  |
