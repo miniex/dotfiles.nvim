@@ -31,7 +31,15 @@ return {
             if hit ~= nil then
                 return hit
             end
-            local z = #vim.api.nvim_tabpage_list_wins(tab) == 1
+            -- Count only normal windows — nvim_tabpage_list_wins includes incline's
+            -- own per-window floats, so a raw count is never 1 and zoom never registers.
+            local n = 0
+            for _, w in ipairs(vim.api.nvim_tabpage_list_wins(tab)) do
+                if vim.api.nvim_win_get_config(w).relative == "" then
+                    n = n + 1
+                end
+            end
+            local z = n == 1
             zoomed_by_tab[tab] = z
             return z
         end

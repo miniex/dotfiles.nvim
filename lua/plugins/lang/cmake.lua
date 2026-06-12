@@ -19,6 +19,8 @@ return {
                     if not loaded then
                         check()
                     end
+                    -- true deletes the autocmd, so post-load DirChanged stops stat-ing CMakeLists.txt.
+                    return loaded
                 end,
             })
         end,

@@ -14,15 +14,20 @@ return {
     config = function(_, opts)
         require("colorizer").setup(opts)
         -- Minified-line guard: a huge single line slips snacks.bigfile but still costs a full hex scan.
+        local function guard(buf)
+            local first = vim.api.nvim_buf_get_lines(buf, 0, 1, false)[1]
+            if first and #first > 2000 then
+                pcall(require("colorizer").detach_from_buffer, buf)
+            end
+        end
         vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
             group = vim.api.nvim_create_augroup("ColorizerBigLineGuard", { clear = true }),
             callback = function(args)
-                local first = vim.api.nvim_buf_get_lines(args.buf, 0, 1, false)[1]
-                if first and #first > 2000 then
-                    pcall(require("colorizer").detach_from_buffer, args.buf)
-                end
+                guard(args.buf)
             end,
         })
+        -- Guard the load-triggering buffer too; its BufReadPost fired before this autocmd existed.
+        guard(vim.api.nvim_get_current_buf())
     end,
     opts = {
         filetypes = {

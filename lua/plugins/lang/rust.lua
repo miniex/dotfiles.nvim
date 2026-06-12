@@ -140,7 +140,9 @@ return {
         config = function(_, opts)
             local mason_ok, mason_registry = pcall(require, "mason-registry")
             if mason_ok and mason_registry.is_installed("codelldb") then
-                local package_path = vim.fn.expand("$MASON/packages/codelldb")
+                -- Resolve the Mason path directly, not via $MASON (only set after
+                -- mason.setup(), which is lazy — empty when `nvim foo.rs` loads this first).
+                local package_path = vim.fn.stdpath("data") .. "/mason/packages/codelldb"
                 local codelldb = package_path .. "/extension/adapter/codelldb"
                 local lib_ext = vim.uv.os_uname().sysname == "Darwin" and "dylib" or "so"
                 local library_path = package_path .. "/extension/lldb/lib/liblldb." .. lib_ext

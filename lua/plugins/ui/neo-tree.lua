@@ -87,7 +87,10 @@ local function patch_recursive_dir_size()
             active_scans = active_scans + 1
             uv.new_work(scan_blocking, function(result)
                 active_scans = active_scans - 1
-                job.cb(result < 0 and nil or result)
+                -- Worker returns bytes (>=0) or -1 (capped); coerce any other value (thread
+                -- error) to nil + pcall the cb, so a throw can't strand the path inflight.
+                local bytes = (type(result) == "number" and result >= 0) and result or nil
+                pcall(job.cb, bytes)
                 dispatch_scans()
             end):queue(job.root, MAX_ENTRIES)
         end

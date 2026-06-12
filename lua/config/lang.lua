@@ -85,10 +85,12 @@ function M.code_action_keys(label, letters, ft)
         callback = function(args)
             for _, letter in ipairs(letters) do
                 local a = CODE_ACTIONS[letter]
-                vim.keymap.set("n", "<leader>c" .. letter, M.code_action_only(a.kind), {
-                    buffer = args.buf,
-                    desc = label .. ": " .. a.desc,
-                })
+                if a then -- skip a letter not in CODE_ACTIONS rather than erroring per-FileType
+                    vim.keymap.set("n", "<leader>c" .. letter, M.code_action_only(a.kind), {
+                        buffer = args.buf,
+                        desc = label .. ": " .. a.desc,
+                    })
+                end
             end
         end,
     })

@@ -150,16 +150,20 @@ M.add_decorator("checkhealth", {
     end,
 })
 
-local health = require("vim.health")
-local orig_check = health._check
----@diagnostic disable-next-line: duplicate-set-field
-health._check = function(mods, plugin_names)
-    health_buf = nil
-    building_health = true
-    local ok, err = pcall(orig_check, mods, plugin_names)
-    building_health = false
-    if not ok then
-        error(err, 0)
+-- Reload-safe like the API patch above: re-requiring would re-wrap the wrapped _check.
+if not vim.g._modal_float_health_patched then
+    vim.g._modal_float_health_patched = true
+    local health = require("vim.health")
+    local orig_check = health._check
+    ---@diagnostic disable-next-line: duplicate-set-field
+    health._check = function(mods, plugin_names)
+        health_buf = nil
+        building_health = true
+        local ok, err = pcall(orig_check, mods, plugin_names)
+        building_health = false
+        if not ok then
+            error(err, 0)
+        end
     end
 end
 
