@@ -26,5 +26,6 @@
 | Opening a big file prompts / drops into `less`      | Files >8 MiB ask: view in `less` / edit anyway / cancel (binary skips `less`). `<leader>L` views any file. Needs `less` on `$PATH`; tune `BIG_FILE_LIMIT` in `lua/config/autocmds.lua`.  |
 | A huge file reopens on every launch                 | Old session saved it in the arglist. The guard `argdelete`s on decline — open once, cancel, exit to clean it, or `rm` the session file.                                                  |
 | basedpyright "enumeration > 10s" / slow Python open | Heavy build / venv / vendored trees are excluded from enumeration in `lsp/basedpyright.lua`; `:LspRestart` to apply. Odd layout still slow? Add a project `pyrightconfig.json` `exclude` |
+| Mason LSP "missing from PATH / not executable"      | Shows installed in `:Mason` but the `mason/bin/<server>` symlink is missing (package dir intact). `:MasonInstall <server>` recreates it, then `:LspRestart`.                             |
 
 > nvim-treesitter `master` is archived and incompatible with 0.12; pinned to `main`.
