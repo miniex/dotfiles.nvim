@@ -121,22 +121,42 @@ return {
                 },
             }, neotest_ns)
 
-            local adapters = {
-                require("neotest-python")({
-                    runner = "pytest",
-                    dap = { justMyCode = false },
-                }),
-                require("neotest-golang")({
-                    dap_go_enabled = true,
-                }),
-                require("neotest-elixir"),
-                require("neotest-gtest").setup({}),
-                require("neotest-busted"),
-                require("neotest-zig")({}),
-                require("neotest-vitest"),
-                require("neotest-jest"),
-                require("neotest-phpunit"),
-            }
+            -- An adapter's :checkhealth loads it first, pulling in neotest and re-entering
+            -- this config mid-load → circular require. pcall each so one can't crash config.
+            local adapters = {}
+            local function add(build)
+                local ok, a = pcall(build)
+                if ok and a ~= nil then
+                    adapters[#adapters + 1] = a
+                end
+            end
+            add(function()
+                return require("neotest-python")({ runner = "pytest", dap = { justMyCode = false } })
+            end)
+            add(function()
+                return require("neotest-golang")({ dap_go_enabled = true })
+            end)
+            add(function()
+                return require("neotest-elixir")
+            end)
+            add(function()
+                return require("neotest-gtest").setup({})
+            end)
+            add(function()
+                return require("neotest-busted")
+            end)
+            add(function()
+                return require("neotest-zig")({})
+            end)
+            add(function()
+                return require("neotest-vitest")
+            end)
+            add(function()
+                return require("neotest-jest")
+            end)
+            add(function()
+                return require("neotest-phpunit")
+            end)
             -- Force-load rustaceanvim's rust adapter so rust tests are always present (neotest is
             -- keys-lazy, so not a startup cost; a later re-setup would rebuild the client mid-run).
             local ok_rust, rust = pcall(require, "rustaceanvim.neotest")
