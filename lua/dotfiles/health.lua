@@ -8,7 +8,14 @@ local function exe(cmd)
 end
 
 local function ver(cmd)
-    return (vim.fn.system({ cmd, "--version" }):gsub("\n.*", ""))
+    -- timeout so a hung/slow binary can't stall the :checkhealth UI.
+    local ok, res = pcall(function()
+        return vim.system({ cmd, "--version" }, { text = true, timeout = 2000 }):wait()
+    end)
+    if not ok or not res or not res.stdout then
+        return "?"
+    end
+    return (res.stdout:gsub("\n.*", ""))
 end
 
 function M.check()

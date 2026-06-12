@@ -439,6 +439,8 @@ if vim.g.multi_dir then
             end
             local name = vim.api.nvim_buf_get_name(args.buf)
             if name ~= "" and vim.fn.isdirectory(name) == 1 then
+                -- Project root, not a file tab — unlist so bufferline shows only opened files.
+                vim.bo[args.buf].buflisted = false
                 pcall(vim.cmd.tcd, vim.fn.fnameescape(name))
             else
                 vim.b[args.buf].multi_dir_notdir = true

@@ -7,8 +7,10 @@ function M.view(file)
         vim.notify("`less` not found on PATH", vim.log.levels.WARN)
         return
     end
-    vim.cmd("tabnew | term less -- " .. vim.fn.shellescape(file))
+    vim.cmd("tabnew")
     local buf = vim.api.nvim_get_current_buf()
+    -- argv list → no shell, no cmdline-special expansion (`%`/`#` in the name stay literal).
+    vim.fn.jobstart({ "less", "--", file }, { term = true })
     vim.api.nvim_create_autocmd("TermClose", {
         buffer = buf,
         once = true,

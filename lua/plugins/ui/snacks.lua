@@ -158,6 +158,42 @@ vim.api.nvim_create_autocmd("User", {
     end,
 })
 
+-- `nvim <dir>`: snacks' auto-open hardcodes buffer 1, but dir-launch-clean wipes the
+-- directory buffer (→ buffer 2), so it bails. Drive the dashboard ourselves after
+-- VimEnter, scheduled past persistence's autoload so a restored session wins.
+if vim.g.dir_launch then
+    vim.api.nvim_create_autocmd("VimEnter", {
+        group = vim.api.nvim_create_augroup("SnacksDashboardDirLaunch", { clear = true }),
+        once = true,
+        nested = true,
+        callback = function()
+            vim.schedule(function()
+                open_dashboard_if_empty(nil)
+            end)
+        end,
+    })
+end
+
+-- `nvim <dir1> <dir2>` (multi_dir): each dir is its own project. Entering a dir buffer
+-- (startup or :next/:prev) shows that dir's dashboard, like `nvim <dir>`. Scheduled so the
+-- swap doesn't race the triggering BufEnter; the dashboard buffer re-enters as a no-op.
+if vim.g.multi_dir then
+    vim.api.nvim_create_autocmd("BufEnter", {
+        group = vim.api.nvim_create_augroup("SnacksDashboardMultiDir", { clear = true }),
+        callback = function(args)
+            local name = vim.api.nvim_buf_get_name(args.buf)
+            if name == "" or vim.fn.isdirectory(name) ~= 1 then
+                return
+            end
+            vim.schedule(function()
+                if vim.api.nvim_buf_is_valid(args.buf) and vim.api.nvim_get_current_buf() == args.buf then
+                    open_dashboard()
+                end
+            end)
+        end,
+    })
+end
+
 vim.api.nvim_create_autocmd("BufDelete", {
     group = vim.api.nvim_create_augroup("SnacksDashboardOnLastClose", { clear = true }),
     callback = function(args)

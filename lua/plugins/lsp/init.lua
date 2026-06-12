@@ -215,6 +215,16 @@ return {
                 },
             })
 
+            -- Big-file guard: skip LSP features that re-request the whole document per idle/change.
+            local function buf_is_big(buf)
+                local name = vim.api.nvim_buf_get_name(buf)
+                if name ~= "" and vim.fn.getfsize(name) > 1 * 1024 * 1024 then -- 1 MiB
+                    return true
+                end
+                local first = vim.api.nvim_buf_get_lines(buf, 0, 1, false)[1]
+                return first ~= nil and #first > 2000
+            end
+
             -- Per-client, capability-gated; runs on EVERY attach so wiring isn't
             -- tied to attach order (e.g. ruff before basedpyright). Buffer-global
             -- augroups are guarded to create once per buffer.
@@ -256,7 +266,7 @@ return {
                         })
                     end
                 end
-                if client:supports_method("textDocument/codeLens", bufnr) then
+                if not buf_is_big(bufnr) and client:supports_method("textDocument/codeLens", bufnr) then
                     if not vim.b[bufnr]._lsp_codelens_done then
                         vim.b[bufnr]._lsp_codelens_done = true
                         vim.lsp.codelens.enable(true, { bufnr = bufnr })
@@ -279,7 +289,9 @@ return {
                     end
                 end
                 if
-                    client:supports_method("textDocument/documentHighlight", bufnr) and not vim.b[bufnr]._lsp_dochl_done
+                    not buf_is_big(bufnr)
+                    and client:supports_method("textDocument/documentHighlight", bufnr)
+                    and not vim.b[bufnr]._lsp_dochl_done
                 then
                     vim.b[bufnr]._lsp_dochl_done = true
                     local g = vim.api.nvim_create_augroup("lsp-doc-hl-" .. bufnr, { clear = true })

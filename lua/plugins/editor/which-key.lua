@@ -17,14 +17,21 @@ return {
             return
         end
 
+        -- Reaches into which-key internals; pcall so a rename can't error on every BufEnter.
         local function install_triggers(buf)
-            local mode = require("which-key.buf").get({ buf = buf, mode = "n" })
-            if not mode then
-                return
-            end
-            local Triggers = require("which-key.triggers")
-            Triggers.suspended[mode] = nil
-            Triggers.update(mode)
+            pcall(function()
+                local mode = require("which-key.buf").get({ buf = buf, mode = "n" })
+                if not mode then
+                    return
+                end
+                local Triggers = require("which-key.triggers")
+                if Triggers.suspended then
+                    Triggers.suspended[mode] = nil
+                end
+                if Triggers.update then
+                    Triggers.update(mode)
+                end
+            end)
         end
         install_triggers(vim.api.nvim_get_current_buf())
         -- which-key only *schedules* triggers (deferred a tick) and rebuilds them on
