@@ -40,6 +40,11 @@ return {
         vim.api.nvim_create_autocmd("BufEnter", {
             group = vim.api.nvim_create_augroup("WhichKeyTriggerSync", { clear = true }),
             callback = function(args)
+                -- Skip special buffers (terminals/pickers/panels): the most frequent
+                -- BufEnter source, and the global leader menu isn't used there.
+                if vim.bo[args.buf].buftype ~= "" then
+                    return
+                end
                 install_triggers(args.buf)
             end,
         })

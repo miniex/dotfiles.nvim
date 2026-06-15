@@ -190,7 +190,24 @@ return {
                 _G._scrollbar_pulse_timer = nil
             end
         end
-        start_pulse()
+
+        -- Pause the pulse after a few idle seconds so it stops repainting a static
+        -- screen; the next motion resumes it. Reused timer, re-armed at most every 200ms.
+        local pulse_idle_delay_ms = 4000
+        local pulse_idle_timer
+        local last_pulse_arm_ms = 0
+        local function note_pulse_activity()
+            start_pulse()
+            local now = vim.uv.hrtime() / 1e6
+            if now - last_pulse_arm_ms < 200 then
+                return
+            end
+            last_pulse_arm_ms = now
+            pulse_idle_timer = pulse_idle_timer or vim.uv.new_timer()
+            pulse_idle_timer:stop()
+            pulse_idle_timer:start(pulse_idle_delay_ms, 0, vim.schedule_wrap(stop_pulse))
+        end
+        note_pulse_activity()
 
         -- Cursor mark: lerps line position so the heart slides instead of teleporting.
         local scrollbar = require("scrollbar")
@@ -313,6 +330,7 @@ return {
                     return
                 end
                 poke_handle()
+                note_pulse_activity()
                 animate_cursor(event.buf, vim.api.nvim_win_get_cursor(0)[1] - 1)
             end,
         })
@@ -380,7 +398,7 @@ return {
         end
         local function maybe_start_pulse()
             if should_pulse() then
-                start_pulse()
+                note_pulse_activity()
             else
                 stop_pulse()
             end
@@ -413,6 +431,7 @@ return {
                 stop(fade_timer)
                 stop(idle_timer)
                 stop(move_timer)
+                stop(pulse_idle_timer)
             end,
         })
 

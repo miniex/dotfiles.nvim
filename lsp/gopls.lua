@@ -27,7 +27,6 @@ return {
                 nilness = true,
                 unusedparams = true,
                 unusedwrite = true,
-                unusedvariable = true,
             },
             gofumpt = true,
             usePlaceholders = true,

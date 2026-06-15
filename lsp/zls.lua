@@ -10,7 +10,8 @@ return {
             force_autofix = false,
             enable_snippets = true,
             enable_argument_placeholders = true,
-            enable_build_on_save = true,
+            -- Off: a full `zig build` per save stalls big projects; AST diagnostics still work.
+            enable_build_on_save = false,
             semantic_tokens = "full",
         },
     },

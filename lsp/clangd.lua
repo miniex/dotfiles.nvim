@@ -1,7 +1,12 @@
+-- Cap background-index workers at half the cores so the first index doesn't peg the CPU.
+local jobs = math.max(2, math.floor((vim.uv.available_parallelism and vim.uv.available_parallelism() or 4) / 2))
+
 return {
     cmd = {
         "clangd",
         "--background-index",
+        "-j=" .. jobs,
+        "--pch-storage=memory",
         "--clang-tidy",
         "--header-insertion=iwyu",
         "--completion-style=detailed",
