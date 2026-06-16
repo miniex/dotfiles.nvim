@@ -1,50 +1,90 @@
--- Track open order for stable left-to-right tabs. Cleared on BufDelete too (not
--- just wipeout) so a reopened file appends at the tail — its bufnr survives bdelete.
-local order_counter = 0
-local order = {}
--- "named" cache: skip nvim_buf_get_name after a buffer is first seen named.
-local named = {}
-local function ensure_order(bufnr)
-    if not order[bufnr] then
-        order_counter = order_counter + 1
-        order[bufnr] = order_counter
+-- Tab order uses bufferline's `custom_sort` (buffer-id list), not a `sort_by`
+-- comparator: sort_by runs after ui.element bakes the ordinal label, so tabs reorder
+-- but the printed "1. 2. …" go stale ("1 2 4 5 3"). custom_sort reorders before the
+-- bake, so labels track left-to-right position. New buffers append at the tail;
+-- <A-S-h>/<A-S-l> (BufferLineMove*) update custom_sort too.
+local named = {} -- cache: name-check each buffer once (custom_filter)
+
+local function order_list()
+    local ok, st = pcall(require, "bufferline.state")
+    if not ok then
+        return nil
+    end
+    if not st.custom_sort then
+        -- First load: seed from the current listed buffers.
+        local seed = {}
+        for _, b in ipairs(vim.api.nvim_list_bufs()) do
+            if vim.bo[b].buflisted then
+                seed[#seed + 1] = b
+            end
+        end
+        st.custom_sort = seed
+    end
+    return st.custom_sort
+end
+
+local function redraw()
+    vim.schedule(function()
+        if vim.o.showtabline ~= 0 then
+            vim.cmd("redrawtabline")
+        end
+    end)
+end
+
+local function track(bufnr)
+    if not vim.bo[bufnr].buflisted then
+        return
+    end
+    local list = order_list()
+    if not list then
+        return
+    end
+    for _, id in ipairs(list) do
+        if id == bufnr then
+            return
+        end
+    end
+    list[#list + 1] = bufnr
+    redraw()
+end
+
+local function untrack(bufnr)
+    local list = order_list()
+    if not list then
+        return
+    end
+    for i, id in ipairs(list) do
+        if id == bufnr then
+            table.remove(list, i)
+            redraw()
+            return
+        end
     end
 end
 
--- Skip order tracking in single-file mode — the spec module still loads (lazy reads
--- it) but the plugin (cond) won't, so these autocmds would just run for nothing.
+-- No tabline in single-file mode (`nvim <file>`), so skip order tracking.
 if not vim.g.single_file then
     local group = vim.api.nvim_create_augroup("BufferlineOpenOrder", { clear = true })
-
-    vim.api.nvim_create_autocmd("BufAdd", {
+    -- BufEnter catches reopened/relisted buffers that BufAdd can miss.
+    vim.api.nvim_create_autocmd({ "BufAdd", "BufEnter" }, {
         group = group,
         callback = function(args)
-            if vim.bo[args.buf].buflisted then
-                ensure_order(args.buf)
-            end
+            track(args.buf)
         end,
     })
-
     vim.api.nvim_create_autocmd("BufDelete", {
         group = group,
         callback = function(args)
-            order[args.buf] = nil
+            untrack(args.buf)
         end,
     })
-
     vim.api.nvim_create_autocmd("BufWipeout", {
         group = group,
         callback = function(args)
-            order[args.buf] = nil
+            untrack(args.buf)
             named[args.buf] = nil
         end,
     })
-
-    for _, b in ipairs(vim.api.nvim_list_bufs()) do
-        if vim.bo[b].buflisted then
-            ensure_order(b)
-        end
-    end
 end
 
 -- damin 3-stop gradient (matches kitty tab_bar + tmux window list)
@@ -135,16 +175,6 @@ return {
                     -- Visual position (1-based), so a reorder renumbers.
                     return o.ordinal .. "."
                 end,
-                sort_by = function(buf_a, buf_b)
-                    local oa = order[buf_a.id] or math.huge
-                    local ob = order[buf_b.id] or math.huge
-                    -- Tiebreaker by bufnr: untracked buffers tie at math.huge, and
-                    -- table.sort is unstable, so their order flips between redraws.
-                    if oa == ob then
-                        return buf_a.id < buf_b.id
-                    end
-                    return oa < ob
-                end,
                 custom_filter = function(buf)
                     if not named[buf] then
                         if vim.api.nvim_buf_get_name(buf) == "" then
@@ -152,8 +182,6 @@ return {
                         end
                         named[buf] = true
                     end
-                    -- BufAdd can miss a later-listed buffer; track it on first render.
-                    ensure_order(buf)
                     return true
                 end,
                 name_formatter = function(buf)
