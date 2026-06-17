@@ -216,13 +216,20 @@ return {
             })
 
             -- Big-file guard: skip LSP features that re-request the whole document per idle/change.
+            -- Cached per buffer: runs on every attach, before the _done gates.
             local function buf_is_big(buf)
-                local name = vim.api.nvim_buf_get_name(buf)
-                if name ~= "" and vim.fn.getfsize(name) > 1 * 1024 * 1024 then -- 1 MiB
-                    return true
+                local cached = vim.b[buf]._lsp_buf_is_big
+                if cached ~= nil then
+                    return cached
                 end
-                local first = vim.api.nvim_buf_get_lines(buf, 0, 1, false)[1]
-                return first ~= nil and #first > 2000
+                local name = vim.api.nvim_buf_get_name(buf)
+                local big = name ~= "" and vim.fn.getfsize(name) > 1 * 1024 * 1024 -- 1 MiB
+                if not big then
+                    local first = vim.api.nvim_buf_get_lines(buf, 0, 1, false)[1]
+                    big = first ~= nil and #first > 2000
+                end
+                vim.b[buf]._lsp_buf_is_big = big
+                return big
             end
 
             -- Per-client, capability-gated; runs on EVERY attach so wiring isn't
