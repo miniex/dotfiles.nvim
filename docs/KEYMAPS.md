@@ -408,7 +408,7 @@ In the toggle terminal, `$EDITOR`/`$VISUAL`/`$GIT_EDITOR` forward to the parent 
 | Key                                        | Description                                               |
 | ------------------------------------------ | --------------------------------------------------------- |
 | `<leader>ch`                               | C/C++: switch source ↔ header                             |
-| `<leader>cR` / `<leader>cD` / `<leader>cT` | Rust: code action / debuggables / testables               |
+| `<leader>cR` / `<leader>dR` / `<leader>cT` | Rust: code action / debuggables / testables               |
 | `<leader>cE` / `<leader>cP`                | Rust: expand macro / jump to parent module                |
 | `<leader>co` / `<leader>cU`                | TS/JS: organize imports / remove unused                   |
 | `<leader>co` / `<leader>cX`                | Python: organize imports / fix all (ruff)                 |

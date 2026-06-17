@@ -95,7 +95,7 @@ See [`lua/config/modal-floats.lua`](../lua/config/modal-floats.lua) for the mutu
 
 - **nvim-lint** — runs on save / read (not `InsertLeave`) with a per-buffer 250ms debounce; skips run if you switched away.
 - **mason-tool-installer** — single source of truth for Mason installs: LSP servers plus non-LSP tools (shellcheck, golangci-lint, eslint_d, selene, markdownlint, statix, hadolint, sqlfluff, yamllint, …). `auto_update` stays off; a startup toast flags tools with updates (`:MasonToolsUpdate`).
-- **DAP** — Rust (rustaceanvim's codelldb) / C-C++ (codelldb) / Python (debugpy) / Go (delve) / Zig (codelldb) / Nim (codelldb) / Elixir (elixir-ls debug adapter) / JS-TS (js-debug-adapter for Node; browser auto-detected from `$PATH` — Chrome, else Firefox; probed lazily, not at startup) / PHP (php-debug-adapter; needs Xdebug). C/C++, Zig, and Nim share the codelldb resolver in `lua/config/codelldb.lua`. Persistent breakpoints per-cwd; conditional / hit-condition / log-point breakpoints (`<leader>dB`/`dH`/`dL`); exception breakpoints via `<leader>dE`; reads project `.vscode/launch.json`.
+- **DAP** — Rust (rustaceanvim's codelldb) / C-C++ (codelldb) / Python (debugpy) / Go (delve) / Zig (codelldb) / Nim (codelldb) / Elixir (elixir-ls debug adapter) / JS-TS (js-debug-adapter for Node; browser auto-detected from `$PATH` — Chrome, else Firefox; probed lazily, not at startup) / PHP (php-debug-adapter; needs Xdebug). C/C++, Zig, Nim, and Rust all resolve codelldb through `lua/config/codelldb.lua`. Persistent breakpoints per-cwd; conditional / hit-condition / log-point breakpoints (`<leader>dB`/`dH`/`dL`); exception breakpoints via `<leader>dE`; reads project `.vscode/launch.json`.
 - **neotest** — Python (pytest) / Go (gotestsum) / Elixir (mix) / C/C++ (gtest) / Lua (busted) / Rust (rustaceanvim) / Zig / JS-TS (vitest / jest) / PHP (PHPUnit). Summary window state restored across sessions.
 - **overseer** — task / build runner (`<leader>R*`); auto-detects make / npm / cargo / go / just / cmake templates.
 - **nvim-coverage** — test-coverage gutter signs + summary (`<leader>nc` / `nC`, toggle `nv` / clear `nX`); reads lcov / coverage.xml.
@@ -118,7 +118,7 @@ See [`lua/config/modal-floats.lua`](../lua/config/modal-floats.lua) for the mutu
 ## Native ui2
 
 - Floating cmdline + messages via `vim._core.ui2.enable()`.
-- Opt out with `vim.g.disable_ui2 = true` in `globals.lua`.
+- Opt out with `vim.g.disable_ui2 = true` in `options.lua`.
 - `:messages` is aliased to `:Messages`, which renders the history in a centered flower-border modal (ui2's own pager doesn't surface for us).
 
 ## Clipboard

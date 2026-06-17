@@ -39,7 +39,7 @@ The asymmetry between `lsp/` / `snippets/` (at root) and `lua/config|plugins/` (
 
 `init.lua` requires in this order:
 
-1. `config.globals` — `vim.g.*` shared across modules (`flower_border`, `disable_ui2`)
+1. `config.globals` — `vim.g.*` shared across modules (`flower_border`, launch modes)
 2. `config.options` — `vim.opt` settings (must precede plugins reading them, e.g. `cmdheight`, `laststatus`)
 3. `config.autocmds` — global autocmds (clipboard sync, mkdir-on-save, ts-attach, …)
 4. `config.modal-floats` — mutual-exclusion registry + shared `nvim_open_win` / `nvim_win_set_config` decorator hook
@@ -66,20 +66,19 @@ Plugin specs are discovered by `lazy.setup({ spec = { { import = "plugins.coding
 | Palette & brand accents | `lua/config/palette.lua`                                             | Cached `mocha()` parse + the `blue` / `pink` / git accents every UI plugin reads.                                                                                                                                                                                                    |
 | UI chrome filetypes     | `lua/config/chrome_filetypes.lua`                                    | `pickers` / `panels` lists; scrollbar / smear / cursor-bloom / incline build exclusions from one source.                                                                                                                                                                             |
 | Treesitter grammars     | `lua/plugins/editor/treesitter.lua` `ensure_installed`               | Central grammar list; lang files don't extend it.                                                                                                                                                                                                                                    |
-| CodeLLDB DAP adapter    | `lua/config/codelldb.lua`                                            | Resolves the Mason codelldb binary once; shared by C/C++ and Zig.                                                                                                                                                                                                                    |
+| CodeLLDB DAP adapter    | `lua/config/codelldb.lua`                                            | Resolves the Mason codelldb binary once; shared by C/C++, Zig, Nim, and Rust.                                                                                                                                                                                                        |
 | Formatter width         | `lua/config/format-width.lua`                                        | Per-filetype `textwidth` from the project formatter config (`rustfmt.toml`, `stylua`, `.clang-format`, …), searched upward; no visual ruler.                                                                                                                                         |
 | Pager (`less`) view     | `lua/config/pager.lua`                                               | `less` in its own tab (read-only, streamed); shared by `<leader>L` and the >8 MiB big-file open gate.                                                                                                                                                                                |
 
 ## Plugin spec categories (`lua/plugins/`)
 
-| Subdir      | Belongs here                                                                                                                    |
-| ----------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| `coding/`   | Completion (blink.cmp, LuaSnip, friendly-snippets).                                                                             |
-| `editor/`   | Editing UX: Neo-tree, flash, surround, harpoon, multicursor, git, …                                                             |
-| `lang/`     | Per-language adapters (DAP configs, `vim.filetype.add`, lang-only plugins). Grammars live centrally in `editor/treesitter.lua`. |
-| `lsp/`      | LSP infra (mason, nvim-lspconfig, lint, dap, neotest, diagnostic-ui).                                                           |
-| `markdown/` | Render plugins specific to markdown.                                                                                            |
-| `ui/`       | Theme, lualine, bufferline, snacks (picker/terminal/dashboard), edgy, …                                                         |
+| Subdir    | Belongs here                                                                                                                    |
+| --------- | ------------------------------------------------------------------------------------------------------------------------------- |
+| `coding/` | Completion (blink.cmp, LuaSnip, friendly-snippets).                                                                             |
+| `editor/` | Editing UX: Neo-tree, flash, surround, harpoon, multicursor, git, …                                                             |
+| `lang/`   | Per-language adapters (DAP configs, `vim.filetype.add`, lang-only plugins). Grammars live centrally in `editor/treesitter.lua`. |
+| `lsp/`    | LSP infra (mason, nvim-lspconfig, lint, dap, neotest, diagnostic-ui).                                                           |
+| `ui/`     | Theme, lualine, bufferline, snacks (picker/terminal/dashboard), edgy, …                                                         |
 
 If a plugin touches multiple categories (e.g. snacks does picker + terminal + dashboard), pick the dominant one and add a comment if non-obvious.
 

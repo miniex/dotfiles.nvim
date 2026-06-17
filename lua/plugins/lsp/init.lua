@@ -232,10 +232,23 @@ return {
                 return big
             end
 
+            -- Servers whose semantic tokens clash with treesitter. Disabled here, not via
+            -- the server's on_attach, so its bundled on_attach (e.g. pyright cmds) still runs.
+            local SEMANTIC_TOKENS_OFF = { basedpyright = true, vtsls = true }
+
             -- Per-client, capability-gated; runs on EVERY attach so wiring isn't
             -- tied to attach order (e.g. ruff before basedpyright). Buffer-global
             -- augroups are guarded to create once per buffer.
             local function setup_client_features(client, bufnr)
+                -- Once per buffer: re-disabling on a 2nd attach would clobber a <leader>uy toggle.
+                if SEMANTIC_TOKENS_OFF[client.name] and not vim.b[bufnr]._semantic_disabled then
+                    vim.b[bufnr]._semantic_disabled = true
+                    vim.schedule(function()
+                        if vim.api.nvim_buf_is_valid(bufnr) then
+                            pcall(vim.lsp.semantic_tokens.enable, false, { bufnr = bufnr })
+                        end
+                    end)
+                end
                 if
                     opts.inlay_hints
                     and opts.inlay_hints.enabled

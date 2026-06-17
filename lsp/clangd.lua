@@ -17,7 +17,7 @@ return {
         offsetEncoding = { "utf-16" },
     },
     init_options = {
-        usePlaceholders = true,
+        -- Placeholders come from the --function-arg-placeholders flag above, not here.
         completeUnimported = true,
         clangdFileStatus = true,
     },

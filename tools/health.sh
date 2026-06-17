@@ -41,7 +41,7 @@ version_ge() {
 }
 
 section "Required"
-for t in git tar curl xxd make; do
+for t in git tar curl xxd make less; do
     if have "$t"; then ok "$t"; else miss "$t not on PATH"; fi
 done
 if have rg; then ok "ripgrep (rg)"; else miss "ripgrep (binary 'rg') not on PATH"; fi

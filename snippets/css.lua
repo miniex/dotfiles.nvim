@@ -1,11 +1,11 @@
 local u = require("config.snippets")
 -- fmtd: `<>` delimiters so literal `{ }` braces pass through.
-local s, i, f = u.s, u.i, u.fmtd
+local s, i, fmtd = u.s, u.i, u.fmtd
 
 return {
     s(
         "flex",
-        f(
+        fmtd(
             [[display: flex;
 align-items: <>;
 justify-content: <>;]],
@@ -14,7 +14,7 @@ justify-content: <>;]],
     ),
     s(
         "grid",
-        f(
+        fmtd(
             [[display: grid;
 grid-template-columns: <>;
 gap: <>;]],
@@ -23,13 +23,13 @@ gap: <>;]],
     ),
     s(
         "media",
-        f(
+        fmtd(
             [[@media (max-width: <>) {
     <>
 }]],
             { i(1, "768px"), i(0) }
         )
     ),
-    s("trans", f("transition: <> <> ease;", { i(1, "all"), i(2, "0.2s") })),
-    s("var", f("--<>: <>;", { i(1, "name"), i(2, "value") })),
+    s("trans", fmtd("transition: <> <> ease;", { i(1, "all"), i(2, "0.2s") })),
+    s("var", fmtd("--<>: <>;", { i(1, "name"), i(2, "value") })),
 }

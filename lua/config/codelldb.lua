@@ -1,18 +1,21 @@
--- Shared codelldb DAP adapter resolution (C/C++, Zig). Resolves the Mason
--- binary directly, bypassing Mason's bash wrapper (same path rustaceanvim uses).
+-- Shared codelldb paths (Mason binary + liblldb), resolved directly to bypass
+-- Mason's bash wrapper. Used by C/C++/Zig/Nim DAP adapters + lang/rust.lua.
 local M = {}
+
+local pkg = vim.fn.stdpath("data") .. "/mason/packages/codelldb"
+M.binary = pkg .. "/extension/adapter/codelldb"
+M.library = pkg .. "/extension/lldb/lib/liblldb." .. (vim.uv.os_uname().sysname == "Darwin" and "dylib" or "so")
 
 -- Returns a dap.adapters.codelldb spec, or nil (with a warning) if not installed.
 local warned = false
 function M.adapter(lang)
-    local path = vim.fn.stdpath("data") .. "/mason/packages/codelldb/extension/adapter/codelldb"
-    if vim.fn.executable(path) ~= 1 then
-        -- Warn once: C/C++ and Zig both call this, else two identical toasts.
+    if vim.fn.executable(M.binary) ~= 1 then
+        -- Warn once: several langs call this, else duplicate toasts.
         if not warned then
             warned = true
             vim.schedule(function()
                 vim.notify(
-                    "codelldb not found at " .. path .. "\nRun :MasonInstall codelldb",
+                    "codelldb not found at " .. M.binary .. "\nRun :MasonInstall codelldb",
                     vim.log.levels.WARN,
                     { title = "nvim-dap (" .. lang .. ")" }
                 )
@@ -23,7 +26,7 @@ function M.adapter(lang)
     return {
         type = "server",
         port = "${port}",
-        executable = { command = path, args = { "--port", "${port}" } },
+        executable = { command = M.binary, args = { "--port", "${port}" } },
     }
 end
 

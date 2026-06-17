@@ -20,7 +20,7 @@ local common = {
 
 return {
     root_markers = { "tsconfig.json", "jsconfig.json", "package.json", ".git" },
-    on_attach = require("config.lsp_util").disable_semantic_tokens,
+    -- Semantic tokens off centrally (lsp/init.lua).
     settings = {
         vtsls = {
             experimental = { completion = { enableServerSideFuzzyMatch = true } },

@@ -48,7 +48,7 @@ return {
                 ft = "rust",
             },
             {
-                "<leader>cD",
+                "<leader>dR",
                 function()
                     vim.cmd.RustLsp("debuggables")
                 end,
@@ -142,16 +142,11 @@ return {
             },
         },
         config = function(_, opts)
-            local mason_ok, mason_registry = pcall(require, "mason-registry")
-            if mason_ok and mason_registry.is_installed("codelldb") then
-                -- Resolve the Mason path directly, not via $MASON (only set after
-                -- mason.setup(), which is lazy — empty when `nvim foo.rs` loads this first).
-                local package_path = vim.fn.stdpath("data") .. "/mason/packages/codelldb"
-                local codelldb = package_path .. "/extension/adapter/codelldb"
-                local lib_ext = vim.uv.os_uname().sysname == "Darwin" and "dylib" or "so"
-                local library_path = package_path .. "/extension/lldb/lib/liblldb." .. lib_ext
+            -- Shared codelldb paths; silent skip when not installed (rust debug is optional).
+            local cl = require("config.codelldb")
+            if vim.fn.executable(cl.binary) == 1 then
                 opts.dap = {
-                    adapter = require("rustaceanvim.config").get_codelldb_adapter(codelldb, library_path),
+                    adapter = require("rustaceanvim.config").get_codelldb_adapter(cl.binary, cl.library),
                 }
             end
             vim.g.rustaceanvim = vim.tbl_deep_extend("keep", vim.g.rustaceanvim or {}, opts or {})

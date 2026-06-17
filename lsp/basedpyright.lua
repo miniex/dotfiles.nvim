@@ -2,7 +2,7 @@ local markers = require("config.lsp_markers")
 
 return {
     root_markers = vim.list_extend(vim.list_extend({}, markers.python), { ".git" }),
-    on_attach = require("config.lsp_util").disable_semantic_tokens,
+    -- Semantic tokens off centrally (lsp/init.lua); keeps the bundled on_attach (LspPyright* cmds).
     settings = {
         basedpyright = {
             -- Cede import organizing to ruff (avoids a duplicate organize-imports action).

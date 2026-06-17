@@ -36,7 +36,6 @@ return {
                 custom_highlights = function(_)
                     return {
                         WinSeparator = { fg = damin_pink, bg = "NONE" },
-                        VertSplit = { fg = damin_pink, bg = "NONE" },
                         FloatBorder = { fg = damin_pink, bg = "NONE" },
                         BufferLineOffset = { fg = damin_pink, bg = "NONE", bold = true },
 

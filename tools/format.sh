@@ -18,7 +18,8 @@ if [ -n "$missing" ]; then
 fi
 
 stylua .
-sh_files="install.sh set-lang.sh tools/format.sh tools/lint.sh tools/health.sh scripts/_colors.sh scripts/term-bin/nvim"
+# Tracked shell scripts: every *.sh plus the extensionless term-bin shim.
+sh_files="$(git ls-files '*.sh' 2>/dev/null || true) scripts/term-bin/nvim"
 # shellcheck disable=SC2086 # word-splitting the file list is intentional
 shfmt -w -i 4 -ci -bn -s $sh_files
 

@@ -37,7 +37,7 @@ function M.check()
     end
 
     h.start("Required tools")
-    for _, t in ipairs({ "git", "tar", "curl", "xxd", "make", "rg" }) do
+    for _, t in ipairs({ "git", "tar", "curl", "xxd", "make", "rg", "less" }) do
         if exe(t) then
             h.ok(t)
         else

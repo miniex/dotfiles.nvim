@@ -1,11 +1,11 @@
 local u = require("config.snippets")
--- `f` uses `<>` delimiters so JSON `{}` braces stay literal.
-local s, i, f = u.s, u.i, u.fmtd
+-- fmtd uses `<>` delimiters so JSON `{}` braces stay literal.
+local s, i, fmtd = u.s, u.i, u.fmtd
 
 return {
     s(
         "pkg",
-        f(
+        fmtd(
             [[
 {
   "name": "<>",
@@ -20,7 +20,7 @@ return {
     ),
     s(
         "tsconfig",
-        f(
+        fmtd(
             [[
 {
   "compilerOptions": {
@@ -34,5 +34,5 @@ return {
             { i(1, "ES2022"), i(0, "ESNext") }
         )
     ),
-    s("schema", f('"$schema": "<>"', { i(0, "https://json.schemastore.org/package.json") })),
+    s("schema", fmtd('"$schema": "<>"', { i(0, "https://json.schemastore.org/package.json") })),
 }

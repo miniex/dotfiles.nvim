@@ -51,7 +51,7 @@ opt.updatetime = 300
 opt.scrolloff = 10
 -- snacks.scroll owns scroll; built-in would double-fire.
 opt.smoothscroll = false
-opt.mouse:append("a")
+opt.mouse = "a"
 opt.autoread = true
 opt.undofile = true
 
@@ -61,9 +61,12 @@ opt.winborder = "rounded"
 
 -- Stable viewport on splits + jumps (no surprise scroll when opening hover/preview).
 opt.splitkeep = "screen"
-opt.jumpoptions = "view"
+-- clean: prune wiped-buffer jumps (default); view: restore view on jump.
+opt.jumpoptions = "clean,view"
 
 -- Smarter diff: histogram hunks + line alignment (0.10) + word-level inline highlight (0.12).
+-- Drop the defaults we override below (avoid stale duplicates).
+opt.diffopt:remove({ "inline:char", "linematch:40" })
 opt.diffopt:append("algorithm:histogram")
 opt.diffopt:append("linematch:60")
 opt.diffopt:append("inline:word")

@@ -1,12 +1,12 @@
 local u = require("config.snippets")
--- `f` uses `<>` delimiters so `{}` braces stay literal.
-local s, i, f = u.s, u.i, u.fmtd
+-- fmtd uses `<>` delimiters so `{}` braces stay literal.
+local s, i, fmtd = u.s, u.i, u.fmtd
 
 return {
-    s("ver", f("#version <>", { i(0, "450") })),
+    s("ver", fmtd("#version <>", { i(0, "450") })),
     s(
         "main",
-        f(
+        fmtd(
             [[
 void main() {
     <>
@@ -16,7 +16,7 @@ void main() {
     ),
     s(
         "frag",
-        f(
+        fmtd(
             [[
 #version 450
 layout(location = 0) out vec4 FragColor;
@@ -29,7 +29,7 @@ void main() {
     ),
     s(
         "vert",
-        f(
+        fmtd(
             [[
 #version 450
 layout(location = 0) in vec3 aPos;
@@ -40,12 +40,12 @@ void main() {
             {}
         )
     ),
-    s("uni", f("uniform <> <>;", { i(1, "vec3"), i(0, "name") })),
-    s("in", f("layout(location = <>) in <> <>;", { i(1, "0"), i(2, "vec3"), i(0, "aPos") })),
-    s("out", f("layout(location = <>) out <> <>;", { i(1, "0"), i(2, "vec4"), i(0, "FragColor") })),
+    s("uni", fmtd("uniform <> <>;", { i(1, "vec3"), i(0, "name") })),
+    s("in", fmtd("layout(location = <>) in <> <>;", { i(1, "0"), i(2, "vec3"), i(0, "aPos") })),
+    s("out", fmtd("layout(location = <>) out <> <>;", { i(1, "0"), i(2, "vec4"), i(0, "FragColor") })),
     s(
         "comp",
-        f(
+        fmtd(
             [[
 #version 450
 layout(local_size_x = <>) in;

@@ -1,5 +1,5 @@
 local u = require("config.snippets")
-local s, i, f, fmt = u.s, u.i, u.f, u.fmt
+local s, i, f, fmt, today = u.s, u.i, u.f, u.fmt, u.today
 
 return {
     -- fenced code block
@@ -11,15 +11,7 @@ return {
     -- table (2x2 skeleton)
     s("tbl", fmt("| {} | {} |\n| --- | --- |\n| {} | {} |", { i(1, "h1"), i(2, "h2"), i(3), i(0) })),
     -- frontmatter (YAML)
-    s(
-        "fm",
-        fmt(
-            "---\ntitle: {}\ndate: {}\n---\n\n{}",
-            { i(1, "Title"), f(function()
-                return os.date("%Y-%m-%d")
-            end), i(0) }
-        )
-    ),
+    s("fm", fmt("---\ntitle: {}\ndate: {}\n---\n\n{}", { i(1, "Title"), f(today), i(0) })),
     -- task / checkbox
     s("task", fmt("- [ ] {}", { i(0, "todo") })),
     -- details/summary collapsible
