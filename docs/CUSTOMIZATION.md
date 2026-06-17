@@ -29,7 +29,7 @@ Linters → `lua/plugins/lsp/lint.lua`. Non-LSP CLI tools → `mason-tool-instal
 
 ## Snippets
 
-Drop Lua files in `~/.config/nvim/snippets/`. Filetype-scoped by filename (e.g. `lua.lua`), plus `all.lua` for cross-filetype tokens (`uuid` / `iso` / `todo` / `fixme` / `note`). VSCode JSON snippets via friendly-snippets run in parallel. Many languages ship snippet sets too (`cmake` / `just` / `terraform` / `proto` / `graphql` / `typst` / `helm` / `wgsl` / `glsl` / `asm` / `ocaml` / `dune` / `json` / `vue` / `svelte` / `fish`). Shared node constructors (`s` / `i` / `fmt` / `fmtd` / `today` / …) come from `require("config.snippets")`. Jump to the current filetype's snippet file with `<leader>fs`.
+Drop Lua files in `~/.config/nvim/snippets/`. Filetype-scoped by filename (e.g. `lua.lua`), plus `all.lua` for cross-filetype tokens (`uuid` / `iso` / `todo` / `fixme` / `note`). VSCode JSON snippets via friendly-snippets run in parallel. Many languages ship snippet sets too (`go` / `python` / `rust` / `cmake` / `just` / `terraform` / `proto` / `graphql` / `typst` / `helm` / `wgsl` / `glsl` / `asm` / `ocaml` / `dune` / `json` / `vue` / `svelte` / `fish`). Shared node constructors (`s` / `i` / `fmt` / `fmtd` / `today` / …) come from `require("config.snippets")`. Jump to the current filetype's snippet file with `<leader>fs`.
 
 ## Theme
 

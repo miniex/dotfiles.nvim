@@ -50,4 +50,10 @@ def {}(func):
     ),
     -- pytest fixture
     s("fxt", fmt("@pytest.fixture\ndef {}({}):\n    {}", { i(1, "name"), i(2), i(0, "return None") })),
+    -- function
+    s("def", fmt("def {}({}) -> {}:\n    {}", { i(1, "name"), i(2), i(3, "None"), i(0) })),
+    -- class
+    s("cls", fmt("class {}:\n    def __init__(self) -> None:\n        {}", { i(1, "Name"), i(0, "pass") })),
+    -- for loop
+    s("forr", fmt("for {} in {}:\n    {}", { i(1, "item"), i(2, "items"), i(0) })),
 }

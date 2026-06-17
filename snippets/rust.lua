@@ -38,4 +38,16 @@ mod tests {{
     s("ifl", fmt("if let Some({}) = {} {{\n    {}\n}}", { i(1, "x"), i(2, "expr"), i(0) })),
     -- if let Ok
     s("ife", fmt("if let Ok({}) = {} {{\n    {}\n}}", { i(1, "x"), i(2, "expr"), i(0) })),
+    -- function
+    s("fn", fmt("fn {}({}) {{\n    {}\n}}", { i(1, "name"), i(2), i(0) })),
+    -- pub function
+    s("pfn", fmt("pub fn {}({}) {{\n    {}\n}}", { i(1, "name"), i(2), i(0) })),
+    -- struct
+    s("st", fmt("struct {} {{\n    {}: {},\n}}", { i(1, "Name"), i(2, "field"), i(3, "Type") })),
+    -- for loop
+    s("forr", fmt("for {} in {} {{\n    {}\n}}", { i(1, "x"), i(2, "iter"), i(0) })),
+    -- while loop
+    s("wl", fmt("while {} {{\n    {}\n}}", { i(1, "cond"), i(0) })),
+    -- loop
+    s("lp", fmt("loop {{\n    {}\n}}", { i(0) })),
 }

@@ -46,4 +46,22 @@ func Test{}(t *testing.T) {{
             { i(1, "Name"), i(2, "in, want int"), i(3, "first"), i(0) }
         )
     ),
+    -- switch
+    s("sw", fmt("switch {} {{\ncase {}:\n    {}\ndefault:\n    {}\n}}", { i(1, "expr"), i(2, "cond"), i(3), i(0) })),
+    -- type switch
+    s(
+        "tsw",
+        fmt(
+            "switch {} := {}.(type) {{\ncase {}:\n    {}\ndefault:\n    {}\n}}",
+            { i(1, "v"), i(2, "x"), i(3, "Type"), i(4), i(0) }
+        )
+    ),
+    -- defer
+    s("def", fmt("defer {}", { i(0, "cleanup()") })),
+    -- goroutine
+    s("gor", fmt("go func() {{\n    {}\n}}()", { i(0) })),
+    -- for range
+    s("forr", fmt("for {}, {} := range {} {{\n    {}\n}}", { i(1, "i"), i(2, "v"), i(3, "items"), i(0) })),
+    -- context with cancel
+    s("ctx", fmt("ctx, cancel := context.WithCancel(context.Background())\ndefer cancel()\n{}", { i(0) })),
 }
