@@ -181,8 +181,13 @@ if vim.g.multi_dir then
     vim.api.nvim_create_autocmd("BufEnter", {
         group = vim.api.nvim_create_augroup("SnacksDashboardMultiDir", { clear = true }),
         callback = function(args)
+            -- Stat each file buffer once (flag shared with multi-dir-tcd).
+            if vim.b[args.buf].multi_dir_notdir then
+                return
+            end
             local name = vim.api.nvim_buf_get_name(args.buf)
             if name == "" or vim.fn.isdirectory(name) ~= 1 then
+                vim.b[args.buf].multi_dir_notdir = true
                 return
             end
             vim.schedule(function()

@@ -11,6 +11,7 @@
 - **Formatting** — `<leader>cf` runs `vim.lsp.buf.format` (native LSP; no formatter plugin). `gq` / `gw` route through the LSP formatter on code filetypes (via `formatexpr`); prose (markdown / gitcommit) keeps Neovim's built-in reflow.
 - **Semantic tokens** — off by default on TS (vtsls) and Python (basedpyright), where they clash with treesitter highlight; toggle per buffer with `<leader>uy` (survives `:LspRestart`).
 - **Document colors** — LSP color swatches via native `vim.lsp.document_color` on any capable server (tailwindcss, cssls, …), enabled by a short bounded poll after attach (capability can register post-init); colorizer still owns hex.
+- **Linked editing** — an HTML/JSX tag and its closing tag rename in sync via native `vim.lsp.linked_editing_range` on capable servers (html, …).
 - **Diagnostics** — single config in `lua/plugins/lsp/init.lua`; `tiny-inline-diagnostic.nvim` owns virtual text. Severity-sorted, signs `✗`/`!`/`i`/`?`.
 - **Spell check** — `typos_lsp` across all filetypes: low false-positive (only known typos), surfaced at `Info` severity.
 - **Completion** — [blink.cmp](https://github.com/Saghen/blink.cmp) with Rust fuzzy matching + inline ghost-text preview. Sources: LSP / snippets (LuaSnip + friendly-snippets) / path / buffer; filtered per filetype (no LSP in `gitcommit` / `gitrebase`, buffer-only in snacks input prompts). Cmdline completion on `:` (commands / paths) and `/` `?` (search).

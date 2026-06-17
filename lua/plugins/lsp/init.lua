@@ -315,9 +315,13 @@ return {
                     })
                 end
                 if
-                    vim.lsp.linked_editing_range and client:supports_method("textDocument/linkedEditingRange", bufnr)
+                    vim.lsp.linked_editing_range
+                    and client:supports_method("textDocument/linkedEditingRange", bufnr)
+                    and not vim.b[bufnr]._lsp_linked_edit_done
                 then
-                    pcall(vim.lsp.linked_editing_range.enable, true, { bufnr = bufnr })
+                    -- enable() only honors client_id; { bufnr = ... } silently toggles globally.
+                    vim.b[bufnr]._lsp_linked_edit_done = true
+                    pcall(vim.lsp.linked_editing_range.enable, true, { client_id = client.id })
                 end
                 -- Route gq/gw through the LSP formatter (code only; prose reflows
                 -- better with Neovim's built-in).
