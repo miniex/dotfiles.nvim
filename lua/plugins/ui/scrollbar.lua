@@ -218,11 +218,32 @@ return {
         local move_frame_ms = 33 -- ~30fps; halves full-render count per cursor move
         local move_timer
         local displayed_lines = {}
+        local displayed_rows = {} -- scrollbar row currently drawn per buffer
 
-        local function render_cursor(bufnr, line)
+        -- Buffer line -> scrollbar row (floor(line * win_height / total_lines)), as the plugin
+        -- maps it. Many lines share a row, so most moves need no re-render.
+        local function cursor_row(bufnr, line)
+            local total = vim.api.nvim_buf_line_count(bufnr)
+            if total <= 0 then
+                return 0
+            end
+            local visible = vim.api.nvim_win_get_height(0)
+            if visible > total then
+                visible = total
+            end
+            return math.floor(line * visible / total)
+        end
+
+        local function render_cursor(bufnr, line, force)
             if not vim.api.nvim_buf_is_valid(bufnr) then
                 return
             end
+            -- render() fully rebuilds; skip when the row is unchanged (force = always redraw).
+            local row = cursor_row(bufnr, line)
+            if not force and row == displayed_rows[bufnr] then
+                return
+            end
+            displayed_rows[bufnr] = row
             local cfg = sb_config.get()
             local marks = sb_utils.get_scrollbar_marks(bufnr)
             marks.cursor = {
@@ -240,7 +261,7 @@ return {
         local function snap_cursor(bufnr, line)
             move_timer = stop(move_timer)
             displayed_lines[bufnr] = line
-            render_cursor(bufnr, line)
+            render_cursor(bufnr, line, true)
         end
 
         local snap_jump_threshold = 20
@@ -276,12 +297,8 @@ return {
                     local t = i / steps
                     local eased = 1 - (1 - t) * (1 - t) * (1 - t)
                     local cur = math.floor(from + (target - from) * eased + 0.5)
-                    local last = displayed_lines[bufnr]
                     displayed_lines[bufnr] = cur
-                    -- Skip re-render when the interpolated line is unchanged; always render the last frame.
-                    if cur ~= last or i >= steps then
-                        render_cursor(bufnr, cur)
-                    end
+                    render_cursor(bufnr, cur)
                     if i >= steps then
                         displayed_lines[bufnr] = target
                         move_timer = stop(move_timer)
@@ -379,6 +396,7 @@ return {
             group = scrollbar_group,
             callback = function(event)
                 displayed_lines[event.buf] = nil
+                displayed_rows[event.buf] = nil
             end,
         })
 

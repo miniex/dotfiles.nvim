@@ -9,7 +9,7 @@
 - **Navigation** — `gd` / `gr` / `gi` / `gy` open an fzf-lua picker (auto-jumps on a single result); `<leader>cI` / `cG` / `cH` for incoming / outgoing calls + type hierarchy.
 - **Rename** — `<leader>rn` via inc-rename with a live in-buffer preview.
 - **Formatting** — `<leader>cf` runs `vim.lsp.buf.format` (native LSP; no formatter plugin). `gq` / `gw` route through the LSP formatter on code filetypes (via `formatexpr`); prose (markdown / gitcommit) keeps Neovim's built-in reflow.
-- **Semantic tokens** — off by default on TS (vtsls) and Python (basedpyright), where they clash with treesitter highlight; toggle per buffer with `<leader>uy`.
+- **Semantic tokens** — off by default on TS (vtsls) and Python (basedpyright), where they clash with treesitter highlight; toggle per buffer with `<leader>uy` (survives `:LspRestart`).
 - **Document colors** — LSP color swatches via native `vim.lsp.document_color` on any capable server (tailwindcss, cssls, …), enabled by a short bounded poll after attach (capability can register post-init); colorizer still owns hex.
 - **Diagnostics** — single config in `lua/plugins/lsp/init.lua`; `tiny-inline-diagnostic.nvim` owns virtual text. Severity-sorted, signs `✗`/`!`/`i`/`?`.
 - **Spell check** — `typos_lsp` across all filetypes: low false-positive (only known typos), surfaced at `Info` severity.
@@ -55,7 +55,7 @@
 - **which-key** — hint floats pinned to the bottom row at 85% editor width (centered); height grows with content. Triggers register synchronously on file buffers + `timeoutlen=300` so the first `<leader>` press isn't slow ([#912](https://github.com/folke/which-key.nvim/issues/912) workaround).
 - **Floating windows** — every float in the config (LSP hover / signature / diagnostic, Neo-tree, snacks panels, fzf-lua, fff.nvim, blink.cmp menu / signature / docs, fidget, dropbar, bqf, neotest, which-key, harpoon, Mason, lazy, lazygit, checkhealth) shares one look: `✿` flower-cornered border (`✿─✿│✿─✿│`), pink edge, transparent background, centered `✿ title ✿`. Configured in [`lua/config/globals.lua`](../lua/config/globals.lua).
 - **flash labels** — damin pink.
-- **nvim-scrollbar** — `♥` cursor mark slides smoothly between rows (snaps on large jumps and in big buffers) and heartbeat-pulses while focused (paused after idle, in insert mode, on `FocusLost`, and on chrome buffers like the dashboard / Neo-tree). Handle fades vivid → muted after idle. Git triad in mint/pink/rose; gitsigns gutter + DiagnosticSign share the same palette so both edges agree. Per-keystroke autocmds also skip picker/terminal/prompt buffers so fzf/snacks-picker stay snappy.
+- **nvim-scrollbar** — `♥` cursor mark slides smoothly between rows (snaps on large jumps and in big buffers) and heartbeat-pulses while focused (paused after idle, in insert mode, on `FocusLost`, and on chrome buffers like the dashboard / Neo-tree). Handle fades vivid → muted after idle. Git triad in mint/pink/rose; gitsigns gutter + DiagnosticSign share the same palette so both edges agree. Per-keystroke autocmds also skip picker/terminal/prompt buffers so fzf/snacks-picker stay snappy; the cursor mark repaints only on a new scrollbar row (no per-line rebuild on big files).
 - **snacks.scroll** — viewport glides with `outQuad` easing (150ms one-shot, 40ms while held) so key-repeat doesn't queue behind the animation.
 - **indent guides** — `┊` dotted guides (snacks.indent); scope/chunk highlighting off.
 - **zen** — `<leader>uz` focus mode hides the statusline / bufferline / incline (flower-bordered window).
