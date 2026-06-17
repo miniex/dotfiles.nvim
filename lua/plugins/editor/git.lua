@@ -133,18 +133,27 @@ return {
                     vim.keymap.set(mode, l, r, { buffer = bufnr, desc = desc })
                 end
 
-                -- Navigation (auto-preview on jump, wrap at ends)
+                -- Auto-preview, wrap at ends; wrapped so ;/, repeat the hunk jump.
+                local ok_rm, rm = pcall(require, "nvim-treesitter-textobjects.repeatable_move")
+                local function nav(opts)
+                    gs.nav_hunk(opts.forward and "next" or "prev", {
+                        preview = true,
+                        wrap = true,
+                        target = opts.target,
+                    })
+                end
+                local hunk = ok_rm and rm.make_repeatable_move(nav) or nav
                 map("n", "]h", function()
-                    gs.nav_hunk("next", { preview = true, wrap = true })
+                    hunk({ forward = true })
                 end, "Next Hunk")
                 map("n", "[h", function()
-                    gs.nav_hunk("prev", { preview = true, wrap = true })
+                    hunk({ forward = false })
                 end, "Prev Hunk")
                 map("n", "]H", function()
-                    gs.nav_hunk("next", { preview = true, wrap = true, target = "staged" })
+                    hunk({ forward = true, target = "staged" })
                 end, "Next Staged Hunk")
                 map("n", "[H", function()
-                    gs.nav_hunk("prev", { preview = true, wrap = true, target = "staged" })
+                    hunk({ forward = false, target = "staged" })
                 end, "Prev Staged Hunk")
 
                 -- Actions

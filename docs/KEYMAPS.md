@@ -96,6 +96,7 @@ Under `<leader>M` (capital); `<leader>m` belongs to harpoon.
 | `<leader>Mn` / `<leader>MN` | n/x  | Add cursor + jump to next/prev `<cword>`                                        |
 | `<leader>Ms` / `<leader>MS` | n/x  | Skip current match forward / backward                                           |
 | `<leader>MA`                | n/x  | Cursor on every match in buffer                                                 |
+| `<leader>Mm`                | n/x  | Toggle a cursor at the current position                                         |
 | `<leader>M/`                | x    | Split visual selection by regex                                                 |
 | `<C-Up>` / `<C-Down>`       | n/x  | Add cursor above / below                                                        |
 | `<leader>Ma`                | n/x  | Align cursors with spaces                                                       |
@@ -187,7 +188,7 @@ Bare `nvim` (and `nvim <dir>`, which cd's in) auto-restores the cwd session (ski
 | `[d` / `]d`                 | Prev / next diagnostic (any severity)                                |
 | `[e` / `]e`                 | Prev / next **error** only                                           |
 | `[W` / `]W`                 | Prev / next **warning** only                                         |
-| `[t` / `]t`                 | Prev / next TODO comment                                             |
+| `[t` / `]t`                 | Prev / next TODO comment (`;`/`,` repeats)                           |
 
 > In the quickfix window (nvim-bqf): `o` open · `O` open & close · `<C-s>` / `<C-v>` split / vsplit · `t` / `T` tab / tab (bg) · `z,` toggle preview · `K` scroll preview up.
 
@@ -214,7 +215,7 @@ Bare `nvim` (and `nvim <dir>`, which cd's in) auto-restores the cwd session (ski
 | `]F` / `[F`                 | n/x/o | Next / prev function end                                                  |
 | `]C` / `[C`                 | n/x/o | Next / prev class start (lowercase `]c`/`[c` left for diff change motion) |
 | `]a` / `[a`                 | n/x/o | Next / prev parameter                                                     |
-| `;` / `,`                   | n/x/o | Repeat last move forward / backward (TS goto / `f` / `t`)                 |
+| `;` / `,`                   | n/x/o | Repeat last move forward / backward (TS goto / `f` / `t` / hunk / TODO)   |
 | `<leader>cA` / `<leader>cS` | n     | Swap parameter with next / prev                                           |
 | `<leader>cj` / `<leader>ck` | n     | Swap function with next / prev sibling                                    |
 | `<leader>cJ`                | n     | Split/join node — toggle one-line ↔ multi-line (treesj)                   |
@@ -264,7 +265,7 @@ Inside the menu: `q`/`<Esc>` close, `h` parent (no-op at top), `l` open entry.
 | `<leader>gvg` / `<leader>gvG`                 | gitgraph.nvim: all branches / current (`<cr>` → diffview)                                                          |
 | `<leader>gvs` / `<leader>gvA`                 | gitgraph.nvim: prompt for `--since` / `--author` filter                                                            |
 | `<leader>gH`                                  | advanced-git-search: search history by content (log -S/-G/-L)                                                      |
-| `[h` / `]h`                                   | Prev / next hunk (auto-preview on jump)                                                                            |
+| `[h` / `]h`                                   | Prev / next hunk (auto-preview on jump; `;`/`,` repeats)                                                           |
 | `[H` / `]H`                                   | Prev / next staged hunk                                                                                            |
 | `<leader>ghs/r/S/R/p/i/b/c/d/D`               | Stage (toggle) / reset / stage-buf / reset-buf / preview / inline preview / blame-line / blame-file / diff / diff~ |
 | `<leader>ghq` / `ghQ`                         | gitsigns: hunks to quickfix — attached buffers / whole repo                                                        |

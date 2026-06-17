@@ -8,7 +8,7 @@
 - **CodeLens** — enabled on capable servers (gopls, rust-analyzer, lua_ls, ocamllsp, elixir-ls); refreshes on edit, paused during insert mode (like inlay hints); skipped on big files, as is the idle reference-highlight.
 - **Navigation** — `gd` / `gr` / `gi` / `gy` open an fzf-lua picker (auto-jumps on a single result); `<leader>cI` / `cG` / `cH` for incoming / outgoing calls + type hierarchy.
 - **Rename** — `<leader>rn` via inc-rename with a live in-buffer preview.
-- **Formatting** — `<leader>cf` runs `vim.lsp.buf.format` (native LSP; no formatter plugin).
+- **Formatting** — `<leader>cf` runs `vim.lsp.buf.format` (native LSP; no formatter plugin). `gq` / `gw` route through the LSP formatter on code filetypes (via `formatexpr`); prose (markdown / gitcommit) keeps Neovim's built-in reflow.
 - **Semantic tokens** — off by default on TS (vtsls) and Python (basedpyright), where they clash with treesitter highlight; toggle per buffer with `<leader>uy`.
 - **Document colors** — LSP color swatches via native `vim.lsp.document_color` on any capable server (tailwindcss, cssls, …), enabled by a short bounded poll after attach (capability can register post-init); colorizer still owns hex.
 - **Diagnostics** — single config in `lua/plugins/lsp/init.lua`; `tiny-inline-diagnostic.nvim` owns virtual text. Severity-sorted, signs `✗`/`!`/`i`/`?`.
@@ -43,7 +43,7 @@
 - **Quickfix** — quicker.nvim (editable QF), nvim-bqf (preview), Trouble (`auto_close` on jump, main-window preview; `<leader>x*` lists diagnostics / refs / symbols / call hierarchy / type defs / implementations).
 - **Misc** — mini.surround (`gs*`), mini.ai (`a`/`i` brackets/quotes/tags + `aN`/`aL` next/last, `ag` buffer / `ad` number), mini.move (`<A-hjkl>` line shuffle), mini.operators (`gR` replace-with-register / `gX` exchange / `gS` sort / `g=` eval), Comment.nvim (`gc` toggle), refactoring.nvim (`<leader>cr` extract/inline), todo-comments, dropbar (winbar), git-conflict, nvim-lightbulb (code-action sign), tiny-code-action (`<leader>ca` picker with per-action diff preview), nvim-colorizer (6/8-digit hex everywhere; 3/4-digit `#RGB` shorthand only in CSS-family, so issue/PR refs like `#590` aren't colorized; skipped on big/minified files), rainbow-delimiters (on-theme nested bracket-pair colors; disabled on big/minified files), 0.12 built-ins `:Undotree` and `:DiffTool` (non-git side-by-side file/dir diff).
 - **Persistence** — `persistence.nvim` auto-restores on bare `nvim` (skipping headless, empty sessions, and `nvim <file>` launches, which neither restore nor save), re-attaches TS / LSP / linter on restored buffers. Only window-visible buffers persist (no hidden `badd`). Neotest summary window state persists across sessions. Sessions are scoped per git branch (feature branches keep distinct layouts; main/master share the base session).
-- **Width-aware `textwidth`** — `rust` / `python` / `lua` / `elixir` / `ocaml` / `c`-`cpp` / `sql` / `toml` set `textwidth` (drives `gq`/`gw`) to the project formatter's line width, searched upward from its config, else the default — no visual ruler. See [CUSTOMIZATION](CUSTOMIZATION.md#formatter-width).
+- **Width-aware `textwidth`** — `rust` / `python` / `lua` / `elixir` / `ocaml` / `c`-`cpp` / `sql` / `toml` set `textwidth` (the `gq`/`gw` reflow width) to the project formatter's line width, searched upward from its config, else the default — no visual ruler. See [CUSTOMIZATION](CUSTOMIZATION.md#formatter-width).
 
 ## UI
 
@@ -81,7 +81,7 @@ See [`lua/config/modal-floats.lua`](../lua/config/modal-floats.lua) for the mutu
 
 ## Git
 
-- **gitsigns** — gutter signs, hunk staging (`<leader>gh*`, `ghs` toggles stage/unstage), hunk textobject (`ih`/`ah`), inline blame (off by default — toggle `<leader>gtb`), word-diff toggle (`<leader>gtw`), full hunk diff via `<leader>ghp` (centered modal, cursor lands inside) or inline via `<leader>ghi`; `]h`/`[h` hunk nav auto-previews (`]H`/`[H` for staged hunks); `<leader>ghQ` sends all-repo hunks to quickfix, `<leader>ghv` views the file at the index.
+- **gitsigns** — gutter signs, hunk staging (`<leader>gh*`, `ghs` toggles stage/unstage), hunk textobject (`ih`/`ah`), inline blame (off by default — toggle `<leader>gtb`), word-diff toggle (`<leader>gtw`), full hunk diff via `<leader>ghp` (centered modal, cursor lands inside) or inline via `<leader>ghi`; `]h`/`[h` hunk nav auto-previews and is `;`/`,`-repeatable (`]H`/`[H` for staged hunks); `<leader>ghQ` sends all-repo hunks to quickfix, `<leader>ghv` views the file at the index.
 - **fugitive** — `<leader>gs` status, `<leader>gd` diff, `<leader>gD` 3-way merge diff.
 - **lazygit** — `Snacks.lazygit`, auto-themed to the colorscheme. `<leader>gg` open / `<leader>gf` file history / `<leader>gL` log.
 - **Diffview** — file / repo / stash history under `<leader>gv*` (current-file history follows renames); `<leader>gvm` reviews the whole branch (working tree vs the default branch).

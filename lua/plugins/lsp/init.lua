@@ -319,6 +319,18 @@ return {
                 then
                     pcall(vim.lsp.linked_editing_range.enable, true, { bufnr = bufnr })
                 end
+                -- Route gq/gw through the LSP formatter (code only; prose reflows
+                -- better with Neovim's built-in).
+                if
+                    client:supports_method("textDocument/rangeFormatting", bufnr)
+                    and not vim.b[bufnr]._lsp_formatexpr_done
+                then
+                    local ft = vim.bo[bufnr].filetype
+                    if ft ~= "markdown" and ft ~= "gitcommit" and ft ~= "gitrebase" and ft ~= "text" then
+                        vim.b[bufnr]._lsp_formatexpr_done = true
+                        vim.bo[bufnr].formatexpr = "v:lua.vim.lsp.formatexpr()"
+                    end
+                end
                 -- Color swatches (0.12) on documentColor-capable servers (colorizer owns
                 -- hex). Capability can register post-init (cssls/tailwindcss), so poll —
                 -- bounded to ~1s (4 × 250ms) since it always lands during init handshake.

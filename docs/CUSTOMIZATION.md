@@ -59,7 +59,7 @@ Drop Lua files in `~/.config/nvim/snippets/`. Filetype-scoped by filename (e.g. 
 
 ## Formatter width
 
-`textwidth` (drives `gq` / `gw`) follows each project's formatter width — no visual ruler. A `FileType` autocmd in `lua/config/format-width.lua` reads a per-filetype `M.specs` registry, searches upward for the nearest config below, and uses its width (else the formatter default). Width `0` (e.g. clang-format `ColumnLimit: 0`) means no limit.
+`textwidth` (the `gq` / `gw` reflow width) follows each project's formatter width — no visual ruler. A `FileType` autocmd in `lua/config/format-width.lua` reads a per-filetype `M.specs` registry, searches upward for the nearest config below, and uses its width (else the formatter default). Width `0` (e.g. clang-format `ColumnLimit: 0`) means no limit.
 
 | Filetype    | Config (searched upward)                      | Key               | Default |
 | ----------- | --------------------------------------------- | ----------------- | ------- |

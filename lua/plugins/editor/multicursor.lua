@@ -104,44 +104,34 @@ return {
             mode = { "n", "x" },
             desc = "MC: delete focused cursor",
         },
+        {
+            "<leader>Mm",
+            function()
+                require("multicursor-nvim").toggleCursor()
+            end,
+            mode = { "n", "x" },
+            desc = "MC: toggle cursor here",
+        },
     },
     config = function()
         local mc = require("multicursor-nvim")
         mc.setup()
 
-        -- Focus prev/next cursor when extra cursors exist; else fall through to motion.
-        vim.keymap.set({ "n", "x" }, "<left>", function()
-            if mc.hasCursors() then
-                mc.prevCursor()
-            else
-                vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Left>", true, false, true), "n", false)
-            end
-        end, { desc = "MC: focus prev cursor (or move left)" })
-        vim.keymap.set({ "n", "x" }, "<right>", function()
-            if mc.hasCursors() then
-                mc.nextCursor()
-            else
-                vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<Right>", true, false, true), "n", false)
-            end
-        end, { desc = "MC: focus next cursor (or move right)" })
-
-        -- Esc: 1st clears cursors; otherwise exit visual / nohlsearch in normal.
-        vim.keymap.set({ "n", "x" }, "<esc>", function()
-            if not mc.cursorsEnabled() then
-                mc.enableCursors()
-                return
-            end
-            if mc.hasCursors() then
-                mc.clearCursors()
-                return
-            end
-            local m = vim.fn.mode()
-            if m:match("^[vV\22sS\19]") then
-                vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes("<C-\\><C-N>", true, false, true), "n", false)
-            else
-                vim.cmd("nohlsearch")
-            end
-        end, { desc = "MC-aware Escape" })
+        -- Keymap layer: binds only while cursors exist, restored when they clear.
+        -- (Basic i/a/c/d already apply to every cursor — no mapping needed.)
+        mc.addKeymapLayer(function(layer)
+            layer({ "n", "x" }, "<left>", mc.prevCursor)
+            layer({ "n", "x" }, "<right>", mc.nextCursor)
+            -- Esc: re-enable disabled cursors, else clear; no cursors falls
+            -- through to the global <Esc> (nohlsearch / visual-exit).
+            layer({ "n", "x" }, "<esc>", function()
+                if not mc.cursorsEnabled() then
+                    mc.enableCursors()
+                else
+                    mc.clearCursors()
+                end
+            end)
+        end)
 
         -- Theme: link to existing groups (catppuccin-mocha).
         vim.api.nvim_set_hl(0, "MultiCursorCursor", { link = "Cursor" })

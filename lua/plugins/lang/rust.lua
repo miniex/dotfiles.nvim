@@ -91,6 +91,10 @@ return {
                             },
                         },
                         checkOnSave = true,
+                        -- Run clippy (not plain `cargo check`) on save for the richer lint set.
+                        check = {
+                            command = "clippy",
+                        },
                         diagnostics = {
                             disabled = { "inactive-code" },
                         },

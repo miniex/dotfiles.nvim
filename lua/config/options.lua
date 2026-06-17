@@ -8,6 +8,9 @@ opt.expandtab = true
 opt.smartindent = true
 opt.wrap = true
 opt.linebreak = true
+-- Keep wrapped lines under their indent, with a continuation marker.
+opt.breakindent = true
+opt.showbreak = "↪ "
 
 -- search
 opt.incsearch = true
@@ -60,7 +63,8 @@ opt.winborder = "rounded"
 opt.splitkeep = "screen"
 opt.jumpoptions = "view"
 
--- Smarter diff: line alignment (0.10) + word-level inline highlight (0.12).
+-- Smarter diff: histogram hunks + line alignment (0.10) + word-level inline highlight (0.12).
+opt.diffopt:append("algorithm:histogram")
 opt.diffopt:append("linematch:60")
 opt.diffopt:append("inline:word")
 
