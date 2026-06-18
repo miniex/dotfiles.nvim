@@ -70,8 +70,8 @@ return {
                 diag_by_buf[args.buf] = nil
             end,
         })
-        -- Prune on wipe, else entries leak by bufnr.
-        vim.api.nvim_create_autocmd("BufWipeout", {
+        -- Prune on delete/wipe, else entries leak by bufnr.
+        vim.api.nvim_create_autocmd({ "BufDelete", "BufWipeout" }, {
             group = diag_cache_grp,
             callback = function(args)
                 diag_by_buf[args.buf] = nil
@@ -101,8 +101,8 @@ return {
             return bufname
         end
         local name_cache_grp = vim.api.nvim_create_augroup("InclineNameCache", { clear = true })
-        -- Invalidate on rename; prune on wipe, else entries leak by bufnr.
-        vim.api.nvim_create_autocmd({ "BufFilePost", "BufWipeout" }, {
+        -- Invalidate on rename; prune on delete/wipe, else entries leak by bufnr.
+        vim.api.nvim_create_autocmd({ "BufFilePost", "BufDelete", "BufWipeout" }, {
             group = name_cache_grp,
             callback = function(args)
                 name_by_buf[args.buf] = nil

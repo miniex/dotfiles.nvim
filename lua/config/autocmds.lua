@@ -1,28 +1,33 @@
--- Skip non-file buffers (stat noise) and large files (reload cost).
+-- Reload file buffers changed on disk, per-buffer so the size guard can skip large ones
+-- (a bare `:checktime` reloads every buffer regardless of size).
+local function checktime_buf(buf)
+    if not vim.api.nvim_buf_is_loaded(buf) then
+        return
+    end
+    if vim.bo[buf].buftype ~= "" then
+        return
+    end
+    -- Stat for size once per buffer, not on every event.
+    local skip = vim.b[buf].checktime_skip_large
+    if skip == nil then
+        local size = vim.fn.getfsize(vim.api.nvim_buf_get_name(buf))
+        skip = size > 10 * 1024 * 1024
+        -- Don't cache for a not-yet-written buffer (size -1); re-check once it exists.
+        if size >= 0 then
+            vim.b[buf].checktime_skip_large = skip
+        end
+    end
+    if not skip then
+        vim.cmd(buf .. "checktime")
+    end
+end
+
 vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
     group = vim.api.nvim_create_augroup("auto-checktime", { clear = true }),
-    callback = function(args)
-        -- TermClose can fire after the buffer is wiped (snacks term toggle) → vim.bo[buf] throws E11.
-        if not vim.api.nvim_buf_is_valid(args.buf) then
-            return
+    callback = function()
+        for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+            checktime_buf(buf)
         end
-        if vim.bo[args.buf].buftype ~= "" then
-            return
-        end
-        -- Stat for size once per buffer, not on every BufEnter.
-        local skip = vim.b[args.buf].checktime_skip_large
-        if skip == nil then
-            local size = vim.fn.getfsize(vim.api.nvim_buf_get_name(args.buf))
-            skip = size > 10 * 1024 * 1024
-            -- Don't cache for a not-yet-written buffer (size -1); re-check once it exists.
-            if size >= 0 then
-                vim.b[args.buf].checktime_skip_large = skip
-            end
-        end
-        if skip then
-            return
-        end
-        vim.cmd("checktime")
     end,
 })
 

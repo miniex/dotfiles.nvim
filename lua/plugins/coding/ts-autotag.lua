@@ -8,16 +8,10 @@ return {
         "typescriptreact",
         "svelte",
         "vue",
-        "tsx",
-        "jsx",
-        "rescript",
         "xml",
         "php",
         "markdown",
         "astro",
-        "glimmer",
-        "handlebars",
-        "hbs",
     },
     opts = {
         opts = {
