@@ -156,7 +156,7 @@ return {
         local search_str = ""
         local function update_search()
             if vim.v.hlsearch == 1 then
-                local ok, s = pcall(vim.fn.searchcount, { maxcount = 99, timeout = 80 })
+                local ok, s = pcall(vim.fn.searchcount, { maxcount = 99, timeout = 30 })
                 if ok and s.total and s.total > 0 then
                     search_str = ("⌕ %d/%d"):format(s.current, s.total)
                     return
@@ -239,6 +239,12 @@ return {
                     },
                     {
                         "diff",
+                        -- Read gitsigns' dict instead of lualine's default source, which
+                        -- forks `git diff` on every BufEnter/save.
+                        source = function()
+                            local g = vim.b.gitsigns_status_dict
+                            return g and { added = g.added, modified = g.changed, removed = g.removed } or nil
+                        end,
                         symbols = { added = "✓", modified = "✗", removed = "−" },
                         diff_color = {
                             added = { fg = damin_blue },

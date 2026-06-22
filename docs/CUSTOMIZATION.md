@@ -91,7 +91,7 @@ Add a language: add an entry to the `M.specs` table in `lua/config/format-width.
 
 Three size tiers, smallest first:
 
-- **> 1 MiB** (or a >2000-char first line) — treesitter (`ts-attach` in `lua/config/autocmds.lua`), rainbow-delimiters (also >10000 lines), and LSP CodeLens / reference highlight are skipped (size check cached per buffer); colorizer detaches on a >2000-char first line.
+- **> 1 MiB** (or a >2000-char first line) — treesitter (`ts-attach` in `lua/config/autocmds.lua`), rainbow-delimiters (also >10000 lines), and LSP CodeLens / reference highlight / code-action lightbulb are skipped (size check cached per buffer); colorizer detaches on a >2000-char first line.
 - **> 2 MiB** — `snacks.bigfile` degrades features (LSP / treesitter / syntax / folds / matchparen) and colorizer skips it (`!bigfile`). Tune `size` in `lua/plugins/ui/snacks.lua`.
 - **> 8 MiB** — opening prompts _view in `less`_ (default) / _edit anyway_ / _cancel_; binary files (NUL byte in the first KB) drop the pager option. Tune `BIG_FILE_LIMIT` in `lua/config/autocmds.lua`. Declining also drops it from the arglist, so the restored session won't reopen a `nvim hugefile`.
 
