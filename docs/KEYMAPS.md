@@ -190,6 +190,8 @@ Bare `nvim` (and `nvim <dir>`, which cd's in) auto-restores the cwd session (ski
 | `[W` / `]W`                 | Prev / next **warning** only                                         |
 | `[t` / `]t`                 | Prev / next TODO comment (`;`/`,` repeats)                           |
 
+> Severity jumps (`[e` / `]e` / `[W` / `]W`) open the diagnostic float.
+
 > In the quickfix window (nvim-bqf): `o` open · `O` open & close · `<C-s>` / `<C-v>` split / vsplit · `t` / `T` tab / tab (bg) · `z,` toggle preview · `K` scroll preview up.
 
 ## Treesitter Textobjects & Context

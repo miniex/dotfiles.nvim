@@ -73,28 +73,28 @@ return {
             {
                 "]e",
                 function()
-                    vim.diagnostic.jump({ count = 1, severity = vim.diagnostic.severity.ERROR })
+                    vim.diagnostic.jump({ count = 1, severity = vim.diagnostic.severity.ERROR, float = true })
                 end,
                 desc = "Next Error",
             },
             {
                 "[e",
                 function()
-                    vim.diagnostic.jump({ count = -1, severity = vim.diagnostic.severity.ERROR })
+                    vim.diagnostic.jump({ count = -1, severity = vim.diagnostic.severity.ERROR, float = true })
                 end,
                 desc = "Prev Error",
             },
             {
                 "]W",
                 function()
-                    vim.diagnostic.jump({ count = 1, severity = vim.diagnostic.severity.WARN })
+                    vim.diagnostic.jump({ count = 1, severity = vim.diagnostic.severity.WARN, float = true })
                 end,
                 desc = "Next Warning",
             },
             {
                 "[W",
                 function()
-                    vim.diagnostic.jump({ count = -1, severity = vim.diagnostic.severity.WARN })
+                    vim.diagnostic.jump({ count = -1, severity = vim.diagnostic.severity.WARN, float = true })
                 end,
                 desc = "Prev Warning",
             },

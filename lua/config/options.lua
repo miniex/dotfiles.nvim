@@ -5,7 +5,8 @@ opt.tabstop = 4
 opt.shiftwidth = 4
 opt.softtabstop = 4
 opt.expandtab = true
-opt.smartindent = true
+-- No smartindent: it mis-indents `#`/`}` outside treesitter; indentexpr owns the rest.
+opt.autoindent = true
 opt.wrap = true
 opt.linebreak = true
 -- Keep wrapped lines under their indent, with a continuation marker.

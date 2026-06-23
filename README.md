@@ -52,7 +52,7 @@ Prerequisites, manual install, and recovery: [docs/SETUP.md](docs/SETUP.md).
 | CSS / HTML          | cssls / html+emmet                                   | -                | -                                        |
 | Tailwind / JS-TS    | tailwindcss / vtsls                                  | eslint_d         | js-debug-adapter (Node) + Chrome/Firefox |
 | Svelte/Vue/Astro    | svelte / vue_ls (+ vtsls) / astro                    | -                | -                                        |
-| GraphQL / SQL       | graphql / sqls                                       | - / sqlfluff     | -                                        |
+| GraphQL / SQL       | graphql / sqlls                                      | - / sqlfluff     | -                                        |
 | JSON / YAML         | jsonls / yamlls                                      | - / yamllint     | -                                        |
 | Protobuf / TOML     | buf_ls / taplo                                       | -                | -                                        |
 | RON                 | -                                                    | -                | -                                        |
