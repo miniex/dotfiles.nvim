@@ -57,6 +57,7 @@
 - **Floating windows** — every float in the config (LSP hover / signature / diagnostic, Neo-tree, snacks panels, fzf-lua, fff.nvim, blink.cmp menu / signature / docs, fidget, dropbar, bqf, neotest, which-key, harpoon, Mason, lazy, lazygit, checkhealth) shares one look: `✿` flower-cornered border (`✿─✿│✿─✿│`), pink edge, transparent background, centered `✿ title ✿`. Configured in [`lua/config/globals.lua`](../lua/config/globals.lua).
 - **flash labels** — damin pink.
 - **nvim-scrollbar** — `♥` cursor mark slides smoothly between rows (snaps on large jumps and in big buffers) and heartbeat-pulses while focused (paused after idle, in insert mode, on `FocusLost`, and on chrome buffers like the dashboard / Neo-tree). Handle fades vivid → muted after idle. Git triad in mint/pink/rose plus search hits (`★`); gitsigns gutter + DiagnosticSign share the same palette so both edges agree. Per-keystroke autocmds also skip picker/terminal/prompt buffers so fzf/snacks-picker stay snappy; the cursor mark repaints only on a new scrollbar row (no per-line rebuild on big files).
+- **nvim-hlslens** — floats the nearest search match's position at `n` / `N` / `*` / `#`; also drives the scrollbar `★` marks.
 - **snacks.scroll** — viewport glides with `outQuad` easing (150ms one-shot, 40ms while held) so key-repeat doesn't queue behind the animation.
 - **indent guides** — `┊` dotted guides (snacks.indent) + current-scope highlight (`[i`/`]i` jump to edges); chunk off.
 - **zen** — `<leader>uz` focus mode hides the statusline / bufferline / incline (flower-bordered window).

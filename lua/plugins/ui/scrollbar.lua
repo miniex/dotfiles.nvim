@@ -19,7 +19,8 @@ return {
     -- VeryLazy: keep the heaviest UI plugin (5 autocmds + pulse timer) off the
     -- first-file path. The initial snap is scheduled, so deferral is transparent.
     event = "VeryLazy",
-    dependencies = { "lewis6991/gitsigns.nvim" },
+    -- hlslens before scrollbar: its search handler (★ marks) needs the module loaded.
+    dependencies = { "lewis6991/gitsigns.nvim", "kevinhwang91/nvim-hlslens" },
     config = function()
         require("scrollbar").setup({
             throttle_ms = 16, -- 60fps cap for smooth cursor animation

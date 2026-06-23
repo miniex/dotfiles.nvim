@@ -22,7 +22,7 @@ Leader: `<Space>`. `<localleader>` also `<Space>` (most localleader bindings liv
 | `J` / `<leader>j`        | N    | Join lines keeping cursor / without a space (`gJ`)               |
 | `gx`                     | N    | Open URL / file under cursor (`vim.ui.open`)                     |
 
-> `n`, `N`, `*`, `#`, `g*`, `g#`, `<C-o>`, `<C-i>` auto-center the cursor (`zvzz`); `[c`/`]c` do too, in diff mode.
+> `n`, `N`, `*`, `#`, `g*`, `g#`, `<C-o>`, `<C-i>` auto-center the cursor (`zvzz`); `[c`/`]c` do too, in diff mode. The search keys also float the nvim-hlslens match lens.
 > The jumplist is session-local (cleared at startup), so `<C-o>` / `<C-i>` only revisit files opened this session.
 > `:s/…` shows a live split preview (`inccommand`); `:grep` uses ripgrep; visual-block edits extend past line-end.
 > Yank → system clipboard via `wl-copy` / `xclip` / `pbcopy` / `clip.exe` (first available), else OSC52 over SSH.
