@@ -43,4 +43,64 @@ jobs:
     ),
     -- yaml anchor & alias
     s("anc", fmt("&{} {}", { i(1, "name"), i(0) })),
+    -- k8s Deployment
+    s(
+        "kdeploy",
+        fmt(
+            [[
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {}
+spec:
+  replicas: {}
+  selector:
+    matchLabels:
+      app: {}
+  template:
+    metadata:
+      labels:
+        app: {}
+    spec:
+      containers:
+        - name: {}
+          image: {}
+]],
+            { i(1, "app"), i(2, "1"), rep(1), rep(1), rep(1), i(0, "image:tag") }
+        )
+    ),
+    -- k8s Service
+    s(
+        "ksvc",
+        fmt(
+            [[
+apiVersion: v1
+kind: Service
+metadata:
+  name: {}
+spec:
+  selector:
+    app: {}
+  ports:
+    - port: {}
+      targetPort: {}
+]],
+            { i(1, "app"), rep(1), i(2, "80"), i(0, "8080") }
+        )
+    ),
+    -- k8s ConfigMap
+    s(
+        "kcm",
+        fmt(
+            [[
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: {}
+data:
+  {}: {}
+]],
+            { i(1, "config"), i(2, "KEY"), i(0, "value") }
+        )
+    ),
 }

@@ -13,6 +13,7 @@ return {
             "alfaix/neotest-gtest",
             "orjangj/neotest-ctest",
             "MisanthropicBit/neotest-busted",
+            "nvim-neotest/neotest-plenary",
             "lawrence-laz/neotest-zig",
             "marilari88/neotest-vitest",
             "nvim-neotest/neotest-jest",
@@ -149,6 +150,9 @@ return {
             end)
             add(function()
                 return require("neotest-busted")
+            end)
+            add(function()
+                return require("neotest-plenary")
             end)
             add(function()
                 return require("neotest-zig")({})

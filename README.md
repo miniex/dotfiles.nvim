@@ -35,7 +35,7 @@ Prerequisites, manual install, and recovery: [docs/SETUP.md](docs/SETUP.md).
 
 | Language            | LSP                                                  | Linter           | Debugger                                 |
 | ------------------- | ---------------------------------------------------- | ---------------- | ---------------------------------------- |
-| Shell (sh/bash)     | bashls                                               | shellcheck       | -                                        |
+| Shell (sh/bash)     | bashls                                               | shellcheck       | bash-debug-adapter                       |
 | Zsh / Fish          | - / fish-lsp                                         | zsh -n / fish -n | -                                        |
 | Assembly            | asm-lsp                                              | -                | -                                        |
 | C/C++               | clangd                                               | -                | codelldb                                 |

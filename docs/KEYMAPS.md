@@ -297,7 +297,7 @@ Inside the menu: `q`/`<Esc>` close, `h` parent (no-op at top), `l` open entry.
 
 ## Test (neotest)
 
-Python (pytest), Go (gotestsum), Elixir (mix), C/C++ (gtest + ctest: Catch2 / doctest), Lua (busted), Rust (rustaceanvim), Zig, JS-TS (vitest / jest). `:RustLsp testables` still works as a Rust-only picker. Summary window state restored across sessions. Inside the summary window: `<Tab>` / `zo` expand, `zR` expand all.
+Python (pytest), Go (gotestsum), Elixir (mix), C/C++ (gtest + ctest: Catch2 / doctest), Lua (busted + plenary), Rust (rustaceanvim), Zig, JS-TS (vitest / jest). `:RustLsp testables` still works as a Rust-only picker. Summary window state restored across sessions. Inside the summary window: `<Tab>` / `zo` expand, `zR` expand all.
 
 | Key                        | Description                                  |
 | -------------------------- | -------------------------------------------- |

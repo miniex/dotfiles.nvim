@@ -32,4 +32,28 @@ gap: <>;]],
     ),
     s("trans", fmtd("transition: <> <> ease;", { i(1, "all"), i(2, "0.2s") })),
     s("var", fmtd("--<>: <>;", { i(1, "name"), i(2, "value") })),
+    s("anim", fmtd("animation: <> <> <> <>;", { i(1, "name"), i(2, "1s"), i(3, "ease"), i(0, "infinite") })),
+    s(
+        "kf",
+        fmtd(
+            [[@keyframes <> {
+    from {
+        <>
+    }
+    to {
+        <>
+    }
+}]],
+            { i(1, "name"), i(2), i(0) }
+        )
+    ),
+    s(
+        "root",
+        fmtd(
+            [[:root {
+    --<>: <>;
+}]],
+            { i(1, "name"), i(0, "value") }
+        )
+    ),
 }

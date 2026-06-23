@@ -35,4 +35,36 @@ return {
         )
     ),
     s("schema", fmtd('"$schema": "<>"', { i(0, "https://json.schemastore.org/package.json") })),
+    s("ref", fmtd('"$ref": "<>"', { i(0, "#/definitions/Foo") })),
+    s(
+        "launch",
+        fmtd(
+            [[
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "<>",
+      "type": "<>",
+      "request": "launch",
+      "program": "<>"
+    }
+  ]
+}]],
+            { i(1, "Launch"), i(2, "node"), i(0, "${file}") }
+        )
+    ),
+    s(
+        "devcontainer",
+        fmtd(
+            [[
+{
+  "name": "<>",
+  "image": "<>",
+  "forwardPorts": [<>],
+  "postCreateCommand": "<>"
+}]],
+            { i(1, "dev"), i(2, "mcr.microsoft.com/devcontainers/base:ubuntu"), i(3), i(0) }
+        )
+    ),
 }

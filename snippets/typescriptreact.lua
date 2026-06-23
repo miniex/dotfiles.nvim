@@ -36,4 +36,16 @@ return {
             { i(1), i(2) }
         )
     ),
+    s(
+        "uc",
+        fmt(
+            [[const {} = useCallback(() => {{
+    {}
+}}, [{}]);]],
+            { i(1, "fn"), i(2), i(0) }
+        )
+    ),
+    s("um", fmt("const {} = useMemo(() => {}, [{}]);", { i(1, "value"), i(2), i(0) })),
+    s("ur", fmt("const {} = useRef<{}>({});", { i(1, "ref"), i(2, "HTMLDivElement"), i(0, "null") })),
+    s("urd", fmt("const [{}, dispatch] = useReducer({}, {});", { i(1, "state"), i(2, "reducer"), i(0, "initial") })),
 }
