@@ -143,6 +143,20 @@ fi
 # cargo unconditional: fff.nvim build needs it regardless of rust.
 if have cargo; then ok "cargo $(cargo --version | awk '{print $2}')"; else warn "cargo missing — rustaceanvim / fff.nvim build affected"; fi
 
+section "Database client (vim-dadbod-ui)"
+if lang_on sql; then
+    db=
+    for c in psql mysql sqlite3; do
+        if have "$c"; then
+            ok "$c"
+            db=1
+        fi
+    done
+    [ -n "$db" ] || warn "no DB client (psql / mysql / sqlite3) on PATH — :DBUI can't connect"
+else
+    na "sql disabled"
+fi
+
 section "Optional"
 if have just; then ok "just"; else warn "just (justfile runner) not on PATH"; fi
 if have lazygit; then ok "lazygit"; else warn "lazygit not on PATH — <leader>gg won't work"; fi

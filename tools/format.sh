@@ -45,3 +45,8 @@ fi
 if command -v yamlfmt >/dev/null 2>&1 && [ -n "$(git ls-files '*.yml' '*.yaml' 2>/dev/null)" ]; then
     git ls-files -z '*.yml' '*.yaml' 2>/dev/null | xargs -0 yamlfmt
 fi
+
+# justfile: `just --fmt` is gated behind --unstable.
+if command -v just >/dev/null 2>&1 && [ -f justfile ]; then
+    just --fmt --unstable
+fi

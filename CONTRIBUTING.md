@@ -17,16 +17,19 @@ Optional (used opportunistically; scripts skip with a warning if absent):
 - [`jq`](https://jqlang.github.io/jq/) — JSON pretty-print (`format.sh`, `--indent 4`)
 - [`taplo`](https://taplo.tamasfe.dev/) — TOML formatter (`format.sh`)
 - [`yamlfmt`](https://github.com/google/yamlfmt) — YAML formatter (`format.sh`)
+- [`just`](https://github.com/casey/just) — task runner (`just fmt`/`lint`/`health`); `format.sh`/`lint.sh` also format-check the justfile
 - `fish`, `zsh` — `lint.sh` runs `fish -n` / `zsh -n` on tracked `*.fish` / `*.zsh` files
 
 ```bash
 brew install stylua lua-language-server shfmt shellcheck   # macOS
-brew install jq taplo yamlfmt                              # optional formatters
-cargo install stylua selene                                # cargo (stylua + selene)
+brew install jq taplo yamlfmt just                         # optional
+cargo install stylua selene just                           # cargo
 # Linux: distro package or release tarball
 ```
 
 ## Workflow
+
+Via the `justfile` wrapper: `just fmt` / `just lint` / `just health`. Or call the scripts directly:
 
 ```bash
 ./tools/format.sh   # stylua + shfmt rewrite; jq/taplo/yamlfmt on tracked files when present

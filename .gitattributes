@@ -1,1 +1,7 @@
+# Normalize text to LF (matches .editorconfig).
+* text=auto eol=lf
+*.lua text eol=lf
+*.sh text eol=lf
+justfile text eol=lf
+
 assets/dashboard_sticker.ansi binary linguist-generated=true

@@ -154,6 +154,22 @@ function M.check()
         h.warn("cargo missing — rustaceanvim / fff.nvim build affected")
     end
 
+    h.start("Database client (vim-dadbod-ui)")
+    if lang_on("sql") then
+        local db
+        for _, c in ipairs({ "psql", "mysql", "sqlite3" }) do
+            if exe(c) then
+                h.ok(c)
+                db = true
+            end
+        end
+        if not db then
+            h.warn("no DB client (psql / mysql / sqlite3) on PATH — :DBUI can't connect")
+        end
+    else
+        h.info("sql disabled")
+    end
+
     h.start("Clipboard bridge (yank → system)")
     local bridge
     for _, c in ipairs({ "wl-copy", "xclip", "pbcopy", "clip.exe" }) do

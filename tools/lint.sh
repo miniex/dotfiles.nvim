@@ -45,3 +45,13 @@ if command -v git >/dev/null 2>&1; then
     check_parse '*.fish' fish
     check_parse '*.zsh' zsh
 fi
+
+# justfile: format check + parse (--fmt needs --unstable).
+if [ -f justfile ]; then
+    if command -v just >/dev/null 2>&1; then
+        just --fmt --check --unstable
+        just --summary >/dev/null
+    else
+        echo "warn: justfile present but 'just' not on PATH" >&2
+    fi
+fi

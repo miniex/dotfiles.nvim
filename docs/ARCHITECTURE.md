@@ -15,6 +15,7 @@ Why files live where they do.
 │   └── plugins/            plugin specs (lazy.nvim picks them up)
 ├── docs/                 markdown guides (this file)
 ├── tools/                shell helpers: format / lint / health
+├── justfile              task runner (just fmt / lint / health)
 ├── scripts/              term-bin shims (term-bin/nvim → outer nvim)
 ├── assets/               dashboard sticker, preview image
 ├── CONTRIBUTING.md

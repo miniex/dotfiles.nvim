@@ -68,6 +68,20 @@ prompt_yes() {
 
 backup_path() { printf '%s.backup.%s' "$1" "$(date +%Y%m%d-%H%M%S)"; }
 
+# $1 >= $2 (dotted versions). sort -V is GNU-only; awk fallback for BSD/macOS.
+version_ge() {
+    if printf '' | sort -V >/dev/null 2>&1; then
+        [ "$(printf '%s\n%s\n' "$2" "$1" | sort -V | head -n1)" = "$2" ]
+    else
+        awk -v a="$1" -v b="$2" 'BEGIN {
+            na = split(a, x, "."); nb = split(b, y, "."); n = (na > nb ? na : nb)
+            for (i = 1; i <= n; i++) { xi = x[i] + 0; yi = y[i] + 0
+                if (xi > yi) exit 0; if (xi < yi) exit 1 }
+            exit 0
+        }'
+    fi
+}
+
 banner
 
 step "Pre-flight checks"
@@ -78,8 +92,12 @@ fi
 ok "git"
 
 if command -v nvim >/dev/null 2>&1; then
-    nvim_version=$(nvim --version | head -n 1 | awk '{print $2}')
-    ok "nvim $nvim_version"
+    nvim_version=$(nvim --version | head -n 1 | awk '{print $2}' | sed 's/^v//')
+    if version_ge "${nvim_version%%-*}" "0.12.0"; then
+        ok "nvim $nvim_version"
+    else
+        warn "nvim $nvim_version is below the required 0.12.0 — upgrade before launching"
+    fi
 else
     warn "nvim not installed — install Neovim ≥ 0.12.0 before launching"
 fi

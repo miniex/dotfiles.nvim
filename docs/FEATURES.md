@@ -103,7 +103,7 @@ See [`lua/config/modal-floats.lua`](../lua/config/modal-floats.lua) for the mutu
 - **iron** — send-to-REPL for python / lua / sh / elixir / js-ts (`<leader>i*`).
 - **package-info** — npm dependency versions inline in `package.json` (`<leader>cv` / `cu` / `cU` / `cD`).
 - **kulala** — in-editor REST/HTTP client for `.http` / `.rest` files (`<leader>k*`): run / replay / inspect / copy-as-curl.
-- **health check** — `:checkhealth` opens as a centered flower modal (not a report tab). `:checkhealth dotfiles` is the in-editor host check (enabled langs → Mason servers, toolchains, clipboard, terminal/fonts); `./tools/health.sh` is the shell equivalent plus dev-tooling and a config-load smoke test.
+- **health check** — `:checkhealth` opens as a centered flower modal (not a report tab). `:checkhealth dotfiles` is the in-editor host check (enabled langs → Mason servers, toolchains, DB client, clipboard, terminal/fonts); `./tools/health.sh` is the shell equivalent plus dev-tooling and a config-load smoke test.
 
 ## Markdown
 
