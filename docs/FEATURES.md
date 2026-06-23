@@ -14,7 +14,7 @@
 - **Linked editing** — an HTML/JSX tag and its closing tag rename in sync via native `vim.lsp.linked_editing_range` on capable servers (html, …).
 - **Diagnostics** — single config in `lua/plugins/lsp/init.lua`; `tiny-inline-diagnostic.nvim` owns virtual text. Severity-sorted, signs `✗`/`!`/`i`/`?`.
 - **Spell check** — `typos_lsp` across all filetypes: low false-positive (only known typos), surfaced at `Info` severity.
-- **Completion** — [blink.cmp](https://github.com/Saghen/blink.cmp) with Rust fuzzy matching + inline ghost-text preview. Sources: LSP / snippets (LuaSnip + friendly-snippets) / path / buffer; filtered per filetype (no LSP in `gitcommit` / `gitrebase`, buffer-only in snacks input prompts). Cmdline completion on `:` (commands / paths) and `/` `?` (search).
+- **Completion** — [blink.cmp](https://github.com/Saghen/blink.cmp) with Rust fuzzy matching + inline ghost-text preview. Sources: LSP / snippets (LuaSnip + friendly-snippets) / path / buffer; filtered per filetype (`gitcommit` uses a `git` source via blink-cmp-git + path/buffer, no LSP in `gitrebase`, buffer-only in snacks input prompts). Cmdline completion on `:` (commands / paths) and `/` `?` (search).
 - **LSP restart** — `<leader>cs` for when a server hangs.
 
 ## Treesitter
@@ -42,7 +42,7 @@
 - **Multi-cursor** — multicursor.nvim under `<leader>M*` + `<C-Up>` / `<C-Down>`.
 - **Smart inc/dec** — dial.nvim. `<C-a>`/`<C-x>` flips bools, dates, semver, hex colors, identifier case, `&&↔||` (plus `let↔const` in JS/TS and headers in markdown).
 - **Quickfix** — quicker.nvim (editable QF), nvim-bqf (preview), Trouble (`auto_close` on jump, main-window preview; `<leader>x*` lists diagnostics / refs / symbols / call hierarchy / type defs / implementations).
-- **Misc** — mini.surround (`gs*`), mini.ai (`a`/`i` brackets/quotes/tags + `aN`/`aL` next/last, `ag` buffer / `ad` number), mini.move (`<A-hjkl>` line shuffle), mini.operators (`gR` replace-with-register / `gX` exchange / `gS` sort / `g=` eval), Comment.nvim (`gc` toggle), refactoring.nvim (`<leader>cr` extract/inline), todo-comments, dropbar (winbar), git-conflict, nvim-lightbulb (code-action sign; skipped on big/minified files), tiny-code-action (`<leader>ca` picker with per-action diff preview), nvim-colorizer (6/8-digit hex everywhere; 3/4-digit `#RGB` shorthand only in CSS-family, so issue/PR refs like `#590` aren't colorized; skipped on big/minified files), rainbow-delimiters (on-theme nested bracket-pair colors; disabled on big/minified files), 0.12 built-ins `:Undotree` and `:DiffTool` (non-git side-by-side file/dir diff).
+- **Misc** — mini.surround (`gs*`), mini.ai (`a`/`i` brackets/quotes/tags + `aN`/`aL` next/last, `ag` buffer / `ad` number), mini.move (`<A-hjkl>` line shuffle), mini.operators (`gR` replace-with-register / `gX` exchange / `gS` sort / `g=` eval), Comment.nvim (`gc` toggle), refactoring.nvim (`<leader>cr` extract/inline), todo-comments, dropbar (winbar), git-conflict, nvim-lightbulb (code-action sign; skipped on big/minified files), tiny-code-action (`<leader>ca` picker with per-action diff preview), nvim-colorizer (6/8-digit hex everywhere; 3/4-digit `#RGB` shorthand only in CSS-family, so issue/PR refs like `#590` aren't colorized; skipped on big/minified files), rainbow-delimiters (on-theme nested bracket-pair colors; disabled on big/minified files), 0.12 built-ins `:Undotree` and `:DiffTool` (non-git side-by-side file/dir diff), hex.nvim (`<leader>ux` toggle hex view).
 - **Persistence** — `persistence.nvim` auto-restores on bare `nvim` (skipping headless, empty sessions, and `nvim <file>` launches, which neither restore nor save), re-attaches TS / LSP / linter on restored buffers. Only window-visible buffers persist (no hidden `badd`). Neotest summary window state persists across sessions. Sessions are scoped per git branch (feature branches keep distinct layouts; main/master share the base session).
 - **Width-aware `textwidth`** — `rust` / `python` / `lua` / `elixir` / `ocaml` / `c`-`cpp` / `sql` / `toml` set `textwidth` (the `gq`/`gw` reflow width) to the project formatter's line width, searched upward from its config, else the default — no visual ruler. See [CUSTOMIZATION](CUSTOMIZATION.md#formatter-width).
 
@@ -61,6 +61,7 @@
 - **indent guides** — `┊` dotted guides (snacks.indent); scope/chunk highlighting off.
 - **zen** — `<leader>uz` focus mode hides the statusline / bufferline / incline (flower-bordered window).
 - **smear-cursor** — fast spring (matched stiffness/trailing, no stretch). Off in picker/terminal floats so the spring doesn't fire per keystroke; 80ms swallow on other float opens skips the `(1,1)` landing jump.
+- **cord.nvim** — Discord Rich Presence; gated to local UI (skips headless / SSH).
 - **Plus** — edgy (sidebar layout: aerial + neotest-summary → right, trouble/qf/dap + neotest-output → bottom), fidget.
 
 ## Modal floats
@@ -102,6 +103,7 @@ See [`lua/config/modal-floats.lua`](../lua/config/modal-floats.lua) for the mutu
 - **nvim-coverage** — test-coverage gutter signs + summary (`<leader>nc` / `nC`, toggle `nv` / clear `nX`); reads lcov / coverage.xml.
 - **iron** — send-to-REPL for python / lua / sh / elixir / js-ts (`<leader>i*`).
 - **package-info** — npm dependency versions inline in `package.json` (`<leader>cv` / `cu` / `cU` / `cD`).
+- **crates.nvim** — Cargo.toml dependency versions inline (`<leader>cv` / `cF` / `cu` / `cU` / `cD`).
 - **kulala** — in-editor REST/HTTP client for `.http` / `.rest` files (`<leader>k*`): run / replay / inspect / copy-as-curl.
 - **health check** — `:checkhealth` opens as a centered flower modal (not a report tab). `:checkhealth dotfiles` is the in-editor host check (enabled langs → Mason servers, toolchains, DB client, clipboard, terminal/fonts); `./tools/health.sh` is the shell equivalent plus dev-tooling and a config-load smoke test.
 

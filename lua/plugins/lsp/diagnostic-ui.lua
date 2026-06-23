@@ -69,7 +69,7 @@ return {
                 end,
                 desc = "Toggle multi-diagnostic on cursorline",
             },
-            -- Severity-filtered jumps. ]d/[d still cycles all severities.
+            -- Severity-filtered jumps; ]d/[d (all severities) come from Neovim's built-in defaults.
             {
                 "]e",
                 function()

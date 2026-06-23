@@ -185,7 +185,7 @@ Bare `nvim` (and `nvim <dir>`, which cd's in) auto-restores the cwd session (ski
 | `<leader>xE` / `<leader>xe` | Diagnostics → native quickfix / buffer loclist                       |
 | `<leader>xt` / `<leader>xT` | Trouble: TODOs / TODO+FIX+FIXME                                      |
 | `[q` / `]q`                 | Prev / next item (Trouble + qf fallback)                             |
-| `[d` / `]d`                 | Prev / next diagnostic (any severity)                                |
+| `[d` / `]d`                 | Prev / next diagnostic, any severity (Neovim built-in)               |
 | `[e` / `]e`                 | Prev / next **error** only                                           |
 | `[W` / `]W`                 | Prev / next **warning** only                                         |
 | `[t` / `]t`                 | Prev / next TODO comment (`;`/`,` repeats)                           |
