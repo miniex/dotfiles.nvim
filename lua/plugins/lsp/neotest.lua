@@ -11,6 +11,7 @@ return {
             "fredrikaverpil/neotest-golang",
             "jfpedroza/neotest-elixir",
             "alfaix/neotest-gtest",
+            "orjangj/neotest-ctest",
             "MisanthropicBit/neotest-busted",
             "lawrence-laz/neotest-zig",
             "marilari88/neotest-vitest",
@@ -141,6 +142,10 @@ return {
             end)
             add(function()
                 return require("neotest-gtest").setup({})
+            end)
+            -- CTest-driven C/C++ tests: Catch2 / doctest / gtest in CMake projects.
+            add(function()
+                return require("neotest-ctest").setup({})
             end)
             add(function()
                 return require("neotest-busted")

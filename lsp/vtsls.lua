@@ -10,9 +10,12 @@ local hints = {
 
 local common = {
     inlayHints = hints,
+    -- Raise tsserver heap; the ~3 GB default OOMs on monorepos.
+    tsserver = { maxTsServerMemory = 8192 },
     preferences = {
         importModuleSpecifier = "non-relative",
         includePackageJsonAutoImports = "auto",
+        preferTypeOnlyAutoImports = true,
     },
     suggest = { completeFunctionCalls = true },
     updateImportsOnFileMove = { enabled = "always" },
@@ -23,6 +26,7 @@ return {
     -- Semantic tokens off centrally (lsp/init.lua).
     settings = {
         vtsls = {
+            autoUseWorkspaceTsdk = true,
             experimental = { completion = { enableServerSideFuzzyMatch = true } },
         },
         typescript = common,

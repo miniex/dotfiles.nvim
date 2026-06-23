@@ -21,7 +21,7 @@
 | Missing prereq tools                                | `:checkhealth dotfiles` (in-editor: langs → Mason servers, toolchains, clipboard, terminal/fonts) or `./tools/health.sh` (shell — adds dev-tooling + config-load smoke test)             |
 | Lazy sync stuck / broken                            | `:Lazy sync` (force) or `:Lazy restore` (revert to `lazy-lock.json`); nuke caches as a last resort                                                                                       |
 | Snippets not appearing                              | `:Lazy reload friendly-snippets` and `:LuaSnipUnlinkCurrent` if mid-expansion; check filetype matches a file in `snippets/`                                                              |
-| Neotest discovery fails                             | adapter for that language is missing or its CLI isn't on `$PATH` (`pytest` / `go` / `mix` / `gtest` / `cargo` / `zig` / `vitest` / `phpunit`)                                            |
+| Neotest discovery fails                             | adapter for that language is missing or its CLI isn't on `$PATH` (`pytest` / `go` / `mix` / `gtest` / `ctest` / `cargo` / `zig` / `vitest` / `phpunit`)                                  |
 | DBUI shows nothing / connection fails               | the engine's client CLI (`psql` / `mysql` / `sqlite3`) isn't on `$PATH`; dadbod shells out to it. `:DBUIAddConnection` registers a URL                                                   |
 | Dashboard preceded by flickering `[No Name]` tabs   | Stale persistence session for the cwd. Delete it: `rm ~/.local/state/nvim/sessions/$(pwd \| tr / %).vim`                                                                                 |
 | `:q` swaps to an unexpected buffer after restore    | Old session file has stale `badd` lines; `:qa` once to overwrite, or `rm` it                                                                                                             |
@@ -32,6 +32,7 @@
 | Search match count missing in a huge file           | Expected — skipped in buffers >20000 lines (`searchcount()` rescans per cursor move). Raise `SEARCHCOUNT_MAX_LINES` in `lua/plugins/ui/lualine.lua`.                                     |
 | A huge file reopens on every launch                 | Old session saved it in the arglist. The guard `argdelete`s on decline — open once, cancel, exit to clean it, or `rm` the session file.                                                  |
 | basedpyright "enumeration > 10s" / slow Python open | Heavy build / venv / vendored trees are excluded from enumeration in `lsp/basedpyright.lua`; `:LspRestart` to apply. Odd layout still slow? Add a project `pyrightconfig.json` `exclude` |
+| Python imports unresolved / wrong interpreter       | venv auto-detected (`$VIRTUAL_ENV` / `.venv` / `venv`); `:VenvSelect` (`<leader>cv`) overrides — basedpyright updates live, no `:LspRestart`                                             |
 | Mason LSP "missing from PATH / not executable"      | Shows installed in `:Mason` but the `mason/bin/<server>` symlink is missing (package dir intact). `:MasonInstall <server>` recreates it, then `:LspRestart`.                             |
 
 > nvim-treesitter `master` is archived and incompatible with 0.12; pinned to `main`.

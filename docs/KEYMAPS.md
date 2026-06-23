@@ -297,7 +297,7 @@ Inside the menu: `q`/`<Esc>` close, `h` parent (no-op at top), `l` open entry.
 
 ## Test (neotest)
 
-Python (pytest), Go (gotestsum), Elixir (mix), C/C++ (gtest), Lua (busted), Rust (rustaceanvim), Zig, JS-TS (vitest / jest). `:RustLsp testables` still works as a Rust-only picker. Summary window state restored across sessions. Inside the summary window: `<Tab>` / `zo` expand, `zR` expand all.
+Python (pytest), Go (gotestsum), Elixir (mix), C/C++ (gtest + ctest: Catch2 / doctest), Lua (busted), Rust (rustaceanvim), Zig, JS-TS (vitest / jest). `:RustLsp testables` still works as a Rust-only picker. Summary window state restored across sessions. Inside the summary window: `<Tab>` / `zo` expand, `zR` expand all.
 
 | Key                        | Description                                  |
 | -------------------------- | -------------------------------------------- |
@@ -414,6 +414,7 @@ In the toggle terminal, `$EDITOR`/`$VISUAL`/`$GIT_EDITOR` forward to the parent 
 | `<leader>cE` / `<leader>cP`                | Rust: expand macro / jump to parent module                |
 | `<leader>co` / `<leader>cU`                | TS/JS: organize imports / remove unused                   |
 | `<leader>co` / `<leader>cX`                | Python: organize imports / fix all (ruff)                 |
+| `<leader>cv` (Python) / `:VenvSelect`      | Python: select interpreter / venv                         |
 | `<leader>co` / `<leader>cX`                | Go: organize imports / fix all (gopls)                    |
 | `<leader>cv/cF/cu/cU/cD` (Cargo.toml)      | crates: versions / features / update / upgrade / docs     |
 | `<leader>cv/cu/cU/cD` (package.json)       | package-info: versions / update / change version / delete |
