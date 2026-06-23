@@ -152,10 +152,12 @@ return {
         })
 
         -- searchcount() rescans the buffer; cache it, recompute on cursor
-        -- move / new search instead of every redraw.
+        -- move / new search. Skip in huge buffers: a sparse pattern scans the
+        -- whole file (~24ms/move at 200k lines, and timeout doesn't help).
+        local SEARCHCOUNT_MAX_LINES = 20000
         local search_str = ""
         local function update_search()
-            if vim.v.hlsearch == 1 then
+            if vim.v.hlsearch == 1 and vim.api.nvim_buf_line_count(0) <= SEARCHCOUNT_MAX_LINES then
                 local ok, s = pcall(vim.fn.searchcount, { maxcount = 99, timeout = 30 })
                 if ok and s.total and s.total > 0 then
                     search_str = ("⌕ %d/%d"):format(s.current, s.total)

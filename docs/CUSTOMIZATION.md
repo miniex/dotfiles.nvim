@@ -99,6 +99,8 @@ The "view" action and `<leader>L` open `less` in its own tab via `lua/config/pag
 
 Separately, files **> 10 MiB** are skipped by the focus-time `:checktime` auto-reload (per buffer, size cached), so a changed huge file isn't reloaded on every focus (`lua/config/autocmds.lua`).
 
+The lualine search match count is skipped in buffers **> 20000 lines** — `searchcount()` rescans the buffer per cursor move (~24 ms at 200k lines). Tune `SEARCHCOUNT_MAX_LINES` in `lua/plugins/ui/lualine.lua`.
+
 ## Modal floats
 
 - `lua/config/modal-floats.lua` — mutual-exclusion registry + shared float-config decorator hook. Extend `OWNER` (`ft = "owner"`) to register a new modal; same `owner` keeps siblings together. Use `add_decorator(name, { open, set_config })` to rewrite float configs (border, title, geometry) without patching the APIs yourself. `:checkhealth` uses this: `vim.g.health.style = "float"` (nvim 0.12) makes it a native float, then a `checkhealth` decorator stamps the modal geometry onto it at creation.
