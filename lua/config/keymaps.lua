@@ -44,7 +44,11 @@ map("<leader>bs", ":w<CR>", "n", "Save file")
 map("<leader>D", '"_d', { "n", "x" }, "Delete (no yank)")
 
 -- normal <leader>P left free for the snacks profiler group
-map("<leader>p", "p`[v`]=", "n", "Paste + reindent")
+map("<leader>p", function()
+    -- Plain paste in indent-sensitive filetypes; `=` would mangle their whitespace.
+    local nofmt = { python = true, yaml = true, markdown = true, make = true, sass = true, nim = true, haskell = true }
+    vim.cmd(nofmt[vim.bo.filetype] and "normal! p" or "normal! p`[v`]=")
+end, "n", "Paste + reindent")
 map("<leader>p", '"_dP', "x", "Paste over (no yank)")
 map("<leader>P", '"_dP`[v`]=', "x", "Paste over + reindent")
 
@@ -56,6 +60,9 @@ map("<leader>j", "gJ", "n", "Join lines (no space)")
 map("gx", function()
     local cword = vim.fn.expand("<cWORD>")
     local url = cword:match("https?://[%w%-_%.%?:/%+=&#@!~,;'()%%]+")
+    if url then
+        url = url:gsub("[%.,;:!?'\"%)%]}]+$", "") -- drop trailing sentence / wrap punctuation
+    end
     local target = url or vim.fn.expand("<cfile>")
     if target ~= "" then
         vim.ui.open(target)

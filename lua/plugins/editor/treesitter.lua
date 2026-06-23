@@ -41,6 +41,12 @@ return {
                 -- API / Query
                 "graphql",
                 "http",
+                "query",
+                "regex",
+                -- Diff / comments / markup
+                "diff",
+                "comment",
+                "xml",
                 -- Shaders
                 "wgsl",
                 "glsl",

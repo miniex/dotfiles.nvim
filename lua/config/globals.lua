@@ -24,6 +24,9 @@ do
         pcall(vim.cmd, "argdelete *")
         vim.g.single_file, vim.g.file_launch = false, false
         vim.g.dir_launch = vim.fn.getcwd() -- a VimEnter drops the stray dir buffer
+    elseif n == 0 and vim.fn.has("ttyin") == 0 then
+        -- Piped stdin (`cmd | nvim -`): file-launch semantics, no session over piped content.
+        vim.g.single_file, vim.g.file_launch, vim.g.multi_dir = false, true, false
     else
         local files = 0
         for i = 0, n - 1 do

@@ -47,7 +47,7 @@ return {
                 diagnostic = true,
                 gitsigns = true,
                 handle = true,
-                search = false,
+                search = true, -- ★ marks; complements lualine's search count
                 ale = false,
             },
         })

@@ -25,7 +25,7 @@ Language-agnostic servers (e.g. `typos_lsp`) aren't mapped per-language — they
 
 Client-side file watching (`didChangeWatchedFiles`) is on for every server, which can stall a large project on open. Fix per server: a server-side watcher (rust-analyzer's `files.watcher = "server"`) or `dynamicRegistration = false` in its `lsp/<server>.lua`.
 
-Linters → `lua/plugins/lsp/lint.lua`. Non-LSP CLI tools → `mason-tool-installer.nvim` `ensure_installed`. CodeLLDB-based DAP (C/C++, Zig, Nim, Rust) → shared resolver `lua/config/codelldb.lua`. Repeated lang-spec fragments (mason / treesitter / blink / lint / code-action keys) have one-line helpers in `lua/config/lang.lua`; DAP mason-binary guards in `lua/config/dap.lua`. JSON/YAML SchemaStore wiring → shared `lua/config/lsp_schemastore.lua`. Semantic tokens are disabled for vtsls / basedpyright centrally in `lua/plugins/lsp/init.lua` (`SEMANTIC_TOKENS_OFF`).
+Linters → `lua/plugins/lsp/lint.lua`. Non-LSP CLI tools → `mason-tool-installer.nvim` `ensure_installed`. CodeLLDB-based DAP (C/C++, Zig, Nim, Rust) → shared resolver `lua/config/codelldb.lua`. Repeated lang-spec fragments (mason / treesitter / blink / lint / code-action keys) have one-line helpers in `lua/config/lang.lua`; DAP mason-binary guards in `lua/config/dap.lua`. JSON/YAML SchemaStore wiring → shared `lua/config/lsp_schemastore.lua`. Semantic tokens are disabled for vtsls / basedpyright / clangd centrally in `lua/plugins/lsp/init.lua` (`SEMANTIC_TOKENS_OFF`).
 
 ## Snippets
 
@@ -55,7 +55,7 @@ Drop Lua files in `~/.config/nvim/snippets/`. Filetype-scoped by filename (e.g. 
 
 ## Per-filetype options
 
-- `after/ftplugin/<ft>.lua` — buffer-local options Neovim auto-sources on `FileType` (after the built-in / plugin ftplugins, so it wins). Used for `go` / `make` (tabs, overriding the global `expandtab`) and `gitcommit` / `markdown` (wrap, 72-col). Add a file named after the filetype to set its own buffer options.
+- `after/ftplugin/<ft>.lua` — buffer-local options Neovim auto-sources on `FileType` (after the built-in / plugin ftplugins, so it wins). Used for `go` / `make` (tabs, overriding the global `expandtab`), `gitcommit` / `markdown` (wrap, 72-col), `python` (`colorcolumn` 88 + venv keymap), and `yaml` / `json` (2-space). Add a file named after the filetype to set its own buffer options.
 
 ## Formatter width
 

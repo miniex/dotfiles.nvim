@@ -254,6 +254,25 @@ return {
                             removed = { fg = p.overlay1 },
                         },
                     },
+                    {
+                        -- Surface non-default encoding / line-ending (mojibake / CRLF).
+                        function()
+                            local out = {}
+                            local enc = vim.bo.fileencoding
+                            if enc ~= "" and enc ~= "utf-8" then
+                                out[#out + 1] = enc
+                            end
+                            if vim.bo.fileformat ~= "unix" then
+                                out[#out + 1] = vim.bo.fileformat
+                            end
+                            return table.concat(out, " ")
+                        end,
+                        cond = function()
+                            local enc = vim.bo.fileencoding
+                            return (enc ~= "" and enc ~= "utf-8") or vim.bo.fileformat ~= "unix"
+                        end,
+                        color = { fg = damin_pink },
+                    },
                 },
                 lualine_y = {
                     {

@@ -402,7 +402,8 @@ return {
         indent = {
             enabled = true,
             indent = { char = "┊" },
-            scope = { enabled = false },
+            -- Animated current-scope guide; pairs with the [i/]i scope jumps.
+            scope = { enabled = true },
             chunk = { enabled = false },
         },
         input = { enabled = true },
@@ -500,7 +501,7 @@ return {
                 col = mgeom.col,
             },
         },
-        words = { enabled = true },
+        words = { enabled = true, debounce = 100, notify_jump = true },
         zen = {
             enabled = true,
             -- Drop chrome on enter; bufferline is the tabline. Toggle incline too.

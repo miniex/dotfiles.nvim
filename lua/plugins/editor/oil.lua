@@ -10,6 +10,8 @@ return {
     },
     opts = {
         default_file_explorer = false,
+        -- Trash instead of unrecoverable delete (needs gio / trash-cli).
+        delete_to_trash = true,
         view_options = { show_hidden = true },
         keymaps = {
             ["q"] = "actions.close",

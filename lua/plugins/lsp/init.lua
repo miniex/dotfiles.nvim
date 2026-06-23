@@ -42,9 +42,11 @@ local function enabled_servers()
             )
         end)
     end
-    table.sort(out)
     -- typos_lsp is language-agnostic, so it's always on rather than per-lang.
-    out[#out + 1] = "typos_lsp"
+    if not seen["typos_lsp"] then
+        out[#out + 1] = "typos_lsp"
+    end
+    table.sort(out)
     cached_servers = out
     return out
 end
@@ -234,7 +236,7 @@ return {
 
             -- Servers whose semantic tokens clash with treesitter. Disabled here, not via
             -- the server's on_attach, so its bundled on_attach (e.g. pyright cmds) still runs.
-            local SEMANTIC_TOKENS_OFF = { basedpyright = true, vtsls = true }
+            local SEMANTIC_TOKENS_OFF = { basedpyright = true, vtsls = true, clangd = true }
 
             -- Per-client, capability-gated; runs on EVERY attach so wiring isn't
             -- tied to attach order (e.g. ruff before basedpyright). Buffer-global
