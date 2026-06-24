@@ -2,7 +2,7 @@
 -- imports. Auto-detected per LSP root; :VenvSelect overrides it, keyed by root.
 local M = {}
 
-local uv = vim.uv
+local uv = vim.uv or vim.loop
 local is_win = (uv.os_uname().sysname or ""):find("Windows") ~= nil
 local bindir = is_win and "Scripts" or "bin"
 local exe = is_win and "python.exe" or "python"

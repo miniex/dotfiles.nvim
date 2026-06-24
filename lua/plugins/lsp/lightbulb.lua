@@ -37,13 +37,26 @@ return {
             return big
         end
 
-        -- CursorHold only (no CursorHoldI): no codeAction requests on insert idle.
-        vim.api.nvim_create_autocmd("CursorHold", {
-            group = vim.api.nvim_create_augroup("LightBulbGuarded", { clear = true }),
+        -- Buffer-local CursorHold per LSP attach, so non-LSP buffers skip the
+        -- codeAction scan. No CursorHoldI: no requests on insert idle.
+        local grp = vim.api.nvim_create_augroup("LightBulbGuarded", { clear = true })
+        vim.api.nvim_create_autocmd("LspAttach", {
+            group = grp,
             callback = function(args)
-                if not buf_is_big(args.buf) then
-                    require("nvim-lightbulb").update_lightbulb()
+                local buf = args.buf
+                if vim.b[buf]._lightbulb_done then
+                    return
                 end
+                vim.b[buf]._lightbulb_done = true
+                vim.api.nvim_create_autocmd("CursorHold", {
+                    buffer = buf,
+                    group = grp,
+                    callback = function()
+                        if not buf_is_big(buf) then
+                            require("nvim-lightbulb").update_lightbulb()
+                        end
+                    end,
+                })
             end,
         })
 

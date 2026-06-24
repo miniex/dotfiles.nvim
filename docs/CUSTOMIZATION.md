@@ -55,11 +55,11 @@ Drop Lua files in `~/.config/nvim/snippets/`. Filetype-scoped by filename (e.g. 
 
 ## Per-filetype options
 
-- `after/ftplugin/<ft>.lua` — buffer-local options Neovim auto-sources on `FileType` (after the built-in / plugin ftplugins, so it wins). Used for `go` / `make` (tabs, overriding the global `expandtab`), `gitcommit` / `markdown` (wrap, 72-col), `python` (`colorcolumn` 88 + venv keymap), and `yaml` / `json` (2-space). Add a file named after the filetype to set its own buffer options.
+- `after/ftplugin/<ft>.lua` — buffer-local options Neovim auto-sources on `FileType` (after the built-in / plugin ftplugins, so it wins). Used for `go` / `make` (tabs, overriding the global `expandtab`), `gitcommit` / `markdown` (wrap, 72-col), `python` (`colorcolumn` tracking the formatter `textwidth` + venv keymap), and `yaml` / `json` (2-space). Add a file named after the filetype to set its own buffer options.
 
 ## Formatter width
 
-`textwidth` (the `gq` / `gw` reflow width) follows each project's formatter width — no visual ruler. A `FileType` autocmd in `lua/config/format-width.lua` reads a per-filetype `M.specs` registry, searches upward for the nearest config below, and uses its width (else the formatter default). Width `0` (e.g. clang-format `ColumnLimit: 0`) means no limit.
+`textwidth` (the `gq` / `gw` reflow width) follows each project's formatter width — no visual ruler (except `python`, whose ftplugin draws one at this `textwidth`). A `FileType` autocmd in `lua/config/format-width.lua` reads a per-filetype `M.specs` registry, searches upward for the nearest config below, and uses its width (else the formatter default). Width `0` (e.g. clang-format `ColumnLimit: 0`) means no limit.
 
 | Filetype    | Config (searched upward)                      | Key               | Default |
 | ----------- | --------------------------------------------- | ----------------- | ------- |

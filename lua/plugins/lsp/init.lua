@@ -298,14 +298,18 @@ return {
                             buffer = bufnr,
                             group = cl_group,
                             callback = function()
-                                vim.lsp.codelens.enable(false, { bufnr = bufnr })
+                                if vim.lsp.codelens.is_enabled({ bufnr = bufnr }) then
+                                    vim.lsp.codelens.enable(false, { bufnr = bufnr })
+                                end
                             end,
                         })
                         vim.api.nvim_create_autocmd("InsertLeave", {
                             buffer = bufnr,
                             group = cl_group,
                             callback = function()
-                                vim.lsp.codelens.enable(true, { bufnr = bufnr })
+                                if not vim.lsp.codelens.is_enabled({ bufnr = bufnr }) then
+                                    vim.lsp.codelens.enable(true, { bufnr = bufnr })
+                                end
                             end,
                         })
                     end

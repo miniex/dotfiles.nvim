@@ -397,6 +397,19 @@ vim.api.nvim_create_autocmd("FileType", {
     end,
 })
 
+-- :VenvSelect — created once on the first Python buffer (the <leader>cv key is in
+-- after/ftplugin/python.lua).
+vim.api.nvim_create_autocmd("FileType", {
+    group = vim.api.nvim_create_augroup("venvselect-cmd", { clear = true }),
+    pattern = "python",
+    once = true,
+    callback = function()
+        vim.api.nvim_create_user_command("VenvSelect", function()
+            require("config.python_venv").select()
+        end, { desc = "Select Python venv" })
+    end,
+})
+
 -- Clear the shada-restored jumplist at startup so <C-o> stays session-local.
 vim.api.nvim_create_autocmd("VimEnter", {
     group = vim.api.nvim_create_augroup("session-local-jumps", { clear = true }),

@@ -1,13 +1,8 @@
--- PEP 8 line length (ruff/black default).
-vim.opt_local.colorcolumn = "88"
+-- PEP 8 ruler at the formatter textwidth (format-width); "+0" follows textwidth at
+-- draw time, so FileType-autocmd order doesn't matter.
+vim.opt_local.colorcolumn = "+0"
 
--- :VenvSelect picks the interpreter basedpyright uses (auto-detected otherwise).
-if vim.fn.exists(":VenvSelect") == 0 then
-    vim.api.nvim_create_user_command("VenvSelect", function()
-        require("config.python_venv").select()
-    end, { desc = "Select Python venv" })
-end
-
+-- :VenvSelect (global) lives in config/autocmds.lua; buffer-local key only here.
 vim.keymap.set("n", "<leader>cv", function()
     require("config.python_venv").select()
 end, { buffer = true, desc = "Select Python venv" })
