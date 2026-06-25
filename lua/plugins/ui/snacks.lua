@@ -402,8 +402,8 @@ return {
         indent = {
             enabled = true,
             indent = { char = "┊" },
-            -- Animated current-scope guide; pairs with the [i/]i scope jumps.
-            scope = { enabled = true },
+            -- No scope highlight; uniform dotted guides. [i/]i jumps use top-level Snacks.scope.
+            scope = { enabled = false },
             chunk = { enabled = false },
         },
         input = { enabled = true },

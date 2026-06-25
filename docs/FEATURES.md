@@ -59,7 +59,7 @@
 - **nvim-scrollbar** — `♥` cursor mark slides smoothly between rows (snaps on large jumps and in big buffers) and heartbeat-pulses while focused (paused after idle, in insert mode, on `FocusLost`, and on chrome buffers like the dashboard / Neo-tree). Handle fades vivid → muted after idle. Git triad in mint/pink/rose plus search hits (`★`); gitsigns gutter + DiagnosticSign share the same palette so both edges agree. Per-keystroke autocmds also skip picker/terminal/prompt buffers so fzf/snacks-picker stay snappy; the cursor mark repaints only on a new scrollbar row (no per-line rebuild on big files).
 - **nvim-hlslens** — floats the nearest search match's position at `n` / `N` / `*` / `#`; also drives the scrollbar `★` marks.
 - **snacks.scroll** — viewport glides with `outQuad` easing (150ms one-shot, 40ms while held) so key-repeat doesn't queue behind the animation.
-- **indent guides** — `┊` dotted guides (snacks.indent) + current-scope highlight (`[i`/`]i` jump to edges); chunk off.
+- **indent guides** — uniform `┊` dotted guides (snacks.indent), no scope highlight (`[i`/`]i` still jump to scope edges); chunk off.
 - **zen** — `<leader>uz` focus mode hides the statusline / bufferline / incline (flower-bordered window).
 - **smear-cursor** — fast spring (matched stiffness/trailing, no stretch). Off in picker/terminal floats so the spring doesn't fire per keystroke; 80ms swallow on other float opens skips the `(1,1)` landing jump.
 - **cord.nvim** — Discord Rich Presence; gated to local UI (skips headless / SSH).

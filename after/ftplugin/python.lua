@@ -1,5 +1,4 @@
--- PEP 8 ruler at the formatter textwidth (format-width); "+0" follows textwidth at
--- draw time, so FileType-autocmd order doesn't matter.
+-- PEP 8 ruler at the formatter textwidth; "+0" resolves at draw time, so autocmd order is moot.
 vim.opt_local.colorcolumn = "+0"
 
 -- :VenvSelect (global) lives in config/autocmds.lua; buffer-local key only here.

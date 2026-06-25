@@ -107,8 +107,8 @@ return {
             config.title_pos = "center"
         end
 
-        -- Skip the stack walk for untitled floats and already-flowered titles (hover
-        -- etc.): fff only sets raw file paths, so a ✿ title is never fff's.
+        -- Skip the walk for untitled or already-flowered floats: fff only sets raw
+        -- file paths, so a ✿ title is never fff's.
         local function decorate_if_fff(_, config)
             if type(config) ~= "table" or type(config.title) ~= "string" then
                 return

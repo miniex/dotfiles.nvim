@@ -397,8 +397,7 @@ vim.api.nvim_create_autocmd("FileType", {
     end,
 })
 
--- :VenvSelect — created once on the first Python buffer (the <leader>cv key is in
--- after/ftplugin/python.lua).
+-- :VenvSelect — created once, on the first Python buffer; <leader>cv key in after/ftplugin/python.lua.
 vim.api.nvim_create_autocmd("FileType", {
     group = vim.api.nvim_create_augroup("venvselect-cmd", { clear = true }),
     pattern = "python",
