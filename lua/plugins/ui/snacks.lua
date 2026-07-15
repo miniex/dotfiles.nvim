@@ -35,12 +35,29 @@ require("config.modal-floats").add_decorator("snacks_picker_preview", {
 })
 
 -- $EDITOR → parent nvim. Pass at toggle(), not opts.terminal (snacks id mismatch).
-local TERM_WRAPPER = vim.fn.stdpath("config") .. "/scripts/term-bin/nvim"
+local TERM_BIN = vim.fn.stdpath("config") .. "/scripts/term-bin"
+local TERM_WRAPPER = TERM_BIN .. "/nvim"
+-- term-bin on PATH so a bare `nvim` opens in the parent instead of nesting; the
+-- wrapper skips its own dir when resolving the real binary, so it can't recurse.
 local TERM_ENV = {
     EDITOR = TERM_WRAPPER,
     VISUAL = TERM_WRAPPER,
     GIT_EDITOR = TERM_WRAPPER,
+    PATH = TERM_BIN .. ":" .. (vim.env.PATH or ""),
 }
+
+-- Open or focus; never closes (Esc / <C-x> do that).
+-- nil `count` falls through to v:count1, so plain → #1, `2<leader>t` → #2.
+local function focus_terminal(count)
+    local term, created = Snacks.terminal.get(nil, { env = TERM_ENV, count = count })
+    if not term or created then
+        return -- a new terminal is already shown and focused
+    end
+    if not term:win_valid() then
+        term:show()
+    end
+    term:focus()
+end
 
 -- Disable overlays on dashboard: chafa ANSI conflicts with dim/indent/scroll.
 vim.api.nvim_create_autocmd("FileType", {
@@ -485,6 +502,9 @@ return {
                 wo = { winbar = "", winblend = 0 },
                 keys = {
                     term_close = { "<C-x>", "hide", mode = { "n", "t" }, desc = "Hide Terminal" },
+                    -- Normal mode only: lazygit inherits these keys, and it (like
+                    -- anything else in the shell) needs Esc in terminal mode.
+                    term_esc = { "<Esc>", "hide", mode = "n", desc = "Hide Terminal" },
                 },
             },
         },
@@ -640,22 +660,20 @@ return {
             end,
             desc = "Delete Buffer (force)",
         },
+        -- Normal mode only: a terminal-mode `t` map swallows `<space>t` at the shell prompt.
         {
             "<leader>t",
             function()
-                -- count selects the instance: plain → #1, `2<leader>t` → #2, etc.
-                Snacks.terminal.toggle(nil, { env = TERM_ENV })
+                focus_terminal()
             end,
-            mode = { "n", "t" },
-            desc = "Toggle Terminal",
+            desc = "Open / focus Terminal",
         },
         {
             "<leader>T",
             function()
-                Snacks.terminal.toggle(nil, { env = TERM_ENV, count = 2 })
+                focus_terminal(2)
             end,
-            mode = { "n", "t" },
-            desc = "Toggle Terminal #2",
+            desc = "Open / focus Terminal #2",
         },
         {
             "<leader>un",

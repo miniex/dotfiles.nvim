@@ -34,7 +34,7 @@ The asymmetry between `lsp/` / `snippets/` (at root) and `lua/config|plugins/` (
 | `lua/<mod>/*.lua`         | `require("mod.x")` resolves to `<rtp>/lua/mod/x.lua`. Cannot move out of `lua/`.                |
 | `snippets/<ft>.lua`       | Free choice. Path is set in `lua/plugins/coding/completion.lua` (`luasnip.loaders.from_lua`).   |
 | `tools/`                  | Free. Shell scripts, not loaded by Neovim.                                                      |
-| `scripts/term-bin/`       | Free. Used as `$EDITOR` inside the snacks terminal so `git commit` opens a split in outer nvim. |
+| `scripts/term-bin/`       | Free. `$EDITOR` + `PATH` shim in the snacks terminal; `git commit` / `nvim` open in outer nvim. |
 
 ## Boot sequence
 

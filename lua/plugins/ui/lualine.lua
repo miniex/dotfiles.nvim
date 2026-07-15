@@ -101,7 +101,11 @@ return {
                     sparkle.active = false
                     pcall(vim.cmd.redrawstatus)
                 end, 180)
-                pcall(vim.cmd.redrawstatus)
+                -- Scheduled: an inline redraw here snaps the cursor to col 1 in a
+                -- prompt buffer, misplacing the first char typed into a picker.
+                vim.schedule(function()
+                    pcall(vim.cmd.redrawstatus)
+                end)
             end,
         })
 

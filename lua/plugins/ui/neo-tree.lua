@@ -224,7 +224,8 @@ return {
     branch = "v3.x",
     cmd = "Neotree",
     keys = {
-        { "<leader>e", ":Neotree toggle<cr>", silent = true, desc = "Neo-tree toggle" },
+        -- `focus`, not `toggle`: pressing the open key again should never close it.
+        { "<leader>e", ":Neotree focus<cr>", silent = true, desc = "Neo-tree open / focus" },
         { "<leader>o", ":Neotree reveal<cr>", silent = true, desc = "Neo-tree reveal" },
     },
     dependencies = {

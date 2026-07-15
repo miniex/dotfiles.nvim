@@ -47,7 +47,7 @@ Leader: `<Space>`. `<localleader>` also `<Space>` (most localleader bindings liv
 | `<leader>fS`                          | Snippets (LuaSnip, ft + inherited + all)                         |
 | `<leader>fs`                          | Edit the current filetype's snippet file (LuaSnip)               |
 | `<leader>zz` / `z'`                   | fzf-lua: builtin menu / resume last picker                       |
-| `<leader>e` / `<leader>o`             | Neo-tree: toggle / reveal                                        |
+| `<leader>e` / `<leader>o`             | Neo-tree: open / focus, reveal. Esc closes.                      |
 | `<cr>` / `l` / `h` (in Neo-tree)      | Open file in main window; folder expand / collapse               |
 | `<leader>-` / `<leader>fy`            | yazi: open at current file / in cwd (needs `yazi` binary)        |
 | `<leader>O`                           | oil: edit current dir as a buffer (rename/move/delete via edits) |
@@ -380,13 +380,16 @@ Uppercase prefixes — lowercase `gr` / `gs` / `gx` are taken (LSP refs / surrou
 
 ## Terminal & Buffers
 
-In the toggle terminal, `$EDITOR`/`$VISUAL`/`$GIT_EDITOR` forward to the parent Neovim via `scripts/term-bin/nvim` — `git commit` opens a split in the outer instance.
+`$EDITOR`/`$VISUAL`/`$GIT_EDITOR` and a bare `nvim` all forward to the parent Neovim via `scripts/term-bin/nvim` (on the terminal's `PATH`) — `git commit` opens a split in the outer instance instead of nesting.
+
+Open keys only open or focus — never close — so `<space>t` stays typable at the shell prompt.
 
 | Key                                        | Description                                                                                                                |
 | ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------- |
-| `<leader>t` (n/t)                          | Toggle terminal #1 (centered float; `N<leader>t` → instance N)                                                             |
-| `<leader>T` (n/t)                          | Toggle terminal #2                                                                                                         |
-| `<C-x>`                                    | Hide terminal                                                                                                              |
+| `<leader>t`                                | Open / focus terminal #1 (centered float; `N<leader>t` → instance N)                                                       |
+| `<leader>T`                                | Open / focus terminal #2                                                                                                   |
+| `<Esc>` (normal mode)                      | Hide terminal. Terminal mode keeps Esc for lazygit / shell TUIs.                                                           |
+| `<C-x>`                                    | Hide terminal (works in terminal mode too)                                                                                 |
 | `<leader>w`                                | Smart buffer delete (last file → dashboard, or exit in a single-file launch; on dashboard → file buf if any, else `:qall`) |
 | `:q` / `:wq` / `:x` / `:exit` / `ZZ`       | Smart quit: bufdelete on last window, else `:quit`. `!` keeps force semantics. On dashboard → `:qall`; in `q:` → `:quit`.  |
 | `ZQ`                                       | Force smart quit (no save)                                                                                                 |

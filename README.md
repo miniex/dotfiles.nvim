@@ -76,11 +76,11 @@ Leader: `<Space>`. Full reference: [docs/KEYMAPS.md](docs/KEYMAPS.md).
 | Key                         | Description                     |
 | --------------------------- | ------------------------------- |
 | `<leader>ff` / `<leader>fg` | Find files / live grep          |
-| `<leader>e`                 | Toggle file tree (Neo-tree)     |
+| `<leader>e`                 | Open file tree (Neo-tree)       |
 | `s` / `S`                   | flash jump / treesitter jump    |
 | `<leader>w`                 | Smart buffer delete             |
 | `<S-h>` / `<S-l>`           | Previous / next buffer          |
-| `<leader>t`                 | Toggle terminal                 |
+| `<leader>t`                 | Open terminal (Esc closes)      |
 | `<leader>rr`                | Search & replace (grug-far)     |
 | `K` / `gd` / `gr`           | Hover / definition / references |
 | `<leader>ca` / `<leader>rn` | Code action / rename            |
