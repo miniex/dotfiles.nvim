@@ -27,7 +27,7 @@ return {
     ron = {},
     rust = {},
     shader = { "wgsl_analyzer", "glsl_analyzer" },
-    sql = { "sqlls" },
+    sql = { "sqls" },
     svelte = { "svelte" },
     terraform = { "terraformls" },
     toml = { "taplo" },

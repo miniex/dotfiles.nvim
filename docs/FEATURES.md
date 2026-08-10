@@ -116,8 +116,9 @@ See [`lua/config/modal-floats.lua`](../lua/config/modal-floats.lua) for the mutu
 ## Database
 
 - **vim-dadbod-ui** — `<leader>uD` toggles the DB drawer; `:DBUIAddConnection` to register a URL, then browse / query per connection.
-- **vim-dadbod-completion** — table / column completion in blink.cmp for `sql` / `mysql` / `plsql` (alongside `sqlls`).
+- **vim-dadbod-completion** — table / column completion in blink.cmp for `sql` / `mysql` / `plsql` (alongside `sqls`).
 - Needs the engine's client CLI on `$PATH` (`psql` / `mysql` / `sqlite3`).
+- **sqls** — the SQL LSP reads connections from `~/.config/sqls/config.yml` (`sqls config`); with none set it's keyword-only.
 
 ## Native ui2
 
