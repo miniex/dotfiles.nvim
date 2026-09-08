@@ -23,11 +23,28 @@ return {
         local sc = require("smear_cursor.config")
         local grp = vim.api.nvim_create_augroup("SmearCursorAutocmds", { clear = true })
 
+        -- smear hides the real cursor (`a:SmearCursorHideable`, blend=100) while it
+        -- animates and unhides only when the animation ends. Switching it off mid-flight
+        -- strands that state, so the cursor stays invisible in the float we just entered.
+        -- jump() unhides and resets it; deferred past the 80ms float-open window below.
+        local function restore_real_cursor()
+            if smear.enabled then
+                return
+            end
+            local ok, row, col = pcall(require("smear_cursor.screen").get_screen_cursor_position)
+            if ok and row then
+                require("smear_cursor.animation").jump(row, col)
+            end
+        end
+
         -- Each smear.enabled write re-runs unlisten/listen + a deferred jump_cursor
         -- even when unchanged; guard so repeated chrome-buffer passes don't churn.
         local function set_smear(v)
             if smear.enabled ~= v then
                 smear.enabled = v
+            end
+            if not v then
+                vim.defer_fn(restore_real_cursor, 100)
             end
         end
 
