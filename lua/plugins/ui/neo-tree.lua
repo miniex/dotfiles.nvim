@@ -37,7 +37,7 @@ local function patch_recursive_dir_size()
 
     local utils = require("neo-tree.utils")
     local events = require("neo-tree.events")
-    local uv = vim.uv or vim.loop
+    local uv = vim.uv
 
     local MAX_ENTRIES = 1000000 -- per-dir backstop; ">…" beyond it
     local cache = {} -- path -> bytes | "capped"

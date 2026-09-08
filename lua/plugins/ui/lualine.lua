@@ -132,7 +132,7 @@ return {
             end)
         end
         local clock_str = os.date("%H:%M")
-        local clock_timer = (vim.uv or vim.loop).new_timer()
+        local clock_timer = vim.uv.new_timer()
         _G._lualine_clock_timer = clock_timer
         clock_timer:start(
             (60 - tonumber(os.date("%S"))) * 1000,

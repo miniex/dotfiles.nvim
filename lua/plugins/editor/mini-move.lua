@@ -1,6 +1,6 @@
 -- A-hjkl: shuffle line/block, reindent on h/l.
 return {
-    "echasnovski/mini.move",
+    "nvim-mini/mini.move",
     keys = {
         { "<A-h>", mode = { "n", "v" } },
         { "<A-j>", mode = { "n", "v" } },

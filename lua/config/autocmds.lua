@@ -90,7 +90,7 @@ vim.api.nvim_create_autocmd("TextYankPost", {
         if vim.fn.reg_recording() ~= "" then
             return
         end
-        (vim.hl or vim.highlight).on_yank({ timeout = 150 })
+        vim.hl.on_yank({ timeout = 150 })
     end,
 })
 
@@ -327,7 +327,7 @@ end
 -- NUL byte in the first KB → binary (the git/grep heuristic). less only mangles
 -- binary and exits non-zero on it, so we drop the "view" option for those.
 local function is_binary(file)
-    local uv = vim.uv or vim.loop
+    local uv = vim.uv
     local fd = uv.fs_open(file, "r", 438)
     if not fd then
         return false

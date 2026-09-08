@@ -7,7 +7,7 @@
 - A [Nerd Font](https://www.nerdfonts.com/) **plus** [`Symbols Nerd Font Mono`](https://github.com/ryanoasis/nerd-fonts/releases/latest/download/NerdFontsSymbolsOnly.zip) as fallback (many MDI — Material Design Icons — glyphs sit in the Supplementary PUA). In Kitty: `symbol_map U+E000-U+F8FF,U+F0000-U+10FFFD Symbols Nerd Font Mono`
 - [`tree-sitter-cli`](https://github.com/tree-sitter/tree-sitter) **≥ 0.26.1** (`cargo install` or distro; **not npm**)
 - Node.js + npm — for npm-based Mason packages
-- Python 3 + pip, Go, Rust toolchains — required by Mason / debugpy / fff.nvim binary
+- Python 3 + pip, Go, Rust toolchains — required by Mason / debugpy / fff binary
 - Zig / OCaml+opam / Erlang+Elixir — optional, only if the matching lang toggle is on
 - [`just`](https://github.com/casey/just), [lazygit](https://github.com/jesseduffield/lazygit), [`fzf`](https://github.com/junegunn/fzf), [ImageMagick](https://imagemagick.org/) — optional (image previews require `magick`; animated GIFs show first frame only)
 - Database client CLIs (`psql` / `mysql` / `sqlite3`) — optional, only for `:DBUI` / dadbod against the matching engine
@@ -18,7 +18,7 @@ Run `./tools/health.sh` to verify everything in one shot.
 
 Built and tested on **linux-gnu** and **macOS** (incl. Apple Silicon). Others work with caveats:
 
-- **musl (Alpine)** — Mason's glibc binaries won't run on musl; install servers/tools from the system package manager (or `gcompat`). `blink.cmp` falls back to its Lua matcher; `fff.nvim` builds from source (needs Rust).
+- **musl (Alpine)** — Mason's glibc binaries won't run on musl; install servers/tools from the system package manager (or `gcompat`). `blink.cmp` falls back to its Lua matcher; `fff` builds from source (needs Rust).
 - **BSD** — Mason has no BSD support; install language servers via `pkg` / ports.
 
 ## Install

@@ -1,5 +1,5 @@
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-if not (vim.uv or vim.loop).fs_stat(lazypath) then
+if not vim.uv.fs_stat(lazypath) then
     vim.fn.system({
         "git",
         "clone",
@@ -14,7 +14,7 @@ vim.opt.rtp:prepend(lazypath)
 -- PROF=1: arm snacks.profiler before lazy fires (full startup capture).
 if vim.env.PROF then
     local snacks_path = vim.fn.stdpath("data") .. "/lazy/snacks.nvim"
-    if (vim.uv or vim.loop).fs_stat(snacks_path) then
+    if vim.uv.fs_stat(snacks_path) then
         vim.opt.rtp:prepend(snacks_path)
         require("snacks.profiler").startup({ startup = { event = "VimEnter" } })
     end

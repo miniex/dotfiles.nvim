@@ -1,7 +1,7 @@
 -- Shared codelldb paths (Mason binary + liblldb), resolved directly to bypass
 -- Mason's bash wrapper. Used by C/C++/Zig/Nim DAP adapters + lang/rust.lua.
 local M = {}
-local uv = vim.uv or vim.loop
+local uv = vim.uv
 
 local pkg = vim.fn.stdpath("data") .. "/mason/packages/codelldb"
 M.binary = pkg .. "/extension/adapter/codelldb"

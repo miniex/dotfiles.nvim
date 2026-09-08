@@ -74,7 +74,7 @@ local function schedule_refresh()
         return
     end
     refresh_pending = true
-    refresh_timer = refresh_timer or (vim.uv or vim.loop).new_timer()
+    refresh_timer = refresh_timer or vim.uv.new_timer()
     _G._cursor_bloom_timer = refresh_timer
     refresh_timer:start(
         16,

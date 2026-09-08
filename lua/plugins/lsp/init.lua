@@ -53,7 +53,7 @@ end
 
 return {
     {
-        "williamboman/mason.nvim",
+        "mason-org/mason.nvim",
         cmd = { "Mason", "MasonInstall", "MasonUninstall", "MasonUpdate", "MasonLog" },
         keys = { { "<leader>cm", "<cmd>Mason<cr>", desc = "Mason" } },
         build = ":MasonUpdate",
@@ -82,13 +82,13 @@ return {
         },
     },
     {
-        "williamboman/mason-lspconfig.nvim",
-        dependencies = { "williamboman/mason.nvim" },
+        "mason-org/mason-lspconfig.nvim",
+        dependencies = { "mason-org/mason.nvim" },
         cmd = { "LspInstall", "LspUninstall" },
     },
     {
         "WhoIsSethDaniel/mason-tool-installer.nvim",
-        dependencies = { "williamboman/mason.nvim" },
+        dependencies = { "mason-org/mason.nvim" },
         event = "VeryLazy",
         cmd = { "MasonToolsInstall", "MasonToolsUpdate", "MasonToolsClean" },
         opts_extend = { "ensure_installed" },
@@ -250,6 +250,15 @@ return {
                             pcall(vim.lsp.semantic_tokens.enable, false, { bufnr = bufnr })
                         end
                     end)
+                end
+                -- Buffer-local: lspconfig's clangd on_attach creates the command.
+                if client.name == "clangd" and not vim.b[bufnr]._clangd_keys_done then
+                    vim.b[bufnr]._clangd_keys_done = true
+                    vim.keymap.set("n", "<leader>ch", "<cmd>LspClangdSwitchSourceHeader<cr>", {
+                        buffer = bufnr,
+                        silent = true,
+                        desc = "Switch Source/Header (C/C++)",
+                    })
                 end
                 if
                     opts.inlay_hints

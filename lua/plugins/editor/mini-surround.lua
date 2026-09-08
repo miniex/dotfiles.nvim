@@ -1,6 +1,6 @@
 -- Surround pairs. `gs*` prefix (flash.nvim owns `s`).
 return {
-    "echasnovski/mini.surround",
+    "nvim-mini/mini.surround",
     keys = function(_, keys)
         local opts =
             require("lazy.core.plugin").values(require("lazy.core.config").spec.plugins["mini.surround"], "opts", false)

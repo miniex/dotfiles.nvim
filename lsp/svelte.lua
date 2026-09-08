@@ -4,7 +4,7 @@ return {
     root_dir = function(bufnr, on_dir)
         local fname = vim.api.nvim_buf_get_name(bufnr)
         -- Svelte LSP only supports the file:// scheme; skip unsaved/virtual buffers.
-        if (vim.uv or vim.loop).fs_stat(fname) == nil then
+        if vim.uv.fs_stat(fname) == nil then
             return
         end
         local root = vim.fs.root(bufnr, { "svelte.config.js", "svelte.config.mjs", "svelte.config.cjs" })

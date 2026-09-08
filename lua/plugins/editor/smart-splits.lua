@@ -7,7 +7,7 @@ local function move(dir)
 end
 
 return {
-    "mrjones2014/smart-splits.nvim",
+    "smart-splits-nvim/smart-splits.nvim",
     keys = {
         { "<C-h>", move("left"), mode = { "n", "t" }, desc = "Move to left pane" },
         { "<C-j>", move("down"), mode = { "n", "t" }, desc = "Move to bottom pane" },

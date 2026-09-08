@@ -2,7 +2,7 @@
 -- (treesitter-textobjects keeps af/aa/al/…). next/last on aN/iN, aL/iL: frees
 -- 0.12's native node selection (an/in/]n/[n).
 return {
-    "echasnovski/mini.ai",
+    "nvim-mini/mini.ai",
     event = "VeryLazy",
     opts = {
         n_lines = 500,

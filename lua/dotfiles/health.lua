@@ -147,11 +147,11 @@ function M.check()
             h.warn("pip missing")
         end
     end
-    -- cargo unconditional: fff.nvim's build needs it regardless of rust.
+    -- cargo unconditional: fff's build needs it regardless of rust.
     if exe("cargo") then
         h.ok("cargo")
     else
-        h.warn("cargo missing — rustaceanvim / fff.nvim build affected")
+        h.warn("cargo missing — rustaceanvim / fff build affected")
     end
 
     h.start("Database client (vim-dadbod-ui)")

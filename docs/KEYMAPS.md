@@ -36,8 +36,8 @@ Leader: `<Space>`. `<localleader>` also `<Space>` (most localleader bindings liv
 
 | Key                                   | Description                                                      |
 | ------------------------------------- | ---------------------------------------------------------------- |
-| `<leader>ff`                          | fff.nvim: find files (Rust-backed, sub-10ms on huge codebases)   |
-| `<leader>fF`                          | fff.nvim: find files in current directory                        |
+| `<leader>ff`                          | fff: find files (Rust-backed, sub-10ms on huge codebases)        |
+| `<leader>fF`                          | fff: find files in current directory                             |
 | `<leader>fg` / `fr` / `fb` / `fh`     | snacks.picker: grep / recent / buffers / help                    |
 | `<leader>fB`                          | snacks.picker: live grep across open buffers (the tab list)      |
 | `<leader>fi` / `fH`                   | snacks.picker: insert icon / inspect highlight groups            |
@@ -343,9 +343,9 @@ HTTP client for `.http` / `.rest` files.
 | `<leader>ki` | Inspect parsed request   |
 | `<leader>kc` | Copy request as `curl`   |
 
-## Comment (Comment.nvim)
+## Comment (built-in `gc`)
 
-ts-context-commentstring picks the right syntax for embedded languages (JSX, Vue, …).
+Built-in `gc` picks the right syntax for embedded languages (JSX, Vue, md fences); `gco` / `gcO` / `gcA` are rebuilt on top of it in `lua/config/keymaps.lua`.
 
 | Key                 | Mode | Description                            |
 | ------------------- | ---- | -------------------------------------- |

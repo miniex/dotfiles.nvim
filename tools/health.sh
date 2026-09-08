@@ -140,8 +140,8 @@ if lang_on go; then
 else
     na "go (go disabled)"
 fi
-# cargo unconditional: fff.nvim build needs it regardless of rust.
-if have cargo; then ok "cargo $(cargo --version | awk '{print $2}')"; else warn "cargo missing — rustaceanvim / fff.nvim build affected"; fi
+# cargo unconditional: fff build needs it regardless of rust.
+if have cargo; then ok "cargo $(cargo --version | awk '{print $2}')"; else warn "cargo missing — rustaceanvim / fff build affected"; fi
 
 section "Database client (vim-dadbod-ui)"
 if lang_on sql; then

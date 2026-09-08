@@ -1,37 +1,4 @@
 return {
-    {
-        "p00f/clangd_extensions.nvim",
-        ft = { "c", "cpp" },
-        keys = {
-            {
-                "<leader>ch",
-                "<cmd>ClangdSwitchSourceHeader<cr>",
-                desc = "Switch Source/Header (C/C++)",
-                ft = { "c", "cpp" },
-            },
-        },
-        opts = {
-            ast = {
-                role_icons = {
-                    type = "",
-                    declaration = "",
-                    expression = "",
-                    specifier = "",
-                    statement = "",
-                    ["template argument"] = "",
-                },
-                kind_icons = {
-                    Compound = "",
-                    Recovery = "",
-                    TranslationUnit = "",
-                    PackExpansion = "",
-                    TemplateTypeParm = "",
-                    TemplateTemplateParm = "",
-                    TemplateParamObject = "",
-                },
-            },
-        },
-    },
     require("config.dap").spec(function(dap)
         dap.adapters.codelldb = dap.adapters.codelldb or require("config.codelldb").adapter("c/c++")
         if not dap.adapters.codelldb then

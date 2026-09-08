@@ -16,6 +16,8 @@ Why files live where they do.
 ├── docs/                 markdown guides (this file)
 ├── tools/                shell helpers: format / lint / health
 ├── justfile              task runner (just fmt / lint / health)
+├── install.sh            one-shot installer (backup / update in place)
+├── set-lang.sh           lang toggles → gitignored lua/config/langs_local.lua
 ├── scripts/              term-bin shims (term-bin/nvim → outer nvim)
 ├── assets/               dashboard sticker, preview image
 ├── CONTRIBUTING.md

@@ -33,6 +33,7 @@ return {
                         rosewater = damin_pink,
                     },
                 },
+                -- No `integrations` list: auto_integrations (default) covers what's installed.
                 custom_highlights = function(_)
                     return {
                         WinSeparator = { fg = damin_pink, bg = "NONE" },
@@ -57,29 +58,6 @@ return {
                         DiagnosticSignOk = { fg = damin_blue, bg = "NONE" },
                     }
                 end,
-                integrations = {
-                    aerial = true,
-                    bufferline = true,
-                    cmp = true,
-                    dap = true,
-                    dap_ui = true,
-                    fidget = true,
-                    flash = true,
-                    gitsigns = true,
-                    grug_far = true,
-                    harpoon = true,
-                    lsp_trouble = true,
-                    mason = true,
-                    native_lsp = { enabled = true },
-                    neotree = true,
-                    notify = true,
-                    overseer = true,
-                    snacks = { enabled = true },
-                    telescope = { enabled = false },
-                    treesitter = true,
-                    treesitter_context = true,
-                    which_key = true,
-                },
             })
 
             vim.cmd([[colorscheme catppuccin]])

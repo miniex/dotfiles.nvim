@@ -2,7 +2,7 @@
 -- are kept: jump ([j/]j), location ([l/]l), undo ([u/]u).
 -- VeryLazy (not keys) so the u/<C-R> undo-ring remaps are active before edits.
 return {
-    "echasnovski/mini.bracketed",
+    "nvim-mini/mini.bracketed",
     event = "VeryLazy",
     opts = {
         -- Other 11 suffixes disabled — their [x/]x are already taken: b/c/x/d/f/i/o/q/t/w/y →

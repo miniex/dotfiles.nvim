@@ -1,4 +1,4 @@
--- Shared chrome-aware rectangle for every modal float. Mirrors fff.nvim's
+-- Shared chrome-aware rectangle for every modal float. Mirrors fff's
 -- `calculate_layout_dimensions` (picker_ui.lua:396) + its virtual-border +1.
 local M = {}
 
@@ -180,7 +180,7 @@ if not vim.g._modal_geom_aligner then
     vim.api.nvim_create_autocmd("VimResized", {
         group = group,
         callback = function()
-            resize_timer = resize_timer or (vim.uv or vim.loop).new_timer()
+            resize_timer = resize_timer or vim.uv.new_timer()
             resize_timer:start(50, 0, vim.schedule_wrap(resync_all))
         end,
     })

@@ -56,6 +56,47 @@ map("<leader>P", '"_dP`[v`]=', "x", "Paste over + reindent")
 map("J", "mzJ`z", "n", "Join lines (keep cursor)")
 map("<leader>j", "gJ", "n", "Join lines (no space)")
 
+-- gco / gcO / gcA: not in 0.12's built-in gc. The marker is probed with `gcc` on a
+-- scratch line, so it follows the treesitter context (JSX, vue blocks, md fences).
+local function comment_parts()
+    local row = vim.api.nvim_win_get_cursor(0)[1]
+    vim.api.nvim_buf_set_lines(0, row, row, false, { "\1" })
+    vim.api.nvim_win_set_cursor(0, { row + 1, 0 })
+    pcall(vim.cmd, "undojoin")
+    vim.cmd("normal gcc")
+    local probed = vim.api.nvim_get_current_line()
+    pcall(vim.cmd, "undojoin")
+    vim.api.nvim_buf_set_lines(0, row, row + 1, false, {})
+    vim.api.nvim_win_set_cursor(0, { row, 0 })
+    local left, right = probed:match("^%s*(.-)%s*\1%s*(.*)$")
+    return left or "//", right or ""
+end
+
+local function comment_insert(where)
+    local row, line = vim.api.nvim_win_get_cursor(0)[1], vim.api.nvim_get_current_line()
+    local left, right = comment_parts()
+    -- `A` rewrites the current line; `o` / `O` open one at the same indent.
+    local prefix = (where == "A" and line .. " " or line:match("^%s*")) .. left .. " "
+    local at = where == "A" and row - 1 or (where == "O" and row - 1 or row)
+    pcall(vim.cmd, "undojoin")
+    vim.api.nvim_buf_set_lines(0, at, where == "A" and row or at, false, {
+        prefix .. (right ~= "" and " " .. right or ""),
+    })
+    -- Right-delimited (`{/* */}`) parks before the closer; otherwise append at EOL.
+    vim.api.nvim_win_set_cursor(0, { at + 1, right ~= "" and #prefix or 0 })
+    vim.cmd(right ~= "" and "startinsert" or "startinsert!")
+end
+
+map("gco", function()
+    comment_insert("o")
+end, "n", "Comment line below")
+map("gcO", function()
+    comment_insert("O")
+end, "n", "Comment line above")
+map("gcA", function()
+    comment_insert("A")
+end, "n", "Comment at end of line")
+
 -- open URL / file under cursor (netrw's gx is disabled)
 map("gx", function()
     local cword = vim.fn.expand("<cWORD>")
