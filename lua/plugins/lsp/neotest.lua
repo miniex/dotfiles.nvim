@@ -19,6 +19,38 @@ return {
             "nvim-neotest/neotest-jest",
             "olimorris/neotest-phpunit",
         },
+        init = function()
+            -- In init: neotest is keys-lazy, so its config runs after the session loads.
+            -- mksession only saves globals that start uppercase and contain lowercase.
+            local session_group = vim.api.nvim_create_augroup("neotest-session", { clear = true })
+            vim.api.nvim_create_autocmd("VimLeavePre", {
+                group = session_group,
+                callback = function()
+                    local open = false
+                    for _, win in ipairs(vim.api.nvim_list_wins()) do
+                        local buf = vim.api.nvim_win_get_buf(win)
+                        if vim.bo[buf].filetype == "neotest-summary" then
+                            open = true
+                            break
+                        end
+                    end
+                    vim.g.NeotestSummaryOpen = open and 1 or nil
+                end,
+            })
+            vim.api.nvim_create_autocmd("User", {
+                pattern = "PersistenceLoadPost",
+                group = session_group,
+                callback = function()
+                    if vim.g.NeotestSummaryOpen == 1 then
+                        vim.schedule(function()
+                            pcall(function()
+                                require("neotest").summary.open()
+                            end)
+                        end)
+                    end
+                end,
+            })
+        end,
         keys = {
             {
                 "<leader>nr",
@@ -193,37 +225,6 @@ return {
                     },
                 },
                 floating = { border = vim.g.flower_border },
-            })
-
-            -- Restore summary window across sessions. mksession only saves
-            -- UPPERCASE globals, hence NEOTEST_SUMMARY_OPEN.
-            local session_group = vim.api.nvim_create_augroup("neotest-session", { clear = true })
-            vim.api.nvim_create_autocmd("VimLeavePre", {
-                group = session_group,
-                callback = function()
-                    local open = false
-                    for _, win in ipairs(vim.api.nvim_list_wins()) do
-                        local buf = vim.api.nvim_win_get_buf(win)
-                        if vim.bo[buf].filetype == "neotest-summary" then
-                            open = true
-                            break
-                        end
-                    end
-                    vim.g.NEOTEST_SUMMARY_OPEN = open and 1 or nil
-                end,
-            })
-            vim.api.nvim_create_autocmd("User", {
-                pattern = "PersistenceLoadPost",
-                group = session_group,
-                callback = function()
-                    if vim.g.NEOTEST_SUMMARY_OPEN == 1 then
-                        vim.schedule(function()
-                            pcall(function()
-                                require("neotest").summary.open()
-                            end)
-                        end)
-                    end
-                end,
             })
         end,
     },

@@ -128,6 +128,10 @@ vim.api.nvim_create_autocmd("FileType", {
         if not pcall(vim.treesitter.start, args.buf) then
             return
         end
+        -- Only langs with an indents query; without one TS indent returns 0.
+        if #vim.treesitter.query.get_files(lang, "indents") == 0 then
+            return
+        end
         -- Defer indentexpr to override default ftplugin indent (idempotent).
         vim.schedule(function()
             local expr = "v:lua.require'nvim-treesitter'.indentexpr()"

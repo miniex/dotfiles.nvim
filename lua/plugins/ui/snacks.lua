@@ -357,7 +357,11 @@ return {
             -- `PROF=1 nvim` for startup; keymaps below for runtime toggle.
         },
         quickfile = { enabled = true },
-        scope = { enabled = true },
+        scope = {
+            enabled = true,
+            -- ai/ii are treesitter-textobjects' @conditional.
+            keys = { textobject = { ii = false, ai = false } },
+        },
         scratch = { enabled = true },
         terminal = {
             enabled = true,
@@ -571,7 +575,6 @@ return {
             function()
                 Snacks.words.jump(vim.v.count1)
             end,
-            mode = { "n", "t" },
             desc = "Next Reference",
         },
         {
@@ -579,7 +582,6 @@ return {
             function()
                 Snacks.words.jump(-vim.v.count1)
             end,
-            mode = { "n", "t" },
             desc = "Prev Reference",
         },
         {

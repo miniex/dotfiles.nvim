@@ -80,6 +80,12 @@ return {
                     load_breakpoints_event = { "BufReadPost" },
                     perf_record = false,
                 },
+                config = function(_, opts)
+                    require("persistent-breakpoints").setup(opts)
+                    -- Buffers read before dap loaded missed the BufReadPost load; a
+                    -- toggle there would overwrite the file's saved set.
+                    require("persistent-breakpoints.api").load_breakpoints()
+                end,
             },
         },
         keys = {

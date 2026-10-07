@@ -1,10 +1,12 @@
 return {
     require("config.lang").treesitter({ "go", "templ" }),
+    -- Registered when nvim-dap loads, not on ft: setup() requires dap (~13ms).
+    require("config.dap").spec(function()
+        require("dap-go").setup()
+    end),
     {
         "leoluz/nvim-dap-go",
-        ft = "go",
         dependencies = { "mfussenegger/nvim-dap" },
-        opts = {},
         keys = {
             {
                 "<leader>dGt",

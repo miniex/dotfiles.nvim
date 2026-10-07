@@ -22,6 +22,9 @@ opt.inccommand = "split"
 opt.grepprg = "rg --vimgrep --smart-case"
 opt.grepformat = "%f:%l:%c:%m"
 
+-- session: window-visible buffers only (no hidden badd); globals for NeotestSummaryOpen
+opt.sessionoptions = { "curdir", "winsize", "help", "globals", "skiprtp" }
+
 -- visual
 opt.number = true
 opt.relativenumber = true
@@ -46,7 +49,7 @@ opt.laststatus = 3
 opt.showtabline = 0
 -- Safety net for the first-`<leader>` lag while which-key triggers register.
 opt.timeoutlen = 300
--- CursorHold idle for document_highlight.
+-- Swap write / CursorHold delay.
 opt.updatetime = 300
 opt.scrolloff = 10
 opt.mouse = "a"

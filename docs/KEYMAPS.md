@@ -6,7 +6,7 @@ Leader: `<Space>`. `<localleader>` also `<Space>` (most localleader bindings liv
 
 | Key                 | Mode | Description                                                      |
 | ------------------- | ---- | ---------------------------------------------------------------- |
-| `<C-h/j/k/l>`       | N/T  | Pane navigation: nvim splits + tmux/wezterm panes (smart-splits) |
+| `<C-h/j/k/l>`       | N    | Pane navigation: nvim splits + tmux/wezterm panes (smart-splits) |
 | `<A-h/j/k/l>`       | N/V  | mini.move: shuffle line / block (reindents on h/l)               |
 | `<leader>h`         | N    | Clear search highlight                                           |
 | `<Esc>`             | N    | Clear search highlight                                           |
@@ -244,8 +244,7 @@ Build / run via overseer's auto-detected templates (make / npm / cargo / go / ju
 | `<leader>Rr` | Run a task        |
 | `<leader>Rt` | Toggle task list  |
 | `<leader>Rc` | Run shell command |
-| `<leader>Ra` | Task quick action |
-| `<leader>Ri` | Overseer info     |
+| `<leader>Ra` | Task action       |
 
 ## REPL (iron)
 

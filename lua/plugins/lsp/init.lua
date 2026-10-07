@@ -271,14 +271,12 @@ return {
             -- tied to attach order (e.g. ruff before basedpyright). Buffer-global
             -- augroups are guarded to create once per buffer.
             local function setup_client_features(client, bufnr)
-                -- Once per buffer: re-disabling on a 2nd attach would clobber a <leader>uy toggle.
-                if SEMANTIC_TOKENS_OFF[client.name] and not vim.b[bufnr]._semantic_disabled then
-                    vim.b[bufnr]._semantic_disabled = true
-                    vim.schedule(function()
-                        if vim.api.nvim_buf_is_valid(bufnr) then
-                            pcall(vim.lsp.semantic_tokens.enable, false, { bufnr = bufnr })
-                        end
-                    end)
+                -- Per client, not per buffer: a bufnr filter also kills tokens from
+                -- other servers on the buffer (vue_ls next to vtsls).
+                if
+                    SEMANTIC_TOKENS_OFF[client.name] and vim.lsp.semantic_tokens.is_enabled({ client_id = client.id })
+                then
+                    pcall(vim.lsp.semantic_tokens.enable, false, { client_id = client.id })
                 end
                 -- Buffer-local: lspconfig's clangd on_attach creates the command.
                 if client.name == "clangd" and not vim.b[bufnr]._clangd_keys_done then
@@ -351,25 +349,6 @@ return {
                             end,
                         })
                     end
-                end
-                if
-                    not buf_is_big(bufnr)
-                    and client:supports_method("textDocument/documentHighlight", bufnr)
-                    and not vim.b[bufnr]._lsp_dochl_done
-                then
-                    vim.b[bufnr]._lsp_dochl_done = true
-                    local g = vim.api.nvim_create_augroup("lsp-doc-hl-" .. bufnr, { clear = true })
-                    -- Normal mode only; InsertEnter clears stale highlight (no per-keystroke clear in insert).
-                    vim.api.nvim_create_autocmd("CursorHold", {
-                        buffer = bufnr,
-                        group = g,
-                        callback = vim.lsp.buf.document_highlight,
-                    })
-                    vim.api.nvim_create_autocmd({ "CursorMoved", "InsertEnter", "BufLeave" }, {
-                        buffer = bufnr,
-                        group = g,
-                        callback = vim.lsp.buf.clear_references,
-                    })
                 end
                 if
                     vim.lsp.linked_editing_range
@@ -497,11 +476,14 @@ return {
                         })
                     end, "Format range (LSP)")
                     map("n", "<leader>cs", "<cmd>LspRestart<cr>", "LSP Restart")
-                    -- inc-rename: live in-buffer preview; :IncRename lazy-loads on use.
-                    vim.keymap.set("n", "<leader>rn", function()
+                    -- inc-rename: load before typing; lazy's :IncRename stub has no preview.
+                    map("n", "<leader>rn", function()
+                        require("inc_rename")
                         local w = vim.fn.expand("<cword>")
-                        return w ~= "" and (":IncRename " .. w) or ""
-                    end, { buffer = bufnr, expr = true, desc = "Rename" })
+                        if w ~= "" then
+                            vim.api.nvim_feedkeys(":IncRename " .. w, "n", false)
+                        end
+                    end, "Rename")
                     -- Semantic tokens can clash with treesitter highlight; toggle per buffer.
                     map("n", "<leader>uy", function()
                         local b = vim.api.nvim_get_current_buf()

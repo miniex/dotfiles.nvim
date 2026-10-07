@@ -55,10 +55,10 @@ err() { printf '  %s✗%s  %s\n' "$RED" "$RESET" "$1" >&2; }
 # Read from /dev/tty so prompts work even when piped from curl.
 prompt_yes() {
     printf '  %s?%s  %s %s[y/N]%s ' "$PINK" "$RESET" "$1" "$DIM" "$RESET"
+    answer=''
+    # No controlling tty (CI, docker): /dev/tty exists but can't be opened.
     if [ -r /dev/tty ]; then
-        read -r answer </dev/tty
-    else
-        answer=''
+        read -r answer </dev/tty 2>/dev/null || answer=''
     fi
     case "$answer" in
         [yY] | [yY][eE][sS]) return 0 ;;

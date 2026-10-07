@@ -1,16 +1,15 @@
 return {
     require("config.lang").treesitter({ "python" }),
+    -- Registered when nvim-dap loads, not on ft: setup() requires dap (~10ms).
+    require("config.dap").spec(function()
+        local mason_path = require("config.dap").mason_bin("packages/debugpy/venv/bin/python", "debugpy")
+        if mason_path then
+            require("dap-python").setup(mason_path)
+        end
+    end),
     {
         "mfussenegger/nvim-dap-python",
-        ft = "python",
         dependencies = { "mfussenegger/nvim-dap" },
-        config = function()
-            local mason_path = require("config.dap").mason_bin("packages/debugpy/venv/bin/python", "debugpy")
-            if not mason_path then
-                return
-            end
-            require("dap-python").setup(mason_path)
-        end,
         keys = {
             {
                 "<leader>dPt",

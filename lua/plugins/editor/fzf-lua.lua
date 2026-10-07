@@ -247,16 +247,17 @@ return {
         -- No fzf scrollbar: it draws a second │ right next to the divider.
         fzf_opts = { ["--gutter"] = " ", ["--no-scrollbar"] = true },
         grep = { prompt = "  ", winopts = { title = " ✿ grep ✿ " }, _headers = {} },
+        -- [1] = true merges with the defaults (F4 preview, alt-a, ...) instead of replacing them.
         keymap = {
             builtin = {
+                true,
                 ["<C-/>"] = "toggle-help",
                 ["<C-d>"] = "preview-page-down",
                 ["<C-u>"] = "preview-page-up",
             },
             fzf = {
+                true,
                 ["ctrl-q"] = "select-all+accept",
-                ["ctrl-d"] = "preview-page-down",
-                ["ctrl-u"] = "preview-page-up",
             },
         },
     },

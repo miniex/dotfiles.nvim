@@ -40,7 +40,13 @@ return {
             -- Set indentexpr for buffers attached by the early autocmd
             -- (which runs before this plugin loaded).
             for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-                if vim.api.nvim_buf_is_loaded(buf) and vim.treesitter.highlighter.active[buf] then
+                local lang = vim.treesitter.language.get_lang(vim.bo[buf].filetype)
+                if
+                    vim.api.nvim_buf_is_loaded(buf)
+                    and vim.treesitter.highlighter.active[buf]
+                    and lang
+                    and #vim.treesitter.query.get_files(lang, "indents") > 0
+                then
                     vim.bo[buf].indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
                 end
             end

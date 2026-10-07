@@ -130,7 +130,7 @@ check:
 
     section "Tree-sitter"
     if have tree-sitter; then
-        ts_v=$(tree-sitter --version 2>/dev/null | awk '{print $NF}')
+        ts_v=$(tree-sitter --version 2>/dev/null | grep -oE '[0-9]+\.[0-9]+\.[0-9]+' | head -n1)
         if version_ge "${ts_v%%-*}" "0.26.1"; then
             ok "tree-sitter ${ts_v} (>= 0.26.1)"
         else
@@ -157,6 +157,7 @@ check:
     io.write("LANGS "..table.concat(en," ").."\n")
     local seen,srv={},{}
     for lang,on in pairs(langs) do if on and map[lang] then for _,s in ipairs(map[lang]) do if not seen[s] then seen[s]=true srv[#srv+1]=s..(inst[s] and ":1" or ":0") end end end end
+    if not seen.typos_lsp then srv[#srv+1]="typos_lsp"..(inst.typos_lsp and ":1" or ":0") end
     table.sort(srv)
     io.write("SERVERS "..table.concat(srv," ").."\n")' +qa 2>/dev/null)
         enabled_langs=$(printf '%s\n' "$lsp_query" | sed -n 's/^LANGS //p')

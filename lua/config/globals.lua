@@ -19,7 +19,9 @@ do
         pcall(vim.cmd, "argdelete *")
         vim.g.dir_launch = vim.fn.getcwd() -- a VimEnter drops the stray dir buffer
     else
-        vim.g.file_launch = n > 0 or vim.fn.has("ttyin") == 0
+        -- Piped stdin is caught by StdinReadPre (persistence.lua); no ttyin test,
+        -- which is also 0 under GUIs (`--embed`).
+        vim.g.file_launch = n > 0
     end
 end
 
