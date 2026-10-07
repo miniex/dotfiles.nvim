@@ -33,6 +33,11 @@ return {
         filetypes = {
             "*",
             "!lazy",
+            -- ui2 cmdline / message buffers.
+            "!cmd",
+            "!msg",
+            "!pager",
+            "!dialog",
             -- snacks.bigfile (ft=bigfile, >2 MiB): skip the full-buffer scan.
             "!bigfile",
             css = css,

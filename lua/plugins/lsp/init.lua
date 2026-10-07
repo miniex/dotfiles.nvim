@@ -92,8 +92,19 @@ return {
     {
         "WhoIsSethDaniel/mason-tool-installer.nvim",
         dependencies = { "mason-org/mason.nvim" },
-        event = "VeryLazy",
         cmd = { "MasonToolsInstall", "MasonToolsUpdate", "MasonToolsClean" },
+        -- Loads mason + mason-lspconfig (6-16ms): keep it 3s off the startup path,
+        -- and out of headless runs (no UIEnter).
+        init = function()
+            vim.api.nvim_create_autocmd("UIEnter", {
+                once = true,
+                callback = function()
+                    vim.defer_fn(function()
+                        require("lazy").load({ plugins = { "mason-tool-installer.nvim" } })
+                    end, 3000)
+                end,
+            })
+        end,
         opts_extend = { "ensure_installed" },
         -- Function form defers enabled_servers() off the lazy spec-build path.
         opts = function()
@@ -102,7 +113,6 @@ return {
                 auto_update = false,
                 -- Must be true, or the run_on_start() call in config() no-ops (it gates on this flag).
                 run_on_start = true,
-                start_delay = 3000,
                 -- No debounce: it would skip the whole check for hours, so a newly
                 -- enabled lang's tools wouldn't auto-install. auto_update=false keeps
                 -- it to missing-only (no churn).
@@ -362,17 +372,14 @@ return {
                     vim.b[bufnr]._lsp_linked_edit_done = true
                     pcall(vim.lsp.linked_editing_range.enable, true, { client_id = client.id })
                 end
-                -- Route gq/gw through the LSP formatter (code only; prose reflows
-                -- better with Neovim's built-in).
+                -- nvim routes gq/gw through the LSP formatter by default; prose reflows
+                -- better with the built-in.
+                local ft = vim.bo[bufnr].filetype
                 if
-                    client:supports_method("textDocument/rangeFormatting", bufnr)
-                    and not vim.b[bufnr]._lsp_formatexpr_done
+                    (ft == "markdown" or ft == "gitcommit" or ft == "gitrebase" or ft == "text")
+                    and vim.bo[bufnr].formatexpr == "v:lua.vim.lsp.formatexpr()"
                 then
-                    local ft = vim.bo[bufnr].filetype
-                    if ft ~= "markdown" and ft ~= "gitcommit" and ft ~= "gitrebase" and ft ~= "text" then
-                        vim.b[bufnr]._lsp_formatexpr_done = true
-                        vim.bo[bufnr].formatexpr = "v:lua.vim.lsp.formatexpr()"
-                    end
+                    vim.bo[bufnr].formatexpr = ""
                 end
             end
 

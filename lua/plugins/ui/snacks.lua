@@ -307,7 +307,13 @@ return {
             enabled = true,
             indent = { char = "┊" },
             -- No scope highlight; uniform dotted guides. [i/]i jumps use top-level Snacks.scope.
-            scope = { enabled = false },
+            -- filter: indent attaches a scope listener even when disabled (~0.7ms/move).
+            scope = {
+                enabled = false,
+                filter = function()
+                    return false
+                end,
+            },
             chunk = { enabled = false },
         },
         input = { enabled = true },

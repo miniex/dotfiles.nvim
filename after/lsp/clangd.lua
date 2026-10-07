@@ -12,14 +12,8 @@ return {
         "--completion-style=detailed",
         "--function-arg-placeholders",
         "--fallback-style=llvm",
-    },
-    capabilities = {
-        offsetEncoding = { "utf-16" },
-    },
-    init_options = {
-        -- Placeholders come from the --function-arg-placeholders flag above, not here.
-        completeUnimported = true,
-        clangdFileStatus = true,
+        -- clangd logs to stderr, which nvim writes to lsp.log at ERROR level.
+        "--log=error",
     },
     -- Priority-grouped (0.11+): each nested table is one tier, outer order is
     -- priority. Build system beats compile DB beats .git.

@@ -2,6 +2,10 @@
 return {
     "mistweaverco/kulala.nvim",
     ft = { "http" },
+    -- kulala's packspec adds SessionLoadPost (~10ms on every session restore).
+    event = function()
+        return {}
+    end,
     -- .http is stock; .rest isn't.
     init = function()
         vim.filetype.add({ extension = { rest = "http" } })
