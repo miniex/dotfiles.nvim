@@ -19,7 +19,7 @@ Enabling a language installs its Mason tools automatically on the next launch (m
 1. `after/lsp/<server>.lua` — single source for `cmd` / `root_markers` / `filetypes` / `settings`. Don't restate via `nvim-lspconfig.opts.servers.<name>`. Optional: omit it to inherit nvim-lspconfig's bundled defaults. Caveat: `root_markers` only applies when the bundled config has no `root_dir`; for one that does (e.g. svelte), set a `root_dir` here instead.
 2. `lua/config/lang_servers.lua` — map `lang = { "server" }`. Empty list = no LSP (or owned by a per-lang plugin like `rust → rustaceanvim`). An enabled lang with **no** key here warns on startup (no silent missing LSP).
 3. `lua/plugins/lang/<name>.lua` — DAP, `vim.filetype.add`, lang-specific plugins. Register the module name in `lua/config/langs.lua`.
-4. Treesitter grammar → add it to the central `ensure_installed` list in `lua/plugins/editor/treesitter.lua` (lang files no longer extend it themselves).
+4. Treesitter grammar → `require("config.lang").treesitter({ "<parser>" })` in that lang's file, so it installs only when the lang is on. Always-needed parsers (vim, lua, markdown, git, …) stay in `lua/plugins/editor/treesitter.lua`.
 
 Language-agnostic servers (e.g. `typos_lsp`) aren't mapped per-language — they're appended in `enabled_servers()` (`lua/plugins/lsp/init.lua`) so they run regardless of `langs.lua`.
 

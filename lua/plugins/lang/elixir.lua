@@ -1,5 +1,5 @@
--- Grammars (elixir, heex, eex) live in the base treesitter list.
 return {
+    require("config.lang").treesitter({ "elixir", "heex", "eex" }),
     require("config.dap").spec(function(dap)
         local adapter = require("config.dap").mason_bin("packages/elixir-ls/debug_adapter.sh", "elixir-ls")
         if not adapter then

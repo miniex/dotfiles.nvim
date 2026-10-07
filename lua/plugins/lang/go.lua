@@ -1,4 +1,5 @@
 return {
+    require("config.lang").treesitter({ "go", "templ" }),
     {
         "leoluz/nvim-dap-go",
         ft = "go",

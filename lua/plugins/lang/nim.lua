@@ -1,6 +1,7 @@
--- Grammar (nim) in the base treesitter list; nim_langserver via lang_servers.
+-- nim_langserver via lang_servers.
 -- No Nim-specific DAP adapter exists; debug compiled binaries with codelldb.
 return {
+    require("config.lang").treesitter({ "nim" }),
     require("config.dap").spec(function(dap)
         dap.adapters.codelldb = dap.adapters.codelldb or require("config.codelldb").adapter("nim")
         if not dap.adapters.codelldb then

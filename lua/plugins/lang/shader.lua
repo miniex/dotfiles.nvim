@@ -23,5 +23,6 @@ vim.filetype.add({
     },
 })
 
--- Grammars (wgsl, glsl, hlsl) live in the base treesitter list.
-return {}
+return {
+    require("config.lang").treesitter({ "wgsl", "glsl", "hlsl" }),
+}

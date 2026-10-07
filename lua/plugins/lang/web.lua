@@ -25,6 +25,7 @@ local function browser()
 end
 
 return {
+    require("config.lang").treesitter({ "html", "css", "scss", "javascript", "typescript", "tsx" }),
     -- JS/TS code actions (source.* kinds are LSP-standard, no VtslsExec needed).
     require("config.lang").code_action_keys("TS", { "o", "U" }, ts_fts),
     -- JS/TS debugging: Node always; browser auto-detected from $PATH.

@@ -1,2 +1,4 @@
--- fish needs no lang plugin: LSP in lsp/fish_lsp.lua; parser/lint already central.
-return {}
+-- LSP in after/lsp/fish_lsp.lua; lint is central.
+return {
+    require("config.lang").treesitter({ "fish" }),
+}

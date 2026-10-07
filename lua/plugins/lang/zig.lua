@@ -1,5 +1,5 @@
 return {
-    -- Grammar (zig) lives in the base treesitter list.
+    require("config.lang").treesitter({ "zig" }),
     require("config.dap").spec(function(dap)
         dap.adapters.codelldb = dap.adapters.codelldb or require("config.codelldb").adapter("zig")
         if not dap.adapters.codelldb then

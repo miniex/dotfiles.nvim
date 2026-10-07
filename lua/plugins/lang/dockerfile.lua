@@ -13,4 +13,6 @@ vim.filetype.add({
     },
 })
 
-return {}
+return {
+    require("config.lang").treesitter({ "dockerfile" }),
+}

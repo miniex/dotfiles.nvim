@@ -1,4 +1,5 @@
 return {
+    require("config.lang").treesitter({ "rust" }),
     require("config.lang").mason({ "rust-analyzer" }),
     {
         "Saecki/crates.nvim",

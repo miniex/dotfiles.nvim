@@ -1,4 +1,5 @@
 return {
+    require("config.lang").treesitter({ "python" }),
     {
         "mfussenegger/nvim-dap-python",
         ft = "python",

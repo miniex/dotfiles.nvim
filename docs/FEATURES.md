@@ -22,7 +22,7 @@
 - `main` branch (master is archived and incompatible with 0.12).
 - Modules: textobjects (`af`/`if`/`ac`/`ic`/`aa`/`ia` + jumps), sticky context (`treesitter-context`), `nvim-ts-autotag`.
 - Node-wise visual selection via 0.12 natives: `an` / `in` expand-to-parent / shrink-to-child, `]n` / `[n` next / prev sibling.
-- Auto-installs missing parsers on first launch with an early-exit poll.
+- Auto-installs missing parsers on launch: a core set plus each enabled lang's parsers (disabled langs install nothing).
 - Big-file guard — skips highlight/indent on files >1 MiB or with a >2000-char first line (snacks.bigfile degrades >2 MiB).
 
 ## Pickers

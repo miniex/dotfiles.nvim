@@ -1,4 +1,5 @@
 return {
+    require("config.lang").treesitter({ "sql" }),
     { "tpope/vim-dadbod", cmd = "DB", lazy = true },
     {
         "kristijanhusak/vim-dadbod-ui",

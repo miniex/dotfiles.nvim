@@ -1,4 +1,5 @@
 return {
+    require("config.lang").treesitter({ "cmake" }),
     {
         "Civitasv/cmake-tools.nvim",
         lazy = true,

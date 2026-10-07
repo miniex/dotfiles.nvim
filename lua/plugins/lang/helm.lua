@@ -6,9 +6,9 @@ vim.filetype.add({
     },
 })
 
--- Grammar lives in the base treesitter list.
 -- helm-ls calls yaml-language-server for embedded YAML; ensure it even when `yaml` lang is off.
 return {
+    require("config.lang").treesitter({ "helm" }),
     {
         "WhoIsSethDaniel/mason-tool-installer.nvim",
         opts = function(_, opts)

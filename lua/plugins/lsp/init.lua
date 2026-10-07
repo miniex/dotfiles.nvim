@@ -151,7 +151,7 @@ return {
     {
         "neovim/nvim-lspconfig",
         event = { "BufReadPre", "BufNewFile" },
-        -- SchemaStore: required by lsp/jsonls.lua + lsp/yamlls.lua before_init.
+        -- SchemaStore: required by after/lsp/jsonls.lua + after/lsp/yamlls.lua before_init.
         dependencies = { "b0o/SchemaStore.nvim" },
         opts = { inlay_hints = { enabled = true } },
         config = function(_, opts)

@@ -5,76 +5,26 @@ return {
         lazy = false,
         build = ":TSUpdate",
         opts = {
-            -- Sorted by language category, then family, then first-appeared.
+            -- Always-on parsers (editor, docs, injections). Language parsers come from
+            -- each enabled lua/plugins/lang/<lang>.lua via config.lang.treesitter().
             ensure_installed = {
-                -- Shell
-                "bash",
-                "fish",
-                -- Systems
-                "c",
-                "cpp",
-                "go",
-                "rust",
-                "zig",
-                "nim",
-                -- Scripting
-                "python",
                 "lua",
-                "elixir",
-                "ocaml",
-                "ocaml_interface",
-                "php",
-                "phpdoc",
-                -- Web
-                "html",
-                "css",
-                "scss",
-                "javascript",
-                "typescript",
-                "tsx",
-                "svelte",
-                "vue",
-                "astro",
-                "templ",
-                "heex",
-                "eex",
-                -- API / Query
-                "graphql",
-                "http",
-                "query",
-                "regex",
-                -- Diff / comments / markup
-                "diff",
-                "comment",
-                "xml",
-                -- Shaders
-                "wgsl",
-                "glsl",
-                "hlsl",
-                -- Database
-                "sql",
-                -- Data / Config
-                "json",
-                "json5",
-                "yaml",
-                "proto",
-                "toml",
-                "ron",
-                -- Markup
-                "markdown",
-                "markdown_inline",
-                "typst",
-                -- Build / Infra
-                "cmake",
-                "nix",
-                "dockerfile",
-                "just",
-                "hcl",
-                "terraform",
-                "helm",
-                -- Editor
                 "vim",
                 "vimdoc",
+                "query",
+                "regex",
+                "bash",
+                "markdown",
+                "markdown_inline",
+                "comment",
+                "diff",
+                "xml",
+                "http",
+                "git_config",
+                "gitcommit",
+                "git_rebase",
+                "gitignore",
+                "gitattributes",
             },
         },
         config = function(_, opts)
@@ -121,6 +71,7 @@ return {
                 missing = {}
                 for _, lang in ipairs(opts.ensure_installed) do
                     if not have[lang] then
+                        have[lang] = true -- also dedups: lang specs repeat shared parsers (html, css, …)
                         table.insert(missing, lang)
                     end
                 end

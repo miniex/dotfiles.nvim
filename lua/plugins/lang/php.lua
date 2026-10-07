@@ -1,5 +1,6 @@
--- Grammar (php, phpdoc) lives in the base treesitter list; intelephense via lang_servers.
+-- intelephense via lang_servers.
 return {
+    require("config.lang").treesitter({ "php", "phpdoc", "html" }),
     require("config.lang").mason({ "php-debug-adapter" }),
     require("config.dap").spec(function(dap)
         local cmd = require("config.dap").mason_bin("bin/php-debug-adapter", "php-debug-adapter")

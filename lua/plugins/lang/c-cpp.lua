@@ -1,4 +1,5 @@
 return {
+    require("config.lang").treesitter({ "c", "cpp" }),
     require("config.dap").spec(function(dap)
         dap.adapters.codelldb = dap.adapters.codelldb or require("config.codelldb").adapter("c/c++")
         if not dap.adapters.codelldb then
