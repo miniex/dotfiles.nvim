@@ -3,6 +3,15 @@ return {
     dependencies = { "nvim-tree/nvim-web-devicons" },
     cmd = "FzfLua",
     keys = {
+        -- Live grep here, not snacks: snacks throttles live input at a fixed 200ms and
+        -- parses every rg line in Lua; fzf reloads rg per keystroke natively.
+        {
+            "<leader>fg",
+            function()
+                require("fzf-lua").live_grep()
+            end,
+            desc = "Live Grep",
+        },
         {
             "<leader>zz",
             function()

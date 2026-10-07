@@ -28,8 +28,8 @@
 ## Pickers
 
 - **fff** — Rust-backed file finder. `<leader>ff` for cwd, `<leader>fF` for current dir.
-- **snacks.picker** — grep / recent / buffers / help / TODOs / projects. `<leader>fg` / `<leader>fr` / `<leader>fb` / `<leader>fh` / `<leader>ft` / `<leader>fp` (projects: cd + restore session). `<leader>fB` live-greps open buffers only; `<leader>fi` / `<leader>fH` insert an icon / inspect highlight groups.
-- **fzf-lua** — git / LSP / grep / lines / snippets / history. `<leader>z*` namespace.
+- **snacks.picker** — recent / buffers / help / TODOs / projects. `<leader>fr` / `<leader>fb` / `<leader>fh` / `<leader>ft` / `<leader>fp` (projects: cd + restore session). `<leader>fB` live-greps open buffers only; `<leader>fi` / `<leader>fH` insert an icon / inspect highlight groups.
+- **fzf-lua** — live grep (`<leader>fg`) + git / LSP / grep / lines / snippets / history under `<leader>z*`.
 - fff and snacks share the same 0.85 × 0.85 chrome-aware rectangle. The snacks picker's preview overlaps the list's right border by 1 column so a single `✿│✿` divider is drawn between them (matches fff's "shared middle flower" effect).
 
 ## Editor

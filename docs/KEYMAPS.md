@@ -34,7 +34,8 @@ Leader: `<Space>`. `<localleader>` also `<Space>` (most localleader bindings liv
 | ------------------------------------- | ---------------------------------------------------------------- |
 | `<leader>ff`                          | fff: find files (Rust-backed, sub-10ms on huge codebases)        |
 | `<leader>fF`                          | fff: find files in current directory                             |
-| `<leader>fg` / `fr` / `fb` / `fh`     | snacks.picker: grep / recent / buffers / help                    |
+| `<leader>fg`                          | fzf-lua live grep                                                |
+| `<leader>fr` / `fb` / `fh`            | snacks.picker: recent / buffers / help                           |
 | `<leader>fB`                          | snacks.picker: live grep across open buffers                     |
 | `<leader>fi` / `fH`                   | snacks.picker: insert icon / inspect highlight groups            |
 | `<leader>ft`                          | TODO comments                                                    |

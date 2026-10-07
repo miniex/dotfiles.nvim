@@ -248,7 +248,7 @@ local DASH_KEYS = {
         icon = "\u{F00E}",
         icon_hl = "String",
         desc = "Grep",
-        action = ":lua Snacks.dashboard.pick('grep')",
+        action = ":FzfLua live_grep",
     },
     {
         key = "r",
@@ -535,13 +535,6 @@ return {
         Snacks.toggle.indent():map("<leader>ug")
     end,
     keys = {
-        {
-            "<leader>fg",
-            function()
-                Snacks.picker.grep()
-            end,
-            desc = "Live Grep",
-        },
         {
             "<leader>fr",
             function()
