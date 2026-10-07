@@ -209,32 +209,44 @@ return {
     },
     opts = {
         "default-title",
-        winopts = {
-            height = 0.85,
-            width = 0.85,
-            border = vim.g.flower_border,
-            title = " ✿ fzf ✿ ",
-            title_pos = "center",
-            backdrop = 100,
-            -- fzf-lua sets filetype under eventignore=all, so modal-geom's
-            -- FileType aligner misses it. Use its own on_create hook instead.
-            on_create = function()
-                local win = vim.api.nvim_get_current_win()
-                local cfg = vim.api.nvim_win_get_config(win)
-                if cfg.relative == "" then
-                    return
-                end
-                local rect = require("config.modal-geom").inner_rect()
-                rect.relative = cfg.relative
-                pcall(vim.api.nvim_win_set_config, win, rect)
-            end,
-            preview = {
-                default = "bat",
-                layout = "flex",
+        -- Function so the rectangle tracks resizes: same one as snacks.picker and every
+        -- other modal (config.modal-geom).
+        winopts = function()
+            local w, h, r, c = require("config.modal-geom").geom()
+            return {
+                width = w,
+                height = h,
+                row = r,
+                col = c,
                 border = vim.g.flower_border,
+                title = " ✿ fzf ✿ ",
                 title_pos = "center",
+                backdrop = 100,
+                -- builtin (an nvim float) instead of bat: its own flower box beside the
+                -- list, the same two-box grid as snacks.picker.
+                preview = {
+                    default = "builtin",
+                    layout = "horizontal",
+                    horizontal = "right:50%",
+                    -- No left edge: the list's right border doubles as the divider (one ✿│✿,
+                    -- like snacks.picker) instead of two side-by-side lines.
+                    border = { "", "─", "✿", "│", "✿", "─", "", "" },
+                    title_pos = "center",
+                    scrollbar = false,
+                },
+            }
+        end,
+        previewers = {
+            builtin = {
+                title_fnamemodify = function(s)
+                    return "✿ " .. vim.fn.fnamemodify(s, ":t") .. " ✿"
+                end,
             },
         },
+        fzf_colors = true,
+        -- No fzf scrollbar: it draws a second │ right next to the divider.
+        fzf_opts = { ["--gutter"] = " ", ["--no-scrollbar"] = true },
+        grep = { prompt = "  ", winopts = { title = " ✿ grep ✿ " }, _headers = {} },
         keymap = {
             builtin = {
                 ["<C-/>"] = "toggle-help",
