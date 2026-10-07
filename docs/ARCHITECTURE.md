@@ -45,7 +45,7 @@ The asymmetry between `lsp/` / `snippets/` (at root) and `lua/config|plugins/` (
 3. `config.autocmds` — global autocmds (clipboard sync, mkdir-on-save, ts-attach, …)
 4. `config.modal-floats` — mutual-exclusion registry + shared `nvim_open_win` / `nvim_win_set_config` decorator hook
 5. `config.keymaps` — global keymaps (not buffer-local)
-6. `config.cursor-bloom` — mode-colored `❯` sign on the current line
+6. `config.cursor-bloom` — mode-colored `✿` sign on the current line
 7. `config.lazy` — bootstrap lazy.nvim and load `plugins.*` specs
 8. `config.statusline` — hand-rolled global statusline
 
