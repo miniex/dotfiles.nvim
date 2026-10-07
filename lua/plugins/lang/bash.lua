@@ -36,6 +36,6 @@ return {
             vim.list_extend(opts.ensure_installed, { "bash-debug-adapter" })
         end,
     },
+    -- bashls runs shellcheck itself; nvim-lint's would duplicate every diagnostic.
     require("config.lang").mason({ "shellcheck" }),
-    require("config.lang").lint({ sh = { "shellcheck" }, bash = { "shellcheck" } }),
 }

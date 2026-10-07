@@ -7,6 +7,15 @@ vim.g.loaded_ruby_provider = 0
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_node_provider = 0
 
+-- mason/bin on PATH from the start (not on the lspconfig load tick), so the first
+-- buffer's linters (sqlfluff, hadolint, ...) resolve too.
+do
+    local mason_bin = vim.fn.stdpath("data") .. "/mason/bin"
+    if not (vim.env.PATH or ""):find(mason_bin, 1, true) then
+        vim.env.PATH = mason_bin .. ":" .. (vim.env.PATH or "")
+    end
+end
+
 -- Stock ftplugins (python/rust/go, …) map [[ ]] buffer-locally, hiding the
 -- snacks.words reference jumps. markdown.lua / help.lua ignore this (sections, gO).
 vim.g.no_plugin_maps = 1

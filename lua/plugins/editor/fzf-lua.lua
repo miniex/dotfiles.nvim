@@ -255,9 +255,13 @@ return {
                 ["<C-d>"] = "preview-page-down",
                 ["<C-u>"] = "preview-page-up",
             },
+            -- fzf-side twins for the native previewers (git diff / commits / stash);
+            -- with the builtin previewer the nvim-side maps above win.
             fzf = {
                 true,
                 ["ctrl-q"] = "select-all+accept",
+                ["ctrl-d"] = "preview-page-down",
+                ["ctrl-u"] = "preview-page-up",
             },
         },
     },

@@ -1,7 +1,9 @@
 return {
     {
         "mfussenegger/nvim-lint",
-        event = { "BufReadPost", "BufWritePost" },
+        -- Pre, not Post: lazy re-fires the loading BufReadPost before filetypedetect,
+        -- so ft was still "" and the first file never got linted.
+        event = { "BufReadPre", "BufNewFile", "BufWritePost" },
         opts = {
             -- Per-lang linters come from lang/<x>.lua via config.lang.lint().
             linters_by_ft = {

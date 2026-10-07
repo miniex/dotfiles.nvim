@@ -120,9 +120,13 @@ return {
         end,
         config = function(_, opts)
             -- Lang specs share tools (codelldb); duplicates would race two installs.
+            -- Compare by mason package name: yamlls and yaml-language-server are one tool.
+            local ok_map, mlsp = pcall(require, "mason-lspconfig")
+            local to_pkg = ok_map and mlsp.get_mappings().lspconfig_to_package or {}
             local seen = {}
             opts.ensure_installed = vim.tbl_filter(function(t)
                 local name = type(t) == "table" and t[1] or t
+                name = to_pkg[name] or name
                 if seen[name] then
                     return false
                 end
@@ -529,12 +533,6 @@ return {
 
             -- Defer ~20 executable() stats off the first-BufReadPre path; LSPs attach a tick later.
             vim.schedule(function()
-                local mason_bin = vim.fn.stdpath("data") .. "/mason/bin"
-                local current_path = vim.env.PATH or ""
-                if not current_path:find(mason_bin, 1, true) then
-                    vim.env.PATH = mason_bin .. ":" .. current_path
-                end
-
                 local function cmd_executable(cmd)
                     if type(cmd) == "table" and cmd[1] then
                         return vim.fn.executable(cmd[1]) == 1

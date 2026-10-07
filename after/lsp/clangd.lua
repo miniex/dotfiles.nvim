@@ -10,7 +10,7 @@ return {
         "--clang-tidy",
         "--header-insertion=iwyu",
         "--completion-style=detailed",
-        "--function-arg-placeholders",
+        "--function-arg-placeholders=1",
         "--fallback-style=llvm",
         -- clangd logs to stderr, which nvim writes to lsp.log at ERROR level.
         "--log=error",

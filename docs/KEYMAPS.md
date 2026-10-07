@@ -337,5 +337,5 @@ Open keys only open or focus — never close — so `<space>t` stays typable at 
 ## Misc
 
 - **Open URL** (`gx`, n/v): stock nvim (LSP document links, treesitter URLs, paths).
-- **Hex** (`xxd`): auto for binary files; `<leader>ux` toggle, `:HexDump`, `:HexAssemble`, or `nvim -b <file>`.
+- **Hex**: `nvim -b <file>` then `:%!xxd` (`:%!xxd -r` before writing back).
 - **Completion** (insert): `<Tab>`/`<S-Tab>` (or `<C-n>`/`<C-p>`) next/prev · `<C-Space>` trigger · `<CR>` confirm · `<C-e>` close · `<C-k>` signature · `<C-f>`/`<C-b>` scroll docs · `<M-e>` wrap pair (autopairs). Menu columns: `label · source · kind`.

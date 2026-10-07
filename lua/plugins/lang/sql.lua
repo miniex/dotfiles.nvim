@@ -29,4 +29,32 @@ return {
     }),
     require("config.lang").mason({ "sqlfluff" }),
     require("config.lang").lint({ sql = { "sqlfluff" } }),
+    {
+        "mfussenegger/nvim-lint",
+        optional = true,
+        opts = function()
+            -- Without a project config sqlfluff exits "No dialect was specified" and
+            -- prints nothing; fall back to ansi there.
+            local base = require("lint.linters.sqlfluff")
+            require("lint").linters.sqlfluff = function()
+                local dir = vim.fs.dirname(vim.api.nvim_buf_get_name(0))
+                local configured = vim.fs.find(function(name, path)
+                    if name == ".sqlfluff" then
+                        return true
+                    end
+                    if name == "pyproject.toml" or name == "setup.cfg" or name == "tox.ini" then
+                        local ok, lines = pcall(vim.fn.readfile, path .. "/" .. name)
+                        return ok and table.concat(lines, "\n"):find("sqlfluff") ~= nil
+                    end
+                    return false
+                end, { upward = true, path = dir, limit = 1 })[1]
+                local args = { "lint", "--format=json" }
+                if not configured then
+                    args[#args + 1] = "--dialect=ansi"
+                end
+                args[#args + 1] = "-"
+                return vim.tbl_extend("force", base, { args = args })
+            end
+        end,
+    },
 }
