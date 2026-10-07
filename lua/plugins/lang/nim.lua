@@ -25,4 +25,5 @@ return {
             },
         }
     end),
+    require("config.lang").mason({ "codelldb" }),
 }

@@ -59,6 +59,20 @@ function M.lint(by_ft)
     }
 end
 
+-- neotest adapter: `dep` is the adapter plugin, `build()` returns the adapter
+-- (called inside neotest's config; a failing build is skipped there).
+function M.neotest(dep, build)
+    return {
+        "nvim-neotest/neotest",
+        optional = true,
+        dependencies = { dep },
+        opts = function(_, opts)
+            opts.adapters = opts.adapters or {}
+            table.insert(opts.adapters, build)
+        end,
+    }
+end
+
 -- Code-action-only runner for a single LSP kind (e.g. "source.organizeImports").
 function M.code_action_only(kind)
     return function()

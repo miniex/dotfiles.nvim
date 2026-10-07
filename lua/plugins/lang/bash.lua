@@ -36,4 +36,6 @@ return {
             vim.list_extend(opts.ensure_installed, { "bash-debug-adapter" })
         end,
     },
+    require("config.lang").mason({ "shellcheck" }),
+    require("config.lang").lint({ sh = { "shellcheck" }, bash = { "shellcheck" } }),
 }

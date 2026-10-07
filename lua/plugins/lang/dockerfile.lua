@@ -15,4 +15,6 @@ vim.filetype.add({
 
 return {
     require("config.lang").treesitter({ "dockerfile" }),
+    require("config.lang").mason({ "hadolint" }),
+    require("config.lang").lint({ dockerfile = { "hadolint" } }),
 }

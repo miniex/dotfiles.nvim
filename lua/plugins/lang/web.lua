@@ -147,4 +147,17 @@ return {
             })
         end,
     },
+    require("config.lang").mason({ "eslint_d" }),
+    require("config.lang").lint({
+        javascript = { "eslint_d" },
+        javascriptreact = { "eslint_d" },
+        typescript = { "eslint_d" },
+        typescriptreact = { "eslint_d" },
+    }),
+    require("config.lang").neotest("marilari88/neotest-vitest", function()
+        return require("neotest-vitest")
+    end),
+    require("config.lang").neotest("nvim-neotest/neotest-jest", function()
+        return require("neotest-jest")
+    end),
 }

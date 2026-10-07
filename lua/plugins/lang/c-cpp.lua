@@ -31,4 +31,12 @@ return {
         dap.configurations.c = cpp_config
         dap.configurations.cpp = cpp_config
     end),
+    require("config.lang").mason({ "codelldb" }),
+    require("config.lang").neotest("alfaix/neotest-gtest", function()
+        return require("neotest-gtest").setup({})
+    end),
+    -- CTest-driven C/C++ tests: Catch2 / doctest / gtest in CMake projects.
+    require("config.lang").neotest("orjangj/neotest-ctest", function()
+        return require("neotest-ctest").setup({})
+    end),
 }

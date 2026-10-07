@@ -18,14 +18,14 @@ Enabling a language installs its Mason tools automatically on the next launch (m
 
 1. `after/lsp/<server>.lua` — single source for `cmd` / `root_markers` / `filetypes` / `settings`. Don't restate via `nvim-lspconfig.opts.servers.<name>`. Optional: omit it to inherit nvim-lspconfig's bundled defaults. Caveat: `root_markers` only applies when the bundled config has no `root_dir`; for one that does (e.g. svelte), set a `root_dir` here instead.
 2. `lua/config/lang_servers.lua` — map `lang = { "server" }`. Empty list = no LSP (or owned by a per-lang plugin like `rust → rustaceanvim`). An enabled lang with **no** key here warns on startup (no silent missing LSP).
-3. `lua/plugins/lang/<name>.lua` — DAP, `vim.filetype.add`, lang-specific plugins. Register the module name in `lua/config/langs.lua`.
+3. `lua/plugins/lang/<name>.lua` — DAP, linters, test adapters, mason tools, `vim.filetype.add`, lang-specific plugins (loaded only when the lang is on). Register the module name in `lua/config/langs.lua`.
 4. Treesitter grammar → `require("config.lang").treesitter({ "<parser>" })` in that lang's file, so it installs only when the lang is on. Always-needed parsers (vim, lua, markdown, git, …) stay in `lua/plugins/editor/treesitter.lua`.
 
 Language-agnostic servers (e.g. `typos_lsp`) aren't mapped per-language — they're appended in `enabled_servers()` (`lua/plugins/lsp/init.lua`) so they run regardless of `langs.lua`.
 
 Client-side file watching (`didChangeWatchedFiles`) is on for every server when `inotifywait` exists, which can stall a large project on open. Fix per server: a server-side watcher (rust-analyzer's `files.watcher = "server"`) or `dynamicRegistration = false` in its `after/lsp/<server>.lua`.
 
-Linters → `lua/plugins/lsp/lint.lua`. Non-LSP CLI tools → `mason-tool-installer.nvim` `ensure_installed`. CodeLLDB-based DAP (C/C++, Zig, Nim, Rust) → shared resolver `lua/config/codelldb.lua`. Repeated lang-spec fragments (mason / treesitter / blink / lint / code-action keys) have one-line helpers in `lua/config/lang.lua`; DAP mason-binary guards in `lua/config/dap.lua`. JSON/YAML SchemaStore wiring → shared `lua/config/lsp_schemastore.lua`. Semantic tokens are disabled for vtsls / basedpyright / clangd centrally in `lua/plugins/lsp/init.lua` (`SEMANTIC_TOKENS_OFF`).
+Linters → `config.lang.lint()`, non-LSP tools → `config.lang.mason()`, neotest adapters → `config.lang.neotest()`, each in the lang's file; `lua/plugins/lsp/{lint,dap,neotest}.lua` keep only shared setup. CodeLLDB-based DAP (C/C++, Zig, Nim, Rust) → shared resolver `lua/config/codelldb.lua`. Repeated lang-spec fragments (mason / treesitter / blink / lint / neotest / code-action keys) have one-line helpers in `lua/config/lang.lua`; DAP mason-binary guards in `lua/config/dap.lua`. JSON/YAML SchemaStore wiring → shared `lua/config/lsp_schemastore.lua`. Semantic tokens are disabled for vtsls / basedpyright / clangd centrally in `lua/plugins/lsp/init.lua` (`SEMANTIC_TOKENS_OFF`).
 
 ## Snippets
 
@@ -97,7 +97,7 @@ The statusline search match count is skipped in buffers **> 20000 lines** — `s
 
 ## Neotest
 
-- Adapters in `lua/plugins/lsp/neotest.lua`. Add an adapter and it joins the shared `<leader>n*` keymap.
+- Adapters via `require("config.lang").neotest("<plugin>", build)` in the lang's file; each joins the shared `<leader>n*` keymap.
 
 ## TODO tags
 

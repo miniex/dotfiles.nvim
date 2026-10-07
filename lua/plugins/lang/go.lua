@@ -28,4 +28,11 @@ return {
     },
     -- gopls code actions.
     require("config.lang").code_action_keys("Go", { "o", "X" }, "go"),
+    require("config.lang").mason({ "golangci-lint", "delve", "gotestsum" }),
+    require("config.lang").lint({ go = { "golangcilint" } }),
+    require("config.lang").neotest("fredrikaverpil/neotest-golang", function()
+        -- gotestsum (mason) parses output more reliably than `go test -json`.
+        local runner = vim.fn.executable("gotestsum") == 1 and "gotestsum" or "go"
+        return require("neotest-golang")({ runner = runner })
+    end),
 }

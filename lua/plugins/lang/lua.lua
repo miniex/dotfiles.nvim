@@ -18,4 +18,14 @@ return {
             score_offset = 100,
         },
     }),
+    require("config.lang").mason({ "selene" }),
+    require("config.lang").lint({ lua = { "selene" } }),
+    require("config.lang").neotest("MisanthropicBit/neotest-busted", function()
+        return require("neotest-busted")
+    end),
+    require("config.lang").neotest("nvim-neotest/neotest-plenary", function()
+        return require("neotest-plenary")
+    end),
+    -- Its rockspec adds a non-lazy spec for itself.
+    { "MisanthropicBit/neotest-busted", lazy = true },
 }

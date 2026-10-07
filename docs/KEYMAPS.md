@@ -126,7 +126,7 @@ Bare `nvim` (and `nvim <dir>`, which cd's in) auto-restores the cwd session (ski
 | `<leader>cM`                | Toggle multi-diagnostic on cursorline                                |
 | `<leader>ud`                | Toggle all diagnostics (Snacks)                                      |
 | `<leader>cL`                | Run CodeLens (rust-analyzer, gopls, elixir-ls, ocamllsp, lua_ls)     |
-| `<leader>cs`                | `:lsp restart` (recover from a hung server)                           |
+| `<leader>cs`                | `:lsp restart` (recover from a hung server)                          |
 | `<leader>cO` / `<leader>cN` | aerial: outline / outline nav                                        |
 | `[o` / `]o`                 | aerial: previous / next symbol                                       |
 | `<leader>cm`                | Open Mason                                                           |

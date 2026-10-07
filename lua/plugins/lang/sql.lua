@@ -27,4 +27,6 @@ return {
             module = "vim_dadbod_completion.blink",
         },
     }),
+    require("config.lang").mason({ "sqlfluff" }),
+    require("config.lang").lint({ sql = { "sqlfluff" } }),
 }

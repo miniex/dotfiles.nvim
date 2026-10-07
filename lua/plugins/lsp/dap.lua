@@ -63,17 +63,6 @@ return {
                 opts = { virt_text_pos = "eol", all_frames = false, show_stop_reason = true },
             },
             {
-                "WhoIsSethDaniel/mason-tool-installer.nvim",
-                opts = function(_, opts)
-                    opts.ensure_installed = opts.ensure_installed or {}
-                    vim.list_extend(opts.ensure_installed, {
-                        "codelldb",
-                        "debugpy",
-                        "delve",
-                    })
-                end,
-            },
-            {
                 "Weissle/persistent-breakpoints.nvim",
                 opts = {
                     -- Auto-load saved breakpoints (keyed by cwd in stdpath('data')).

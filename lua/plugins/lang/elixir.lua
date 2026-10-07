@@ -35,4 +35,7 @@ return {
             },
         }
     end),
+    require("config.lang").neotest("jfpedroza/neotest-elixir", function()
+        return require("neotest-elixir")
+    end),
 }

@@ -22,4 +22,8 @@ return {
             },
         }
     end),
+    require("config.lang").mason({ "codelldb" }),
+    require("config.lang").neotest("lawrence-laz/neotest-zig", function()
+        return require("neotest-zig")({})
+    end),
 }

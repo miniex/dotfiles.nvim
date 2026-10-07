@@ -18,4 +18,9 @@ return {
             },
         }
     end),
+    require("config.lang").mason({ "phpstan" }),
+    require("config.lang").lint({ php = { "phpstan" } }),
+    require("config.lang").neotest("olimorris/neotest-phpunit", function()
+        return require("neotest-phpunit")
+    end),
 }

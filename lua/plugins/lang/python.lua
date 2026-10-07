@@ -31,4 +31,8 @@ return {
     },
     -- Ruff code actions.
     require("config.lang").code_action_keys("Python", { "o", "X" }, "python"),
+    require("config.lang").mason({ "debugpy" }),
+    require("config.lang").neotest("nvim-neotest/neotest-python", function()
+        return require("neotest-python")({ runner = "pytest", dap = { justMyCode = false } })
+    end),
 }

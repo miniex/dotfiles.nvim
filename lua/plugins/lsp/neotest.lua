@@ -2,22 +2,13 @@
 return {
     {
         "nvim-neotest/neotest",
+        -- Adapters come from lang/<x>.lua via config.lang.neotest().
         dependencies = {
             "nvim-neotest/nvim-nio",
             "nvim-lua/plenary.nvim",
             "nvim-treesitter/nvim-treesitter",
-            "nvim-neotest/neotest-python",
-            "fredrikaverpil/neotest-golang",
-            "jfpedroza/neotest-elixir",
-            "alfaix/neotest-gtest",
-            "orjangj/neotest-ctest",
-            "MisanthropicBit/neotest-busted",
-            "nvim-neotest/neotest-plenary",
-            "lawrence-laz/neotest-zig",
-            "marilari88/neotest-vitest",
-            "nvim-neotest/neotest-jest",
-            "olimorris/neotest-phpunit",
         },
+        opts = { adapters = {} },
         init = function()
             -- In init: neotest is keys-lazy, so its config runs after the session loads.
             -- mksession only saves globals that start uppercase and contain lowercase.
@@ -136,7 +127,7 @@ return {
                 desc = "Prev failed test",
             },
         },
-        config = function()
+        config = function(_, opts)
             local icons = {
                 passed = " ",
                 running = " ",
@@ -163,42 +154,9 @@ return {
                     adapters[#adapters + 1] = a
                 end
             end
-            add(function()
-                return require("neotest-python")({ runner = "pytest", dap = { justMyCode = false } })
-            end)
-            add(function()
-                -- gotestsum (mason) parses output more reliably than `go test -json`.
-                local runner = vim.fn.executable("gotestsum") == 1 and "gotestsum" or "go"
-                return require("neotest-golang")({ runner = runner })
-            end)
-            add(function()
-                return require("neotest-elixir")
-            end)
-            add(function()
-                return require("neotest-gtest").setup({})
-            end)
-            -- CTest-driven C/C++ tests: Catch2 / doctest / gtest in CMake projects.
-            add(function()
-                return require("neotest-ctest").setup({})
-            end)
-            add(function()
-                return require("neotest-busted")
-            end)
-            add(function()
-                return require("neotest-plenary")
-            end)
-            add(function()
-                return require("neotest-zig")({})
-            end)
-            add(function()
-                return require("neotest-vitest")
-            end)
-            add(function()
-                return require("neotest-jest")
-            end)
-            add(function()
-                return require("neotest-phpunit")
-            end)
+            for _, build in ipairs(opts.adapters) do
+                add(build)
+            end
             -- Force-load rustaceanvim's rust adapter so rust tests are always present (neotest is
             -- keys-lazy, so not a startup cost; a later re-setup would rebuild the client mid-run).
             local ok_rust, rust = pcall(require, "rustaceanvim.neotest")
@@ -229,15 +187,6 @@ return {
             })
         end,
     },
-    -- neotest-busted's rockspec adds non-lazy specs for itself and nvim-nio.
-    { "MisanthropicBit/neotest-busted", lazy = true },
+    -- neotest-busted's rockspec (lang/lua.lua) adds non-lazy specs for itself and nvim-nio.
     { "nvim-neotest/nvim-nio", lazy = true },
-    {
-        "WhoIsSethDaniel/mason-tool-installer.nvim",
-        opts = function(_, opts)
-            opts.ensure_installed = opts.ensure_installed or {}
-            -- gotestsum: optional, improves neotest-golang parsing speed.
-            vim.list_extend(opts.ensure_installed, { "gotestsum" })
-        end,
-    },
 }

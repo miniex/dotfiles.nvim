@@ -119,6 +119,16 @@ return {
             }
         end,
         config = function(_, opts)
+            -- Lang specs share tools (codelldb); duplicates would race two installs.
+            local seen = {}
+            opts.ensure_installed = vim.tbl_filter(function(t)
+                local name = type(t) == "table" and t[1] or t
+                if seen[name] then
+                    return false
+                end
+                seen[name] = true
+                return true
+            end, opts.ensure_installed or {})
             require("mason-tool-installer").setup(opts)
             require("mason-tool-installer").run_on_start()
             -- auto_update stays off; surface a one-shot "updates available" toast (missing tools → run_on_start).
