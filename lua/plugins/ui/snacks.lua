@@ -29,22 +29,10 @@ require("config.modal-floats").add_decorator("snacks_picker_preview", {
     end,
 })
 
--- $EDITOR → parent nvim. Pass at toggle(), not opts.terminal (snacks id mismatch).
-local TERM_BIN = vim.fn.stdpath("config") .. "/scripts/term-bin"
-local TERM_WRAPPER = TERM_BIN .. "/nvim"
--- term-bin on PATH so a bare `nvim` opens in the parent instead of nesting; the
--- wrapper skips its own dir when resolving the real binary, so it can't recurse.
-local TERM_ENV = {
-    EDITOR = TERM_WRAPPER,
-    VISUAL = TERM_WRAPPER,
-    GIT_EDITOR = TERM_WRAPPER,
-    PATH = TERM_BIN .. ":" .. (vim.env.PATH or ""),
-}
-
 -- Open or focus; never closes (Esc / <C-x> do that).
 -- nil `count` falls through to v:count1, so plain → #1, `2<leader>t` → #2.
 local function focus_terminal(count)
-    local term, created = Snacks.terminal.get(nil, { env = TERM_ENV, count = count })
+    local term, created = Snacks.terminal.get(nil, { count = count })
     if not term or created then
         return -- a new terminal is already shown and focused
     end

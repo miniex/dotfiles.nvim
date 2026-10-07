@@ -309,8 +309,6 @@ Uppercase prefixes — lowercase `gr` / `gs` / `gx` are taken (LSP refs / surrou
 
 ## Terminal & Buffers
 
-`$EDITOR`/`$VISUAL`/`$GIT_EDITOR` and a bare `nvim` all forward to the parent Neovim via `scripts/term-bin/nvim` (on the terminal's `PATH`) — `git commit` opens a split in the outer instance instead of nesting.
-
 Open keys only open or focus — never close — so `<space>t` stays typable at the shell prompt.
 
 | Key                                        | Description                                                                                                                |

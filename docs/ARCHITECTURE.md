@@ -16,7 +16,7 @@ Why files live where they do.
 ├── docs/                 markdown guides (this file)
 ├── justfile              tasks: just fmt / lint / check
 ├── install.sh            one-shot installer (backup / update in place)
-├── scripts/              set-lang.sh (lang toggles → gitignored langs_local.lua), _colors.sh, term-bin shims
+├── scripts/              set-lang.sh (lang toggles → gitignored langs_local.lua), _colors.sh
 ├── assets/               dashboard sticker, preview image
 ├── CONTRIBUTING.md
 └── README.md
@@ -33,7 +33,6 @@ The asymmetry between `lsp/` / `snippets/` (at root) and `lua/config|plugins/` (
 | `after/ftplugin/<ft>.lua` | Neovim auto-sources `<rtp>/after/ftplugin/<ft>.lua` on `FileType`. Cannot move.                 |
 | `lua/<mod>/*.lua`         | `require("mod.x")` resolves to `<rtp>/lua/mod/x.lua`. Cannot move out of `lua/`.                |
 | `snippets/<ft>.lua`       | Free choice. Path is set in `lua/plugins/coding/completion.lua` (`luasnip.loaders.from_lua`).   |
-| `scripts/term-bin/`       | Free. `$EDITOR` + `PATH` shim in the snacks terminal; `git commit` / `nvim` open in outer nvim. |
 
 ## Boot sequence
 

@@ -1,7 +1,7 @@
 # dotfiles.nvim task runner.
 
-# Tracked shell scripts: every *.sh plus the extensionless term-bin shim.
-sh_files := `git ls-files '*.sh' | tr '\n' ' '` + "scripts/term-bin/nvim"
+# Tracked shell scripts.
+sh_files := `git ls-files '*.sh' | tr '\n' ' '`
 
 # show available recipes.
 default:
