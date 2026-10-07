@@ -2,25 +2,23 @@ return {
     "sphamba/smear-cursor.nvim",
     event = "VeryLazy",
     opts = {
-        -- Blocky "pixel" trail: quadrant blocks only, 4 flat shade steps, short tail.
-        use_diagonal_blocks = false,
-        max_shade_no_matrix = 1.0,
-        matrix_pixel_threshold = 0.5,
-        color_levels = 4,
-        gradient_exponent = 0,
-        -- Snappy, no overshoot; tail capped so it reads as a streak, not a smear.
-        stiffness = 0.7,
-        trailing_stiffness = 0.45,
-        trailing_exponent = 2,
-        damping = 0.95,
-        max_length = 10,
-        stiffness_insert_mode = 0.6,
-        trailing_stiffness_insert_mode = 0.6,
-        damping_insert_mode = 0.95,
-        distance_stop_animating = 0.3,
-        -- Only real jumps animate: j/k and short h/l stay instant.
-        smear_between_neighbor_lines = false,
-        min_horizontal_distance_smear = 3,
+        -- Smooth: full shade gradient, diagonal blocks, ~144fps frames.
+        use_diagonal_blocks = true,
+        color_levels = 16,
+        gradient_exponent = 1.0,
+        time_interval = 7,
+        -- Soft spring, no overshoot; long tail fades out.
+        stiffness = 0.6,
+        trailing_stiffness = 0.4,
+        trailing_exponent = 3,
+        damping = 0.9,
+        stiffness_insert_mode = 0.5,
+        trailing_stiffness_insert_mode = 0.5,
+        damping_insert_mode = 0.9,
+        distance_stop_animating = 0.1,
+        -- Every move animates, including j/k and single-column h/l.
+        smear_between_neighbor_lines = true,
+        min_horizontal_distance_smear = 0,
         hide_target_hack = false,
         smear_terminal_mode = false,
         -- No smear across windows: float opens (pickers, hovers) would streak from (1,1).
