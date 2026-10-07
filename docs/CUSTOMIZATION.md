@@ -51,7 +51,7 @@ Drop Lua files in `~/.config/nvim/snippets/`. Filetype-scoped by filename (e.g. 
 
 ## Per-filetype options
 
-- `after/ftplugin/<ft>.lua` — buffer-local options Neovim auto-sources on `FileType` (after the built-in / plugin ftplugins, so it wins). Used for `go` / `make` (tabs, overriding the global `expandtab`), `gitcommit` / `markdown` (wrap, 72-col), `python` (venv keymap), and `yaml` / `json` (2-space). Add a file named after the filetype to set its own buffer options.
+- `after/ftplugin/<ft>.lua` — buffer-local options Neovim auto-sources on `FileType` (after the built-in / plugin ftplugins, so it wins). Used for `gitcommit` (50/72 guides), `markdown` (soft wrap), `python` (venv keymap) and `json` (2-space); stock ftplugins already cover go/make tabs and yaml indent. Add a file named after the filetype to set its own buffer options.
 
 ## Formatter width
 

@@ -13,15 +13,6 @@ local function focus_terminal(count)
     term:focus()
 end
 
--- Disable overlays on dashboard: chafa ANSI conflicts with indent.
-vim.api.nvim_create_autocmd("FileType", {
-    pattern = "snacks_dashboard",
-    group = vim.api.nvim_create_augroup("SnacksDashboardOverlay", { clear = true }),
-    callback = function(args)
-        vim.b[args.buf].snacks_indent = false
-    end,
-})
-
 local function pick_main_win()
     for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
         if vim.api.nvim_win_is_valid(win) and vim.api.nvim_win_get_config(win).relative == "" then

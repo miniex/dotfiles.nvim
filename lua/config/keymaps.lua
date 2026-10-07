@@ -17,8 +17,6 @@ for _, key in ipairs({
     "#",
     "g*",
     "g#",
-    "<C-o>",
-    "<C-i>",
 }) do
     vim.keymap.set("n", key, key .. "zvzz", { silent = true })
 end
@@ -96,19 +94,6 @@ end, "n", "Comment line above")
 map("gcA", function()
     comment_insert("A")
 end, "n", "Comment at end of line")
-
--- open URL / file under cursor (netrw's gx is disabled)
-map("gx", function()
-    local cword = vim.fn.expand("<cWORD>")
-    local url = cword:match("https?://[%w%-_%.%?:/%+=&#@!~,;'()%%]+")
-    if url then
-        url = url:gsub("[%.,;:!?'\"%)%]}]+$", "") -- drop trailing sentence / wrap punctuation
-    end
-    local target = url or vim.fn.expand("<cfile>")
-    if target ~= "" then
-        vim.ui.open(target)
-    end
-end, "n", "Open URL/file under cursor")
 
 -- 0.12 built-in undo tree (opt package, needs packadd before first use).
 map("<leader>uU", function()

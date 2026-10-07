@@ -1,54 +1,6 @@
 return {
     "folke/which-key.nvim",
     event = "VeryLazy",
-    config = function(_, opts)
-        -- which-key#912: trigger registration is deferred twice (schedule_wrap
-        -- inside setup + libuv timer in triggers.schedule), so the first leader
-        -- press lands before triggers exist. Identity-wrap schedule_wrap and
-        -- install triggers directly below.
-        local orig = vim.schedule_wrap
-        vim.schedule_wrap = function(fn)
-            return fn
-        end
-        local ok, err = pcall(require("which-key").setup, opts)
-        vim.schedule_wrap = orig
-        if not ok then
-            vim.notify("which-key setup failed: " .. tostring(err), vim.log.levels.ERROR)
-            return
-        end
-
-        -- Reaches into which-key internals; pcall so a rename can't error on every BufEnter.
-        local function install_triggers(buf)
-            pcall(function()
-                local mode = require("which-key.buf").get({ buf = buf, mode = "n" })
-                if not mode then
-                    return
-                end
-                local Triggers = require("which-key.triggers")
-                if Triggers.suspended then
-                    Triggers.suspended[mode] = nil
-                end
-                if Triggers.update then
-                    Triggers.update(mode)
-                end
-            end)
-        end
-        install_triggers(vim.api.nvim_get_current_buf())
-        -- which-key only *schedules* triggers (deferred a tick) and rebuilds them on
-        -- BufReadPost/LspAttach, so the #912 first-press race recurs on every buffer
-        -- switch. Force a synchronous install; steady-state cost is a few table ops.
-        vim.api.nvim_create_autocmd("BufEnter", {
-            group = vim.api.nvim_create_augroup("WhichKeyTriggerSync", { clear = true }),
-            callback = function(args)
-                -- Skip special buffers (terminals/pickers/panels): the most frequent
-                -- BufEnter source, and the global leader menu isn't used there.
-                if vim.bo[args.buf].buftype ~= "" then
-                    return
-                end
-                install_triggers(args.buf)
-            end,
-        })
-    end,
     opts = {
         preset = "modern",
         delay = 100,

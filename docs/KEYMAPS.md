@@ -17,13 +17,12 @@ Leader: `<Space>`. `<localleader>` also `<Space>` (most localleader bindings liv
 | `<leader>P`         | V    | Paste over + auto-reindent                                       |
 | `<` / `>`           | V    | Indent / outdent (keep selection)                                |
 | `J` / `<leader>j`   | N    | Join lines keeping cursor / without a space (`gJ`)               |
-| `gx`                | N    | Open URL / file under cursor (`vim.ui.open`)                     |
 
-> `n`, `N`, `*`, `#`, `g*`, `g#`, `<C-o>`, `<C-i>` auto-center the cursor (`zvzz`); `[c`/`]c` do too, in diff mode.
+> `n`, `N`, `*`, `#`, `g*`, `g#` auto-center the cursor (`zvzz`); `[c`/`]c` do too, in diff mode.
 > The jumplist is session-local (cleared at startup), so `<C-o>` / `<C-i>` only revisit files opened this session.
 > `:s/…` shows a live split preview (`inccommand`); `:grep` uses ripgrep; visual-block edits extend past line-end.
 > Yank → system clipboard via `wl-copy` / `xclip` / `pbcopy` / `clip.exe` (first available), else OSC52 over SSH.
-> Macro recording shows a `recording @a` / `saved @a` toast plus `@a` in the statusline while active.
+> Macro recording shows `@a` in the statusline while active.
 > Spell check (camelCase-aware) on `gitcommit` / `markdown` / `text`; `:q` / `:bd` prompt to save on unsaved changes.
 
 ## Find & Navigate
@@ -344,7 +343,6 @@ Open keys only open or focus — never close — so `<space>t` stays typable at 
 
 ## Misc
 
-- **Open URL** (`gx`, n/v): `vim.ui.open()` on link / path under cursor.
+- **Open URL** (`gx`, n/v): stock nvim (LSP document links, treesitter URLs, paths).
 - **Hex** (`xxd`): auto for binary files; `<leader>ux` toggle, `:HexDump`, `:HexAssemble`, or `nvim -b <file>`.
-- **Messages** (`:messages`): opens the message log in a centered modal (`q` / `<Esc>` to close).
 - **Completion** (insert): `<Tab>`/`<S-Tab>` (or `<C-n>`/`<C-p>`) next/prev · `<C-Space>` trigger · `<CR>` confirm · `<C-e>` close · `<C-k>` signature · `<C-f>`/`<C-b>` scroll docs · `<M-e>` wrap pair (autopairs). Menu columns: `label · source · kind`.

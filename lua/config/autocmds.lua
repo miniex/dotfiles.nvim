@@ -31,19 +31,6 @@ vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
     end,
 })
 
--- Hide ~ at EOB (covers plugins that override winhighlight/fillchars).
-local function hide_eob()
-    local normal = vim.api.nvim_get_hl(0, { name = "Normal" })
-    local bg = normal and normal.bg
-    if bg then
-        vim.api.nvim_set_hl(0, "EndOfBuffer", { fg = bg })
-    end
-end
-vim.api.nvim_create_autocmd("ColorScheme", {
-    group = vim.api.nvim_create_augroup("hide-eob", { clear = true }),
-    callback = hide_eob,
-})
-
 vim.api.nvim_create_autocmd("TextYankPost", {
     group = vim.api.nvim_create_augroup("yank-flash", { clear = true }),
     callback = function()
@@ -143,7 +130,6 @@ vim.api.nvim_create_autocmd("BufWritePre", {
 })
 
 -- Restore last cursor position via the `"` mark (persisted by shada).
--- Guard the win check: persistence re-fires BufReadPost via nvim_buf_call.
 vim.api.nvim_create_autocmd("BufReadPost", {
     group = vim.api.nvim_create_augroup("restore-cursor", { clear = true }),
     callback = function(args)
@@ -164,58 +150,6 @@ vim.api.nvim_create_autocmd("BufReadPost", {
         end
     end,
 })
-
--- Macro recording on/off → toast so it's never a surprise.
-local macro_toast = vim.api.nvim_create_augroup("macro-toast", { clear = true })
-vim.api.nvim_create_autocmd("RecordingEnter", {
-    group = macro_toast,
-    callback = function()
-        vim.notify("recording @" .. vim.fn.reg_recording(), vim.log.levels.INFO, { title = "macro" })
-    end,
-})
-vim.api.nvim_create_autocmd("RecordingLeave", {
-    group = macro_toast,
-    callback = function()
-        vim.notify("saved @" .. vim.v.event.regname, vim.log.levels.INFO, { title = "macro" })
-    end,
-})
-
--- Snacks terminal: start in insert so `<leader>t` is type-ready immediately.
--- Schedule so the dashboard sticker's terminal buf gets its `snacks_dashboard`
--- ft before the check — otherwise insert mode leaks into the dashboard.
-vim.api.nvim_create_autocmd({ "TermOpen", "BufWinEnter" }, {
-    group = vim.api.nvim_create_augroup("snacks-term-insert", { clear = true }),
-    callback = function(args)
-        if vim.bo[args.buf].buftype ~= "terminal" then
-            return
-        end
-        vim.schedule(function()
-            if
-                vim.api.nvim_buf_is_valid(args.buf)
-                and vim.api.nvim_get_current_buf() == args.buf
-                and vim.bo[args.buf].filetype ~= "snacks_dashboard"
-            then
-                vim.cmd.startinsert()
-            end
-        end)
-    end,
-})
-
--- ui2's pager doesn't surface `:messages` for us — render the history in a modal instead.
-vim.api.nvim_create_user_command("Messages", function()
-    local out = vim.fn.execute("messages")
-    local lines = vim.split(out, "\n", { plain = true })
-    while #lines > 0 and lines[1] == "" do
-        table.remove(lines, 1)
-    end
-    if #lines == 0 then
-        vim.notify("no messages", vim.log.levels.INFO)
-        return
-    end
-    local win = require("config.modal-geom").scratch(lines, { filetype = "messages", title = "messages" })
-    vim.api.nvim_win_set_cursor(win, { #lines, 0 })
-end, { desc = "Show :messages in a centered modal" })
-vim.cmd([[cnoreabbrev <expr> messages getcmdtype() == ':' && getcmdline() == 'messages' ? 'Messages' : 'messages']])
 
 -- Treesitter attach. Pre-plugin so startup-loaded files get highlighted.
 -- get_lang() handles ft↔parser mismatches (e.g. typescriptreact → tsx).

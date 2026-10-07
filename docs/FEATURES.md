@@ -40,7 +40,7 @@
 - **Search & replace** — grug-far (`<leader>rr`).
 - **Quickfix** — quicker.nvim (editable QF), nvim-bqf (preview), Trouble (`auto_close` on jump, main-window preview; `<leader>x*` lists diagnostics / refs / symbols / call hierarchy / type defs / implementations).
 - **Misc** — mini.surround (`gs*`), mini.ai (`a`/`i` brackets/quotes/tags + `aN`/`aL` next/last, `ag` buffer / `ad` number), mini.move (`<A-hjkl>` line shuffle), mini.operators (`gR` replace-with-register / `gX` exchange / `gS` sort / `g=` eval), built-in `gc` (treesitter-aware; `gco` / `gcO` / `gcA` rebuilt in `keymaps.lua`), todo-comments, tiny-code-action (`<leader>ca` picker with per-action diff preview), nvim-colorizer (6/8-digit hex everywhere; 3/4-digit `#RGB` shorthand only in CSS-family, so issue/PR refs like `#590` aren't colorized; skipped on big/minified files), rainbow-delimiters (on-theme nested bracket-pair colors; disabled on big/minified files), 0.12 built-ins `:Undotree` and `:DiffTool` (non-git side-by-side file/dir diff), hex.nvim (`<leader>ux` toggle hex view).
-- **Persistence** — `persistence.nvim` auto-restores on bare `nvim` (skipping headless, empty sessions, and `nvim <file>` launches, which neither restore nor save), re-attaches TS / LSP / linter on restored buffers. Only window-visible buffers persist (no hidden `badd`). Neotest summary window state persists across sessions. Sessions are scoped per git branch (feature branches keep distinct layouts; main/master share the base session).
+- **Persistence** — `persistence.nvim` auto-restores on bare `nvim` (skipping headless, empty sessions, and `nvim <file>` launches, which neither restore nor save). Only window-visible buffers persist (no hidden `badd`). Neotest summary window state persists across sessions. Sessions are scoped per git branch (feature branches keep distinct layouts; main/master share the base session).
 - **Width-aware `textwidth`** — `rust` / `python` / `lua` / `elixir` / `ocaml` / `c`-`cpp` / `sql` / `toml` set `textwidth` (the `gq`/`gw` reflow width) to the project formatter's line width, searched upward from its config, else the default — no visual ruler. See [CUSTOMIZATION](CUSTOMIZATION.md#formatter-width).
 
 ## UI
@@ -49,12 +49,12 @@
 - **statusline** — hand-rolled global statusline ([`lua/config/statusline.lua`](../lua/config/statusline.lua)); plain text, transparent. Left: 3-letter mode (`NOR` / `INS` / `VIS` / `V-L` / `V-B` / `REP` / `CMD` / `TRM` …, mode-colored), `@x` while recording a macro, git branch, relative path + `[+]` / `[RO]`, diagnostic counts (`E1 W2 I1 H1`). Right: LSP progress (spinner + title, `✓ <client>` on end), attached LSP client names, gitsigns diff (`+a ~c -r`), off-default encoding / line-ending (non-`utf-8` / non-`unix` only), `searchcount()` match `[cur/total]` (cached; skipped above 20000 lines), `line:col` + `%P`. Empty on the dashboard.
 - **Buffers** — no tabline. `<S-h>` / `<S-l>` or `[b` / `]b` cycle, `<leader>fb` picks.
 - **cursor bloom** — `✿` sign on the current line in mode color (custom autocmd in [`lua/config/cursor-bloom.lua`](../lua/config/cursor-bloom.lua)). Refresh defer skips picker/terminal/chrome buffers.
-- **which-key** — hint floats pinned to the bottom row at 85% editor width (centered); height grows with content. Triggers register synchronously on file buffers + `timeoutlen=300` so the first `<leader>` press isn't slow ([#912](https://github.com/folke/which-key.nvim/issues/912) workaround).
+- **which-key** — hint floats pinned to the bottom row at 85% editor width (centered); height grows with content. `timeoutlen=300`.
 - **Floating windows** — every float in the config (LSP hover / signature / diagnostic, snacks panels, fzf-lua, fff, blink.cmp menu / signature / docs, bqf, neotest, which-key, Mason, lazy, lazygit, checkhealth) shares one look: `✿` flower-cornered border (`✿─✿│✿─✿│`), pink edge, transparent background, centered `✿ title ✿`. Configured in [`lua/config/globals.lua`](../lua/config/globals.lua).
 - **flash labels** — damin pink.
 - **indent guides** — uniform `┊` dotted guides (snacks.indent), no scope highlight (`[i`/`]i` still jump to scope edges); chunk off.
 - **zen** — `<leader>uz` focus mode hides the statusline (flower-bordered window).
-- **smear-cursor** — blocky "pixel" trail: quadrant blocks only (no diagonals), 4 flat shade steps, short capped tail, no overshoot. `j` / `k` and short `h` / `l` moves don't animate, only real jumps. Off in picker/terminal floats so it doesn't fire per keystroke; 80ms swallow on other float opens skips the `(1,1)` landing jump.
+- **smear-cursor** — blocky "pixel" trail: quadrant blocks only (no diagonals), 4 flat shade steps, short capped tail, no overshoot. `j` / `k` and short `h` / `l` moves don't animate, only real jumps. Off in pickers (`filetypes_disabled`) and across windows (`smear_between_buffers = false`), so float opens never streak.
 - **Side panels** — aerial / trouble / dap / neotest open in their plugins' default positions.
 
 ## Modal floats
@@ -110,7 +110,6 @@ See [`lua/config/modal-floats.lua`](../lua/config/modal-floats.lua) for the mutu
 
 - Floating cmdline + messages via `vim._core.ui2.enable()`.
 - Opt out with `vim.g.disable_ui2 = true` in `options.lua`.
-- `:messages` is aliased to `:Messages`, which renders the history in a centered flower-border modal (ui2's own pager doesn't surface for us).
 
 ## Clipboard
 
