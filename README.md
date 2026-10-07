@@ -80,7 +80,7 @@ Leader: `<Space>`. Full reference: [docs/KEYMAPS.md](docs/KEYMAPS.md).
 | `s` / `S`                   | flash jump / treesitter jump    |
 | `<leader>w`                 | Smart buffer delete             |
 | `<S-h>` / `<S-l>`           | Previous / next buffer          |
-| `<leader>t`                 | Open terminal (Esc closes)      |
+| `<leader>t`                 | Open terminal (`<C-x>` hides)   |
 | `<leader>rr`                | Search & replace (grug-far)     |
 | `K` / `gd` / `gr`           | Hover / definition / references |
 | `<leader>ca` / `<leader>rn` | Code action / rename            |

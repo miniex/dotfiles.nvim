@@ -41,7 +41,7 @@
 - **Quickfix** — quicker.nvim (editable QF), nvim-bqf (preview), Trouble (`auto_close` on jump, main-window preview; `<leader>x*` lists diagnostics / refs / symbols / call hierarchy / type defs / implementations).
 - **Misc** — mini.surround (`gs*`), mini.ai (`a`/`i` brackets/quotes/tags + `aN`/`aL` next/last, `ag` buffer / `ad` number), mini.move (`<A-hjkl>` line shuffle), mini.operators (`gR` replace-with-register / `gX` exchange / `gS` sort / `g=` eval), built-in `gc` (treesitter-aware; `gco` / `gcO` / `gcA` rebuilt in `keymaps.lua`), todo-comments, tiny-code-action (`<leader>ca` picker with per-action diff preview), nvim-colorizer (6/8-digit hex everywhere; 3/4-digit `#RGB` shorthand only in CSS-family, so issue/PR refs like `#590` aren't colorized; skipped on big/minified files), rainbow-delimiters (on-theme nested bracket-pair colors; disabled on big/minified files), 0.12 built-ins `:Undotree` and `:DiffTool` (non-git side-by-side file/dir diff), hex.nvim (`<leader>ux` toggle hex view).
 - **Persistence** — `persistence.nvim` auto-restores on bare `nvim` (skipping headless, empty sessions, and `nvim <file>` launches, which neither restore nor save). Only window-visible buffers persist (no hidden `badd`). Neotest summary window state persists across sessions. Sessions are scoped per git branch (feature branches keep distinct layouts; main/master share the base session).
-- **Width-aware `textwidth`** — `rust` / `python` / `lua` / `elixir` / `ocaml` / `c`-`cpp` / `sql` / `toml` set `textwidth` (the `gq`/`gw` reflow width) to the project formatter's line width, searched upward from its config, else the default — no visual ruler. See [CUSTOMIZATION](CUSTOMIZATION.md#formatter-width).
+- **Width-aware `textwidth`** — `rust` / `python` / `lua` / `elixir` / `ocaml` / `c`-`cpp` / `sql` / `toml` set `textwidth` (the `gq`/`gw` reflow width) to the formatter's default line width (`.editorconfig` `max_line_length` overrides) — no visual ruler. See [CUSTOMIZATION](CUSTOMIZATION.md#formatter-width).
 
 ## UI
 
@@ -124,7 +124,7 @@ picker · profiler · terminal · dashboard · notifier · indent · scope · im
 How you start Neovim sets the workspace behavior:
 
 - **`nvim`** (no args) — full IDE: dashboard, and the cwd session auto-restores on start and saves on exit.
-- **`nvim <dir>`** — identical to `cd <dir> && nvim`: chdir's into `<dir>` (dropping the stray dir buffer) and keys the session to `<dir>`, landing on the dashboard or the cwd's restored session (an inaccessible dir falls back to a bare launch).
+- **`nvim <dir>`** — identical to `cd <dir> && nvim`: chdir's into `<dir>` (dropping the stray dir buffer) and keys the session to `<dir>`, landing on the dashboard or the cwd's restored session (an inaccessible dir is a file launch: no session).
 - **`nvim <file…>`** (or several dirs, or piped stdin) — opens the args as buffers; the session is left untouched.
 
 This keeps `nvim <file>` from disturbing a directory's saved workspace. Set via `vim.g.file_launch` / `vim.g.dir_launch` in `lua/config/globals.lua`.

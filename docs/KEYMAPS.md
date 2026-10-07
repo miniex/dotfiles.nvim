@@ -85,7 +85,7 @@ Inside the grug-far buffer (`<localleader>` = `<Space>`): `r` replace · `s` / `
 
 ## Session (persistence.nvim)
 
-Bare `nvim` (and `nvim <dir>`, which cd's in) auto-restores the cwd session (skipped in headless or when it has no real files). File launches (`nvim <file>` / `nvim a b`) don't; `nvim dir1 dir2` keeps per-dir sessions but manual (`<leader>qs`). See Launch modes in FEATURES. Only window-visible buffers persist. Sessions are scoped per git branch — feature branches keep separate layouts (main/master share the base session).
+Bare `nvim` (and `nvim <dir>`, which cd's in) auto-restores the cwd session (skipped in headless or when it has no real files). File launches (`nvim <file>` / `nvim a b`) don't. See Launch modes in FEATURES. Only window-visible buffers persist. Sessions are scoped per git branch — feature branches keep separate layouts (main/master share the base session).
 
 | Key          | Description                 |
 | ------------ | --------------------------- |
@@ -191,19 +191,19 @@ Bare `nvim` (and `nvim <dir>`, which cd's in) auto-restores the cwd session (ski
 
 ## Git
 
-| Key                                           | Description                                                                                                        |
-| --------------------------------------------- | ------------------------------------------------------------------------------------------------------------------ |
-| `<leader>gs/gb/gd/gl/gc/gp/gP`                | fugitive: status/blame/diff/log/commit/push/pull                                                                   |
-| `<leader>gD`                                  | fugitive: 3-way diffsplit (`:Gvdiffsplit!`) — for merge conflicts                                                  |
-| `<leader>gg/gf/gL`                            | lazygit: open / file history / log                                                                                 |
-| `<leader>gB`                                  | gitbrowse: open current line in browser (n/v)                                                                      |
-| `[h` / `]h`                                   | Prev / next hunk (auto-preview on jump; `;`/`,` repeats)                                                           |
-| `[H` / `]H`                                   | Prev / next staged hunk                                                                                            |
-| `<leader>ghs/r/S/R/p/i/b/c/d/D`               | Stage (toggle) / reset / stage-buf / reset-buf / preview / inline preview / blame-line / blame-file / diff / diff~ |
-| `<leader>ghq` / `ghQ`                         | gitsigns: hunks to quickfix — attached buffers / whole repo                                                        |
-| `<leader>ghv`                                 | gitsigns: show the file at the index (read-only)                                                                   |
-| `<leader>gtb` / `<leader>gtw`                 | Toggle line blame / word diff                                                                                      |
-| `ih` / `ah` (o/x)                             | gitsigns hunk textobject (`d ih`, `v ah`)                                                                          |
+| Key                             | Description                                                                                                              |
+| ------------------------------- | ------------------------------------------------------------------------------------------------------------------------ |
+| `<leader>gs/gb/gd/gl/gc/gp/gP`  | fugitive: status/blame/diff/log/commit/push/pull                                                                         |
+| `<leader>gD`                    | fugitive: 3-way diffsplit (`:Gvdiffsplit!`) — for merge conflicts                                                        |
+| `<leader>gg/gf/gL`              | lazygit: open / file history / log                                                                                       |
+| `<leader>gB`                    | gitbrowse: open current line in browser (n/v)                                                                            |
+| `[h` / `]h`                     | Prev / next hunk (auto-preview on jump; `;`/`,` repeats)                                                                 |
+| `[H` / `]H`                     | Prev / next staged hunk                                                                                                  |
+| `<leader>ghs/r/S/R/p/i/b/c/d/D` | Stage (toggle) / reset (n/v) / stage-buf / reset-buf / preview / inline preview / blame-line / blame-file / diff / diff~ |
+| `<leader>ghq` / `ghQ`           | gitsigns: hunks to quickfix — attached buffers / whole repo                                                              |
+| `<leader>ghv`                   | gitsigns: show the file at the index (read-only)                                                                         |
+| `<leader>gtb` / `<leader>gtw`   | Toggle line blame / word diff                                                                                            |
+| `ih` / `ah` (o/x)               | gitsigns hunk textobject (`d ih`, `v ah`)                                                                                |
 
 ## Debugger (DAP)
 
@@ -224,7 +224,7 @@ Bare `nvim` (and `nvim <dir>`, which cd's in) auto-restores the cwd session (ski
 
 ## Test (neotest)
 
-Python (pytest), Go (gotestsum), Elixir (mix), C/C++ (gtest + ctest: Catch2 / doctest), Lua (busted + plenary), Rust (rustaceanvim), Zig, JS-TS (vitest / jest). `:RustLsp testables` still works as a Rust-only picker. Summary window state restored across sessions. Inside the summary window: `<Tab>` / `zo` expand, `zR` expand all.
+Python (pytest), Go (gotestsum), Elixir (mix), C/C++ (gtest + ctest: Catch2 / doctest), Lua (busted + plenary), Rust (rustaceanvim), Zig, JS-TS (vitest / jest), PHP (PHPUnit). `:RustLsp testables` still works as a Rust-only picker. Summary window state restored across sessions. Inside the summary window: `<Tab>` / `zo` expand, `zR` expand all.
 
 | Key                        | Description                                  |
 | -------------------------- | -------------------------------------------- |
@@ -275,8 +275,8 @@ Built-in `gc` picks the right syntax for embedded languages (JSX, Vue, md fences
 
 | Key                 | Mode | Description                            |
 | ------------------- | ---- | -------------------------------------- |
-| `gcc` / `gbc`       | n    | Toggle current line — line / block     |
-| `gc{motion}` / `gb` | n/x  | Toggle linewise / blockwise (operator) |
+| `gcc`               | n    | Toggle current line                    |
+| `gc{motion}`        | n/x  | Toggle comment (operator)              |
 | `gco` / `gcO`       | n    | Add comment line below / above         |
 | `gcA`               | n    | Add comment at end of line             |
 

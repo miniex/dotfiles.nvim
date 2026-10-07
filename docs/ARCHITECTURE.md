@@ -60,7 +60,7 @@ Plugin specs are discovered by `lazy.setup({ spec = { { import = "plugins.coding
 | Modal float mutual-ex   | `lua/config/modal-floats.lua` `OWNER` table                          | Same `owner` keeps sibling windows of one plugin together; opening another owner closes prior.                                                                                                                                                                             |
 | Modal float geometry    | `lua/config/modal-geom.lua`                                          | Shared 0.85 × 0.85 chrome-aware rectangle. Change `M.RATIO` to resize the snacks / fzf-lua / gitsigns modals.                                                                                                                                                              |
 | Border characters       | `lua/config/globals.lua` `vim.g.flower_border`                       | Every plugin reads this; theme/border consistency in one place.                                                                                                                                                                                                            |
-| Launch modes            | `lua/config/globals.lua` `file_launch` / `dir_launch`              | `nvim` (full IDE); `nvim <dir>` chdir's in → dashboard (bare launch if inaccessible); anything else (files, several dirs, stdin): buffers, no session. Read by persistence / autocmds / snacks.                                                                              |
+| Launch modes            | `lua/config/globals.lua` `file_launch` / `dir_launch`              | `nvim` (full IDE); `nvim <dir>` chdir's in → dashboard (file launch if inaccessible); anything else (files, several dirs, stdin): buffers, no session. Read by persistence / autocmds / snacks.                                                                              |
 | Palette & brand accents | `lua/config/palette.lua`                                             | Cached `mocha()` parse + the `blue` / `pink` / `dim` / git accents the statusline and UI plugins read.                                                                                                                                                                     |
 | Treesitter grammars     | `config.lang.treesitter()` in lang files                             | Core parsers in `lua/plugins/editor/treesitter.lua`; each enabled lang adds its own.                                                                                                                                                                                       |
 | CodeLLDB DAP adapter    | `lua/config/codelldb.lua`                                            | Resolves the Mason codelldb binary once; shared by C/C++, Zig, Nim, and Rust.                                                                                                                                                                                              |
@@ -68,13 +68,13 @@ Plugin specs are discovered by `lazy.setup({ spec = { { import = "plugins.coding
 
 ## Plugin spec categories (`lua/plugins/`)
 
-| Subdir    | Belongs here                                                                                                                    |
-| --------- | ------------------------------------------------------------------------------------------------------------------------------- |
-| `coding/` | Completion (blink.cmp, LuaSnip, friendly-snippets).                                                                             |
-| `editor/` | Editing UX: oil, flash, surround, git, …                                                                                        |
-| `lang/`   | Per-language adapters (DAP configs, `vim.filetype.add`, lang-only plugins). Grammars live centrally in `editor/treesitter.lua`. |
-| `lsp/`    | LSP infra (mason, nvim-lspconfig, lint, dap, neotest, diagnostic-ui).                                                           |
-| `ui/`     | Theme, snacks (picker/terminal/dashboard), smear-cursor, devicons.                                                              |
+| Subdir    | Belongs here                                                                                                                                               |
+| --------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `coding/` | Completion (blink.cmp, LuaSnip, friendly-snippets).                                                                                                        |
+| `editor/` | Editing UX: oil, flash, surround, git, …                                                                                                                   |
+| `lang/`   | Per-language adapters (DAP configs, `vim.filetype.add`, lang-only plugins). Grammars via `config.lang.treesitter()`; core ones in `editor/treesitter.lua`. |
+| `lsp/`    | LSP infra (mason, nvim-lspconfig, lint, dap, neotest, diagnostic-ui).                                                                                      |
+| `ui/`     | Theme, snacks (picker/terminal/dashboard), smear-cursor, devicons.                                                                                         |
 
 If a plugin touches multiple categories (e.g. snacks does picker + terminal + dashboard), pick the dominant one and add a comment if non-obvious.
 

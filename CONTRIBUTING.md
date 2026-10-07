@@ -4,26 +4,26 @@ Every commit must pass `just fmt` + `just lint` clean.
 
 ## Tools
 
-Required (`format.sh` / `lint.sh` fail without these):
+Required (`just fmt` / `just lint` fail without these):
 
+- [`just`](https://github.com/casey/just) — task runner
 - [`stylua`](https://github.com/JohnnyMorganz/StyLua) — Lua formatter
 - [`lua-language-server`](https://github.com/LuaLS/lua-language-server) — Lua diagnostics
 - [`selene`](https://github.com/Kampfkarren/selene) — Lua linter (reads `selene.toml` + `vim.toml`)
 - [`shfmt`](https://github.com/mvdan/sh) — shell formatter
 - [`shellcheck`](https://www.shellcheck.net/) — shell linter
 
-Optional (used opportunistically; scripts skip with a warning if absent):
+Optional (used opportunistically; recipes skip them if absent):
 
-- [`jq`](https://jqlang.github.io/jq/) — JSON pretty-print (`format.sh`, `--indent 4`)
-- [`taplo`](https://taplo.tamasfe.dev/) — TOML formatter (`format.sh`)
-- [`yamlfmt`](https://github.com/google/yamlfmt) — YAML formatter (`format.sh`)
-- [`just`](https://github.com/casey/just) — task runner (`just fmt`/`lint`/`health`); `format.sh`/`lint.sh` also format-check the justfile
-- `fish`, `zsh` — `lint.sh` runs `fish -n` / `zsh -n` on tracked `*.fish` / `*.zsh` files
+- [`jq`](https://jqlang.github.io/jq/) — JSON pretty-print (`just fmt`, `--indent 4`)
+- [`taplo`](https://taplo.tamasfe.dev/) — TOML formatter (`just fmt`)
+- [`yamlfmt`](https://github.com/google/yamlfmt) — YAML formatter (`just fmt`)
+- `fish`, `zsh` — `just lint` runs `fish -n` / `zsh -n` on tracked `*.fish` / `*.zsh` files
 
 ```bash
-brew install stylua lua-language-server shfmt shellcheck   # macOS
-brew install jq taplo yamlfmt just                         # optional
-cargo install stylua selene just                           # cargo
+brew install just stylua lua-language-server shfmt shellcheck   # macOS
+brew install jq taplo yamlfmt                                   # optional
+cargo install stylua selene just                                # cargo
 # Linux: distro package or release tarball
 ```
 
