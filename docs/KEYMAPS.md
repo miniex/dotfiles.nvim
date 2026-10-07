@@ -46,7 +46,6 @@ Leader: `<Space>`. `<localleader>` also `<Space>` (most localleader bindings liv
 | `<leader>zz` / `z'`                   | fzf-lua: builtin menu / resume last picker                       |
 | `<leader>-` / `<leader>fy`            | yazi: open at current file / in cwd (needs `yazi` binary)        |
 | `<leader>e`                           | oil: edit current dir as a buffer (rename/move/delete via edits) |
-| `<leader>L`                           | View current file in `less` (read-only, own tab)                 |
 | `s` / `S` (n/x/o)                     | flash: jump / treesitter jump                                    |
 | `r` / `R` / `<C-s>`                   | flash: remote (o) / treesitter search (o/x) / toggle in `/` (c)  |
 | `[j` / `]j`, `[l` / `]l`, `[u` / `]u` | mini.bracketed: jumplist / loclist / undo-state nav              |
