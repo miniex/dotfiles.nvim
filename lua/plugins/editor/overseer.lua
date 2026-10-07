@@ -10,7 +10,7 @@ return {
     },
     opts = {
         task_list = { direction = "bottom" },
-        -- Default components + parse task output into quickfix (bqf/quicker consume it).
+        -- Default components + parse task output into quickfix (quicker renders it).
         component_aliases = {
             default = {
                 "on_exit_set_status",

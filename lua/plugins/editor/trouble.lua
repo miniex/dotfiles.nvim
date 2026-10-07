@@ -8,7 +8,6 @@ return {
         { "<leader>xl", "<cmd>Trouble loclist toggle<cr>", desc = "Location List (Trouble)" },
         { "<leader>xr", "<cmd>Trouble lsp_references toggle<cr>", desc = "LSP References (Trouble)" },
         { "<leader>xs", "<cmd>Trouble symbols toggle<cr>", desc = "Symbols (Trouble)" },
-        { "gO", "<cmd>Trouble lsp toggle<cr>", desc = "LSP Definitions / References (Trouble)" },
         { "<leader>xi", "<cmd>Trouble lsp_incoming_calls toggle<cr>", desc = "Incoming Calls (Trouble)" },
         { "<leader>xo", "<cmd>Trouble lsp_outgoing_calls toggle<cr>", desc = "Outgoing Calls (Trouble)" },
         { "<leader>xy", "<cmd>Trouble lsp_type_definitions toggle<cr>", desc = "Type Definitions (Trouble)" },

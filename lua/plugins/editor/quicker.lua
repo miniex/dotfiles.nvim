@@ -1,4 +1,4 @@
--- Editable quickfix + prettier rendering. Pairs with bqf (preview/filter).
+-- Editable quickfix + prettier rendering; >/< expand context.
 return {
     "stevearc/quicker.nvim",
     ft = "qf",

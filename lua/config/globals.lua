@@ -27,7 +27,7 @@ end
 
 -- Shared floating-window border: ✿ corners. Used by every plugin that opens a
 -- float (LSP hover/signature/diagnostic, snacks, fzf-lua, completion,
--- bqf, neotest…) so the whole UI speaks the same visual language.
+-- neotest…) so the whole UI speaks the same visual language.
 vim.g.flower_border = { "✿", "─", "✿", "│", "✿", "─", "✿", "│" }
 vim.g.flower_title = function(s)
     return " ✿ " .. s .. " ✿ "
@@ -61,11 +61,6 @@ local float_groups = {
     BlinkCmp = {
         n = { "BlinkCmpMenu", "BlinkCmpDoc", "BlinkCmpSignatureHelp" },
         b = { "BlinkCmpMenuBorder", "BlinkCmpDocBorder", "BlinkCmpSignatureHelpBorder" },
-    },
-    Bqf = {
-        n = { "BqfPreviewFloat" },
-        b = { "BqfPreviewBorder" },
-        t = { "BqfPreviewTitle" },
     },
 }
 

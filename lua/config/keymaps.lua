@@ -119,7 +119,7 @@ map("<leader>qR", "<cmd>restart<cr>", "n", "Restart Neovim")
 map("<leader>x<", "<cmd>colder<cr>", "n", "Quickfix older")
 map("<leader>x>", "<cmd>cnewer<cr>", "n", "Quickfix newer")
 
--- Diagnostics into the native quickfix / loclist (feeds colder/cnewer + bqf).
+-- Diagnostics into the native quickfix / loclist (feeds colder/cnewer).
 map("<leader>xE", vim.diagnostic.setqflist, "n", "Diagnostics → quickfix")
 map("<leader>xe", vim.diagnostic.setloclist, "n", "Buffer diagnostics → loclist")
 
@@ -156,6 +156,6 @@ map("<leader>yg", function()
     })
 end, "n", "Yank git permalink (current line)")
 
--- S-h/l overrides vim's H/L screen jumps; [b/]b come from mini.bracketed.
+-- S-h/l overrides vim's H/L screen jumps; [b/]b are stock 0.11+.
 map("<S-h>", "<cmd>bprevious<cr>", "n", "Previous buffer")
 map("<S-l>", "<cmd>bnext<cr>", "n", "Next buffer")

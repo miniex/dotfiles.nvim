@@ -43,11 +43,9 @@ Leader: `<Space>`. `<localleader>` also `<Space>` (most localleader bindings liv
 | `<leader>fS`                          | Snippets (LuaSnip, ft + inherited + all)                         |
 | `<leader>fs`                          | Edit the current filetype's snippet file (LuaSnip)               |
 | `<leader>zz` / `z'`                   | fzf-lua: builtin menu / resume last picker                       |
-| `<leader>-` / `<leader>fy`            | yazi: open at current file / in cwd (needs `yazi` binary)        |
 | `<leader>e`                           | oil: edit current dir as a buffer (rename/move/delete via edits) |
 | `s` / `S` (n/x/o)                     | flash: jump / treesitter jump                                    |
 | `r` / `R` / `<C-s>`                   | flash: remote (o) / treesitter search (o/x) / toggle in `/` (c)  |
-| `[j` / `]j`, `[l` / `]l`, `[u` / `]u` | mini.bracketed: jumplist / loclist / undo-state nav              |
 | `<leader>?`                           | which-key: all keymaps (`<C-d>`/`<C-u>` flip pages)              |
 
 ## fzf-lua (`<leader>z*`)
@@ -108,7 +106,7 @@ Bare `nvim` (and `nvim <dir>`, which cd's in) auto-restores the cwd session (ski
 
 ## LSP / Diagnostics
 
-> Neovim 0.11+'s default `grr`/`gri`/`grn`/`gra` are deleted on `LspAttach` so `gr` (References) fires without a `timeoutlen` wait; `gO` is remapped to Trouble below.
+> Neovim 0.11+'s default `grr`/`gri`/`grn`/`gra` are deleted on `LspAttach` so `gr` (References) fires without a `timeoutlen` wait.
 > `gd`/`gr`/`gI`/`gy` open an fzf-lua picker (auto-jumps on a single result).
 >
 > Severity-sorted; gutter signs `✗`/`!`/`i`/`?` (statusline shows `E`/`W`/`I`/`H` counts). Diag float shows source when ambiguous.
@@ -134,7 +132,6 @@ Bare `nvim` (and `nvim <dir>`, which cd's in) auto-restores the cwd session (ski
 | `<leader>cm`                | Open Mason                                                           |
 | `<leader>xx/xd/xq/xl`       | Trouble: diagnostics / buf / qf / loclist                            |
 | `<leader>xr` / `<leader>xs` | Trouble: LSP references / symbols                                    |
-| `gO`                        | Trouble: LSP defs / refs (overrides the 0.11 default)                |
 | `<leader>xi` / `<leader>xo` | Trouble: incoming / outgoing calls                                   |
 | `<leader>xy` / `<leader>xm` | Trouble: type definitions / implementations                          |
 | `<leader>x<` / `<leader>x>` | Quickfix stack: older / newer list                                   |
@@ -148,8 +145,6 @@ Bare `nvim` (and `nvim <dir>`, which cd's in) auto-restores the cwd session (ski
 | `[t` / `]t`                 | Prev / next TODO comment (`;`/`,` repeats)                           |
 
 > Severity jumps (`[e` / `]e` / `[W` / `]W`) open the diagnostic float.
-
-> In the quickfix window (nvim-bqf): `o` open · `O` open & close · `<C-s>` / `<C-v>` split / vsplit · `t` / `T` tab / tab (bg) · `z,` toggle preview · `K` scroll preview up.
 
 ## Treesitter Textobjects & Context
 
@@ -308,23 +303,23 @@ Uppercase prefixes — lowercase `gr` / `gs` / `gx` are taken (LSP refs / surrou
 
 Open keys only open or focus — never close — so `<space>t` stays typable at the shell prompt.
 
-| Key                                        | Description                                                                                                                |
-| ------------------------------------------ | -------------------------------------------------------------------------------------------------------------------------- |
-| `<leader>t`                                | Open / focus terminal #1 (centered float; `N<leader>t` → instance N)                                                       |
-| `<leader>T`                                | Open / focus terminal #2                                                                                                   |
-| `<Esc>` (normal mode)                      | Hide terminal. Terminal mode keeps Esc for lazygit / shell TUIs.                                                           |
-| `<C-x>`                                    | Hide terminal (works in terminal mode too)                                                                                 |
-| `<leader>w`                                | Delete buffer (on dashboard → file buf if any, else `:qall`)                                                               |
-| `<leader>;`                                | Toggle dashboard (peek; press again to return)                                                                             |
-| `<leader>bd` / `<leader>bD`                | Snacks.bufdelete: confirm-on-modified / force                                                                              |
-| `<leader>.` / `<leader>bS`                 | Snacks scratch: toggle / select buffer                                                                                     |
-| `<leader>sn`                               | Snacks scratch: per-project markdown notes                                                                                 |
-| `[b` / `]b` · `<S-h>` / `<S-l>`            | Prev / next buffer (mini.bracketed / `:bprevious` `:bnext`); `<leader>fb` to pick                                          |
-| `<leader>cn` / `<leader>un`                | Notification history / dismiss all                                                                                         |
-| `<leader>yp` / `<leader>yP` / `<leader>yl` | Yank file path to `+`: absolute / relative / relative:line                                                                 |
-| `<leader>yg`                               | Yank git permalink for the current line                                                                                    |
-| `]]` / `[[`                                | LSP word: next / previous reference                                                                                        |
-| `[i` / `]i`                                | Snacks scope: jump to top / bottom edge                                                                                    |
+| Key                                        | Description                                                              |
+| ------------------------------------------ | ------------------------------------------------------------------------ |
+| `<leader>t`                                | Open / focus terminal #1 (centered float; `N<leader>t` → instance N)     |
+| `<leader>T`                                | Open / focus terminal #2                                                 |
+| `<Esc>` (normal mode)                      | Hide terminal. Terminal mode keeps Esc for lazygit / shell TUIs.         |
+| `<C-x>`                                    | Hide terminal (works in terminal mode too)                               |
+| `<leader>w`                                | Delete buffer (on dashboard → file buf if any, else `:qall`)             |
+| `<leader>;`                                | Toggle dashboard (peek; press again to return)                           |
+| `<leader>bd` / `<leader>bD`                | Snacks.bufdelete: confirm-on-modified / force                            |
+| `<leader>.` / `<leader>bS`                 | Snacks scratch: toggle / select buffer                                   |
+| `<leader>sn`                               | Snacks scratch: per-project markdown notes                               |
+| `[b` / `]b` · `<S-h>` / `<S-l>`            | Prev / next buffer (stock / `:bprevious` `:bnext`); `<leader>fb` to pick |
+| `<leader>cn` / `<leader>un`                | Notification history / dismiss all                                       |
+| `<leader>yp` / `<leader>yP` / `<leader>yl` | Yank file path to `+`: absolute / relative / relative:line               |
+| `<leader>yg`                               | Yank git permalink for the current line                                  |
+| `]]` / `[[`                                | LSP word: next / previous reference                                      |
+| `[i` / `]i`                                | Snacks scope: jump to top / bottom edge                                  |
 
 ## Language-specific
 

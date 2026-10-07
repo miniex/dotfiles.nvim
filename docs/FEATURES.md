@@ -34,11 +34,11 @@
 
 ## Editor
 
-- **Files** — `<leader>e` opens oil: edit a directory as a buffer (rename / move / delete-to-trash, LSP-aware), current path in the winbar, git status per file / folder (oil-git: colored name + `~` `+` `?`, folders `*`); it doesn't hijack directory buffers, so `nvim <dir>` still lands on the dashboard. `<leader>-` opens yazi, a full-screen TUI file manager (needs the `yazi` binary).
+- **Files** — `<leader>e` opens oil: edit a directory as a buffer (rename / move / delete-to-trash, LSP-aware), current path in the winbar, git status per file / folder (oil-git: colored name + `~` `+` `?`, folders `*`); it doesn't hijack directory buffers, so `nvim <dir>` still lands on the dashboard.
 - **Big files** — snacks.bigfile degrades >2 MiB files; lighter guards from 1 MiB. Size tiers in [CUSTOMIZATION](CUSTOMIZATION.md#big-file-handling).
-- **Navigation** — flash (`s` / `S`), Trouble (`<leader>xx`), aerial (`<leader>cO`), mini.bracketed (`[b`/`]b` buffers, `[j`/`]j` jumplist, `[u`/`]u` undo, `[l`/`]l` loclist), smart-splits (`<C-hjkl>` across nvim splits + tmux/wezterm panes).
+- **Navigation** — flash (`s` / `S`), Trouble (`<leader>xx`), aerial (`<leader>cO`), stock `[b`/`]b` buffers and `[l`/`]l` loclist, smart-splits (`<C-hjkl>` across nvim splits + tmux/wezterm panes).
 - **Search & replace** — grug-far (`<leader>rr`).
-- **Quickfix** — quicker.nvim (editable QF), nvim-bqf (preview), Trouble (`auto_close` on jump, main-window preview; `<leader>x*` lists diagnostics / refs / symbols / call hierarchy / type defs / implementations).
+- **Quickfix** — quicker.nvim (editable QF, `>`/`<` context), Trouble (`auto_close` on jump, main-window preview; `<leader>x*` lists diagnostics / refs / symbols / call hierarchy / type defs / implementations).
 - **Misc** — mini.surround (`gs*`), mini.ai (`a`/`i` brackets/quotes/tags + `aN`/`aL` next/last, `ag` buffer / `ad` number), mini.move (`<A-hjkl>` line shuffle), mini.operators (`gR` replace-with-register / `gX` exchange / `gS` sort / `g=` eval), built-in `gc` (treesitter-aware; `gco` / `gcO` / `gcA` rebuilt in `keymaps.lua`), todo-comments, tiny-code-action (`<leader>ca` picker with per-action diff preview), nvim-colorizer (6/8-digit hex everywhere; 3/4-digit `#RGB` shorthand only in CSS-family, so issue/PR refs like `#590` aren't colorized; skipped on big/minified files), rainbow-delimiters (on-theme nested bracket-pair colors; disabled on big/minified files), 0.12 built-ins `:Undotree` and `:DiffTool` (non-git side-by-side file/dir diff), hex.nvim (`<leader>ux` toggle hex view).
 - **Persistence** — `persistence.nvim` auto-restores on bare `nvim` (skipping headless, empty sessions, and `nvim <file>` launches, which neither restore nor save). Only window-visible buffers persist (no hidden `badd`). Neotest summary window state persists across sessions. Sessions are scoped per git branch (feature branches keep distinct layouts; main/master share the base session).
 - **Width-aware `textwidth`** — `rust` / `python` / `lua` / `elixir` / `ocaml` / `c`-`cpp` / `sql` / `toml` set `textwidth` (the `gq`/`gw` reflow width) to the formatter's default line width (`.editorconfig` `max_line_length` overrides) — no visual ruler. See [CUSTOMIZATION](CUSTOMIZATION.md#formatter-width).
@@ -50,7 +50,7 @@
 - **Buffers** — no tabline. `<S-h>` / `<S-l>` or `[b` / `]b` cycle, `<leader>fb` picks.
 - **cursor bloom** — `✿` sign on the current line in mode color (custom autocmd in [`lua/config/cursor-bloom.lua`](../lua/config/cursor-bloom.lua)). Refresh defer skips picker/terminal/chrome buffers.
 - **which-key** — hint floats pinned to the bottom row at 85% editor width (centered); height grows with content. `timeoutlen=300`.
-- **Floating windows** — every float in the config (LSP hover / signature / diagnostic, snacks panels, fzf-lua, fff, blink.cmp menu / signature / docs, bqf, neotest, which-key, Mason, lazy, lazygit, checkhealth) shares one look: `✿` flower-cornered border (`✿─✿│✿─✿│`), pink edge, transparent background, centered `✿ title ✿`. Configured in [`lua/config/globals.lua`](../lua/config/globals.lua).
+- **Floating windows** — every float in the config (LSP hover / signature / diagnostic, snacks panels, fzf-lua, fff, blink.cmp menu / signature / docs, neotest, which-key, Mason, lazy, lazygit, checkhealth) shares one look: `✿` flower-cornered border (`✿─✿│✿─✿│`), pink edge, transparent background, centered `✿ title ✿`. Configured in [`lua/config/globals.lua`](../lua/config/globals.lua).
 - **flash labels** — damin pink.
 - **indent guides** — uniform `┊` dotted guides (snacks.indent), no scope highlight (`[i`/`]i` still jump to scope edges); chunk off.
 - **zen** — `<leader>uz` focus mode hides the statusline (flower-bordered window).
