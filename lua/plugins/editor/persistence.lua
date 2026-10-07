@@ -97,7 +97,7 @@ return {
         },
     },
     opts = {
-        options = { "curdir", "tabpages", "winsize", "help", "globals", "skiprtp" },
+        options = { "curdir", "winsize", "help", "globals", "skiprtp" },
         -- Per-branch sessions (branch name appended, except main/master).
         branch = true,
     },

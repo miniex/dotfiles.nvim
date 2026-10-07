@@ -7,26 +7,17 @@ M.RATIO = 0.85
 local cache = { key = "", w = 0, h = 0, r = 0, c = 0 }
 
 function M.geom()
-    local has_tabline = vim.o.showtabline == 2 or (vim.o.showtabline == 1 and #vim.api.nvim_list_tabpages() > 1)
+    -- No tabline (showtabline=0), so only the statusline eats a row.
     local has_statusline = vim.o.laststatus > 0
-    local key = string.format(
-        "%d:%d:%d:%s:%s",
-        vim.o.lines,
-        vim.o.columns,
-        vim.o.cmdheight,
-        has_tabline and "T" or "F",
-        has_statusline and "T" or "F"
-    )
+    local key = string.format("%d:%d:%d:%s", vim.o.lines, vim.o.columns, vim.o.cmdheight, has_statusline and "T" or "F")
     if cache.key == key then
         return cache.w, cache.h, cache.r, cache.c
     end
-    local top_edge = has_tabline and 1 or 0
-    local bottom_edge = vim.o.lines - vim.o.cmdheight - (has_statusline and 1 or 0)
-    local usable = bottom_edge - top_edge
+    local usable = vim.o.lines - vim.o.cmdheight - (has_statusline and 1 or 0)
     -- Clamp to >=1: a short terminal (large cmdheight) can make usable negative → invalid geometry.
     local h = math.max(1, math.min(math.floor(vim.o.lines * M.RATIO), usable))
     local w = math.max(1, math.floor(vim.o.columns * M.RATIO))
-    local r = top_edge + math.floor((usable - h) / 2) + 1
+    local r = math.floor((usable - h) / 2) + 1
     local c = math.floor((vim.o.columns - w) / 2)
     cache.key, cache.w, cache.h, cache.r, cache.c = key, w, h, r, c
     return w, h, r, c

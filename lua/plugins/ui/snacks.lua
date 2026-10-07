@@ -508,10 +508,7 @@ return {
             },
         },
         words = { enabled = true, debounce = 100, notify_jump = true },
-        zen = {
-            enabled = true,
-            show = { statusline = false, tabline = false },
-        },
+        zen = { enabled = true },
         -- Override snacks's built-in window styles. Each style has its own default
         -- border; pinning them all to flower keeps the UI consistent.
         styles = {
@@ -562,7 +559,7 @@ return {
         {
             "<leader>fB",
             function()
-                -- Live grep scoped to open buffers (the tab list), not the whole project.
+                -- Live grep scoped to open buffers, not the whole project.
                 Snacks.picker.grep_buffers()
             end,
             desc = "Grep Open Buffers",
