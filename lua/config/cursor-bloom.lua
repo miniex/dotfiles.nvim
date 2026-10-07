@@ -43,9 +43,13 @@ local function refresh_sign()
         vim.api.nvim_set_hl(0, "CursorBloomCurrent", { fg = color, bold = true })
         last_color = color
     end
-    -- Skip rewrite when buf+line unchanged (horizontal motion).
-    if buf == last_buf and line == last_line then
-        return
+    -- Skip rewrite when buf+line unchanged (horizontal motion), unless an edit
+    -- (O, linewise P, undo) carried the mark to another row.
+    if buf == last_buf and line == last_line and last_id then
+        local pos = vim.api.nvim_buf_get_extmark_by_id(buf, sign_ns, last_id, {})
+        if pos[1] == line then
+            return
+        end
     end
     -- Delete just the prior mark by id instead of clearing the whole namespace.
     if last_id and last_id_buf and vim.api.nvim_buf_is_valid(last_id_buf) then
@@ -89,6 +93,14 @@ local bloom_group = vim.api.nvim_create_augroup("CursorBloomSign", { clear = tru
 vim.api.nvim_create_autocmd({ "CursorMoved", "CursorMovedI", "ModeChanged", "BufEnter" }, {
     group = bloom_group,
     callback = schedule_refresh,
+})
+-- :colorscheme clears CursorBloomCurrent; force the hl to be set again.
+vim.api.nvim_create_autocmd("ColorScheme", {
+    group = bloom_group,
+    callback = function()
+        last_color = nil
+        schedule_refresh()
+    end,
 })
 -- Reset trackers on wipe, else a reused bufnr on the same line skips the sign.
 vim.api.nvim_create_autocmd("BufWipeout", {

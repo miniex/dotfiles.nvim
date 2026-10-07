@@ -124,10 +124,10 @@ return {
                 -- Actions
                 map("n", "<leader>ghs", gs.stage_hunk, "Stage Hunk")
                 map("n", "<leader>ghr", gs.reset_hunk, "Reset Hunk")
-                map("v", "<leader>ghs", function()
+                map("x", "<leader>ghs", function()
                     gs.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
                 end, "Stage Hunk")
-                map("v", "<leader>ghr", function()
+                map("x", "<leader>ghr", function()
                     gs.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
                 end, "Reset Hunk")
                 map("n", "<leader>ghS", gs.stage_buffer, "Stage Buffer")

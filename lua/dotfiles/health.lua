@@ -191,6 +191,9 @@ function M.check()
             h.warn(t .. " missing")
         end
     end
+    if vim.fn.has("linux") == 1 and not exe("inotifywait") then
+        h.warn("inotifywait missing — LSP file watching off (inotify-tools)")
+    end
 
     h.start("Terminal & fonts")
     local term = vim.env.TERM or ""

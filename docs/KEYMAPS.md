@@ -126,7 +126,7 @@ Bare `nvim` (and `nvim <dir>`, which cd's in) auto-restores the cwd session (ski
 | `<leader>cM`                | Toggle multi-diagnostic on cursorline                                |
 | `<leader>ud`                | Toggle all diagnostics (Snacks)                                      |
 | `<leader>cL`                | Run CodeLens (rust-analyzer, gopls, elixir-ls, ocamllsp, lua_ls)     |
-| `<leader>cs`                | `:LspRestart` (recover from a hung server)                           |
+| `<leader>cs`                | `:lsp restart` (recover from a hung server)                           |
 | `<leader>cO` / `<leader>cN` | aerial: outline / outline nav                                        |
 | `[o` / `]o`                 | aerial: previous / next symbol                                       |
 | `<leader>cm`                | Open Mason                                                           |
@@ -177,7 +177,7 @@ Bare `nvim` (and `nvim <dir>`, which cd's in) auto-restores the cwd session (ski
 | `<leader>us` / `<leader>ur` | n     | Snacks toggle: spell / relative number                                    |
 | `<leader>ul` / `<leader>uo` | n     | Snacks toggle: line number / conceal                                      |
 | `<leader>ui`                | n     | Snacks toggle: list chars (whitespace)                                    |
-| `<leader>uT` / `<leader>ux` | n     | Toggle treesitter highlight (Snacks) / hex view                           |
+| `<leader>uT`                | n     | Toggle treesitter highlight (Snacks)                                      |
 | `<leader>ut`                | n     | Inspect treesitter tree (`:InspectTree`)                                  |
 | `<leader>ug`                | n     | Snacks toggle: indent guides                                              |
 | `[x`                        | n     | Jump to context start                                                     |

@@ -1,20 +1,12 @@
+-- The bundled root_dir calls on_dir(nil) when no config is found, which still
+-- attaches to every tsx/jsx buffer. GraphQL projects only.
 return {
-    filetypes = { "graphql", "typescriptreact", "javascriptreact" },
-    -- Scope to graphql projects; .git deliberately omitted so plain React/TS repos don't attach.
-    root_markers = {
-        ".graphqlrc",
-        ".graphqlrc.json",
-        ".graphqlrc.yaml",
-        ".graphqlrc.yml",
-        ".graphqlrc.toml",
-        ".graphqlrc.js",
-        ".graphqlrc.ts",
-        "graphql.config.json",
-        "graphql.config.yaml",
-        "graphql.config.yml",
-        "graphql.config.toml",
-        "graphql.config.js",
-        "graphql.config.ts",
-        ".graphqlconfig",
-    },
+    root_dir = function(bufnr, on_dir)
+        local root = vim.fs.root(bufnr, function(name)
+            return name:match("^%.graphqlrc") or name:match("^%.?graphql%.config%.") or name == ".graphqlconfig"
+        end)
+        if root then
+            on_dir(root)
+        end
+    end,
 }

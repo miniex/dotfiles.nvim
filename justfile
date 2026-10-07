@@ -228,6 +228,9 @@ check:
     if have lazygit; then ok "lazygit"; else warn "lazygit not on PATH — <leader>gg won't work"; fi
     if have fzf; then ok "fzf"; else warn "fzf binary not on PATH — fzf-lua loses native fuzzy"; fi
     if have magick; then ok "ImageMagick (magick)"; else warn "magick missing — snacks image previews disabled"; fi
+    if [ "$(uname -s)" = Linux ]; then
+        if have inotifywait; then ok "inotifywait"; else warn "inotifywait missing — LSP file watching off (inotify-tools)"; fi
+    fi
 
     section "Dev tooling (format / lint — see CONTRIBUTING.md)"
     for t in stylua lua-language-server selene shfmt shellcheck; do

@@ -193,8 +193,11 @@ return {
                         insertTextMode = 1,
                     },
                 },
-                -- File watching: nvim defaults this off on Linux/BSD, so opt in for all servers.
-                workspace = { didChangeWatchedFiles = { dynamicRegistration = true } },
+                -- File watching: nvim keeps it off on Linux/BSD; without inotifywait its
+                -- fallback walks every dir (~200ms stall on open), so opt in only with it.
+                workspace = {
+                    didChangeWatchedFiles = { dynamicRegistration = vim.fn.executable("inotifywait") == 1 },
+                },
             }
             vim.lsp.config("*", { capabilities = capabilities, root_markers = { ".git" } })
 
@@ -294,7 +297,7 @@ return {
                 then
                     if not vim.b[bufnr]._lsp_inlay_done then
                         vim.b[bufnr]._lsp_inlay_done = true
-                        -- Enable once: re-enabling on a 2nd client / :LspRestart would override the user's toggle.
+                        -- Enable once: re-enabling on a 2nd client / :lsp restart would override the user's toggle.
                         if vim.api.nvim_get_mode().mode:sub(1, 1) == "i" then
                             vim.b[bufnr]._inlay_hint_was_on = true -- InsertLeave turns it on
                         else
@@ -475,7 +478,7 @@ return {
                             ["end"] = vim.api.nvim_buf_get_mark(0, ">"),
                         })
                     end, "Format range (LSP)")
-                    map("n", "<leader>cs", "<cmd>LspRestart<cr>", "LSP Restart")
+                    map("n", "<leader>cs", "<cmd>lsp restart<cr>", "LSP Restart")
                     -- inc-rename: load before typing; lazy's :IncRename stub has no preview.
                     map("n", "<leader>rn", function()
                         require("inc_rename")

@@ -18,9 +18,9 @@ return {
 
                     -- luasnip keys by exact filetype; extend to share across variants.
                     local ls = require("luasnip")
-                    ls.filetype_extend("typescriptreact", { "typescript", "javascript" })
+                    -- TS snippets are typed copies of the JS ones; extending JS would list both.
+                    ls.filetype_extend("typescriptreact", { "typescript" })
                     ls.filetype_extend("javascriptreact", { "javascript" })
-                    ls.filetype_extend("typescript", { "javascript" })
                     ls.filetype_extend("bash", { "sh" })
                     ls.filetype_extend("zsh", { "sh" })
                     ls.filetype_extend("nasm", { "asm" })

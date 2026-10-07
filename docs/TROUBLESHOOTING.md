@@ -2,7 +2,7 @@
 
 | Issue                                               | Check                                                                                                                                                                                          |
 | --------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| LSP not attaching                                   | `:Mason`, `:LspInfo`, `:LspLog`                                                                                                                                                                |
+| LSP not attaching                                   | `:Mason`, `:checkhealth vim.lsp` (clients + log path)                                                                                                                                                                |
 | LSP settings not applied                            | `after/lsp/<server>.lua` exists; server is in `lang_servers.lua` under an enabled lang; not restated via `nvim-lspconfig.opts.servers.<name>`                                                  |
 | LSP uses the wrong project root                     | nvim-lspconfig bundles a `root_dir` for some servers (e.g. svelte) that shadows `root_markers` in `after/lsp/<server>.lua`; set a `root_dir` there instead                                     |
 | Input freezes opening a large project               | rust-analyzer watches server-side; the global client-watch opt-in can stall a huge tree, scoped off per server                                                                                 |
@@ -28,8 +28,8 @@
 | Dashboard preceded by flickering `[No Name]` buffer | Stale persistence session for the cwd. Delete it: `rm ~/.local/state/nvim/sessions/$(pwd \| tr / %).vim`                                                                                       |
 | Typing lag in `<leader>t` / pickers (fzf / fff)     | New picker float animating? Add its filetype to `filetypes_disabled` in `lua/plugins/ui/smear-cursor.lua`.                                                                                     |
 | Search match count missing in a huge file           | Expected — skipped in buffers >20000 lines (`searchcount()` rescans per cursor move). Raise `SEARCHCOUNT_MAX_LINES` in `lua/config/statusline.lua`.                                            |
-| basedpyright "enumeration > 10s" / slow Python open | Heavy build / venv / vendored trees are excluded from enumeration in `after/lsp/basedpyright.lua`; `:LspRestart` to apply. Odd layout still slow? Add a project `pyrightconfig.json` `exclude` |
+| basedpyright "enumeration > 10s" / slow Python open | Heavy build / venv / vendored trees are excluded from enumeration in `after/lsp/basedpyright.lua`; `:lsp restart` to apply. Odd layout still slow? Add a project `pyrightconfig.json` `exclude` |
 | Python imports unresolved / wrong interpreter       | venv auto-detected (`$VIRTUAL_ENV` / `.venv` / `venv`); `:LspPyrightSetPythonPath <python>` switches it                                                                                        |
-| Mason LSP "missing from PATH / not executable"      | Shows installed in `:Mason` but the `mason/bin/<server>` symlink is missing (package dir intact). `:MasonInstall <server>` recreates it, then `:LspRestart`.                                   |
+| Mason LSP "missing from PATH / not executable"      | Shows installed in `:Mason` but the `mason/bin/<server>` symlink is missing (package dir intact). `:MasonInstall <server>` recreates it, then `:lsp restart`.                                   |
 
 > nvim-treesitter `master` is archived and incompatible with 0.12; pinned to `main`.

@@ -23,7 +23,7 @@ Enabling a language installs its Mason tools automatically on the next launch (m
 
 Language-agnostic servers (e.g. `typos_lsp`) aren't mapped per-language — they're appended in `enabled_servers()` (`lua/plugins/lsp/init.lua`) so they run regardless of `langs.lua`.
 
-Client-side file watching (`didChangeWatchedFiles`) is on for every server, which can stall a large project on open. Fix per server: a server-side watcher (rust-analyzer's `files.watcher = "server"`) or `dynamicRegistration = false` in its `after/lsp/<server>.lua`.
+Client-side file watching (`didChangeWatchedFiles`) is on for every server when `inotifywait` exists, which can stall a large project on open. Fix per server: a server-side watcher (rust-analyzer's `files.watcher = "server"`) or `dynamicRegistration = false` in its `after/lsp/<server>.lua`.
 
 Linters → `lua/plugins/lsp/lint.lua`. Non-LSP CLI tools → `mason-tool-installer.nvim` `ensure_installed`. CodeLLDB-based DAP (C/C++, Zig, Nim, Rust) → shared resolver `lua/config/codelldb.lua`. Repeated lang-spec fragments (mason / treesitter / blink / lint / code-action keys) have one-line helpers in `lua/config/lang.lua`; DAP mason-binary guards in `lua/config/dap.lua`. JSON/YAML SchemaStore wiring → shared `lua/config/lsp_schemastore.lua`. Semantic tokens are disabled for vtsls / basedpyright / clangd centrally in `lua/plugins/lsp/init.lua` (`SEMANTIC_TOKENS_OFF`).
 

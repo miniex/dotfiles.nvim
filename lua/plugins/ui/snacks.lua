@@ -195,7 +195,10 @@ return {
                 local h = self:size().height
                 local result = {}
                 local sticker = vim.fn.stdpath("config") .. "/assets/dashboard_sticker.ansi"
-                if vim.fn.filereadable(sticker) == 1 then
+                local has_sticker = vim.fn.filereadable(sticker) == 1
+                -- Rows: sticker 25 · header 6 · keys 4 · recent 7 · footer 2.
+                local base = has_sticker and 25 or 0
+                if has_sticker then
                     table.insert(result, {
                         section = "terminal",
                         cmd = "cat " .. vim.fn.shellescape(sticker),
@@ -206,7 +209,7 @@ return {
                     })
                 end
 
-                if h >= 40 then
+                if h >= math.max(40, base + 19) then
                     table.insert(result, {
                         text = { [[ _   _  _____   ___  __     __ ___  __  __ ]], hl = "DashHeader1" },
                         align = "center",
@@ -259,7 +262,7 @@ return {
                     padding = 1,
                 })
 
-                if h >= 34 then
+                if h >= math.max(34, base + 13) then
                     table.insert(
                         result,
                         { icon = " ", title = "Recent Files", section = "recent_files", limit = 5, padding = 1 }
@@ -565,7 +568,7 @@ return {
         {
             "<leader>Ph",
             function()
-                Snacks.profiler.highlights()
+                Snacks.profiler.highlight()
             end,
             desc = "Profiler Highlights",
         },
@@ -630,7 +633,7 @@ return {
             function()
                 Snacks.gitbrowse()
             end,
-            mode = { "n", "v" },
+            mode = { "n", "x" },
             desc = "Git Browse (open in browser)",
         },
         {

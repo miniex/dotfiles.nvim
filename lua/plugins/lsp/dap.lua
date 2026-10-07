@@ -237,7 +237,7 @@ return {
                 function()
                     require("dapui").eval()
                 end,
-                mode = { "n", "v" },
+                mode = { "n", "x" },
                 desc = "Eval (cursor / selection)",
             },
             {
@@ -245,7 +245,7 @@ return {
                 function()
                     require("dap.ui.widgets").hover()
                 end,
-                mode = { "n", "v" },
+                mode = { "n", "x" },
                 desc = "Hover value",
             },
             {

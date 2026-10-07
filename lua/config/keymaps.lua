@@ -32,8 +32,8 @@ map("<leader>h", ":nohlsearch<CR>", "n", "Clear search highlight")
 map("<Esc>", "<cmd>nohlsearch<cr>", "n", "Clear search highlight")
 
 -- indent
-map("<", "<gv", "v", "Outdent (keep selection)")
-map(">", ">gv", "v", "Indent (keep selection)")
+map("<", "<gv", "x", "Outdent (keep selection)")
+map(">", ">gv", "x", "Indent (keep selection)")
 
 -- save (in buffer group; <leader>w / delete is adjacent)
 map("<leader>bs", ":w<CR>", "n", "Save file")
@@ -51,7 +51,11 @@ map("<leader>p", '"_dP', "x", "Paste over (no yank)")
 map("<leader>P", '"_dP`[v`]=', "x", "Paste over + reindent")
 
 -- join keeping cursor position; gJ (no inserted space) on <leader>j
-map("J", "mzJ`z", "n", "Join lines (keep cursor)")
+map("J", function()
+    local pos = vim.api.nvim_win_get_cursor(0)
+    vim.cmd("normal! " .. vim.v.count1 .. "J")
+    vim.api.nvim_win_set_cursor(0, pos)
+end, "n", "Join lines (keep cursor)")
 map("<leader>j", "gJ", "n", "Join lines (no space)")
 
 -- gco / gcO / gcA: not in 0.12's built-in gc. The marker is probed with `gcc` on a

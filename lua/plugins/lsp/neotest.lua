@@ -167,7 +167,9 @@ return {
                 return require("neotest-python")({ runner = "pytest", dap = { justMyCode = false } })
             end)
             add(function()
-                return require("neotest-golang")({ dap_go_enabled = true })
+                -- gotestsum (mason) parses output more reliably than `go test -json`.
+                local runner = vim.fn.executable("gotestsum") == 1 and "gotestsum" or "go"
+                return require("neotest-golang")({ runner = runner })
             end)
             add(function()
                 return require("neotest-elixir")

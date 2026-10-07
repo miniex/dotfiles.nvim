@@ -22,7 +22,6 @@ local common = {
 }
 
 return {
-    root_markers = { "tsconfig.json", "jsconfig.json", "package.json", ".git" },
     -- Semantic tokens off centrally (lsp/init.lua).
     settings = {
         vtsls = {

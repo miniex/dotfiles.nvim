@@ -1,7 +1,6 @@
 -- Atomic toggle state for <leader>cl; avoids RMW on the global config.
 local virt_lines_on = false
 
--- Mutable for the <leader>cM toggle.
 local tiny_opts = {
     preset = "modern",
     transparent_bg = true,
@@ -61,10 +60,11 @@ return {
             {
                 "<leader>cM",
                 function()
-                    tiny_opts.options.show_all_diags_on_cursorline = not tiny_opts.options.show_all_diags_on_cursorline
-                    require("tiny-inline-diagnostic").setup(tiny_opts)
+                    -- Not setup() again: that drops the attached buffers' autocmds.
+                    local tiny = require("tiny-inline-diagnostic")
+                    tiny.toggle_all_diags_on_cursorline()
                     vim.notify(
-                        "All diagnostics on cursorline: " .. tostring(tiny_opts.options.show_all_diags_on_cursorline)
+                        "All diagnostics on cursorline: " .. tostring(tiny.config.options.show_all_diags_on_cursorline)
                     )
                 end,
                 desc = "Toggle multi-diagnostic on cursorline",

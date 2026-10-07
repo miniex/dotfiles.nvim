@@ -14,7 +14,7 @@ return {
             function()
                 require("grug-far").with_visual_selection()
             end,
-            mode = "v",
+            mode = "x",
             desc = "Search & Replace selection (grug-far)",
         },
         {
@@ -31,7 +31,7 @@ return {
             end,
             desc = "Search & Replace (current word)",
         },
-        { "<leader>ri", ":GrugFarWithin<cr>", mode = "v", desc = "Search & Replace within range" },
+        { "<leader>ri", ":GrugFarWithin<cr>", mode = "x", desc = "Search & Replace within range" },
     },
     opts = {},
 }

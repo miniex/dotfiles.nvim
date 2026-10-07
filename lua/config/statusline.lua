@@ -100,22 +100,26 @@ vim.api.nvim_create_autocmd("LspProgress", {
     end,
 })
 
--- searchcount() rescans the buffer; cache it per cursor move / new search. Skip in
--- huge buffers: a sparse pattern scans the whole file (~24ms/move at 200k lines).
+-- searchcount() rescans the buffer; cache it by pattern + changedtick + cursor (an
+-- autocmd can't: CmdlineLeave fires before @/ updates). Skip in huge buffers: a
+-- sparse pattern scans the whole file (~24ms/move at 200k lines).
 local SEARCHCOUNT_MAX_LINES = 20000
-local search = ""
-vim.api.nvim_create_autocmd({ "CursorMoved", "CmdlineLeave" }, {
-    group = group,
-    callback = function()
-        search = ""
-        if vim.v.hlsearch == 1 and vim.api.nvim_buf_line_count(0) <= SEARCHCOUNT_MAX_LINES then
-            local ok, s = pcall(vim.fn.searchcount, { maxcount = 999, timeout = 30 })
-            if ok and s.total and s.total > 0 then
-                search = ("[%d/%d]"):format(s.current, s.total)
-            end
+local search_key, search = nil, ""
+local function search_count(buf)
+    if vim.v.hlsearch == 0 or vim.api.nvim_buf_line_count(buf) > SEARCHCOUNT_MAX_LINES then
+        return ""
+    end
+    local cur = vim.api.nvim_win_get_cursor(0)
+    local key = table.concat({ buf, vim.fn.getreg("/"), vim.b[buf].changedtick, cur[1], cur[2] }, "\0")
+    if key ~= search_key then
+        search_key, search = key, ""
+        local ok, s = pcall(vim.fn.searchcount, { maxcount = 999, timeout = 30 })
+        if ok and s.total and s.total > 0 then
+            search = ("[%d/%d]"):format(s.current, s.total)
         end
-    end,
-})
+    end
+    return search
+end
 
 vim.api.nvim_create_autocmd({ "RecordingEnter", "RecordingLeave", "DiagnosticChanged" }, {
     group = group,
@@ -209,8 +213,9 @@ function M.render()
     if (enc ~= "" and enc ~= "utf-8") or ff ~= "unix" then
         r[#r + 1] = seg("StlPink", (enc ~= "utf-8" and enc .. " " or "") .. ff)
     end
-    if vim.v.hlsearch == 1 and search ~= "" then
-        r[#r + 1] = seg("StlMuted", search)
+    local sc = search_count(buf)
+    if sc ~= "" then
+        r[#r + 1] = seg("StlMuted", sc)
     end
     r[#r + 1] = seg("StlFile", "%l:%c") .. seg("StlMuted", " %P ")
 

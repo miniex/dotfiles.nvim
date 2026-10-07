@@ -198,5 +198,7 @@ vim.api.nvim_create_autocmd("FileType", {
     pattern = vim.tbl_keys(TEXTWIDTH),
     callback = function(args)
         vim.bo[args.buf].textwidth = TEXTWIDTH[args.match]
+        -- gq/gw width only: ftplugins leave `t` set, which hard-wraps while typing.
+        vim.opt_local.formatoptions:remove("t")
     end,
 })

@@ -1,5 +1,4 @@
 return {
-    root_markers = { "go.work", "go.mod", ".git" },
     settings = {
         gopls = {
             codelenses = {
