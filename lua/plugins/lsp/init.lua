@@ -157,16 +157,42 @@ return {
                 return
             end
 
-            -- Advertise blink.cmp's extra capabilities (snippets, resolve) to
-            -- every server; native LSP merges this "*" config over its defaults.
-            local capabilities = {}
-            local ok_blink, blink = pcall(require, "blink.cmp")
-            if ok_blink then
-                capabilities = blink.get_lsp_capabilities({}, false)
-            end
-            -- File watching: nvim defaults this off on Linux/BSD, so opt in for all servers.
-            capabilities.workspace = capabilities.workspace or {}
-            capabilities.workspace.didChangeWatchedFiles = { dynamicRegistration = true }
+            -- blink.cmp's completion capabilities (blink/cmp/sources/lib get_lsp_capabilities),
+            -- inlined: require("blink.cmp") here would pull blink + LuaSnip (~23ms) into
+            -- every file open instead of the first InsertEnter. Native LSP merges "*" over defaults.
+            local capabilities = {
+                textDocument = {
+                    completion = {
+                        completionItem = {
+                            snippetSupport = true,
+                            commitCharactersSupport = false,
+                            documentationFormat = { "markdown", "plaintext" },
+                            deprecatedSupport = true,
+                            preselectSupport = false,
+                            tagSupport = { valueSet = { 1 } },
+                            insertReplaceSupport = true,
+                            resolveSupport = {
+                                properties = { "documentation", "detail", "additionalTextEdits", "command", "data" },
+                            },
+                            insertTextModeSupport = { valueSet = { 1 } },
+                            labelDetailsSupport = true,
+                        },
+                        completionList = {
+                            itemDefaults = {
+                                "commitCharacters",
+                                "editRange",
+                                "insertTextFormat",
+                                "insertTextMode",
+                                "data",
+                            },
+                        },
+                        contextSupport = true,
+                        insertTextMode = 1,
+                    },
+                },
+                -- File watching: nvim defaults this off on Linux/BSD, so opt in for all servers.
+                workspace = { didChangeWatchedFiles = { dynamicRegistration = true } },
+            }
             vim.lsp.config("*", { capabilities = capabilities, root_markers = { ".git" } })
 
             -- Vue (Volar hybrid): attach vtsls to .vue + load @vue/typescript-plugin when

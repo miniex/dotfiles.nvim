@@ -1,7 +1,17 @@
 -- Send-to-REPL for interactive evaluation (uses iron's built-in REPL definitions).
 return {
     "Vigemus/iron.nvim",
-    ft = { "python", "lua", "sh", "bash", "elixir", "javascript", "typescript" },
+    -- Loaded on first REPL key; iron's setup() then owns these maps and lazy replays the key.
+    cmd = { "IronRepl", "IronRestart", "IronFocus", "IronHide" },
+    keys = {
+        { "<leader>ii", desc = "REPL toggle" },
+        { "<leader>iR", desc = "REPL restart" },
+        { "<leader>is", mode = { "n", "x" }, desc = "REPL send" },
+        { "<leader>il", desc = "REPL send line" },
+        { "<leader>if", desc = "REPL send file" },
+        { "<leader>iq", desc = "REPL exit" },
+        { "<leader>ic", desc = "REPL clear" },
+    },
     config = function()
         local iron = require("iron.core")
         iron.setup({

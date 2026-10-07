@@ -1,8 +1,8 @@
--- Code-action picker with a per-action diff preview. Triggered from <leader>ca
--- (mapped in lsp/init.lua on_attach).
+-- Code-action picker with a per-action diff preview. Loaded on first <leader>ca
+-- (require() in lsp/init.lua on_attach), so fzf-lua stays out of LspAttach.
 return {
     "rachartier/tiny-code-action.nvim",
-    event = "LspAttach",
+    lazy = true,
     dependencies = { "ibhagwan/fzf-lua" },
     opts = {
         -- "vim" backend needs no external diff binary (delta/difftastic would).
