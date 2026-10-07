@@ -30,7 +30,7 @@
 - **fff** — Rust-backed file finder. `<leader>ff` for cwd, `<leader>fF` for current dir.
 - **snacks.picker** — recent / buffers / help / TODOs / projects. `<leader>fr` / `<leader>fb` / `<leader>fh` / `<leader>ft` / `<leader>fp` (projects: cd + restore session). `<leader>fB` live-greps open buffers only; `<leader>fi` / `<leader>fH` insert an icon / inspect highlight groups.
 - **fzf-lua** — live grep (`<leader>fg`) + git / LSP / grep / lines / snippets / history under `<leader>z*`.
-- fff and snacks share the same 0.85 × 0.85 chrome-aware rectangle. The snacks picker's preview overlaps the list's right border by 1 column so a single `✿│✿` divider is drawn between them (matches fff's "shared middle flower" effect).
+- fff and snacks share the same 0.85 × 0.85 chrome-aware rectangle. Picker previews (snacks, fzf-lua) drop their left border so the list's right border is a single `✿│✿` divider; fff takes flower borders via `layout.border`.
 
 ## Editor
 
@@ -65,9 +65,9 @@ All modals share a single 0.85 × 0.85 chrome-aware rectangle defined in [`lua/c
 
 - snacks picker / terminal read it via function callbacks
 - lazy / Mason / lazygit get snapped by a synchronous `FileType` autocmd (no flash because the snap shares a frame with the open)
-- fzf-lua uses its own `winopts.on_create` hook (it sets filetype under `eventignore = all` so the FileType aligner misses it)
+- fzf-lua reads it from a `winopts` function
 - fff has its own chrome-aware layout that already matches
-- checkhealth opens as a native float (`vim.g.health.style`, nvim 0.12) and is dressed at creation by a `modal-floats` decorator — no report tab to flash
+- checkhealth opens as a native float (`vim.g.health.style`, nvim 0.12) — no report tab to flash
 
 A `VimResized` handler in `modal-geom.lua` also re-snaps every open modal, so the rectangle holds when you resize the terminal mid-session.
 
@@ -92,7 +92,7 @@ See [`lua/config/modal-floats.lua`](../lua/config/modal-floats.lua) for the mutu
 - **package-info** — npm dependency versions inline in `package.json` (`<leader>cv` / `cu` / `cU` / `cD`).
 - **crates.nvim** — Cargo.toml dependency versions inline (`<leader>cv` / `cF` / `cu` / `cU` / `cD`).
 - **kulala** — in-editor REST/HTTP client for `.http` / `.rest` files (`<leader>k*`): run / replay / inspect / copy-as-curl.
-- **health check** — `:checkhealth` opens as a centered flower modal (not a report tab). `:checkhealth dotfiles` is the in-editor host check (enabled langs → Mason servers, toolchains, DB client, clipboard, terminal/fonts); `just check` is the shell equivalent plus dev-tooling and a config-load smoke test.
+- **health check** — `:checkhealth` opens as a native float (not a report tab). `:checkhealth dotfiles` is the in-editor host check (enabled langs → Mason servers, toolchains, DB client, clipboard, terminal/fonts); `just check` is the shell equivalent plus dev-tooling and a config-load smoke test.
 
 ## Markdown
 

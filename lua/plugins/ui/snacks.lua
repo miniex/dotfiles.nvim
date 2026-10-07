@@ -1,33 +1,4 @@
--- Nudge picker preview's left border onto list's right border (col -1 /
--- width +1). List's zindex (52) wins the shared column, leaving one ✿│✿
--- divider. Preview is identified by snacks's scratch_ft (preview.lua:84).
-local function is_picker_preview_buf(buf)
-    return buf and buf ~= 0 and vim.api.nvim_buf_is_valid(buf) and vim.bo[buf].filetype == "snacks_picker_preview"
-end
-
-local function shift_preview(config)
-    return vim.tbl_extend("force", config, { col = config.col - 1, width = config.width + 1 })
-end
-
 local mgeom = require("config.modal-geom")
-
-require("config.modal-floats").add_decorator("snacks_picker_preview", {
-    open = function(buf, config)
-        if is_picker_preview_buf(buf) and config.col and config.width then
-            return shift_preview(config)
-        end
-    end,
-    set_config = function(win, config)
-        if
-            vim.api.nvim_win_is_valid(win)
-            and is_picker_preview_buf(vim.api.nvim_win_get_buf(win))
-            and config.col
-            and config.width
-        then
-            return shift_preview(config)
-        end
-    end,
-})
 
 -- Open or focus; never closes (Esc / <C-x> do that).
 -- nil `count` falls through to v:count1, so plain → #1, `2<leader>t` → #2.
@@ -403,7 +374,8 @@ return {
                             win = "preview",
                             title = " ✿ {preview} ✿ ",
                             title_pos = "center",
-                            border = vim.g.flower_border,
+                            -- No left edge: the list's right border is the one ✿│✿ divider.
+                            border = { "", "─", "✿", "│", "✿", "─", "", "" },
                             width = 0.5,
                         },
                     },

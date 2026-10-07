@@ -1,52 +1,5 @@
 local M = {}
 
--- One shared `nvim_open_win` / `nvim_win_set_config` patch. Plugins register
--- a named decorator instead of wrapping the APIs themselves. Each decorator
--- returns a modified config or nil to leave it alone.
-M._decorators = M._decorators or {}
-
-function M.add_decorator(name, spec)
-    M._decorators[name] = spec
-end
-
-if not vim.g._modal_float_api_patched then
-    vim.g._modal_float_api_patched = true
-    local orig_open = vim.api.nvim_open_win
-    ---@diagnostic disable-next-line: duplicate-set-field
-    vim.api.nvim_open_win = function(buf, enter, config)
-        -- Hot path (completion/hover open floats per keystroke): skip when no
-        -- decorator is registered.
-        if next(M._decorators) ~= nil then
-            for _, d in pairs(M._decorators) do
-                if d.open then
-                    -- pcall so one decorator can't break the chain.
-                    local ok, result = pcall(d.open, buf, config)
-                    if ok then
-                        config = result or config
-                    end
-                end
-            end
-        end
-        return orig_open(buf, enter, config)
-    end
-
-    local orig_set_config = vim.api.nvim_win_set_config
-    ---@diagnostic disable-next-line: duplicate-set-field
-    vim.api.nvim_win_set_config = function(win, config)
-        if next(M._decorators) ~= nil then
-            for _, d in pairs(M._decorators) do
-                if d.set_config then
-                    local ok, result = pcall(d.set_config, win, config)
-                    if ok then
-                        config = result or config
-                    end
-                end
-            end
-        end
-        return orig_set_config(win, config)
-    end
-end
-
 -- Modal floats are mutually exclusive: opening one closes the others.
 -- Auxiliary floats (hover, completion, signature, notifier, flash,
 -- snacks.input, which-key) are intentionally absent — they stack.
@@ -107,62 +60,8 @@ vim.api.nvim_create_autocmd("FileType", {
     end,
 })
 
--- `:checkhealth` renders natively in a float (nvim 0.12 `vim.g.health.style`) — no report
--- tab to flash. That float is a `vim.lsp.util.open_floating_preview`; a flag around _check
--- lets the decorator claim it and stamp our modal geometry onto its config at creation.
+-- `:checkhealth` renders natively in a float (nvim 0.12 `vim.g.health.style`).
 vim.g.health = vim.tbl_deep_extend("force", vim.g.health or {}, { style = "float" })
-
-local building_health = false
-local health_buf -- the report preview's buffer, claimed on its open
-local function style_health(config)
-    local rect = require("config.modal-geom").inner_rect()
-    -- Force editor-relative NW anchoring: open_floating_preview anchors to the cursor, so
-    -- without this our row/col get read against a SW/SE anchor and the float flies top-left.
-    config.relative = "editor"
-    config.win = nil
-    config.bufpos = nil
-    config.anchor = "NW"
-    config.row, config.col = rect.row, rect.col
-    config.width, config.height = rect.width, rect.height
-    config.border = vim.g.flower_border
-    config.title = vim.g.flower_title("checkhealth")
-    config.title_pos = "center"
-    return config
-end
-M.add_decorator("checkhealth", {
-    -- The report preview is the first editor float _check opens; claim its buffer so we
-    -- style only it — not ui2's progress-message float, which also moves during the run.
-    open = function(buf, c)
-        if building_health and not health_buf and c.relative ~= "" then
-            health_buf = buf
-        end
-        if buf == health_buf then
-            return style_health(c)
-        end
-    end,
-    set_config = function(win, c)
-        if health_buf and vim.api.nvim_win_is_valid(win) and vim.api.nvim_win_get_buf(win) == health_buf then
-            return style_health(c)
-        end
-    end,
-})
-
--- Reload-safe like the API patch above: re-requiring would re-wrap the wrapped _check.
-if not vim.g._modal_float_health_patched then
-    vim.g._modal_float_health_patched = true
-    local health = require("vim.health")
-    local orig_check = health._check
-    ---@diagnostic disable-next-line: duplicate-set-field
-    health._check = function(mods, plugin_names)
-        health_buf = nil
-        building_health = true
-        local ok, err = pcall(orig_check, mods, plugin_names)
-        building_health = false
-        if not ok then
-            error(err, 0)
-        end
-    end
-end
 
 vim.api.nvim_create_autocmd("FileType", {
     group = vim.api.nvim_create_augroup("modal-floats-checkhealth", { clear = true }),
