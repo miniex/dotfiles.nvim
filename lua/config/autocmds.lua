@@ -31,46 +31,6 @@ vim.api.nvim_create_autocmd({ "FocusGained", "TermClose", "TermLeave" }, {
     end,
 })
 
--- neo-tree's git column lags on submodule / terminal git changes — its watcher misses
--- submodule worktrees; gitsigns self-tracks, so only neo-tree needs this (debounced) nudge.
-local git_refresh_grp = vim.api.nvim_create_augroup("git-status-refresh", { clear = true })
-local nt_timer
-local function neotree_git_refresh()
-    if not package.loaded["neo-tree"] then
-        return
-    end
-    local visible = false
-    for _, win in ipairs(vim.api.nvim_list_wins()) do
-        if vim.bo[vim.api.nvim_win_get_buf(win)].filetype == "neo-tree" then
-            visible = true
-            break
-        end
-    end
-    if not visible then
-        return
-    end
-    if nt_timer and not nt_timer:is_closing() then
-        nt_timer:stop()
-        nt_timer:close()
-    end
-    -- Capture the handle so this callback clears only its own timer, not a
-    -- newer one a fast re-fire armed (cf. clipboard debounce below).
-    local handle
-    handle = vim.defer_fn(function()
-        if nt_timer == handle then
-            nt_timer = nil
-        end
-        pcall(function()
-            require("neo-tree.sources.manager").refresh("filesystem")
-        end)
-    end, 400)
-    nt_timer = handle
-end
-vim.api.nvim_create_autocmd({ "FocusGained", "TermLeave", "TermClose", "BufWritePost" }, {
-    group = git_refresh_grp,
-    callback = neotree_git_refresh,
-})
-
 -- Hide ~ at EOB (covers plugins that override winhighlight/fillchars).
 local function hide_eob()
     local normal = vim.api.nvim_get_hl(0, { name = "Normal" })
@@ -459,7 +419,7 @@ if vim.g.multi_dir then
             end
             local name = vim.api.nvim_buf_get_name(args.buf)
             if name ~= "" and vim.fn.isdirectory(name) == 1 then
-                -- Project root, not a file tab — unlist so bufferline shows only opened files.
+                -- Project root, not a file tab — unlist so buffer lists show only opened files.
                 vim.bo[args.buf].buflisted = false
                 pcall(vim.cmd.tcd, vim.fn.fnameescape(name))
             else

@@ -4,42 +4,41 @@ Leader: `<Space>`. `<localleader>` also `<Space>` (most localleader bindings liv
 
 ## Global
 
-| Key                      | Mode | Description                                                      |
-| ------------------------ | ---- | ---------------------------------------------------------------- |
-| `<C-h/j/k/l>`            | N/T  | Pane navigation: nvim splits + tmux/wezterm panes (smart-splits) |
-| `<C-Left/Right/Up/Down>` | N    | Resize the focused edge window (in an edgy sidebar)              |
-| `<A-h/j/k/l>`            | N/V  | mini.move: shuffle line / block (reindents on h/l)               |
-| `<C-a>` / `<C-x>`        | N/V  | dial: smart inc/dec (bools, dates, semver, hex, &&↔\|\|)         |
-| `g<C-a>` / `g<C-x>`      | V    | dial: cumulative inc/dec across selection                        |
-| `<leader>h`              | N    | Clear search highlight                                           |
-| `<Esc>`                  | N    | Clear search highlight                                           |
-| `<leader>bs`             | N    | Save (writes auto-mkdir parent dirs)                             |
-| `<leader>D`              | N/V  | Delete without yank (`<leader>d` reserved for dap)               |
-| `<leader>p`              | N    | Paste + auto-reindent (plain paste in indent-sensitive ft)       |
-| `<leader>p`              | V    | Paste without overwriting register                               |
-| `<leader>P`              | V    | Paste over + auto-reindent                                       |
-| `<` / `>`                | V    | Indent / outdent (keep selection)                                |
-| `J` / `<leader>j`        | N    | Join lines keeping cursor / without a space (`gJ`)               |
-| `gx`                     | N    | Open URL / file under cursor (`vim.ui.open`)                     |
+| Key                 | Mode | Description                                                      |
+| ------------------- | ---- | ---------------------------------------------------------------- |
+| `<C-h/j/k/l>`       | N/T  | Pane navigation: nvim splits + tmux/wezterm panes (smart-splits) |
+| `<A-h/j/k/l>`       | N/V  | mini.move: shuffle line / block (reindents on h/l)               |
+| `<C-a>` / `<C-x>`   | N/V  | dial: smart inc/dec (bools, dates, semver, hex, &&↔\|\|)         |
+| `g<C-a>` / `g<C-x>` | V    | dial: cumulative inc/dec across selection                        |
+| `<leader>h`         | N    | Clear search highlight                                           |
+| `<Esc>`             | N    | Clear search highlight                                           |
+| `<leader>bs`        | N    | Save (writes auto-mkdir parent dirs)                             |
+| `<leader>D`         | N/V  | Delete without yank (`<leader>d` reserved for dap)               |
+| `<leader>p`         | N    | Paste + auto-reindent (plain paste in indent-sensitive ft)       |
+| `<leader>p`         | V    | Paste without overwriting register                               |
+| `<leader>P`         | V    | Paste over + auto-reindent                                       |
+| `<` / `>`           | V    | Indent / outdent (keep selection)                                |
+| `J` / `<leader>j`   | N    | Join lines keeping cursor / without a space (`gJ`)               |
+| `gx`                | N    | Open URL / file under cursor (`vim.ui.open`)                     |
 
-> `n`, `N`, `*`, `#`, `g*`, `g#`, `<C-o>`, `<C-i>` auto-center the cursor (`zvzz`); `[c`/`]c` do too, in diff mode. The search keys also float the nvim-hlslens match lens.
+> `n`, `N`, `*`, `#`, `g*`, `g#`, `<C-o>`, `<C-i>` auto-center the cursor (`zvzz`); `[c`/`]c` do too, in diff mode.
 > The jumplist is session-local (cleared at startup), so `<C-o>` / `<C-i>` only revisit files opened this session.
 > `:s/…` shows a live split preview (`inccommand`); `:grep` uses ripgrep; visual-block edits extend past line-end.
 > Yank → system clipboard via `wl-copy` / `xclip` / `pbcopy` / `clip.exe` (first available), else OSC52 over SSH.
 > `p` / `P` feed a yank ring (yanky); `]y` / `[y` cycle to a newer / older yank after pasting; `]p` / `[p` put with reindent.
-> Macro recording shows a `recording @a` / `saved @a` toast plus `● @a` in the statusline while active.
+> Macro recording shows a `recording @a` / `saved @a` toast plus `@a` in the statusline while active.
 > Spell check (camelCase-aware) on `gitcommit` / `markdown` / `text`; `:q` / `:bd` prompt to save on unsaved changes.
 
 ## Find & Navigate
 
-> Modal floats (pickers, snacks terminal, lazy, Mason, harpoon menu, lazygit, Neo-tree, checkhealth) are mutually exclusive; auxiliary floats (hover, completion, notifier, …) stack on top.
+> Modal floats (pickers, snacks terminal, lazy, Mason, harpoon menu, lazygit, checkhealth) are mutually exclusive; auxiliary floats (hover, completion, notifier, …) stack on top.
 
 | Key                                   | Description                                                      |
 | ------------------------------------- | ---------------------------------------------------------------- |
 | `<leader>ff`                          | fff: find files (Rust-backed, sub-10ms on huge codebases)        |
 | `<leader>fF`                          | fff: find files in current directory                             |
 | `<leader>fg` / `fr` / `fb` / `fh`     | snacks.picker: grep / recent / buffers / help                    |
-| `<leader>fB`                          | snacks.picker: live grep across open buffers (the tab list)      |
+| `<leader>fB`                          | snacks.picker: live grep across open buffers                     |
 | `<leader>fi` / `fH`                   | snacks.picker: insert icon / inspect highlight groups            |
 | `<leader>ft`                          | TODO comments                                                    |
 | `<leader>fp`                          | snacks.picker: recent projects (cd + restore)                    |
@@ -47,10 +46,8 @@ Leader: `<Space>`. `<localleader>` also `<Space>` (most localleader bindings liv
 | `<leader>fS`                          | Snippets (LuaSnip, ft + inherited + all)                         |
 | `<leader>fs`                          | Edit the current filetype's snippet file (LuaSnip)               |
 | `<leader>zz` / `z'`                   | fzf-lua: builtin menu / resume last picker                       |
-| `<leader>e` / `<leader>o`             | Neo-tree: open / focus, reveal. Esc closes.                      |
-| `<cr>` / `l` / `h` (in Neo-tree)      | Open file in main window; folder expand / collapse               |
 | `<leader>-` / `<leader>fy`            | yazi: open at current file / in cwd (needs `yazi` binary)        |
-| `<leader>O`                           | oil: edit current dir as a buffer (rename/move/delete via edits) |
+| `<leader>e`                           | oil: edit current dir as a buffer (rename/move/delete via edits) |
 | `<leader>L`                           | View current file in `less` (read-only, own tab)                 |
 | `s` / `S` (n/x/o)                     | flash: jump / treesitter jump                                    |
 | `r` / `R` / `<C-s>`                   | flash: remote (o) / treesitter search (o/x) / toggle in `/` (c)  |
@@ -152,8 +149,7 @@ Bare `nvim` (and `nvim <dir>`, which cd's in) auto-restores the cwd session (ski
 > Neovim 0.11+'s default `grr`/`gri`/`grn`/`gra` are deleted on `LspAttach` so `gr` (References) fires without a `timeoutlen` wait; `gO` is remapped to Trouble below.
 > `gd`/`gr`/`gi`/`gy` open an fzf-lua picker (auto-jumps on a single result).
 >
-> Severity-sorted; gutter signs `✗`/`!`/`i`/`?` mirror lualine; colors match the scrollbar marks. Diag float shows source when ambiguous.
-> nvim-lightbulb: `❋` sign when a code action is available.
+> Severity-sorted; gutter signs `✗`/`!`/`i`/`?` (statusline shows `E`/`W`/`I`/`H` counts). Diag float shows source when ambiguous.
 
 | Key                         | Description                                                          |
 | --------------------------- | -------------------------------------------------------------------- |
@@ -229,7 +225,6 @@ Bare `nvim` (and `nvim <dir>`, which cd's in) auto-restores the cwd session (ski
 | `<leader>uc`                | n     | Toggle treesitter context                                                 |
 | `<leader>uC`                | n     | Toggle nvim-colorizer                                                     |
 | `<leader>uU`                | n     | Toggle undotree                                                           |
-| `<leader>uP`                | n     | Toggle precognition (motion hints)                                        |
 | `<leader>uz` / `<leader>uZ` | n     | Snacks zen / zen zoom                                                     |
 | `<leader>uD`                | n     | Toggle database UI (dadbod-ui)                                            |
 | `<leader>us` / `<leader>ur` | n     | Snacks toggle: spell / relative number                                    |
@@ -237,20 +232,10 @@ Bare `nvim` (and `nvim <dir>`, which cd's in) auto-restores the cwd session (ski
 | `<leader>ui`                | n     | Snacks toggle: list chars (whitespace)                                    |
 | `<leader>uT` / `<leader>ux` | n     | Toggle treesitter highlight (Snacks) / hex view                           |
 | `<leader>ut`                | n     | Inspect treesitter tree (`:InspectTree`)                                  |
-| `<leader>um` / `<leader>uf` | n     | Snacks toggle: zoom (maximize) / dim                                      |
-| `<leader>ug` / `<leader>uS` | n     | Snacks toggle: indent guides / smooth scroll                              |
+| `<leader>um` / `<leader>ug` | n     | Snacks toggle: zoom (maximize) / indent guides                            |
 | `[x`                        | n     | Jump to context start                                                     |
 
 > **mini.ai** adds bracket/quote/tag textobjects (`a(` / `i"` / `at`) with next/last search — `aN(` / `iN"` (next), `aL(` / `iL"` (last) — plus `ag`/`ig` (whole buffer) and `ad`/`id` (number).
-
-## Winbar Breadcrumb (dropbar)
-
-Inside the menu: `q`/`<Esc>` close, `h` parent (no-op at top), `l` open entry.
-
-| Key          | Description                          |
-| ------------ | ------------------------------------ |
-| `<leader>uw` | Pick segment to jump to              |
-| `[w` / `]w`  | Jump to context start / next context |
 
 ## Git
 
@@ -397,10 +382,7 @@ Open keys only open or focus — never close — so `<space>t` stays typable at 
 | `<leader>bd` / `<leader>bD`                | Snacks.bufdelete: confirm-on-modified / force                                                                              |
 | `<leader>.` / `<leader>bS`                 | Snacks scratch: toggle / select buffer                                                                                     |
 | `<leader>sn`                               | Snacks scratch: per-project markdown notes                                                                                 |
-| `<leader>1` … `<leader>9` · `<leader>0`    | Jump to bufferline position 1–9 / 10                                                                                       |
-| `[b` / `]b` · `<S-h>` / `<S-l>`            | Prev / next buffer (display order)                                                                                         |
-| `<A-S-h>` / `<A-S-l>`                      | Move buffer left / right (reorder; the position number follows)                                                            |
-| `<leader>bp` / `<leader>bc`                | bufferline: pick buffer by letter / pick to close                                                                          |
+| `[b` / `]b` · `<S-h>` / `<S-l>`            | Prev / next buffer (mini.bracketed / `:bprevious` `:bnext`); `<leader>fb` to pick                                          |
 | `<leader>cn` / `<leader>un`                | Notification history / dismiss all                                                                                         |
 | `<leader>yp` / `<leader>yP` / `<leader>yl` | Yank file path to `+`: absolute / relative / relative:line                                                                 |
 | `<leader>yg`                               | Yank git permalink for the current line                                                                                    |

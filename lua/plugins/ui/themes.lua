@@ -2,7 +2,7 @@
 local pal = require("config.palette")
 local damin_blue = pal.blue
 local damin_pink = pal.pink
--- Git accents (shared via config.palette; scrollbar marks use the same).
+-- Git accents (shared via config.palette).
 local git_add = pal.git_add
 local git_change = damin_pink
 local git_delete = pal.git_delete
@@ -38,7 +38,6 @@ return {
                     return {
                         WinSeparator = { fg = damin_pink, bg = "NONE" },
                         FloatBorder = { fg = damin_pink, bg = "NONE" },
-                        BufferLineOffset = { fg = damin_pink, bg = "NONE", bold = true },
 
                         GitSignsAdd = { fg = git_add, bg = "NONE" },
                         GitSignsChange = { fg = git_change, bg = "NONE" },

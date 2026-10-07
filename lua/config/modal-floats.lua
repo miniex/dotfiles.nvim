@@ -48,8 +48,8 @@ if not vim.g._modal_float_api_patched then
 end
 
 -- Modal floats are mutually exclusive: opening one closes the others.
--- Auxiliary floats (hover, completion, signature, notifier, fidget, flash,
--- dropbar, snacks.input, which-key) are intentionally absent — they stack.
+-- Auxiliary floats (hover, completion, signature, notifier, flash,
+-- snacks.input, which-key) are intentionally absent — they stack.
 -- Sidebar/split UIs fall through is_floating().
 local OWNER = {
     fzf = "fzf",
@@ -66,8 +66,6 @@ local OWNER = {
     lazy_backdrop = "lazy",
     mason = "mason",
     mason_backdrop = "mason",
-    ["neo-tree"] = "neo-tree",
-    ["neo-tree-popup"] = "neo-tree",
     checkhealth = "checkhealth",
 }
 

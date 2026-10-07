@@ -7,8 +7,8 @@ vim.g.loaded_ruby_provider = 0
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_node_provider = 0
 
--- Launch modes (read by bufferline / persistence / autocmds):
---  • single_file — one file (`nvim x`): no bufferline/dashboard, one buffer at a time.
+-- Launch modes (read by persistence / autocmds):
+--  • single_file — one file (`nvim x`): no dashboard, one buffer at a time.
 --  • file_launch — any file arg(s), incl. `nvim a b c`: no session save/restore.
 --  • multi_dir — `nvim dir1 dir2`: per-dir projects; :next/:prev tcd's in.
 -- `nvim` is the full IDE; `nvim <dir>` is a bare launch inside <dir> (same session).
@@ -41,8 +41,8 @@ do
 end
 
 -- Shared floating-window border: ✿ corners. Used by every plugin that opens a
--- float (LSP hover/signature/diagnostic, neo-tree, snacks, fzf-lua, completion,
--- dropbar, bqf, neotest…) so the whole UI speaks the same visual language.
+-- float (LSP hover/signature/diagnostic, snacks, fzf-lua, completion,
+-- bqf, neotest…) so the whole UI speaks the same visual language.
 vim.g.flower_border = { "✿", "─", "✿", "│", "✿", "─", "✿", "│" }
 vim.g.flower_title = function(s)
     return " ✿ " .. s .. " ✿ "

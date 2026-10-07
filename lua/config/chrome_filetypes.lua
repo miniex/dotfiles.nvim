@@ -1,5 +1,4 @@
--- "Not a real editable file" filetypes, shared by scrollbar / smear-cursor /
--- cursor-bloom / incline. Use M.set() to build a lookup from the lists below.
+-- "Not a real editable file" filetypes, shared by smear-cursor / cursor-bloom. Use M.set() to build a lookup from the lists below.
 local M = {}
 
 -- Floating picker overlays (snacks / fff / fzf).
@@ -18,8 +17,6 @@ M.pickers = {
 -- Docked / popup panels and special buffers.
 M.panels = {
     "snacks_dashboard",
-    "neo-tree",
-    "neo-tree-popup",
     "trouble",
     "dap-repl",
     "dapui_console",

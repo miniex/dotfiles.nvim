@@ -25,7 +25,7 @@ return {
             local function set_hl()
                 vim.api.nvim_set_hl(0, "DapBreakpoint", { fg = pal.pink, bg = "NONE" })
                 vim.api.nvim_set_hl(0, "DapBreakpointCondition", { fg = pal.pink, bg = "NONE" })
-                vim.api.nvim_set_hl(0, "DapBreakpointRejected", { fg = pal.bufferline_dim, bg = "NONE" })
+                vim.api.nvim_set_hl(0, "DapBreakpointRejected", { fg = pal.dim, bg = "NONE" })
                 vim.api.nvim_set_hl(0, "DapLogPoint", { fg = pal.blue, bg = "NONE" })
                 vim.api.nvim_set_hl(0, "DapStopped", { fg = pal.blue, bg = "NONE", bold = true })
             end

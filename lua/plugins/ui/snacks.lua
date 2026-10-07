@@ -1,8 +1,3 @@
-local SIDEBAR_FT = {
-    ["neo-tree"] = true,
-    ["neo-tree-popup"] = true,
-}
-
 -- Nudge picker preview's left border onto list's right border (col -1 /
 -- width +1). List's zindex (52) wins the shared column, leaving one ✿│✿
 -- divider. Preview is identified by snacks's scratch_ft (preview.lua:84).
@@ -59,14 +54,12 @@ local function focus_terminal(count)
     term:focus()
 end
 
--- Disable overlays on dashboard: chafa ANSI conflicts with dim/indent/scroll.
+-- Disable overlays on dashboard: chafa ANSI conflicts with indent.
 vim.api.nvim_create_autocmd("FileType", {
     pattern = "snacks_dashboard",
     group = vim.api.nvim_create_augroup("SnacksDashboardOverlay", { clear = true }),
     callback = function(args)
-        vim.b[args.buf].snacks_dim = false
         vim.b[args.buf].snacks_indent = false
-        vim.b[args.buf].snacks_scroll = false
     end,
 })
 
@@ -74,11 +67,7 @@ local function pick_main_win()
     for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
         if vim.api.nvim_win_is_valid(win) and vim.api.nvim_win_get_config(win).relative == "" then
             local b = vim.api.nvim_win_get_buf(win)
-            if
-                vim.api.nvim_buf_is_valid(b)
-                and vim.bo[b].buftype ~= "terminal"
-                and not SIDEBAR_FT[vim.bo[b].filetype]
-            then
+            if vim.api.nvim_buf_is_valid(b) and vim.bo[b].buftype ~= "terminal" then
                 return win
             end
         end
@@ -404,7 +393,6 @@ return {
                 return result
             end,
         },
-        dim = { enabled = true },
         gitbrowse = { enabled = true },
         -- kitty graphics protocol: kitty, WezTerm, and Ghostty all support it.
         image = {
@@ -474,20 +462,6 @@ return {
         quickfile = { enabled = true },
         scope = { enabled = true },
         scratch = { enabled = true },
-        -- outQuad + 150ms (vs default linear/250ms) so key-repeat doesn't queue behind the animation.
-        scroll = {
-            enabled = true,
-            animate = {
-                duration = { step = 10, total = 150 },
-                easing = "outQuad",
-            },
-            animate_repeat = {
-                delay = 80,
-                duration = { step = 5, total = 40 },
-                easing = "linear",
-            },
-        },
-        statuscolumn = { enabled = true },
         terminal = {
             enabled = true,
             win = {
@@ -524,18 +498,7 @@ return {
         words = { enabled = true, debounce = 100, notify_jump = true },
         zen = {
             enabled = true,
-            -- Drop chrome on enter; bufferline is the tabline. Toggle incline too.
             show = { statusline = false, tabline = false },
-            on_open = function()
-                pcall(function()
-                    require("incline").disable()
-                end)
-            end,
-            on_close = function()
-                pcall(function()
-                    require("incline").enable()
-                end)
-            end,
         },
         -- Override snacks's built-in window styles. Each style has its own default
         -- border; pinning them all to flower keeps the UI consistent.
@@ -560,9 +523,7 @@ return {
         Snacks.toggle.diagnostics():map("<leader>ud")
         Snacks.toggle.inlay_hints():map("<leader>ci"):map("<leader>uh")
         Snacks.toggle.zoom():map("<leader>um")
-        Snacks.toggle.dim():map("<leader>uf")
         Snacks.toggle.indent():map("<leader>ug")
-        Snacks.toggle.scroll():map("<leader>uS")
     end,
     keys = {
         {

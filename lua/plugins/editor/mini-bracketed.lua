@@ -1,13 +1,12 @@
 -- Unified [/] motions. Only suffixes whose [x/]x aren't already owned elsewhere
--- are kept: jump ([j/]j), location ([l/]l), undo ([u/]u).
+-- are kept: buffer ([b/]b), jump ([j/]j), location ([l/]l), undo ([u/]u).
 -- VeryLazy (not keys) so the u/<C-R> undo-ring remaps are active before edits.
 return {
     "nvim-mini/mini.bracketed",
     event = "VeryLazy",
     opts = {
-        -- Other 11 suffixes disabled — their [x/]x are already taken: b/c/x/d/f/i/o/q/t/w/y →
-        -- bufferline/keymaps/ts-ctx+conflict/diag-ui/ts-objs/snacks/aerial/trouble/todo/dropbar/yanky.
-        buffer = { suffix = "" },
+        -- Other 10 suffixes disabled — their [x/]x are already taken: c/x/d/f/i/o/q/t/w/y →
+        -- keymaps/ts-ctx+conflict/diag-ui/ts-objs/snacks/aerial/trouble/todo/(free)/yanky.
         comment = { suffix = "" },
         conflict = { suffix = "" },
         diagnostic = { suffix = "" },

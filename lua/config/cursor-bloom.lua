@@ -1,4 +1,4 @@
--- ✿ bloom: mode-colored sign on the current line. The sign was always custom;
+-- ❯ prompt: mode-colored sign on the current line. The sign was always custom;
 -- modicator's line-number recolor needs cursorline (never set) so it was dropped.
 local pal = require("config.palette")
 local damin_blue = pal.blue
@@ -54,7 +54,7 @@ local function refresh_sign()
         pcall(vim.api.nvim_buf_del_extmark, last_id_buf, sign_ns, last_id)
     end
     local ok, id = pcall(vim.api.nvim_buf_set_extmark, buf, sign_ns, line, 0, {
-        sign_text = "✿",
+        sign_text = "❯",
         sign_hl_group = "CursorBloomCurrent",
         priority = 100,
     })

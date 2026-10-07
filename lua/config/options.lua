@@ -41,17 +41,14 @@ opt.swapfile = false
 opt.pumheight = 10
 -- ui2 owns cmdline; reclaim the row.
 opt.cmdheight = 0
--- Set before lualine to avoid dashboard height shift on startup.
 opt.laststatus = 3
--- Hidden until bufferline lazy-loads on a real file — no [No Name] flicker before dashboard.
+-- No tabline; buffers live in the picker (<leader>fb) and [b/]b.
 opt.showtabline = 0
 -- Safety net for the first-`<leader>` lag while which-key triggers register.
 opt.timeoutlen = 300
--- CursorHold idle for document_highlight + lightbulb.
+-- CursorHold idle for document_highlight.
 opt.updatetime = 300
 opt.scrolloff = 10
--- snacks.scroll owns scroll; built-in would double-fire.
-opt.smoothscroll = false
 opt.mouse = "a"
 opt.autoread = true
 opt.undofile = true

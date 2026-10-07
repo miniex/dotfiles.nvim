@@ -9,7 +9,7 @@ map("<leader>ut", function()
     vim.treesitter.inspect_tree()
 end, "n", "Inspect TS tree")
 
--- zvzz after jumps. gg/G excluded — races with snacks.scroll (folke/snacks.nvim#2672).
+-- zvzz after jumps.
 for _, key in ipairs({
     "n",
     "N",
@@ -180,9 +180,11 @@ map("<leader>yg", function()
     })
 end, "n", "Yank git permalink (current line)")
 
--- Buffer nav keymaps live on the bufferline.nvim spec.
+-- S-h/l overrides vim's H/L screen jumps; [b/]b come from mini.bracketed.
+map("<S-h>", "<cmd>bprevious<cr>", "n", "Previous buffer")
+map("<S-l>", "<cmd>bnext<cr>", "n", "Next buffer")
 
--- Last window → bufdelete (keeps bufferline + dashboard in sync); else :quit
+-- Last window → bufdelete (keeps the dashboard in sync); else :quit
 -- so split-only closes still work.
 local function normal_win_count(buf)
     local n = 0

@@ -41,17 +41,13 @@ Drop Lua files in `~/.config/nvim/snippets/`. Filetype-scoped by filename (e.g. 
 
 - Toggle with `vim.g.disable_ui2 = true` in `lua/config/options.lua`.
 
-## Sidebar layout
+## Statusline
 
-- `lua/plugins/ui/edgy.lua` pins aerial + neotest-summary → right, trouble / qf / dap-repl + neotest-output → bottom.
-
-## Scroll animation
-
-- `lua/plugins/ui/snacks.lua` (`scroll` block) — `animate.duration.total` for one-shot length, `animate_repeat.duration.total` for held j/k (keep short or key-repeat lags). `easing` accepts `linear` / `outQuad` / `outCubic`.
+- `lua/config/statusline.lua` — hand-rolled `%!` render function; segments, mode labels (`MODES`), and `Stl*` highlight groups all live there. Colors come from `config.palette`.
 
 ## Picker / terminal exclusions
 
-`lua/config/chrome_filetypes.lua` is the single source — `pickers` (snacks/fff/fzf overlays) and `panels` (neo-tree, trouble, dap, aerial, …). scrollbar / smear-cursor / cursor-bloom / incline all build their exclusions from it. Add a new float's filetype to `pickers` or `panels` once and every chrome plugin picks it up.
+`lua/config/chrome_filetypes.lua` is the single source — `pickers` (snacks/fff/fzf overlays) and `panels` (trouble, dap, aerial, …). smear-cursor / cursor-bloom build their exclusions from it. Add a new float's filetype to `pickers` or `panels` once and every chrome plugin picks it up.
 
 ## Per-filetype options
 
@@ -91,7 +87,7 @@ Add a language: add an entry to the `M.specs` table in `lua/config/format-width.
 
 Three size tiers, smallest first:
 
-- **> 1 MiB** (or a >2000-char first line) — treesitter (`ts-attach` in `lua/config/autocmds.lua`), rainbow-delimiters (also >10000 lines), and LSP CodeLens / reference highlight / code-action lightbulb are skipped (size check cached per buffer); colorizer detaches on a >2000-char first line.
+- **> 1 MiB** (or a >2000-char first line) — treesitter (`ts-attach` in `lua/config/autocmds.lua`), rainbow-delimiters (also >10000 lines), and LSP CodeLens / reference highlight are skipped (size check cached per buffer); colorizer detaches on a >2000-char first line.
 - **> 2 MiB** — `snacks.bigfile` degrades features (LSP / treesitter / syntax / folds / matchparen) and colorizer skips it (`!bigfile`). Tune `size` in `lua/plugins/ui/snacks.lua`.
 - **> 8 MiB** — opening prompts _view in `less`_ (default) / _edit anyway_ / _cancel_; binary files (NUL byte in the first KB) drop the pager option. Tune `BIG_FILE_LIMIT` in `lua/config/autocmds.lua`. Declining also drops it from the arglist, so the restored session won't reopen a `nvim hugefile`.
 
@@ -99,7 +95,7 @@ The "view" action and `<leader>L` open `less` in its own tab via `lua/config/pag
 
 Separately, files **> 10 MiB** are skipped by the focus-time `:checktime` auto-reload (per buffer, size cached), so a changed huge file isn't reloaded on every focus (`lua/config/autocmds.lua`).
 
-The lualine search match count is skipped in buffers **> 20000 lines** — `searchcount()` rescans the buffer per cursor move (~24 ms at 200k lines). Tune `SEARCHCOUNT_MAX_LINES` in `lua/plugins/ui/lualine.lua`.
+The statusline search match count is skipped in buffers **> 20000 lines** — `searchcount()` rescans the buffer per cursor move (~24 ms at 200k lines). Tune `SEARCHCOUNT_MAX_LINES` in `lua/config/statusline.lua`.
 
 ## Modal floats
 

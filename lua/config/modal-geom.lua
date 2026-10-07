@@ -95,7 +95,7 @@ function M.scratch(lines, opts)
 end
 
 -- Modals whose APIs ignore explicit row/col — snapped on FileType (synchronous,
--- no flash). neo-tree is handled separately (nui nested popup; see VimResized).
+-- no flash).
 local ALIGNED_FT = {
     harpoon = true,
     lazy = true,
@@ -138,33 +138,15 @@ if not vim.g._modal_geom_aligner then
             end
         end,
     })
-    -- Re-snap every visible modal on terminal/tmux resize. neo-tree needs
-    -- its nui container + inner tree reflowed in lockstep.
+    -- Re-snap every visible modal on terminal/tmux resize.
     local function resync_all()
-        local w, h, r, c = M.geom()
         for _, win in ipairs(vim.api.nvim_list_wins()) do
             if vim.api.nvim_win_is_valid(win) then
                 local cfg = vim.api.nvim_win_get_config(win)
                 if cfg.relative ~= "" then
                     local buf = vim.api.nvim_win_get_buf(win)
                     local ft = vim.api.nvim_buf_is_valid(buf) and vim.bo[buf].filetype or ""
-                    if ft == "neo-tree" and cfg.relative == "win" and vim.api.nvim_win_is_valid(cfg.win) then
-                        pcall(vim.api.nvim_win_set_config, cfg.win, {
-                            relative = "editor",
-                            width = w,
-                            height = h,
-                            row = r + 1,
-                            col = c + 1,
-                        })
-                        pcall(vim.api.nvim_win_set_config, win, {
-                            relative = "win",
-                            win = cfg.win,
-                            row = 1,
-                            col = 1,
-                            width = w - 2,
-                            height = h - 2,
-                        })
-                    elseif ALIGNED_FT[ft] then
+                    if ALIGNED_FT[ft] then
                         local rect = M.inner_rect()
                         rect.relative = cfg.relative
                         rect.win = cfg.win

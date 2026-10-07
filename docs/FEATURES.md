@@ -34,51 +34,45 @@
 
 ## Editor
 
-- **Files** — Neo-tree (floating). `<leader>e` open / focus, `<leader>o` reveal current file, Esc closes. Directory rows show recursive total size instead of the default `-` — scanned on a libuv worker thread (off the main loop), rows spin then fill in; the spinner redraw yields to navigation, so scrolling stays smooth. Sizes use IEC binary units (KiB/MiB). The root row carries the directory's grand total, marked `Σ` (yields to the column's `▲/▼` sort indicator when ordering by size). `<leader>-` opens yazi, a full-screen TUI file manager (needs the `yazi` binary). `<leader>O` opens oil — edit a directory as a buffer (rename / move / delete-to-trash, LSP-aware); it doesn't hijack directory buffers, so `nvim <dir>` still lands on the dashboard.
+- **Files** — `<leader>e` opens oil: edit a directory as a buffer (rename / move / delete-to-trash, LSP-aware); it doesn't hijack directory buffers, so `nvim <dir>` still lands on the dashboard. `<leader>-` opens yazi, a full-screen TUI file manager (needs the `yazi` binary).
 - **Big files** — opening a file >8 MiB prompts: view in `less` (default) / edit / cancel (binary skips the pager). `<leader>L` views the current file in `less` anytime. Size tiers in [CUSTOMIZATION](CUSTOMIZATION.md#big-file-handling).
-- **Navigation** — flash (`s` / `S`), Trouble (`<leader>xx`), aerial (`<leader>cO`), harpoon v2 (`<leader>m*`), nvim-spider (camelCase-aware `w`/`e`/`b`/`ge`), mini.bracketed (`[j`/`]j` jumplist, `[u`/`]u` undo, `[l`/`]l` loclist), smart-splits (`<C-hjkl>` across nvim splits + tmux/wezterm panes), treewalker (`<A-arrows>` move / `<A-S-arrows>` swap by AST node), precognition (`<leader>uP` toggleable motion hints).
+- **Navigation** — flash (`s` / `S`), Trouble (`<leader>xx`), aerial (`<leader>cO`), harpoon v2 (`<leader>m*`), nvim-spider (camelCase-aware `w`/`e`/`b`/`ge`), mini.bracketed (`[b`/`]b` buffers, `[j`/`]j` jumplist, `[u`/`]u` undo, `[l`/`]l` loclist), smart-splits (`<C-hjkl>` across nvim splits + tmux/wezterm panes), treewalker (`<A-arrows>` move / `<A-S-arrows>` swap by AST node).
 - **Search & replace** — grug-far (`<leader>rr`) for regex; ssr (`<leader>rs`) for structural AST-aware replace.
 - **Structural edits & yank ring** — treesj split/join a node (`<leader>cJ`); yanky yank history (`]y` / `[y` after paste, `]p` / `[p` reindent paste, `<leader>yh` to pick from the ring); various-textobjs indentation / value / key / subword / URL objects (`iI` / `iv` / `ik` / `ie` / `iu`).
 - **Multi-cursor** — multicursor.nvim under `<leader>M*` + `<C-Up>` / `<C-Down>`.
 - **Smart inc/dec** — dial.nvim. `<C-a>`/`<C-x>` flips bools, dates, semver, hex colors, identifier case, `&&↔||` (plus `let↔const` in JS/TS and headers in markdown).
 - **Quickfix** — quicker.nvim (editable QF), nvim-bqf (preview), Trouble (`auto_close` on jump, main-window preview; `<leader>x*` lists diagnostics / refs / symbols / call hierarchy / type defs / implementations).
-- **Misc** — mini.surround (`gs*`), mini.ai (`a`/`i` brackets/quotes/tags + `aN`/`aL` next/last, `ag` buffer / `ad` number), mini.move (`<A-hjkl>` line shuffle), mini.operators (`gR` replace-with-register / `gX` exchange / `gS` sort / `g=` eval), built-in `gc` (treesitter-aware; `gco` / `gcO` / `gcA` rebuilt in `keymaps.lua`), refactoring.nvim (`<leader>cr` extract/inline), todo-comments, dropbar (winbar), git-conflict, nvim-lightbulb (code-action sign; skipped on big/minified files), tiny-code-action (`<leader>ca` picker with per-action diff preview), nvim-colorizer (6/8-digit hex everywhere; 3/4-digit `#RGB` shorthand only in CSS-family, so issue/PR refs like `#590` aren't colorized; skipped on big/minified files), rainbow-delimiters (on-theme nested bracket-pair colors; disabled on big/minified files), 0.12 built-ins `:Undotree` and `:DiffTool` (non-git side-by-side file/dir diff), hex.nvim (`<leader>ux` toggle hex view).
+- **Misc** — mini.surround (`gs*`), mini.ai (`a`/`i` brackets/quotes/tags + `aN`/`aL` next/last, `ag` buffer / `ad` number), mini.move (`<A-hjkl>` line shuffle), mini.operators (`gR` replace-with-register / `gX` exchange / `gS` sort / `g=` eval), built-in `gc` (treesitter-aware; `gco` / `gcO` / `gcA` rebuilt in `keymaps.lua`), refactoring.nvim (`<leader>cr` extract/inline), todo-comments, git-conflict, tiny-code-action (`<leader>ca` picker with per-action diff preview), nvim-colorizer (6/8-digit hex everywhere; 3/4-digit `#RGB` shorthand only in CSS-family, so issue/PR refs like `#590` aren't colorized; skipped on big/minified files), rainbow-delimiters (on-theme nested bracket-pair colors; disabled on big/minified files), 0.12 built-ins `:Undotree` and `:DiffTool` (non-git side-by-side file/dir diff), hex.nvim (`<leader>ux` toggle hex view).
 - **Persistence** — `persistence.nvim` auto-restores on bare `nvim` (skipping headless, empty sessions, and `nvim <file>` launches, which neither restore nor save), re-attaches TS / LSP / linter on restored buffers. Only window-visible buffers persist (no hidden `badd`). Neotest summary window state persists across sessions. Sessions are scoped per git branch (feature branches keep distinct layouts; main/master share the base session).
 - **Width-aware `textwidth`** — `rust` / `python` / `lua` / `elixir` / `ocaml` / `c`-`cpp` / `sql` / `toml` set `textwidth` (the `gq`/`gw` reflow width) to the project formatter's line width, searched upward from its config, else the default — no visual ruler. See [CUSTOMIZATION](CUSTOMIZATION.md#formatter-width).
 
 ## UI
 
 - **Theme** — Catppuccin Mocha retoned to a 2-color **damin** palette: `#98ABCC` (blue) / `#E890B0` (pink). Mirrors [`fish-theme-damin`](https://github.com/miniex/fish-theme-damin) + [`dotfiles.kitty`](https://github.com/miniex/dotfiles.kitty) + [`dotfiles.tmux`](https://github.com/miniex/dotfiles.tmux).
-- **lualine** — `✧ … ⋆` sparkle bookends, `✿` mode glyph (swaps to `✎` in visual / operator-pending, briefly `✦` on mode change); `● @x` while a macro is recording; attached LSP client names (refreshed on LSP attach/detach), git diff counts (from gitsigns), an off-default encoding + line-ending indicator (non-`utf-8` / non-`unix` only), and the `searchcount()` match count (cached; refreshed on cursor move / search, skipped above 20000 lines) on the right.
-- **bufferline** — pink → mid → blue 3-stop gradient, `surface0` card under active, `▎` left bar + ordinal prefix, `♡` on harpoon-pinned, `●` on modified, uniform 16-char tab width. Tabs open left-to-right (reopening a closed file appends at the tail) and reorder with `<A-S-h>` / `<A-S-l>` (the ordinal follows). Neo-tree / Outline get sidebar offset labels. Lazy-loads on first real file open, so the dashboard isn't preceded by an empty tabline; single-file launches skip it entirely (see Launch modes). `<leader>bp` / `bc` letter-pick a buffer to focus / close.
-- **incline** — `⌬` when window is zoomed (alone in tabpage); per-window `✗`/`!` diagnostic count.
-- **cursor bloom** — `✿` sign on the current line in mode color (custom autocmd in [`lua/config/cursor-bloom.lua`](../lua/config/cursor-bloom.lua)). Refresh defer skips picker/terminal/chrome buffers.
+- **statusline** — hand-rolled global statusline ([`lua/config/statusline.lua`](../lua/config/statusline.lua)); plain text, transparent. Left: 3-letter mode (`NOR` / `INS` / `VIS` / `V-L` / `V-B` / `REP` / `CMD` / `TRM` …, mode-colored), `@x` while recording a macro, git branch, relative path + `[+]` / `[RO]`, diagnostic counts (`E1 W2 I1 H1`). Right: LSP progress (spinner + title, `✓ <client>` on end), attached LSP client names, gitsigns diff (`+a ~c -r`), off-default encoding / line-ending (non-`utf-8` / non-`unix` only), `searchcount()` match `[cur/total]` (cached; skipped above 20000 lines), `line:col` + `%P`. Empty on the dashboard.
+- **Buffers** — no tabline. `<S-h>` / `<S-l>` or `[b` / `]b` cycle, `<leader>fb` picks.
+- **cursor bloom** — `❯` sign on the current line in mode color (custom autocmd in [`lua/config/cursor-bloom.lua`](../lua/config/cursor-bloom.lua)). Refresh defer skips picker/terminal/chrome buffers.
 - **which-key** — hint floats pinned to the bottom row at 85% editor width (centered); height grows with content. Triggers register synchronously on file buffers + `timeoutlen=300` so the first `<leader>` press isn't slow ([#912](https://github.com/folke/which-key.nvim/issues/912) workaround).
-- **Floating windows** — every float in the config (LSP hover / signature / diagnostic, Neo-tree, snacks panels, fzf-lua, fff, blink.cmp menu / signature / docs, fidget, dropbar, bqf, neotest, which-key, harpoon, Mason, lazy, lazygit, checkhealth) shares one look: `✿` flower-cornered border (`✿─✿│✿─✿│`), pink edge, transparent background, centered `✿ title ✿`. Configured in [`lua/config/globals.lua`](../lua/config/globals.lua).
+- **Floating windows** — every float in the config (LSP hover / signature / diagnostic, snacks panels, fzf-lua, fff, blink.cmp menu / signature / docs, bqf, neotest, which-key, harpoon, Mason, lazy, lazygit, checkhealth) shares one look: `✿` flower-cornered border (`✿─✿│✿─✿│`), pink edge, transparent background, centered `✿ title ✿`. Configured in [`lua/config/globals.lua`](../lua/config/globals.lua).
 - **flash labels** — damin pink.
-- **nvim-scrollbar** — `♥` cursor mark slides smoothly between rows (snaps on large jumps and in big buffers) and heartbeat-pulses while focused (paused after idle, in insert mode, on `FocusLost`, and on chrome buffers like the dashboard / Neo-tree). Handle fades vivid → muted after idle. Git triad in mint/pink/rose plus search hits (`★`); gitsigns gutter + DiagnosticSign share the same palette so both edges agree. Per-keystroke autocmds also skip picker/terminal/prompt buffers so fzf/snacks-picker stay snappy; the cursor mark repaints only on a new scrollbar row (no per-line rebuild on big files).
-- **nvim-hlslens** — floats the nearest search match's position at `n` / `N` / `*` / `#`; also drives the scrollbar `★` marks.
-- **snacks.scroll** — viewport glides with `outQuad` easing (150ms one-shot, 40ms while held) so key-repeat doesn't queue behind the animation.
 - **indent guides** — uniform `┊` dotted guides (snacks.indent), no scope highlight (`[i`/`]i` still jump to scope edges); chunk off.
-- **zen** — `<leader>uz` focus mode hides the statusline / bufferline / incline (flower-bordered window).
-- **smear-cursor** — fast spring (matched stiffness/trailing, no stretch). Off in picker/terminal floats so the spring doesn't fire per keystroke; 80ms swallow on other float opens skips the `(1,1)` landing jump.
-- **cord.nvim** — Discord Rich Presence; gated to local UI (skips headless / SSH).
-- **Plus** — edgy (sidebar layout: aerial + neotest-summary → right, trouble/qf/dap + neotest-output → bottom), fidget.
+- **zen** — `<leader>uz` focus mode hides the statusline (flower-bordered window).
+- **smear-cursor** — blocky "pixel" trail: quadrant blocks only (no diagonals), 4 flat shade steps, short capped tail, no overshoot. `j` / `k` and short `h` / `l` moves don't animate, only real jumps. Off in picker/terminal floats so it doesn't fire per keystroke; 80ms swallow on other float opens skips the `(1,1)` landing jump.
+- **Side panels** — aerial / trouble / dap / neotest open in their plugins' default positions.
 
 ## Modal floats
 
-Big floating UIs (pickers / terminal / lazy / Mason / harpoon / lazygit / Neo-tree / checkhealth) are mutually exclusive — opening one closes the others. Hover, completion, signature, and notifications stack freely on top.
+Big floating UIs (pickers / terminal / lazy / Mason / harpoon / lazygit / checkhealth) are mutually exclusive — opening one closes the others. Hover, completion, signature, and notifications stack freely on top.
 
-All eight modals share a single 0.85 × 0.85 chrome-aware rectangle defined in [`lua/config/modal-geom.lua`](../lua/config/modal-geom.lua):
+All modals share a single 0.85 × 0.85 chrome-aware rectangle defined in [`lua/config/modal-geom.lua`](../lua/config/modal-geom.lua):
 
 - snacks picker / terminal read it via function callbacks
 - harpoon / lazy / Mason / lazygit get snapped by a synchronous `FileType` autocmd (no flash because the snap shares a frame with the open)
 - fzf-lua uses its own `winopts.on_create` hook (it sets filetype under `eventignore = all` so the FileType aligner misses it)
-- Neo-tree's popup `size` / `position` are function callbacks; nui resolves them on every open
 - fff has its own chrome-aware layout that already matches
 - checkhealth opens as a native float (`vim.g.health.style`, nvim 0.12) and is dressed at creation by a `modal-floats` decorator — no report tab to flash
 
-A `VimResized` handler in `modal-geom.lua` also re-snaps every open modal, so the rectangle holds when you resize the terminal mid-session (Neo-tree's nui container + inner tree get reflowed together).
+A `VimResized` handler in `modal-geom.lua` also re-snaps every open modal, so the rectangle holds when you resize the terminal mid-session.
 
 See [`lua/config/modal-floats.lua`](../lua/config/modal-floats.lua) for the mutual-exclusion registry.
 
@@ -91,7 +85,6 @@ See [`lua/config/modal-floats.lua`](../lua/config/modal-floats.lua) for the mutu
 - **gitgraph.nvim** — in-buffer branch graph. `<leader>gvg` (all branches), `<leader>gvG` (current), `<leader>gvs` (`--since` prompt).
 - **advanced-git-search** — search git history by content (`<leader>gH`): which commit changed a line, diff a file against any past commit (fzf-lua picker; diffs open in Diffview).
 - **git-conflict** — `]X` / `[X` cycle conflicts, `co` / `ct` / `cb` / `c0` resolve.
-- **Auto-refresh** — neo-tree's git column refreshes (debounced) on focus / terminal-exit / save, so external git ops and submodule changes show up without a manual reload.
 
 ## Tooling
 
@@ -132,7 +125,7 @@ Yank → system clipboard auto-routed via `wl-copy` (Wayland), `xclip` (X11), `p
 
 ## snacks.nvim modules in use
 
-picker · profiler · terminal · dashboard · statuscolumn · notifier · indent · scope · scroll · dim · image · bigfile · quickfile · bufdelete · input · scratch · zen · words · lazygit · gitbrowse · rename (LSP-aware).
+picker · profiler · terminal · dashboard · notifier · indent · scope · image · bigfile · quickfile · bufdelete · input · scratch · zen · words · lazygit · gitbrowse · rename (LSP-aware).
 
 Closing the last named file (`<leader>w` / `<leader>bd` / `:q` / `:wq` / `:x` / `ZZ`) swaps the main window in place for the dashboard — except in a single-file launch (see Launch modes), where it exits instead. On the dashboard `:q` / `:wq` / `:x` / `ZZ` exit nvim; `<leader>w` jumps to a file buffer if any, else exits. `<leader>;` peeks and returns to the alternate on the next press. Persistence quietly swaps dashboard windows out before saving so the session restores cleanly. Footer surfaces a `<leader>qs` hint when a session exists for the cwd.
 
@@ -140,10 +133,10 @@ Closing the last named file (`<leader>w` / `<leader>bd` / `:q` / `:wq` / `:x` / 
 
 How you start Neovim sets the workspace behavior:
 
-- **`nvim`** (no args) — full IDE: tab bar, dashboard, and the cwd session auto-restores on start and saves on exit.
+- **`nvim`** (no args) — full IDE: dashboard, and the cwd session auto-restores on start and saves on exit.
 - **`nvim <dir>`** — identical to `cd <dir> && nvim`: chdir's into `<dir>` (dropping the stray dir buffer) and keys the session to `<dir>`, landing on the dashboard or the cwd's restored session (an inaccessible dir falls back to a bare launch).
-- **`nvim <file>`** — single-file editor: no tab bar, no dashboard, one buffer at a time (opening another wipes the previous), no session. Closing the file exits Neovim.
-- **`nvim a b c…`** (multiple files) — open as tabs in argument order (more can be opened), but the session is left untouched.
-- **`nvim dir1 dir2…`** (multiple dirs) — each dir is its own project root; `:next` / `:prev` `:tcd` into whichever is current (cwd / pickers / LSP / session key follow) and show that dir's dashboard. Directory buffers are unlisted, so bufferline carries only the files you open. Sessions are **manual**: `<leader>qs` restores the current dir's, exit saves it (no auto-restore, so `:next` / `:prev` stay intact).
+- **`nvim <file>`** — single-file editor: no dashboard, one buffer at a time (opening another wipes the previous), no session. Closing the file exits Neovim.
+- **`nvim a b c…`** (multiple files) — open as buffers in argument order (more can be opened), but the session is left untouched.
+- **`nvim dir1 dir2…`** (multiple dirs) — each dir is its own project root; `:next` / `:prev` `:tcd` into whichever is current (cwd / pickers / LSP / session key follow) and show that dir's dashboard. Directory buffers are unlisted, so buffer lists carry only the files you open. Sessions are **manual**: `<leader>qs` restores the current dir's, exit saves it (no auto-restore, so `:next` / `:prev` stay intact).
 
 This keeps `nvim <file>` a throwaway editor that never disturbs a directory's saved workspace. Set via `vim.g.single_file` / `vim.g.file_launch` / `vim.g.multi_dir` in `lua/config/globals.lua`.

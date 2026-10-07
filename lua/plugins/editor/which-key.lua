@@ -98,8 +98,6 @@ return {
             { "<leader>s", group = "scratch" },
             { "gs", group = "surround" },
             -- Single-key desc labels (not groups; help discovery).
-            { "<leader>e", desc = "Neo-tree open / focus" },
-            { "<leader>o", desc = "Neo-tree reveal" },
             { "<leader>t", desc = "Open / focus Terminal" },
             { "<leader>.", desc = "Toggle Scratch Buffer" },
             { "<leader>?", desc = "Show All Keymaps (which-key)" },

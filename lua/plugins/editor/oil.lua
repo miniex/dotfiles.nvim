@@ -6,7 +6,7 @@ return {
     dependencies = { "nvim-tree/nvim-web-devicons" },
     cmd = "Oil",
     keys = {
-        { "<leader>O", "<cmd>Oil<cr>", desc = "Oil (edit dir as buffer)" },
+        { "<leader>e", "<cmd>Oil<cr>", desc = "Oil (edit dir as buffer)" },
     },
     opts = {
         default_file_explorer = false,
