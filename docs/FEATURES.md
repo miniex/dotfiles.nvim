@@ -34,7 +34,7 @@
 
 ## Editor
 
-- **Files** — `<leader>e` opens oil: edit a directory as a buffer (rename / move / delete-to-trash, LSP-aware); it doesn't hijack directory buffers, so `nvim <dir>` still lands on the dashboard. `<leader>-` opens yazi, a full-screen TUI file manager (needs the `yazi` binary).
+- **Files** — `<leader>e` opens oil: edit a directory as a buffer (rename / move / delete-to-trash, LSP-aware), current path in the winbar; it doesn't hijack directory buffers, so `nvim <dir>` still lands on the dashboard. `<leader>-` opens yazi, a full-screen TUI file manager (needs the `yazi` binary).
 - **Big files** — opening a file >8 MiB prompts: view in `less` (default) / edit / cancel (binary skips the pager). `<leader>L` views the current file in `less` anytime. Size tiers in [CUSTOMIZATION](CUSTOMIZATION.md#big-file-handling).
 - **Navigation** — flash (`s` / `S`), Trouble (`<leader>xx`), aerial (`<leader>cO`), mini.bracketed (`[b`/`]b` buffers, `[j`/`]j` jumplist, `[u`/`]u` undo, `[l`/`]l` loclist), smart-splits (`<C-hjkl>` across nvim splits + tmux/wezterm panes).
 - **Search & replace** — grug-far (`<leader>rr`).

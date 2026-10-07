@@ -158,7 +158,13 @@ function M.render()
     end
 
     local name = vim.api.nvim_buf_get_name(buf)
-    name = name == "" and "[scratch]" or vim.fn.fnamemodify(name, ":~:.")
+    if vim.bo[buf].filetype == "oil" then
+        name = vim.fn.fnamemodify(require("oil").get_current_dir(buf) or name, ":~")
+    elseif name == "" then
+        name = "[scratch]"
+    else
+        name = vim.fn.fnamemodify(name, ":~:.")
+    end
     local flags = (vim.bo[buf].modified and " [+]" or "")
         .. ((vim.bo[buf].readonly or not vim.bo[buf].modifiable) and " [RO]" or "")
     l[#l + 1] = seg("StlFile", esc(name)) .. seg("StlPink", flags)

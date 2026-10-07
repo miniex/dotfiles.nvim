@@ -90,6 +90,18 @@ end
 
 -- On last file buffer close → dashboard in main window (avoid [No Name]).
 local function open_dashboard_if_empty(closing)
+    -- A named buffer still on screen (e.g. oil, which is unlisted) replaced the file — not empty.
+    for _, win in ipairs(vim.api.nvim_list_wins()) do
+        local b = vim.api.nvim_win_get_buf(win)
+        if
+            b ~= closing
+            and vim.api.nvim_win_get_config(win).relative == ""
+            and vim.api.nvim_buf_get_name(b) ~= ""
+            and (vim.bo[b].buftype == "" or vim.bo[b].buftype == "acwrite")
+        then
+            return
+        end
+    end
     for _, buf in ipairs(vim.api.nvim_list_bufs()) do
         if
             buf ~= closing
