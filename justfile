@@ -60,6 +60,10 @@ lint: (_require "stylua" "lua-language-server" "selene" "shfmt" "shellcheck")
     just --fmt --check --unstable
     just --summary >/dev/null
 
+# toggle languages interactively (writes lua/config/langs_local.lua).
+lang:
+    sh scripts/set-lang.sh
+
 # check host prerequisites (informational; never fails).
 check:
     #!/bin/sh

@@ -1,6 +1,6 @@
 -- Copy to `langs_local.lua` (gitignored) to override langs.lua per-machine:
 -- `name = true` enables an off-by-default language, `name = false` disables a core
--- one. `set-lang.sh` generates this; omitted langs fall through to langs.lua defaults.
+-- one. `just lang` (scripts/set-lang.sh) generates this; omitted langs fall through to langs.lua defaults.
 return {
     -- enable off-by-default languages:
     -- elixir = true,

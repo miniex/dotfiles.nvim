@@ -1,4 +1,4 @@
--- Lang toggle: a core set is on by default; enable the rest with `set-lang.sh`
+-- Lang toggle: a core set is on by default; enable the rest with `just lang`
 -- (or hand-edit gitignored `langs_local.lua`, which overrides this; see *.example).
 local defaults = {
     asm = false,

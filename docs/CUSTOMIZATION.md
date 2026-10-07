@@ -7,7 +7,7 @@
 A core set is on by default (`langs.lua`); enable the rest — or turn core ones off — with:
 
 ```bash
-sh ~/.config/nvim/set-lang.sh   # interactive
+just lang   # interactive (or: sh ~/.config/nvim/scripts/set-lang.sh)
 ```
 
 Or hand-edit `lua/config/langs_local.lua` (gitignored): `name = true` / `name = false` overrides `lua/config/langs.lua` per-machine.

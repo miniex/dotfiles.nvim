@@ -16,8 +16,7 @@ Why files live where they do.
 ├── docs/                 markdown guides (this file)
 ├── justfile              tasks: just fmt / lint / check
 ├── install.sh            one-shot installer (backup / update in place)
-├── set-lang.sh           lang toggles → gitignored lua/config/langs_local.lua
-├── scripts/              shell helpers: _colors.sh, term-bin shims (term-bin/nvim → outer nvim)
+├── scripts/              set-lang.sh (lang toggles → gitignored langs_local.lua), _colors.sh, term-bin shims
 ├── assets/               dashboard sticker, preview image
 ├── CONTRIBUTING.md
 └── README.md

@@ -161,10 +161,10 @@ fi
 
 step "Language selection"
 if [ -r /dev/tty ] && prompt_yes "Run interactive language picker now?"; then
-    sh "$NVIM_CONFIG/set-lang.sh" </dev/tty
+    sh "$NVIM_CONFIG/scripts/set-lang.sh" </dev/tty
 else
     info "skipped — a core language set is enabled by default"
-    info "run 'sh $NVIM_CONFIG/set-lang.sh' anytime to enable more"
+    info "run 'sh $NVIM_CONFIG/scripts/set-lang.sh' (or just lang) anytime to enable more"
 fi
 
 step "Done"
