@@ -7,6 +7,10 @@ vim.g.loaded_ruby_provider = 0
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_node_provider = 0
 
+-- Stock ftplugins (python/rust/go, …) map [[ ]] buffer-locally, hiding the
+-- snacks.words reference jumps. markdown.lua / help.lua ignore this (sections, gO).
+vim.g.no_plugin_maps = 1
+
 -- Launch modes (read by persistence / autocmds / snacks):
 --  • `nvim` — full IDE: dashboard + cwd session.
 --  • `nvim <dir>` — same as `cd <dir> && nvim` (dir_launch).

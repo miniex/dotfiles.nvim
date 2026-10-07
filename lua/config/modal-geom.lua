@@ -1,5 +1,5 @@
--- Shared chrome-aware rectangle for every modal float. Mirrors fff's
--- `calculate_layout_dimensions` (picker_ui.lua:396) + its virtual-border +1.
+-- Shared chrome-aware rectangle for every modal float (snacks, fzf-lua, gitsigns).
+-- fff sizes itself from the same 0.85 ratio, one column to the right.
 local M = {}
 
 M.RATIO = 0.85

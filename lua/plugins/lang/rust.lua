@@ -86,7 +86,6 @@ return {
                 default_settings = {
                     ["rust-analyzer"] = {
                         cargo = {
-                            allFeatures = false,
                             buildScripts = {
                                 enable = true,
                             },
@@ -105,7 +104,7 @@ return {
                         files = {
                             -- Server-side: client watching makes nvim walk the whole tree, stalling large projects.
                             watcher = "server",
-                            excludeDirs = {
+                            exclude = {
                                 ".direnv",
                                 ".git",
                                 ".github",
