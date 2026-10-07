@@ -7,34 +7,19 @@ vim.g.loaded_ruby_provider = 0
 vim.g.loaded_perl_provider = 0
 vim.g.loaded_node_provider = 0
 
--- Launch modes (read by persistence / autocmds):
---  • file_launch — any file arg(s), incl. `nvim a b c`: no session save/restore.
---  • multi_dir — `nvim dir1 dir2`: per-dir projects; :next/:prev tcd's in.
--- `nvim` is the full IDE; `nvim <dir>` is a bare launch inside <dir> (same session).
+-- Launch modes (read by persistence / autocmds / snacks):
+--  • `nvim` — full IDE: dashboard + cwd session.
+--  • `nvim <dir>` — same as `cd <dir> && nvim` (dir_launch).
+--  • anything else (files, several dirs, piped stdin) — file_launch: no session save/restore.
 do
     local n = vim.fn.argc(-1)
-    local function is_dir(i)
-        return vim.fn.isdirectory(vim.fn.argv(i)) == 1
-    end
-    if n == 1 and is_dir(0) and pcall(vim.fn.chdir, vim.fn.argv(0)) then
-        -- `nvim <dir>` == `cd <dir> && nvim`: become a bare launch inside <dir> so the
-        -- cwd (hence the session key) matches and the same workspace restores.
-        -- chdir guarded: an inaccessible dir falls through to the file-launch branch.
+    if n == 1 and vim.fn.isdirectory(vim.fn.argv(0)) == 1 and pcall(vim.fn.chdir, vim.fn.argv(0)) then
+        -- Become a bare launch inside <dir> so the cwd (hence the session key) matches and
+        -- the same workspace restores. An inaccessible dir falls through to file_launch.
         pcall(vim.cmd, "argdelete *")
-        vim.g.file_launch = false
         vim.g.dir_launch = vim.fn.getcwd() -- a VimEnter drops the stray dir buffer
-    elseif n == 0 and vim.fn.has("ttyin") == 0 then
-        -- Piped stdin (`cmd | nvim -`): file-launch semantics, no session over piped content.
-        vim.g.file_launch, vim.g.multi_dir = true, false
     else
-        local files = 0
-        for i = 0, n - 1 do
-            if not is_dir(i) then
-                files = files + 1
-            end
-        end
-        vim.g.file_launch = files > 0 -- dirs alone never block the session
-        vim.g.multi_dir = n >= 2 and files == 0
+        vim.g.file_launch = n > 0 or vim.fn.has("ttyin") == 0
     end
 end
 

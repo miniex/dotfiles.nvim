@@ -128,7 +128,6 @@ How you start Neovim sets the workspace behavior:
 
 - **`nvim`** (no args) — full IDE: dashboard, and the cwd session auto-restores on start and saves on exit.
 - **`nvim <dir>`** — identical to `cd <dir> && nvim`: chdir's into `<dir>` (dropping the stray dir buffer) and keys the session to `<dir>`, landing on the dashboard or the cwd's restored session (an inaccessible dir falls back to a bare launch).
-- **`nvim <file…>`** — opens the files as buffers; the session is left untouched.
-- **`nvim dir1 dir2…`** (multiple dirs) — each dir is its own project root; `:next` / `:prev` `:tcd` into whichever is current (cwd / pickers / LSP / session key follow) and show that dir's dashboard. Directory buffers are unlisted, so buffer lists carry only the files you open. Sessions are **manual**: `<leader>qs` restores the current dir's, exit saves it (no auto-restore, so `:next` / `:prev` stay intact).
+- **`nvim <file…>`** (or several dirs, or piped stdin) — opens the args as buffers; the session is left untouched.
 
-This keeps `nvim <file>` from disturbing a directory's saved workspace. Set via `vim.g.file_launch` / `vim.g.multi_dir` in `lua/config/globals.lua`.
+This keeps `nvim <file>` from disturbing a directory's saved workspace. Set via `vim.g.file_launch` / `vim.g.dir_launch` in `lua/config/globals.lua`.
