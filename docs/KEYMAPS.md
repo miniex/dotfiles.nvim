@@ -184,7 +184,7 @@ Bare `nvim` (and `nvim <dir>`, which cd's in) auto-restores the cwd session (ski
 | `<leader>ui`                | n     | Snacks toggle: list chars (whitespace)                                    |
 | `<leader>uT` / `<leader>ux` | n     | Toggle treesitter highlight (Snacks) / hex view                           |
 | `<leader>ut`                | n     | Inspect treesitter tree (`:InspectTree`)                                  |
-| `<leader>um` / `<leader>ug` | n     | Snacks toggle: zoom (maximize) / indent guides                            |
+| `<leader>ug`                | n     | Snacks toggle: indent guides                                              |
 | `[x`                        | n     | Jump to context start                                                     |
 
 > **mini.ai** adds bracket/quote/tag textobjects (`a(` / `i"` / `at`) with next/last search — `aN(` / `iN"` (next), `aL(` / `iL"` (last) — plus `ag`/`ig` (whole buffer) and `ad`/`id` (number).
@@ -202,7 +202,7 @@ Bare `nvim` (and `nvim <dir>`, which cd's in) auto-restores the cwd session (ski
 | `<leader>ghs/r/S/R/p/i/b/c/d/D`               | Stage (toggle) / reset / stage-buf / reset-buf / preview / inline preview / blame-line / blame-file / diff / diff~ |
 | `<leader>ghq` / `ghQ`                         | gitsigns: hunks to quickfix — attached buffers / whole repo                                                        |
 | `<leader>ghv`                                 | gitsigns: show the file at the index (read-only)                                                                   |
-| `<leader>gtb` / `<leader>gtd` / `<leader>gtw` | Toggle line blame / show deleted / word diff                                                                       |
+| `<leader>gtb` / `<leader>gtw`                 | Toggle line blame / word diff                                                                                      |
 | `ih` / `ah` (o/x)                             | gitsigns hunk textobject (`d ih`, `v ah`)                                                                          |
 
 ## Debugger (DAP)

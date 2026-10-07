@@ -28,15 +28,13 @@ local mode_color = {
 }
 
 local sign_ns = vim.api.nvim_create_namespace("CursorBloom")
-local chrome = require("config.chrome_filetypes")
-local excluded_ft = chrome.set(chrome.pickers, chrome.panels)
 local last_color
 local last_buf, last_line
 local last_id, last_id_buf
 local function refresh_sign()
     local buf = vim.api.nvim_get_current_buf()
     -- Re-check here (not just in schedule_refresh): the buffer can change in the 16ms window.
-    if not vim.api.nvim_buf_is_valid(buf) or vim.bo[buf].buftype ~= "" or excluded_ft[vim.bo[buf].filetype] then
+    if not vim.api.nvim_buf_is_valid(buf) or vim.bo[buf].buftype ~= "" then
         return
     end
     local line = vim.fn.line(".") - 1
@@ -70,7 +68,8 @@ local function schedule_refresh()
     if refresh_pending then
         return
     end
-    if vim.bo.buftype ~= "" or excluded_ft[vim.bo.filetype] then
+    -- Pickers, panels, terminals, dashboard: all non-"" buftype.
+    if vim.bo.buftype ~= "" then
         return
     end
     refresh_pending = true

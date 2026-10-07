@@ -69,8 +69,7 @@ return {
             signature = {
                 enabled = true,
                 trigger = { show_on_insert = true },
-                -- Keep the signature compact; docs go to the completion window.
-                window = { border = vim.g.flower_border, show_documentation = false },
+                window = { border = vim.g.flower_border },
             },
             snippets = { preset = "luasnip" },
             sources = {

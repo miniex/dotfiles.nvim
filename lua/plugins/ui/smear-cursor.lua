@@ -25,6 +25,17 @@ return {
         smear_terminal_mode = false,
         -- No smear across windows: float opens (pickers, hovers) would streak from (1,1).
         smear_between_buffers = false,
-        filetypes_disabled = require("config.chrome_filetypes").pickers,
+        -- Picker prompts/lists: cursor jumps per keystroke.
+        filetypes_disabled = {
+            "snacks_picker_input",
+            "snacks_picker_list",
+            "snacks_picker_preview",
+            "snacks_terminal",
+            "fff_input",
+            "fff_list",
+            "fff_preview",
+            "fzf",
+            "fzflua_backdrop",
+        },
     },
 }

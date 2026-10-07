@@ -19,25 +19,6 @@ return {
         },
     },
     opts = {
-        opts = {
-            buflisted = false,
-            number = false,
-            relativenumber = false,
-            signcolumn = "auto",
-            winfixheight = true,
-            wrap = false,
-        },
-        edit = {
-            enabled = true,
-            autosave = "unmodified",
-        },
-        constrain_cursor = true,
-        highlight = {
-            treesitter = true,
-            lsp = true,
-            load_buffers = false,
-        },
-        follow = { enabled = false },
         keys = {
             {
                 ">",

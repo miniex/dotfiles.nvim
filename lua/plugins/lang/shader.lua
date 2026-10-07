@@ -1,21 +1,8 @@
+-- Stock nvim already knows wgsl and the glsl stage extensions.
 vim.filetype.add({
     extension = {
-        wgsl = "wgsl",
-        vert = "glsl",
-        frag = "glsl",
-        geom = "glsl",
-        tesc = "glsl",
-        tese = "glsl",
-        comp = "glsl",
-        rgen = "glsl",
-        rmiss = "glsl",
-        rchit = "glsl",
-        rahit = "glsl",
-        rint = "glsl",
-        rcall = "glsl",
-        glsl = "glsl",
         vs = "glsl",
-        fs = "glsl",
+        fs = "glsl", -- stock: fsharp
         hlsl = "hlsl",
         fx = "hlsl",
         fxh = "hlsl",

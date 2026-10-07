@@ -6,21 +6,17 @@ opt.shiftwidth = 4
 opt.softtabstop = 4
 opt.expandtab = true
 -- No smartindent: it mis-indents `#`/`}` outside treesitter; indentexpr owns the rest.
-opt.autoindent = true
-opt.wrap = true
 opt.linebreak = true
 -- Keep wrapped lines under their indent, with a continuation marker.
 opt.breakindent = true
 opt.showbreak = "↪ "
 
 -- search
-opt.incsearch = true
 opt.ignorecase = true
 opt.smartcase = true
 -- live :s/.../ preview; :grep backed by ripgrep
 opt.inccommand = "split"
 opt.grepprg = "rg --vimgrep --smart-case"
-opt.grepformat = "%f:%l:%c:%m"
 
 -- session: window-visible buffers only (no hidden badd); globals for NeotestSummaryOpen
 opt.sessionoptions = { "curdir", "winsize", "help", "globals", "skiprtp" }
@@ -34,7 +30,6 @@ opt.fillchars:append({ eob = " " })
 -- block-wise visual edits past line end (column / table editing)
 opt.virtualedit = "block"
 -- whitespace shown on demand; toggle with <leader>ui
-opt.list = false
 opt.listchars = { tab = "» ", trail = "·", nbsp = "␣", extends = "›", precedes = "‹" }
 
 -- undofile covers recovery; skip swap/backup files.
@@ -49,11 +44,10 @@ opt.laststatus = 3
 opt.showtabline = 0
 -- Safety net for the first-`<leader>` lag while which-key triggers register.
 opt.timeoutlen = 300
--- Swap write / CursorHold delay.
+-- CursorHold delay.
 opt.updatetime = 300
 opt.scrolloff = 10
 opt.mouse = "a"
-opt.autoread = true
 opt.undofile = true
 
 -- 0.11+ global default for floats reading vim.o.winborder. Plugins that only accept
@@ -86,11 +80,5 @@ opt.foldenable = false
 
 -- ui2: native floating cmdline/msg (0.12+). `vim.g.disable_ui2=true` to opt out.
 if not vim.g.disable_ui2 then
-    local ok, ui2 = pcall(require, "vim._core.ui2")
-    if ok and ui2.enable then
-        pcall(ui2.enable, {
-            enable = true,
-            msg = { target = "cmd", timeout = 4000 },
-        })
-    end
+    require("vim._core.ui2").enable({})
 end

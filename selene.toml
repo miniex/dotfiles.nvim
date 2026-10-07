@@ -2,7 +2,7 @@
 std = "vim"
 
 [lints]
-# Intentional _G.* wiring (e.g. _NavPane), not a smell.
+# Intentional _G.* wiring (_cursor_bloom_timer), not a smell.
 global_usage = "allow"
 # lazy specs / keymap entries are array+map by design.
 mixed_table = "allow"

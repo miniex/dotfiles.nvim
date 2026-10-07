@@ -56,7 +56,8 @@ local yank_timer = vim.uv.new_timer()
 vim.api.nvim_create_autocmd("TextYankPost", {
     group = vim.api.nvim_create_augroup("YankToClipboard", { clear = true }),
     callback = function()
-        if vim.v.event.operator ~= "y" then
+        -- Explicit "+y / "*y already went through the provider.
+        if vim.v.event.operator ~= "y" or vim.v.event.regname == "+" or vim.v.event.regname == "*" then
             return
         end
         local contents, regtype = vim.v.event.regcontents, vim.v.event.regtype

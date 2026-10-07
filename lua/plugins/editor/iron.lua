@@ -29,7 +29,6 @@ return {
                 exit = "<leader>iq",
                 clear = "<leader>ic",
             },
-            ignore_blank_lines = true,
         })
     end,
 }

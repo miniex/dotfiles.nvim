@@ -47,11 +47,11 @@ Drop Lua files in `~/.config/nvim/snippets/`. Filetype-scoped by filename (e.g. 
 
 ## Picker / terminal exclusions
 
-`lua/config/chrome_filetypes.lua` is the single source — `pickers` (snacks/fff/fzf overlays) and `panels` (trouble, dap, aerial, …). smear-cursor / cursor-bloom build their exclusions from it. Add a new float's filetype to `pickers` or `panels` once and every chrome plugin picks it up.
+Cursor chrome skips any non-file buffer (`buftype ~= ""`): pickers, panels, terminals and the dashboard need no list. smear-cursor also takes `filetypes_disabled` in `lua/plugins/ui/smear-cursor.lua`.
 
 ## Per-filetype options
 
-- `after/ftplugin/<ft>.lua` — buffer-local options Neovim auto-sources on `FileType` (after the built-in / plugin ftplugins, so it wins). Used for `gitcommit` (50/72 guides), `markdown` (soft wrap), `python` (venv keymap) and `json` (2-space); stock ftplugins already cover go/make tabs and yaml indent. Add a file named after the filetype to set its own buffer options.
+- `after/ftplugin/<ft>.lua` — buffer-local options Neovim auto-sources on `FileType` (after the built-in / plugin ftplugins, so it wins). Used for `gitcommit` (50/72 guides) and `json` (2-space); stock ftplugins already cover go/make tabs and yaml indent. Add a file named after the filetype to set its own buffer options.
 
 ## Formatter width
 

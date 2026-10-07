@@ -5,7 +5,6 @@ return {
         dependencies = {
             "nvim-neotest/nvim-nio",
             "nvim-lua/plenary.nvim",
-            "antoinemadec/FixCursorHold.nvim",
             "nvim-treesitter/nvim-treesitter",
             "nvim-neotest/neotest-python",
             "fredrikaverpil/neotest-golang",
@@ -228,6 +227,9 @@ return {
             })
         end,
     },
+    -- neotest-busted's rockspec adds non-lazy specs for itself and nvim-nio.
+    { "MisanthropicBit/neotest-busted", lazy = true },
+    { "nvim-neotest/nvim-nio", lazy = true },
     {
         "WhoIsSethDaniel/mason-tool-installer.nvim",
         opts = function(_, opts)

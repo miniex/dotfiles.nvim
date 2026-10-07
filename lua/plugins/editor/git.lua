@@ -161,7 +161,6 @@ return {
 
                 -- Toggle
                 map("n", "<leader>gtb", gs.toggle_current_line_blame, "Toggle Line Blame")
-                map("n", "<leader>gtd", gs.toggle_deleted, "Toggle Deleted")
                 map("n", "<leader>gtw", gs.toggle_word_diff, "Toggle Word Diff")
 
                 -- Hunk textobject: d ih / v ah.

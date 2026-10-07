@@ -47,14 +47,9 @@ end
 
 -- Per-plugin float groups (built once): n = Normal, b = Border, t = Title.
 local float_groups = {
-    NeoTree = {
-        n = { "NeoTreeNormal", "NeoTreeNormalNC", "NeoTreeFloatNormal" },
-        b = { "NeoTreeFloatBorder" },
-        t = { "NeoTreeFloatTitle" },
-    },
     Snacks = { n = snacks_n, b = snacks_b, t = snacks_t },
     WhichKey = {
-        n = { "WhichKeyNormal", "WhichKeyFloat" },
+        n = { "WhichKeyNormal" },
         b = { "WhichKeyBorder" },
         t = { "WhichKeyTitle" },
     },
@@ -63,16 +58,10 @@ local float_groups = {
         b = { "FzfLuaBorder", "FzfLuaPreviewBorder" },
         t = { "FzfLuaTitle", "FzfLuaPreviewTitle" },
     },
-    DropBar = {
-        n = { "DropBarMenuNormalFloat" },
-        b = { "DropBarMenuFloatBorder" },
-        t = { "DropBarMenuFloatTitle" },
-    },
     BlinkCmp = {
         n = { "BlinkCmpMenu", "BlinkCmpDoc", "BlinkCmpSignatureHelp" },
         b = { "BlinkCmpMenuBorder", "BlinkCmpDocBorder", "BlinkCmpSignatureHelpBorder" },
     },
-    -- bqf preview & nvim-cmp legacy
     Bqf = {
         n = { "BqfPreviewFloat" },
         b = { "BqfPreviewBorder" },
@@ -109,10 +98,8 @@ local function unify_floats()
         end
     end
 
-    -- snacks indent guides → muted damin tones (indent dim, scope pink).
+    -- snacks indent guides → muted damin tone.
     vim.api.nvim_set_hl(0, "SnacksIndent", { fg = palette.indent })
-    vim.api.nvim_set_hl(0, "SnacksIndentScope", { fg = pink })
-    vim.api.nvim_set_hl(0, "SnacksIndentChunk", { fg = pink })
 end
 -- ColorScheme fires on the initial catppuccin load too — no eager call needed.
 vim.api.nvim_create_autocmd("ColorScheme", {

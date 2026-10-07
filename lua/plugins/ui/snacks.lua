@@ -317,8 +317,8 @@ return {
         picker = {
             enabled = true,
             ui_select = true,
-            -- Two flower-bordered boxes adjacent; col-overlap (see
-            -- `is_picker_preview_buf` patch at top) renders one ✿│✿ divider.
+            -- Two boxes; the preview has no left border, so the list's right
+            -- border is the single ✿│✿ divider.
             layouts = {
                 default = {
                     layout = {
@@ -420,7 +420,6 @@ return {
         Snacks.toggle.treesitter():map("<leader>uT")
         Snacks.toggle.diagnostics():map("<leader>ud")
         Snacks.toggle.inlay_hints():map("<leader>ci"):map("<leader>uh")
-        Snacks.toggle.zoom():map("<leader>um")
         Snacks.toggle.indent():map("<leader>ug")
     end,
     keys = {
@@ -583,22 +582,6 @@ return {
                 Snacks.words.jump(-vim.v.count1)
             end,
             desc = "Prev Reference",
-        },
-        {
-            "]i",
-            function()
-                Snacks.scope.jump({ bottom = true })
-            end,
-            mode = { "n", "x", "o" },
-            desc = "Jump to Scope Bottom",
-        },
-        {
-            "[i",
-            function()
-                Snacks.scope.jump({ bottom = false })
-            end,
-            mode = { "n", "x", "o" },
-            desc = "Jump to Scope Top",
         },
         {
             "<leader>.",

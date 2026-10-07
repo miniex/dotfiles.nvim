@@ -14,7 +14,7 @@ return {
     },
     opts = {
         -- LSP first (accurate); treesitter fallback (markdown etc.).
-        backends = { "lsp", "treesitter", "markdown", "man" },
+        backends = { "lsp", "treesitter", "markdown" },
         layout = {
             min_width = 28,
             default_direction = "right",

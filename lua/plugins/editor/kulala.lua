@@ -2,9 +2,9 @@
 return {
     "mistweaverco/kulala.nvim",
     ft = { "http" },
-    -- Register the filetype so opening a .http file triggers the ft lazy-load.
+    -- .http is stock; .rest isn't.
     init = function()
-        vim.filetype.add({ extension = { http = "http", rest = "http" } })
+        vim.filetype.add({ extension = { rest = "http" } })
     end,
     opts = {},
     keys = {
