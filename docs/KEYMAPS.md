@@ -110,7 +110,7 @@ Bare `nvim` (and `nvim <dir>`, which cd's in) auto-restores the cwd session (ski
 ## LSP / Diagnostics
 
 > Neovim 0.11+'s default `grr`/`gri`/`grn`/`gra` are deleted on `LspAttach` so `gr` (References) fires without a `timeoutlen` wait; `gO` is remapped to Trouble below.
-> `gd`/`gr`/`gi`/`gy` open an fzf-lua picker (auto-jumps on a single result).
+> `gd`/`gr`/`gI`/`gy` open an fzf-lua picker (auto-jumps on a single result).
 >
 > Severity-sorted; gutter signs `✗`/`!`/`i`/`?` (statusline shows `E`/`W`/`I`/`H` counts). Diag float shows source when ambiguous.
 
@@ -118,7 +118,7 @@ Bare `nvim` (and `nvim <dir>`, which cd's in) auto-restores the cwd session (ski
 | --------------------------- | -------------------------------------------------------------------- |
 | `K` / `<C-k>` (i)           | Hover / signature help                                               |
 | `gd` / `gD`                 | Definition / declaration                                             |
-| `gr` / `gi` / `gy`          | References / implementation / type definition                        |
+| `gr` / `gI` / `gy`          | References / implementation / type definition                        |
 | `<leader>cI` / `cG` / `cH`  | Incoming / outgoing calls / type hierarchy (sub+super picker)        |
 | `<leader>rn`                | Rename (inc-rename live preview)                                     |
 | `<leader>cc` / `<leader>ca` | Diagnostics float / code action (n+x, tiny-code-action diff preview) |

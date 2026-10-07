@@ -85,6 +85,9 @@ return {
         "mason-org/mason-lspconfig.nvim",
         dependencies = { "mason-org/mason.nvim" },
         cmd = { "LspInstall", "LspUninstall" },
+        -- No ensure_installed: mason-tool-installer owns installs. We enable servers
+        -- ourselves (lang + executable gated); automatic_enable would enable every package.
+        opts = { automatic_enable = false },
     },
     {
         "WhoIsSethDaniel/mason-tool-installer.nvim",
@@ -389,30 +392,6 @@ return {
                         vim.bo[bufnr].formatexpr = "v:lua.vim.lsp.formatexpr()"
                     end
                 end
-                -- Color swatches (0.12) on documentColor-capable servers (colorizer owns
-                -- hex). Capability can register post-init (cssls/tailwindcss), so poll —
-                -- bounded to ~1s (4 × 250ms) since it always lands during init handshake.
-                if vim.lsp.document_color and not vim.b[bufnr]["_doccolor_polling_" .. client.id] then
-                    vim.b[bufnr]["_doccolor_polling_" .. client.id] = true
-                    local cid, tries = client.id, 0
-                    local function enable_color()
-                        if not vim.api.nvim_buf_is_valid(bufnr) then
-                            return
-                        end
-                        local c = vim.lsp.get_client_by_id(cid)
-                        if c and c:supports_method("textDocument/documentColor", bufnr) then
-                            pcall(vim.lsp.document_color.enable, true, { bufnr = bufnr })
-                            vim.b[bufnr]["_doccolor_polling_" .. cid] = nil
-                        elseif c and tries < 4 then
-                            tries = tries + 1
-                            vim.defer_fn(enable_color, 250)
-                        else
-                            -- client gone / gave up — clear so a fresh attach (restart) re-polls.
-                            vim.b[bufnr]["_doccolor_polling_" .. cid] = nil
-                        end
-                    end
-                    enable_color()
-                end
             end
 
             -- Prefer fzf-lua's LSP pickers (fuzzy on many, auto-jump on one) over
@@ -430,7 +409,7 @@ return {
 
             -- Drop the 0.11+ default gr* maps: global + share the `gr` prefix with our
             -- buffer-local gr (References) → timeoutlen wait on every `gr`. Remapped to:
-            -- grr→gr, gri→gi, grt→gy, gra→<leader>ca, grx→<leader>cL, grn→<leader>rn.
+            -- grr→gr, gri→gI, grt→gy, gra→<leader>ca, grx→<leader>cL, grn→<leader>rn.
             for _, k in ipairs({ "grn", "grr", "gri", "grt", "grx" }) do
                 pcall(vim.keymap.del, "n", k)
             end
@@ -467,7 +446,7 @@ return {
                     map("n", "gd", lsp_pick("lsp_definitions", vim.lsp.buf.definition), "Goto Definition")
                     map("n", "gD", vim.lsp.buf.declaration, "Goto Declaration")
                     map("n", "gr", lsp_pick("lsp_references", vim.lsp.buf.references), "References")
-                    map("n", "gi", lsp_pick("lsp_implementations", vim.lsp.buf.implementation), "Goto Implementation")
+                    map("n", "gI", lsp_pick("lsp_implementations", vim.lsp.buf.implementation), "Goto Implementation")
                     map("n", "gy", lsp_pick("lsp_typedefs", vim.lsp.buf.type_definition), "Goto Type Definition")
                     -- Call/type hierarchy (gci/gco clash with the gc comment operator → <leader>c*).
                     map("n", "<leader>cI", lsp_pick("lsp_incoming_calls", vim.lsp.buf.incoming_calls), "Incoming Calls")
@@ -556,35 +535,14 @@ return {
                     return false
                 end
 
-                -- nvim-lspconfig's bundled lsp/<name>.lua wins the rtp merge over ours for
-                -- array keys (cmd/filetypes/root_markers); re-apply ours so it takes effect.
-                local lsp_dir = vim.fn.stdpath("config") .. "/lsp/"
+                -- Our settings live in after/lsp/ so they merge after nvim-lspconfig's lsp/.
                 for _, name in ipairs(servers) do
-                    local ok_cfg, repo_cfg = pcall(dofile, lsp_dir .. name .. ".lua")
-                    if ok_cfg and type(repo_cfg) == "table" then
-                        vim.lsp.config(name, repo_cfg)
-                    end
                     local cfg = vim.lsp.config[name]
                     if cfg and cmd_executable(cfg.cmd) then
                         vim.lsp.enable(name)
                     end
                 end
             end)
-
-            vim.api.nvim_create_autocmd("VimEnter", {
-                group = vim.api.nvim_create_augroup("MasonLspconfigBootstrap", { clear = true }),
-                once = true,
-                callback = function()
-                    vim.schedule(function()
-                        require("mason-lspconfig").setup({
-                            -- No ensure_installed: mason-tool-installer owns installs (would double-install).
-                            -- We enable servers ourselves above (lang + executable gated);
-                            -- automatic_enable = true would enable every installed package.
-                            automatic_enable = false,
-                        })
-                    end)
-                end,
-            })
         end,
     },
 }

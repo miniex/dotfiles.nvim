@@ -1,6 +1,6 @@
 # Neovim Configuration
 
-Lean, fast, easy on the eyes. Native LSP via `lsp/<server>.lua` discovery, Rust-backed completion (blink.cmp), aggressive lazy-loading.
+Lean, fast, easy on the eyes. Native LSP via `after/lsp/<server>.lua` discovery, Rust-backed completion (blink.cmp), aggressive lazy-loading.
 
 > **Targets Linux/macOS in [Kitty](https://sw.kovidgoyal.net/kitty/)** (image previews also work in WezTerm / Ghostty via the kitty graphics protocol). WSL2 supported via `clip.exe`. Other terminals work, minus inline image previews and the Material Design Icons fallback.
 >
@@ -10,7 +10,7 @@ Lean, fast, easy on the eyes. Native LSP via `lsp/<server>.lua` discovery, Rust-
 
 ## Highlights
 
-- **Native LSP & ui2** — `vim.lsp.config` + `lsp/<server>.lua` discovery; floating cmdline + messages
+- **Native LSP & ui2** — `vim.lsp.config` + `after/lsp/<server>.lua` discovery; floating cmdline + messages
 - **Completion** — blink.cmp (Rust fuzzy) + tiny-inline-diagnostic
 - **Treesitter** — `main` branch, textobjects, sticky context, ts-autotag
 - **Pickers** — fff + snacks.picker + fzf-lua, all sharing one 0.85 × 0.85 rectangle

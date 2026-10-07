@@ -7,8 +7,7 @@ Why files live where they do.
 ```
 ~/.config/nvim/
 ├── init.lua              entry point — required at root by Neovim
-├── lsp/                  per-server settings (vim.lsp.config, 0.11+)
-├── after/ftplugin/       per-filetype buffer options (auto-sourced on FileType)
+├── after/                lsp/ per-server settings (vim.lsp.config), ftplugin/ per-filetype options
 ├── snippets/             luasnip filetype-scoped + all.lua
 ├── lua/                  every require()-able module
 │   ├── config/             core: options, autocmds, keymaps, lazy bootstrap
@@ -22,14 +21,14 @@ Why files live where they do.
 └── README.md
 ```
 
-The asymmetry between `lsp/` / `snippets/` (at root) and `lua/config|plugins/` (under `lua/`) is **dictated by Neovim**, not a stylistic choice — see below.
+The asymmetry between `after/` / `snippets/` (at root) and `lua/config|plugins/` (under `lua/`) is **dictated by Neovim**, not a stylistic choice — see below.
 
 ## Why each path is where it is
 
 | Path                      | Forced by                                                                                       |
 | ------------------------- | ----------------------------------------------------------------------------------------------- |
 | `init.lua`                | Neovim looks here on startup. Cannot move.                                                      |
-| `lsp/<server>.lua`        | Neovim 0.11+ native LSP discovery scans `<rtp>/lsp/` only. Cannot move.                         |
+| `after/lsp/<server>.lua`  | Native LSP discovery scans `<rtp>/lsp/`; `after/` merges over nvim-lspconfig's.                 |
 | `after/ftplugin/<ft>.lua` | Neovim auto-sources `<rtp>/after/ftplugin/<ft>.lua` on `FileType`. Cannot move.                 |
 | `lua/<mod>/*.lua`         | `require("mod.x")` resolves to `<rtp>/lua/mod/x.lua`. Cannot move out of `lua/`.                |
 | `snippets/<ft>.lua`       | Free choice. Path is set in `lua/plugins/coding/completion.lua` (`luasnip.loaders.from_lua`).   |
@@ -53,7 +52,7 @@ Plugin specs are discovered by `lazy.setup({ spec = { { import = "plugins.coding
 
 | Concern                 | Lives in                                                             | Why                                                                                                                                                                                                                                                                        |
 | ----------------------- | -------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| LSP per-server settings | `lsp/<server>.lua`                                                   | Neovim's native discovery; don't restate in `nvim-lspconfig.opts.servers.<name>`.                                                                                                                                                                                          |
+| LSP per-server settings | `after/lsp/<server>.lua`                                             | Neovim's native discovery; don't restate in `nvim-lspconfig.opts.servers.<name>`.                                                                                                                                                                                          |
 | JSON/YAML schemas       | `lua/config/lsp_schemastore.lua`                                     | Shared SchemaStore wiring for jsonls/yamlls `before_init`; cached once, json append vs yaml merge in one place.                                                                                                                                                            |
 | Lang → server mapping   | `lua/config/lang_servers.lua`                                        | One place to ask "what servers does this language enable?"                                                                                                                                                                                                                 |
 | Enabled languages       | `lua/config/langs.lua` (+ `langs_local.lua`)                         | `langs_local.lua` is gitignored and wins per-machine.                                                                                                                                                                                                                      |

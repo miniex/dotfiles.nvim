@@ -2,15 +2,15 @@
 
 ## LSP & Completion
 
-- **Native LSP** — `vim.lsp.config` + `lsp/<server>.lua` discovery; mason-tool-installer installs the servers, the config enables them itself (gated by enabled langs + executable presence). Workspace root anchors on language manifests, `.git` as fallback.
+- **Native LSP** — `vim.lsp.config` + `after/lsp/<server>.lua` discovery; mason-tool-installer installs the servers, the config enables them itself (gated by enabled langs + executable presence). Workspace root anchors on language manifests, `.git` as fallback.
 - **File watching** — client-side `didChangeWatchedFiles` is on for every server (off by default on Linux); rust-analyzer watches server-side so large projects don't stall on open.
 - **Inlay hints** — toggle per buffer with `<leader>ci`; suppressed automatically during insert mode.
 - **CodeLens** — enabled on capable servers (gopls, rust-analyzer, lua_ls, ocamllsp, elixir-ls); refreshes on edit, paused during insert mode (like inlay hints); skipped on big files, as is the idle reference-highlight.
-- **Navigation** — `gd` / `gr` / `gi` / `gy` open an fzf-lua picker (auto-jumps on a single result); `<leader>cI` / `cG` / `cH` for incoming / outgoing calls + type hierarchy.
+- **Navigation** — `gd` / `gr` / `gI` / `gy` open an fzf-lua picker (auto-jumps on a single result); `<leader>cI` / `cG` / `cH` for incoming / outgoing calls + type hierarchy.
 - **Rename** — `<leader>rn` via inc-rename with a live in-buffer preview.
 - **Formatting** — `<leader>cf` runs `vim.lsp.buf.format` (native LSP; no formatter plugin). `gq` / `gw` route through the LSP formatter on code filetypes (via `formatexpr`); prose (markdown / gitcommit) keeps Neovim's built-in reflow.
 - **Semantic tokens** — off by default on TS (vtsls), Python (basedpyright), and C/C++ (clangd), where they clash with treesitter highlight; toggle per buffer with `<leader>uy` (survives `:LspRestart`).
-- **Document colors** — LSP color swatches via native `vim.lsp.document_color` on any capable server (tailwindcss, cssls, …), enabled by a short bounded poll after attach (capability can register post-init); colorizer still owns hex.
+- **Colors** — colorizer highlights hex (and CSS functions in style files); LSP document colors are left at nvim defaults.
 - **Linked editing** — an HTML/JSX tag and its closing tag rename in sync via native `vim.lsp.linked_editing_range` on capable servers (html, …).
 - **Diagnostics** — single config in `lua/plugins/lsp/init.lua`; `tiny-inline-diagnostic.nvim` owns virtual text. Severity-sorted, signs `✗`/`!`/`i`/`?`.
 - **Spell check** — `typos_lsp` across all filetypes: low false-positive (only known typos), surfaced at `Info` severity.
