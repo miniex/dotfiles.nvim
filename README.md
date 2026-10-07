@@ -19,7 +19,7 @@ Lean, fast, easy on the eyes. Native LSP via `after/lsp/<server>.lua` discovery,
 - **Modal floats** — pickers / terminal / lazy / Mason / lazygit / checkhealth are mutually exclusive and land in the exact same 0.85 × 0.85 chrome-aware rectangle
 - **Tooling** — nvim-lint, mason-tool-installer, DAP (10 langs), neotest (9 langs), vim-dadbod-ui (SQL client)
 - **Git** — gitsigns, fugitive, lazygit
-- **Clipboard** — yank → wl-copy / xclip / pbcopy / clip.exe (whichever is on PATH first), else OSC52 over SSH
+- **Clipboard** — `y` yanks also go to `+` through nvim's clipboard provider (wl-copy / xclip / xsel / pbcopy / clip.exe, OSC52 over SSH)
 
 Full breakdown: [docs/FEATURES.md](docs/FEATURES.md).
 

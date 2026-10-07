@@ -95,9 +95,8 @@ return {
                 end
             end
 
-            -- Re-fire FileType only for loadable buffers in `langset` (just-installed
-            -- langs) — avoids a per-tick FileType storm across all buffers. The
-            -- loadable check also guards markdown's ftplugin assert.
+            -- Re-fire FileType for loaded buffers whose lang is in `langset`. The
+            -- language.add check also guards markdown's ftplugin assert.
             local function attach_langs(langset)
                 for _, buf in ipairs(vim.api.nvim_list_bufs()) do
                     if vim.api.nvim_buf_is_loaded(buf) then
@@ -130,50 +129,14 @@ return {
             end
 
             if #missing > 0 then
-                vim.schedule(function()
-                    ts.install(missing)
-                    local pending = {}
+                -- install() returns a Task; re-fire FileType once every parser has landed.
+                ts.install(missing):await(vim.schedule_wrap(function()
+                    local set = {}
                     for _, lang in ipairs(missing) do
-                        pending[lang] = true
+                        set[lang] = true
                     end
-                    -- Re-fire FileType as parsers finish installing; pcall so a throw can't leak the timer.
-                    local attempts = 0
-                    local timer = vim.uv.new_timer()
-                    if not timer then
-                        pcall(attach_langs, pending)
-                        return
-                    end
-                    timer:start(
-                        2000,
-                        2000,
-                        vim.schedule_wrap(function()
-                            attempts = attempts + 1
-                            local ok_chk, inst = pcall(ts.get_installed, "parsers")
-                            if ok_chk and type(inst) == "table" then
-                                local have = {}
-                                for _, lang in ipairs(inst) do
-                                    have[lang] = true
-                                end
-                                -- Only attach langs that just landed this tick; drop them from pending.
-                                local newly = {}
-                                for lang in pairs(pending) do
-                                    if have[lang] then
-                                        newly[lang] = true
-                                        pending[lang] = nil
-                                    end
-                                end
-                                if next(newly) ~= nil then
-                                    pcall(attach_langs, newly)
-                                end
-                            end
-                            -- Stop once every parser landed (pending empty) or we give up.
-                            if next(pending) == nil or attempts >= 15 then
-                                timer:stop()
-                                timer:close()
-                            end
-                        end)
-                    )
-                end)
+                    pcall(attach_langs, set)
+                end))
             end
         end,
     },

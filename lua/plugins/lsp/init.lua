@@ -1,4 +1,4 @@
--- LSP: native discovery (lsp/<server>.lua) gated by langs × lang_servers.
+-- LSP: native discovery (after/lsp/<server>.lua) gated by langs × lang_servers.
 local drift_warned = false
 local cached_servers
 local function enabled_servers()

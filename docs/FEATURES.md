@@ -63,13 +63,11 @@ Big floating UIs (pickers / terminal / lazy / Mason / lazygit / checkhealth) are
 
 All modals share a single 0.85 × 0.85 chrome-aware rectangle defined in [`lua/config/modal-geom.lua`](../lua/config/modal-geom.lua):
 
-- snacks picker / terminal read it via function callbacks
-- lazy / Mason / lazygit get snapped by a synchronous `FileType` autocmd (no flash because the snap shares a frame with the open)
+- snacks picker / terminal / lazygit read it via function callbacks
+- lazy / Mason use their own 0.85 size option
 - fzf-lua reads it from a `winopts` function
 - fff has its own chrome-aware layout that already matches
 - checkhealth opens as a native float (`vim.g.health.style`, nvim 0.12) — no report tab to flash
-
-A `VimResized` handler in `modal-geom.lua` also re-snaps every open modal, so the rectangle holds when you resize the terminal mid-session.
 
 See [`lua/config/modal-floats.lua`](../lua/config/modal-floats.lua) for the mutual-exclusion registry.
 
@@ -85,7 +83,7 @@ See [`lua/config/modal-floats.lua`](../lua/config/modal-floats.lua) for the mutu
 - **mason-tool-installer** — single source of truth for Mason installs: LSP servers plus non-LSP tools (shellcheck, golangci-lint, eslint_d, selene, markdownlint, statix, hadolint, sqlfluff, yamllint, …). `auto_update` stays off; a startup toast flags tools with updates (`:MasonToolsUpdate`).
 - **DAP** — Rust (rustaceanvim's codelldb) / C-C++ (codelldb) / Python (debugpy) / Go (delve) / Zig (codelldb) / Nim (codelldb) / Elixir (elixir-ls debug adapter) / JS-TS (js-debug-adapter for Node; browser auto-detected from `$PATH` — Chrome, else Firefox; probed lazily, not at startup) / PHP (php-debug-adapter; needs Xdebug) / Bash (bash-debug-adapter / BashDB). C/C++, Zig, Nim, and Rust all resolve codelldb through `lua/config/codelldb.lua`. Persistent breakpoints per-cwd; conditional / hit-condition / log-point breakpoints (`<leader>dB`/`dH`/`dL`); exception breakpoints via `<leader>dE`; reads project `.vscode/launch.json`.
 - **neotest** — Python (pytest) / Go (gotestsum) / Elixir (mix) / C/C++ (gtest + ctest: Catch2 / doctest) / Lua (busted + plenary) / Rust (rustaceanvim) / Zig / JS-TS (vitest / jest) / PHP (PHPUnit). Summary window state restored across sessions.
-- **Python venv** — basedpyright auto-detects the interpreter (`$VIRTUAL_ENV` / `.venv` / `venv`); `:VenvSelect` (`<leader>cv`) picks another, applied to the running server live.
+- **Python venv** — basedpyright auto-detects the interpreter (`$VIRTUAL_ENV` / `.venv` / `venv`); `:LspPyrightSetPythonPath` switches it.
 - **overseer** — task / build runner (`<leader>R*`); auto-detects make / npm / cargo / go / just / cmake templates.
 - **nvim-coverage** — test-coverage gutter signs + summary (`<leader>nc` / `nC`, toggle `nv` / clear `nX`); reads lcov / coverage.xml.
 - **iron** — send-to-REPL for python / lua / sh / elixir / js-ts (`<leader>i*`).
@@ -113,7 +111,7 @@ See [`lua/config/modal-floats.lua`](../lua/config/modal-floats.lua) for the mutu
 
 ## Clipboard
 
-Yank → system clipboard auto-routed via `wl-copy` (Wayland), `xclip` (X11), `pbcopy` (macOS), or `clip.exe` (WSL2) — whichever lands on `PATH` first, falling back to OSC52 (works over SSH) when none is present.
+`y` yanks are copied to the system clipboard through nvim's own provider (wl-copy / xclip / xsel / pbcopy / clip.exe / win32yank; OSC52 over SSH), debounced 50ms. Other operators (`d`, `c`) stay out of the clipboard.
 
 ## snacks.nvim modules in use
 

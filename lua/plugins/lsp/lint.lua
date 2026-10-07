@@ -91,41 +91,16 @@ return {
             end
             lint.linters_by_ft = opts.linters_by_ft
 
-            -- Coalesce bursts, keyed per buffer.
-            local pending = {}
-            local group = vim.api.nvim_create_augroup("nvim-lint", { clear = true })
-            -- No InsertLeave: save / read only.
+            -- Save / read only (no InsertLeave). buf_call so a buffer read in the
+            -- background (session restore) is linted too, not just the current one.
             vim.api.nvim_create_autocmd({ "BufWritePost", "BufReadPost" }, {
-                group = group,
+                group = vim.api.nvim_create_augroup("nvim-lint", { clear = true }),
                 callback = function(args)
-                    local bufnr = args.buf
-                    if vim.bo[bufnr].buftype ~= "" then
-                        return
-                    end
-                    local t = pending[bufnr]
-                    if t and not t:is_closing() then
-                        t:stop()
-                        t:close()
-                    end
-                    pending[bufnr] = vim.defer_fn(function()
-                        pending[bufnr] = nil
-                        -- try_lint targets the current buffer; skip if we've moved.
-                        if vim.api.nvim_buf_is_valid(bufnr) and vim.api.nvim_get_current_buf() == bufnr then
+                    if vim.bo[args.buf].buftype == "" then
+                        vim.api.nvim_buf_call(args.buf, function()
                             lint.try_lint()
-                        end
-                    end, 250)
-                end,
-            })
-
-            vim.api.nvim_create_autocmd("BufWipeout", {
-                group = group,
-                callback = function(args)
-                    local t = pending[args.buf]
-                    if t and not t:is_closing() then
-                        t:stop()
-                        t:close()
+                        end)
                     end
-                    pending[args.buf] = nil
                 end,
             })
         end,

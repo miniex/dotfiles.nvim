@@ -49,74 +49,26 @@ vim.api.nvim_create_autocmd("VimResized", {
     end,
 })
 
--- TextYankPost → system clipboard. Deferred: first yank can't beat the schedule.
-vim.schedule(function()
-    local clip_cmd
-    if vim.fn.executable("wl-copy") == 1 then
-        clip_cmd = { "wl-copy" }
-    elseif vim.fn.executable("xclip") == 1 then
-        clip_cmd = { "xclip", "-selection", "clipboard" }
-    elseif vim.fn.executable("pbcopy") == 1 then
-        clip_cmd = { "pbcopy" }
-    elseif vim.fn.executable("/mnt/c/Windows/System32/clip.exe") == 1 then
-        clip_cmd = { "/mnt/c/Windows/System32/clip.exe" }
-    end
-    local copy
-    if clip_cmd then
-        copy = function(content)
-            vim.system(clip_cmd, { stdin = content })
+-- Yanks (operator `y` only) also go to the system clipboard through nvim's provider
+-- (wl-copy / xclip / pbcopy / clip.exe, OSC52 over SSH). Debounced so a macro full
+-- of yanks spawns one copy, not dozens.
+local yank_timer = vim.uv.new_timer()
+vim.api.nvim_create_autocmd("TextYankPost", {
+    group = vim.api.nvim_create_augroup("YankToClipboard", { clear = true }),
+    callback = function()
+        if vim.v.event.operator ~= "y" then
+            return
         end
-    else
-        -- No clipboard binary (e.g. SSH): emit OSC52 so the terminal copies.
-        local ok, osc52 = pcall(require, "vim.ui.clipboard.osc52")
-        if ok then
-            copy = function(content)
-                osc52.copy("+")(vim.split(content, "\n"))
-            end
-        end
-    end
-    if not copy then
-        return
-    end
-    -- Yank-only + 50ms debounce so macros don't fork dozens of clipboard processes.
-    local pending_content, pending_timer
-    vim.api.nvim_create_autocmd("TextYankPost", {
-        group = vim.api.nvim_create_augroup("YankToClipboard", { clear = true }),
-        callback = function()
-            if vim.v.event.operator ~= "y" then
-                return
-            end
-            pending_content = table.concat(vim.v.event.regcontents, "\n")
-            -- table.concat drops the line-wise trailing newline.
-            if vim.v.event.regtype == "V" then
-                pending_content = pending_content .. "\n"
-            end
-            if pending_timer and not pending_timer:is_closing() then
-                pending_timer:stop()
-                pending_timer:close()
-            end
-            -- Local handle so the callback closes its own timer, not a newer
-            -- one that replaced it on a fast re-yank.
-            local timer = vim.uv.new_timer()
-            pending_timer = timer
-            timer:start(
-                50,
-                0,
-                vim.schedule_wrap(function()
-                    if not timer:is_closing() then
-                        timer:close()
-                    end
-                    -- A newer yank may have superseded this timer; only the current one copies.
-                    if pending_timer ~= timer then
-                        return
-                    end
-                    pending_timer = nil
-                    copy(pending_content)
-                end)
-            )
-        end,
-    })
-end)
+        local contents, regtype = vim.v.event.regcontents, vim.v.event.regtype
+        yank_timer:start(
+            50,
+            0,
+            vim.schedule_wrap(function()
+                pcall(vim.fn.setreg, "+", contents, regtype)
+            end)
+        )
+    end,
+})
 
 -- mkdir parent dir on save (so :e new/path/file works).
 vim.api.nvim_create_autocmd("BufWritePre", {
@@ -208,18 +160,6 @@ vim.api.nvim_create_autocmd("FileType", {
     end,
 })
 
--- :VenvSelect — created once, on the first Python buffer; <leader>cv key in after/ftplugin/python.lua.
-vim.api.nvim_create_autocmd("FileType", {
-    group = vim.api.nvim_create_augroup("venvselect-cmd", { clear = true }),
-    pattern = "python",
-    once = true,
-    callback = function()
-        vim.api.nvim_create_user_command("VenvSelect", function()
-            require("config.python_venv").select()
-        end, { desc = "Select Python venv" })
-    end,
-})
-
 -- Clear the shada-restored jumplist at startup so <C-o> stays session-local.
 vim.api.nvim_create_autocmd("VimEnter", {
     group = vim.api.nvim_create_augroup("session-local-jumps", { clear = true }),
@@ -245,5 +185,13 @@ if vim.g.dir_launch then
     })
 end
 
--- Registers format-width's textwidth FileType autocmd.
-require("config.format-width")
+-- gq/gw reflow width: formatter defaults; a project's .editorconfig max_line_length
+-- wins (stock editorconfig runs after FileType).
+local TEXTWIDTH = { c = 80, cpp = 80, elixir = 98, lua = 120, ocaml = 80, python = 88, rust = 100, sql = 80, toml = 80 }
+vim.api.nvim_create_autocmd("FileType", {
+    group = vim.api.nvim_create_augroup("textwidth", { clear = true }),
+    pattern = vim.tbl_keys(TEXTWIDTH),
+    callback = function(args)
+        vim.bo[args.buf].textwidth = TEXTWIDTH[args.match]
+    end,
+})

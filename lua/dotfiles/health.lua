@@ -172,7 +172,7 @@ function M.check()
 
     h.start("Clipboard bridge (yank → system)")
     local bridge
-    for _, c in ipairs({ "wl-copy", "xclip", "pbcopy", "clip.exe" }) do
+    for _, c in ipairs({ "wl-copy", "xclip", "xsel", "pbcopy", "clip.exe", "win32yank.exe" }) do
         if exe(c) then
             h.ok(c)
             bridge = true
@@ -180,7 +180,7 @@ function M.check()
         end
     end
     if not bridge then
-        h.warn("no clipboard tool (wl-copy / xclip / pbcopy / clip.exe) — OSC52 fallback only")
+        h.warn("no clipboard tool (wl-copy / xclip / xsel / pbcopy / clip.exe / win32yank.exe) — OSC52 fallback only")
     end
 
     h.start("Optional")

@@ -268,14 +268,14 @@ check:
 
     section "Clipboard bridge (yank → system)"
     bridge=
-    for c in wl-copy xclip pbcopy clip.exe; do
+    for c in wl-copy xclip xsel pbcopy clip.exe win32yank.exe; do
         if have "$c"; then
             ok "$c available"
             bridge=1
             break
         fi
     done
-    [ -n "$bridge" ] || warn "no clipboard tool found (wl-copy / xclip / pbcopy / clip.exe)"
+    [ -n "$bridge" ] || warn "no clipboard tool found (wl-copy / xclip / xsel / pbcopy / clip.exe / win32yank.exe)"
 
     section "Config load (headless smoke test)"
     if have nvim; then

@@ -55,27 +55,7 @@ Drop Lua files in `~/.config/nvim/snippets/`. Filetype-scoped by filename (e.g. 
 
 ## Formatter width
 
-`textwidth` (the `gq` / `gw` reflow width) follows each project's formatter width — no visual ruler. A `FileType` autocmd in `lua/config/format-width.lua` reads a per-filetype `M.specs` registry, searches upward for the nearest config below, and uses its width (else the formatter default). Width `0` (e.g. clang-format `ColumnLimit: 0`) means no limit.
-
-| Filetype    | Config (searched upward)                      | Key               | Default |
-| ----------- | --------------------------------------------- | ----------------- | ------- |
-| `rust`      | `rustfmt.toml` / `.rustfmt.toml`              | `max_width`       | 100     |
-| `python`    | `ruff.toml` / `.ruff.toml` / `pyproject.toml` | `line-length`     | 88      |
-| `lua`       | `stylua.toml` / `.stylua.toml`                | `column_width`    | 120     |
-| `elixir`    | `.formatter.exs`                              | `line_length`     | 98      |
-| `ocaml`     | `.ocamlformat`                                | `margin`          | 80      |
-| `c` / `cpp` | `.clang-format`                               | `ColumnLimit`     | 80      |
-| `sql`       | `.sqlfluff` / `pyproject.toml`                | `max_line_length` | 80      |
-| `toml`      | `taplo.toml` / `.taplo.toml`                  | `column_width`    | 80      |
-
-Add a language: add an entry to the `M.specs` table in `lua/config/format-width.lua` — one or more `{ names, pattern }` sources (each `pattern` captures the width as a single `(%d+)` group) plus a `default`. A string value aliases another filetype's spec (e.g. `cpp = "c"`):
-
-```lua
-<ft> = {
-    sources = { { names = { "<config>" }, pattern = "^%s*<key>%s*[:=]%s*(%d+)" } },
-    default = <default>,
-},
-```
+`textwidth` (the `gq` / `gw` reflow width) is a per-filetype formatter default (`TEXTWIDTH` in `lua/config/autocmds.lua`: rust 100, python 88, lua 120, elixir 98, c/cpp/ocaml/sql/toml 80). A project's `.editorconfig` `max_line_length` overrides it via the stock editorconfig plugin.
 
 ## Keymaps / autocmds
 
@@ -97,7 +77,7 @@ The statusline search match count is skipped in buffers **> 20000 lines** — `s
 ## Modal floats
 
 - `lua/config/modal-floats.lua` — mutual-exclusion registry. Extend `OWNER` (`ft = "owner"`) to register a new modal; same `owner` keeps siblings together.
-- `lua/config/modal-geom.lua` — shared geometry. Change `M.RATIO` to resize every modal float at once. Add a filetype to `ALIGNED_FT` to snap a new plugin into the same rectangle. The `VimResized` handler re-snaps every visible modal on terminal/tmux resize, so the rectangle holds mid-session too. `M.scratch(lines, opts)` builds a centered flower scratch float (used by `:Messages`).
+- `lua/config/modal-geom.lua` — shared geometry. Change `M.RATIO` to resize the snacks / fzf-lua / gitsigns modals at once.
 
 ## DAP
 

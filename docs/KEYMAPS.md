@@ -21,7 +21,7 @@ Leader: `<Space>`. `<localleader>` also `<Space>` (most localleader bindings liv
 > `n`, `N`, `*`, `#`, `g*`, `g#` auto-center the cursor (`zvzz`); `[c`/`]c` do too, in diff mode.
 > The jumplist is session-local (cleared at startup), so `<C-o>` / `<C-i>` only revisit files opened this session.
 > `:s/…` shows a live split preview (`inccommand`); `:grep` uses ripgrep; visual-block edits extend past line-end.
-> Yank → system clipboard via `wl-copy` / `xclip` / `pbcopy` / `clip.exe` (first available), else OSC52 over SSH.
+> `y` yanks also land in the system clipboard (nvim's provider: wl-copy / xclip / xsel / pbcopy / clip.exe, OSC52 over SSH).
 > Macro recording shows `@a` in the statusline while active.
 > Spell check (camelCase-aware) on `gitcommit` / `markdown` / `text`; `:q` / `:bd` prompt to save on unsaved changes.
 
@@ -336,7 +336,6 @@ Open keys only open or focus — never close — so `<space>t` stays typable at 
 | `<leader>cE` / `<leader>cP`                | Rust: expand macro / jump to parent module                |
 | `<leader>co` / `<leader>cU`                | TS/JS: organize imports / remove unused                   |
 | `<leader>co` / `<leader>cX`                | Python: organize imports / fix all (ruff)                 |
-| `<leader>cv` (Python) / `:VenvSelect`      | Python: select interpreter / venv                         |
 | `<leader>co` / `<leader>cX`                | Go: organize imports / fix all (gopls)                    |
 | `<leader>cv/cF/cu/cU/cD` (Cargo.toml)      | crates: versions / features / update / upgrade / docs     |
 | `<leader>cv/cu/cU/cD` (package.json)       | package-info: versions / update / change version / delete |

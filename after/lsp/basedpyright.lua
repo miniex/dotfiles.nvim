@@ -2,7 +2,7 @@ local markers = require("config.lsp_markers")
 
 return {
     root_markers = vim.list_extend(vim.list_extend({}, markers.python), { ".git" }),
-    -- Point at the project venv so local imports resolve (:VenvSelect overrides).
+    -- Point at the project venv so local imports resolve (:LspPyrightSetPythonPath switches).
     before_init = function(_, config)
         local py = require("config.python_venv").detect(config.root_dir)
         if py then
