@@ -29,7 +29,7 @@ for _, key in ipairs({ "[c", "]c" }) do
     end, { silent = true, expr = true })
 end
 
--- clear search highlight (<Esc> falls back here until multicursor overrides it).
+-- clear search highlight
 map("<leader>h", ":nohlsearch<CR>", "n", "Clear search highlight")
 map("<Esc>", "<cmd>nohlsearch<cr>", "n", "Clear search highlight")
 

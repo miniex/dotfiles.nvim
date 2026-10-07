@@ -36,13 +36,10 @@
 
 - **Files** — `<leader>e` opens oil: edit a directory as a buffer (rename / move / delete-to-trash, LSP-aware); it doesn't hijack directory buffers, so `nvim <dir>` still lands on the dashboard. `<leader>-` opens yazi, a full-screen TUI file manager (needs the `yazi` binary).
 - **Big files** — opening a file >8 MiB prompts: view in `less` (default) / edit / cancel (binary skips the pager). `<leader>L` views the current file in `less` anytime. Size tiers in [CUSTOMIZATION](CUSTOMIZATION.md#big-file-handling).
-- **Navigation** — flash (`s` / `S`), Trouble (`<leader>xx`), aerial (`<leader>cO`), harpoon v2 (`<leader>m*`), nvim-spider (camelCase-aware `w`/`e`/`b`/`ge`), mini.bracketed (`[b`/`]b` buffers, `[j`/`]j` jumplist, `[u`/`]u` undo, `[l`/`]l` loclist), smart-splits (`<C-hjkl>` across nvim splits + tmux/wezterm panes), treewalker (`<A-arrows>` move / `<A-S-arrows>` swap by AST node).
-- **Search & replace** — grug-far (`<leader>rr`) for regex; ssr (`<leader>rs`) for structural AST-aware replace.
-- **Structural edits & yank ring** — treesj split/join a node (`<leader>cJ`); yanky yank history (`]y` / `[y` after paste, `]p` / `[p` reindent paste, `<leader>yh` to pick from the ring); various-textobjs indentation / value / key / subword / URL objects (`iI` / `iv` / `ik` / `ie` / `iu`).
-- **Multi-cursor** — multicursor.nvim under `<leader>M*` + `<C-Up>` / `<C-Down>`.
-- **Smart inc/dec** — dial.nvim. `<C-a>`/`<C-x>` flips bools, dates, semver, hex colors, identifier case, `&&↔||` (plus `let↔const` in JS/TS and headers in markdown).
+- **Navigation** — flash (`s` / `S`), Trouble (`<leader>xx`), aerial (`<leader>cO`), mini.bracketed (`[b`/`]b` buffers, `[j`/`]j` jumplist, `[u`/`]u` undo, `[l`/`]l` loclist), smart-splits (`<C-hjkl>` across nvim splits + tmux/wezterm panes).
+- **Search & replace** — grug-far (`<leader>rr`).
 - **Quickfix** — quicker.nvim (editable QF), nvim-bqf (preview), Trouble (`auto_close` on jump, main-window preview; `<leader>x*` lists diagnostics / refs / symbols / call hierarchy / type defs / implementations).
-- **Misc** — mini.surround (`gs*`), mini.ai (`a`/`i` brackets/quotes/tags + `aN`/`aL` next/last, `ag` buffer / `ad` number), mini.move (`<A-hjkl>` line shuffle), mini.operators (`gR` replace-with-register / `gX` exchange / `gS` sort / `g=` eval), built-in `gc` (treesitter-aware; `gco` / `gcO` / `gcA` rebuilt in `keymaps.lua`), refactoring.nvim (`<leader>cr` extract/inline), todo-comments, git-conflict, tiny-code-action (`<leader>ca` picker with per-action diff preview), nvim-colorizer (6/8-digit hex everywhere; 3/4-digit `#RGB` shorthand only in CSS-family, so issue/PR refs like `#590` aren't colorized; skipped on big/minified files), rainbow-delimiters (on-theme nested bracket-pair colors; disabled on big/minified files), 0.12 built-ins `:Undotree` and `:DiffTool` (non-git side-by-side file/dir diff), hex.nvim (`<leader>ux` toggle hex view).
+- **Misc** — mini.surround (`gs*`), mini.ai (`a`/`i` brackets/quotes/tags + `aN`/`aL` next/last, `ag` buffer / `ad` number), mini.move (`<A-hjkl>` line shuffle), mini.operators (`gR` replace-with-register / `gX` exchange / `gS` sort / `g=` eval), built-in `gc` (treesitter-aware; `gco` / `gcO` / `gcA` rebuilt in `keymaps.lua`), todo-comments, tiny-code-action (`<leader>ca` picker with per-action diff preview), nvim-colorizer (6/8-digit hex everywhere; 3/4-digit `#RGB` shorthand only in CSS-family, so issue/PR refs like `#590` aren't colorized; skipped on big/minified files), rainbow-delimiters (on-theme nested bracket-pair colors; disabled on big/minified files), 0.12 built-ins `:Undotree` and `:DiffTool` (non-git side-by-side file/dir diff), hex.nvim (`<leader>ux` toggle hex view).
 - **Persistence** — `persistence.nvim` auto-restores on bare `nvim` (skipping headless, empty sessions, and `nvim <file>` launches, which neither restore nor save), re-attaches TS / LSP / linter on restored buffers. Only window-visible buffers persist (no hidden `badd`). Neotest summary window state persists across sessions. Sessions are scoped per git branch (feature branches keep distinct layouts; main/master share the base session).
 - **Width-aware `textwidth`** — `rust` / `python` / `lua` / `elixir` / `ocaml` / `c`-`cpp` / `sql` / `toml` set `textwidth` (the `gq`/`gw` reflow width) to the project formatter's line width, searched upward from its config, else the default — no visual ruler. See [CUSTOMIZATION](CUSTOMIZATION.md#formatter-width).
 
@@ -53,7 +50,7 @@
 - **Buffers** — no tabline. `<S-h>` / `<S-l>` or `[b` / `]b` cycle, `<leader>fb` picks.
 - **cursor bloom** — `❯` sign on the current line in mode color (custom autocmd in [`lua/config/cursor-bloom.lua`](../lua/config/cursor-bloom.lua)). Refresh defer skips picker/terminal/chrome buffers.
 - **which-key** — hint floats pinned to the bottom row at 85% editor width (centered); height grows with content. Triggers register synchronously on file buffers + `timeoutlen=300` so the first `<leader>` press isn't slow ([#912](https://github.com/folke/which-key.nvim/issues/912) workaround).
-- **Floating windows** — every float in the config (LSP hover / signature / diagnostic, snacks panels, fzf-lua, fff, blink.cmp menu / signature / docs, bqf, neotest, which-key, harpoon, Mason, lazy, lazygit, checkhealth) shares one look: `✿` flower-cornered border (`✿─✿│✿─✿│`), pink edge, transparent background, centered `✿ title ✿`. Configured in [`lua/config/globals.lua`](../lua/config/globals.lua).
+- **Floating windows** — every float in the config (LSP hover / signature / diagnostic, snacks panels, fzf-lua, fff, blink.cmp menu / signature / docs, bqf, neotest, which-key, Mason, lazy, lazygit, checkhealth) shares one look: `✿` flower-cornered border (`✿─✿│✿─✿│`), pink edge, transparent background, centered `✿ title ✿`. Configured in [`lua/config/globals.lua`](../lua/config/globals.lua).
 - **flash labels** — damin pink.
 - **indent guides** — uniform `┊` dotted guides (snacks.indent), no scope highlight (`[i`/`]i` still jump to scope edges); chunk off.
 - **zen** — `<leader>uz` focus mode hides the statusline (flower-bordered window).
@@ -62,12 +59,12 @@
 
 ## Modal floats
 
-Big floating UIs (pickers / terminal / lazy / Mason / harpoon / lazygit / checkhealth) are mutually exclusive — opening one closes the others. Hover, completion, signature, and notifications stack freely on top.
+Big floating UIs (pickers / terminal / lazy / Mason / lazygit / checkhealth) are mutually exclusive — opening one closes the others. Hover, completion, signature, and notifications stack freely on top.
 
 All modals share a single 0.85 × 0.85 chrome-aware rectangle defined in [`lua/config/modal-geom.lua`](../lua/config/modal-geom.lua):
 
 - snacks picker / terminal read it via function callbacks
-- harpoon / lazy / Mason / lazygit get snapped by a synchronous `FileType` autocmd (no flash because the snap shares a frame with the open)
+- lazy / Mason / lazygit get snapped by a synchronous `FileType` autocmd (no flash because the snap shares a frame with the open)
 - fzf-lua uses its own `winopts.on_create` hook (it sets filetype under `eventignore = all` so the FileType aligner misses it)
 - fff has its own chrome-aware layout that already matches
 - checkhealth opens as a native float (`vim.g.health.style`, nvim 0.12) and is dressed at creation by a `modal-floats` decorator — no report tab to flash
@@ -81,10 +78,6 @@ See [`lua/config/modal-floats.lua`](../lua/config/modal-floats.lua) for the mutu
 - **gitsigns** — gutter signs, hunk staging (`<leader>gh*`, `ghs` toggles stage/unstage), hunk textobject (`ih`/`ah`), inline blame (off by default — toggle `<leader>gtb`), word-diff toggle (`<leader>gtw`), full hunk diff via `<leader>ghp` (centered modal, cursor lands inside) or inline via `<leader>ghi`; `]h`/`[h` hunk nav auto-previews and is `;`/`,`-repeatable (`]H`/`[H` for staged hunks); `<leader>ghQ` sends all-repo hunks to quickfix, `<leader>ghv` views the file at the index.
 - **fugitive** — `<leader>gs` status, `<leader>gd` diff, `<leader>gD` 3-way merge diff.
 - **lazygit** — `Snacks.lazygit`, auto-themed to the colorscheme. `<leader>gg` open / `<leader>gf` file history / `<leader>gL` log.
-- **Diffview** — file / repo / stash history under `<leader>gv*` (current-file history follows renames); `<leader>gvm` reviews the whole branch (working tree vs the default branch).
-- **gitgraph.nvim** — in-buffer branch graph. `<leader>gvg` (all branches), `<leader>gvG` (current), `<leader>gvs` (`--since` prompt).
-- **advanced-git-search** — search git history by content (`<leader>gH`): which commit changed a line, diff a file against any past commit (fzf-lua picker; diffs open in Diffview).
-- **git-conflict** — `]X` / `[X` cycle conflicts, `co` / `ct` / `cb` / `c0` resolve.
 
 ## Tooling
 

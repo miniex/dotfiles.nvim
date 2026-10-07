@@ -97,7 +97,6 @@ end
 -- Modals whose APIs ignore explicit row/col — snapped on FileType (synchronous,
 -- no flash).
 local ALIGNED_FT = {
-    harpoon = true,
     lazy = true,
     mason = true,
     lazygit = true,

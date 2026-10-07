@@ -5,8 +5,8 @@ return {
     "nvim-mini/mini.bracketed",
     event = "VeryLazy",
     opts = {
-        -- Other 10 suffixes disabled — their [x/]x are already taken: c/x/d/f/i/o/q/t/w/y →
-        -- keymaps/ts-ctx+conflict/diag-ui/ts-objs/snacks/aerial/trouble/todo/(free)/yanky.
+        -- Other suffixes disabled: their [x/]x belong to keymaps / ts-context / diagnostics /
+        -- ts-textobjects / snacks / aerial / trouble / todo-comments. [w/]w and [y/]y are free.
         comment = { suffix = "" },
         conflict = { suffix = "" },
         diagnostic = { suffix = "" },

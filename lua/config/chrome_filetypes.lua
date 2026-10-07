@@ -27,7 +27,6 @@ M.panels = {
     "aerial",
     "lazy",
     "mason",
-    "harpoon",
     "qf",
     "nvim-undotree",
 }

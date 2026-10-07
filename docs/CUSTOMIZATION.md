@@ -122,9 +122,8 @@ The statusline search match count is skipped in buffers **> 20000 lines** — `s
 
 - Adapters in `lua/plugins/lsp/neotest.lua`. Add an adapter and it joins the shared `<leader>n*` keymap.
 
-## Snippets, dial, friendly tokens
+## TODO tags
 
-- dial groups defined in `lua/plugins/editor/dial.lua` (extend for project-specific toggles like `staging↔prod`).
 - todo-comments tags in `lua/plugins/editor/todo-comments.lua`.
 
 ## Per-project config

@@ -58,31 +58,6 @@ return {
         },
     },
 
-    -- git-conflict: Navigate and resolve merge conflict markers
-    {
-        "akinsho/git-conflict.nvim",
-        version = "*",
-        -- event-loaded (conflicts auto-highlight on open); default_commands registers the commands.
-        -- BufReadPost (not Pre): conflict scanning needs buffer content, which Pre fires before.
-        event = { "BufReadPost", "BufNewFile" },
-        keys = {
-            { "<leader>gxq", "<cmd>GitConflictListQf<cr>", desc = "Conflicts to Quickfix" },
-            -- ]X/[X: lowercase [x owned by treesitter-context.
-            { "]X", "<cmd>GitConflictNextConflict<cr>", desc = "Next Git Conflict" },
-            { "[X", "<cmd>GitConflictPrevConflict<cr>", desc = "Prev Git Conflict" },
-        },
-        opts = {
-            default_mappings = true,
-            default_commands = true,
-            disable_diagnostics = false,
-            list_opener = "copen",
-            highlights = {
-                incoming = "DiffAdd",
-                current = "DiffText",
-            },
-        },
-    },
-
     -- Gitsigns: Show git changes in the gutter
     {
         "lewis6991/gitsigns.nvim",

@@ -61,7 +61,6 @@ local OWNER = {
     snacks_picker_input = "snacks_picker",
     snacks_picker_list = "snacks_picker",
     snacks_terminal = "snacks_terminal",
-    harpoon = "harpoon",
     lazy = "lazy",
     lazy_backdrop = "lazy",
     mason = "mason",

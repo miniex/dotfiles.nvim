@@ -79,7 +79,7 @@ Plugin specs are discovered by `lazy.setup({ spec = { { import = "plugins.coding
 | Subdir    | Belongs here                                                                                                                    |
 | --------- | ------------------------------------------------------------------------------------------------------------------------------- |
 | `coding/` | Completion (blink.cmp, LuaSnip, friendly-snippets).                                                                             |
-| `editor/` | Editing UX: oil, flash, surround, harpoon, multicursor, git, …                                                                  |
+| `editor/` | Editing UX: oil, flash, surround, git, …                                                                                        |
 | `lang/`   | Per-language adapters (DAP configs, `vim.filetype.add`, lang-only plugins). Grammars live centrally in `editor/treesitter.lua`. |
 | `lsp/`    | LSP infra (mason, nvim-lspconfig, lint, dap, neotest, diagnostic-ui).                                                           |
 | `ui/`     | Theme, snacks (picker/terminal/dashboard), smear-cursor, devicons.                                                              |

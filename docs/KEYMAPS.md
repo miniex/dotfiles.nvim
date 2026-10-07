@@ -8,8 +8,6 @@ Leader: `<Space>`. `<localleader>` also `<Space>` (most localleader bindings liv
 | ------------------- | ---- | ---------------------------------------------------------------- |
 | `<C-h/j/k/l>`       | N/T  | Pane navigation: nvim splits + tmux/wezterm panes (smart-splits) |
 | `<A-h/j/k/l>`       | N/V  | mini.move: shuffle line / block (reindents on h/l)               |
-| `<C-a>` / `<C-x>`   | N/V  | dial: smart inc/dec (bools, dates, semver, hex, &&↔\|\|)         |
-| `g<C-a>` / `g<C-x>` | V    | dial: cumulative inc/dec across selection                        |
 | `<leader>h`         | N    | Clear search highlight                                           |
 | `<Esc>`             | N    | Clear search highlight                                           |
 | `<leader>bs`        | N    | Save (writes auto-mkdir parent dirs)                             |
@@ -25,13 +23,12 @@ Leader: `<Space>`. `<localleader>` also `<Space>` (most localleader bindings liv
 > The jumplist is session-local (cleared at startup), so `<C-o>` / `<C-i>` only revisit files opened this session.
 > `:s/…` shows a live split preview (`inccommand`); `:grep` uses ripgrep; visual-block edits extend past line-end.
 > Yank → system clipboard via `wl-copy` / `xclip` / `pbcopy` / `clip.exe` (first available), else OSC52 over SSH.
-> `p` / `P` feed a yank ring (yanky); `]y` / `[y` cycle to a newer / older yank after pasting; `]p` / `[p` put with reindent.
 > Macro recording shows a `recording @a` / `saved @a` toast plus `@a` in the statusline while active.
 > Spell check (camelCase-aware) on `gitcommit` / `markdown` / `text`; `:q` / `:bd` prompt to save on unsaved changes.
 
 ## Find & Navigate
 
-> Modal floats (pickers, snacks terminal, lazy, Mason, harpoon menu, lazygit, checkhealth) are mutually exclusive; auxiliary floats (hover, completion, notifier, …) stack on top.
+> Modal floats (pickers, snacks terminal, lazy, Mason, lazygit, checkhealth) are mutually exclusive; auxiliary floats (hover, completion, notifier, …) stack on top.
 
 | Key                                   | Description                                                      |
 | ------------------------------------- | ---------------------------------------------------------------- |
@@ -51,7 +48,6 @@ Leader: `<Space>`. `<localleader>` also `<Space>` (most localleader bindings liv
 | `<leader>L`                           | View current file in `less` (read-only, own tab)                 |
 | `s` / `S` (n/x/o)                     | flash: jump / treesitter jump                                    |
 | `r` / `R` / `<C-s>`                   | flash: remote (o) / treesitter search (o/x) / toggle in `/` (c)  |
-| `w` / `e` / `b` / `ge` (n/o/x)        | nvim-spider: sub-word (camelCase / snake_case) motion            |
 | `[j` / `]j`, `[l` / `]l`, `[u` / `]u` | mini.bracketed: jumplist / loclist / undo-state nav              |
 | `<leader>?`                           | which-key: all keymaps (`<C-d>`/`<C-u>` flip pages)              |
 
@@ -70,38 +66,6 @@ Native `fzf` binary. `<C-q>` → quickfix; `<C-d>`/`<C-u>` paginate preview; `<C
 | `<leader>z:` / `z/`      | Command / search history                                          |
 | `<leader>z;` / `zt`      | Commands (palette) / colorschemes (live preview)                  |
 
-## Marks (harpoon v2)
-
-Per-project file slots under `~/.local/share/nvim/harpoon/`.
-
-| Key                         | Description                  |
-| --------------------------- | ---------------------------- |
-| `<leader>ma` / `<leader>mm` | Add file / toggle quick menu |
-| `<leader>mn` / `<leader>mp` | Next / previous slot         |
-| `]m` / `[m`                 | Next / previous slot (alias) |
-| `<leader>m1` … `<leader>m5` | Jump to slot 1–5             |
-| `<leader>md`                | Remove current file          |
-| `<leader>mf`                | Fuzzy pick a mark (fzf-lua)  |
-
-## Multi-Cursors (multicursor.nvim)
-
-Under `<leader>M` (capital); `<leader>m` belongs to harpoon.
-`<Esc>` priority: clear cursor set → exit visual (if any) → `nohlsearch`. Visual mode `<Esc>` works normally when no multi-cursors are active.
-
-| Key                         | Mode | Description                                                                     |
-| --------------------------- | ---- | ------------------------------------------------------------------------------- |
-| `<leader>Mn` / `<leader>MN` | n/x  | Add cursor + jump to next/prev `<cword>`                                        |
-| `<leader>Ms` / `<leader>MS` | n/x  | Skip current match forward / backward                                           |
-| `<leader>MA`                | n/x  | Cursor on every match in buffer                                                 |
-| `<leader>Mm`                | n/x  | Toggle a cursor at the current position                                         |
-| `<leader>M/`                | x    | Split visual selection by regex                                                 |
-| `<C-Up>` / `<C-Down>`       | n/x  | Add cursor above / below                                                        |
-| `<leader>Ma`                | n/x  | Align cursors with spaces                                                       |
-| `<leader>Mu`                | n    | Restore last cursor set                                                         |
-| `<leader>Mx`                | n/x  | Delete focused cursor                                                           |
-| `<left>` / `<right>`        | n/x  | Focus prev / next cursor (falls through to normal motion when no extra cursors) |
-| `<c-leftmouse>`             | n    | Add cursor at click                                                             |
-
 ## Undo History (`:Undotree`, 0.12 built-in)
 
 | Key          | Description                                  |
@@ -119,7 +83,6 @@ Inside the grug-far buffer (`<localleader>` = `<Space>`): `r` replace · `s` / `
 | `<leader>rf` | n    | Scoped to current file               |
 | `<leader>rw` | n    | Prefilled with `<cword>`             |
 | `<leader>ri` | v    | Search & replace within range        |
-| `<leader>rs` | n/x  | Structural (AST-aware) replace — ssr |
 
 ## Session (persistence.nvim)
 
@@ -159,7 +122,6 @@ Bare `nvim` (and `nvim <dir>`, which cd's in) auto-restores the cwd session (ski
 | `<leader>cI` / `cG` / `cH`  | Incoming / outgoing calls / type hierarchy (sub+super picker)        |
 | `<leader>rn`                | Rename (inc-rename live preview)                                     |
 | `<leader>cc` / `<leader>ca` | Diagnostics float / code action (n+x, tiny-code-action diff preview) |
-| `<leader>cr`                | Refactor: extract / inline (n+x picker, refactoring.nvim)            |
 | `<leader>cf`                | Format buffer (native LSP); visual selection = range format          |
 | `<leader>ci` / `<leader>uh` | Toggle inlay hints (alias)                                           |
 | `<leader>uy`                | Toggle LSP semantic tokens                                           |
@@ -204,11 +166,6 @@ Bare `nvim` (and `nvim <dir>`, which cd's in) auto-restores the cwd session (ski
 | `am` / `im`                 | x/o   | Call                                                                      |
 | `aB` / `iB`                 | x/o   | Block (capital — `b` is word-back)                                        |
 | `aS`                        | x/o   | Statement                                                                 |
-| `iI` / `aI`                 | x/o   | Indentation block (various-textobjs)                                      |
-| `iv` / `av`                 | x/o   | Config value after `:` / `=` (various-textobjs)                           |
-| `ik` / `ak`                 | x/o   | Config key (various-textobjs)                                             |
-| `ie` / `ae`                 | x/o   | Subword segment — camelCase / snake / kebab (various-textobjs)            |
-| `iu` / `au`                 | x/o   | URL (various-textobjs)                                                    |
 | `]f` / `[f`                 | n/x/o | Next / prev function start                                                |
 | `]F` / `[F`                 | n/x/o | Next / prev function end                                                  |
 | `]C` / `[C`                 | n/x/o | Next / prev class start (lowercase `]c`/`[c` left for diff change motion) |
@@ -216,12 +173,8 @@ Bare `nvim` (and `nvim <dir>`, which cd's in) auto-restores the cwd session (ski
 | `;` / `,`                   | n/x/o | Repeat last move forward / backward (TS goto / `f` / `t` / hunk / TODO)   |
 | `<leader>cA` / `<leader>cS` | n     | Swap parameter with next / prev                                           |
 | `<leader>cj` / `<leader>ck` | n     | Swap function with next / prev sibling                                    |
-| `<leader>cJ`                | n     | Split/join node — toggle one-line ↔ multi-line (treesj)                   |
 | `an` / `in`                 | x/o   | TS select: expand to parent / shrink to child node (0.12 native)          |
 | `]n` / `[n`                 | x/o   | TS select: next / prev sibling node (0.12 native)                         |
-| `<A-Up>` / `<A-Down>`       | n/x   | treewalker: prev / next sibling node                                      |
-| `<A-Left>` / `<A-Right>`    | n/x   | treewalker: out (parent) / in (child) node                                |
-| `<A-S-Up/Down/Left/Right>`  | n     | treewalker: swap node up / down / left / right                            |
 | `<leader>uc`                | n     | Toggle treesitter context                                                 |
 | `<leader>uC`                | n     | Toggle nvim-colorizer                                                     |
 | `<leader>uU`                | n     | Toggle undotree                                                           |
@@ -245,13 +198,6 @@ Bare `nvim` (and `nvim <dir>`, which cd's in) auto-restores the cwd session (ski
 | `<leader>gD`                                  | fugitive: 3-way diffsplit (`:Gvdiffsplit!`) — for merge conflicts                                                  |
 | `<leader>gg/gf/gL`                            | lazygit: open / file history / log                                                                                 |
 | `<leader>gB`                                  | gitbrowse: open current line in browser (n/v)                                                                      |
-| `<leader>gvo/gvc/gvr`                         | Diffview: open / close / refresh                                                                                   |
-| `<leader>gvf/gvF/gvh`                         | Diffview file history: current (follows renames) / repo / stash                                                    |
-| `<leader>gvm`                                 | Diffview: review branch (working tree vs default branch)                                                           |
-| `<leader>gvt` / `<leader>gvp`                 | Diffview: toggle / focus files panel                                                                               |
-| `<leader>gvg` / `<leader>gvG`                 | gitgraph.nvim: all branches / current (`<cr>` → diffview)                                                          |
-| `<leader>gvs` / `<leader>gvA`                 | gitgraph.nvim: prompt for `--since` / `--author` filter                                                            |
-| `<leader>gH`                                  | advanced-git-search: search history by content (log -S/-G/-L)                                                      |
 | `[h` / `]h`                                   | Prev / next hunk (auto-preview on jump; `;`/`,` repeats)                                                           |
 | `[H` / `]H`                                   | Prev / next staged hunk                                                                                            |
 | `<leader>ghs/r/S/R/p/i/b/c/d/D`               | Stage (toggle) / reset / stage-buf / reset-buf / preview / inline preview / blame-line / blame-file / diff / diff~ |
@@ -259,9 +205,6 @@ Bare `nvim` (and `nvim <dir>`, which cd's in) auto-restores the cwd session (ski
 | `<leader>ghv`                                 | gitsigns: show the file at the index (read-only)                                                                   |
 | `<leader>gtb` / `<leader>gtd` / `<leader>gtw` | Toggle line blame / show deleted / word diff                                                                       |
 | `ih` / `ah` (o/x)                             | gitsigns hunk textobject (`d ih`, `v ah`)                                                                          |
-| `<leader>gxq`                                 | git-conflict: conflicts to quickfix                                                                                |
-| `[X` / `]X`                                   | Prev / next conflict                                                                                               |
-| `co/ct/cb/c0`                                 | Inside conflict: ours / theirs / both / none                                                                       |
 
 ## Debugger (DAP)
 
@@ -386,7 +329,6 @@ Open keys only open or focus — never close — so `<space>t` stays typable at 
 | `<leader>cn` / `<leader>un`                | Notification history / dismiss all                                                                                         |
 | `<leader>yp` / `<leader>yP` / `<leader>yl` | Yank file path to `+`: absolute / relative / relative:line                                                                 |
 | `<leader>yg`                               | Yank git permalink for the current line                                                                                    |
-| `<leader>yh`                               | Yanky ring history: pick an earlier yank and put it                                                                        |
 | `]]` / `[[`                                | LSP word: next / previous reference                                                                                        |
 | `[i` / `]i`                                | Snacks scope: jump to top / bottom edge                                                                                    |
 
