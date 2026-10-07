@@ -2,19 +2,24 @@ return {
     "sphamba/smear-cursor.nvim",
     event = "VeryLazy",
     opts = {
-        -- Smooth: full shade gradient, diagonal blocks, ~144fps frames.
+        -- Smooth motion, solid tail: one color level, so nothing blends toward the
+        -- (transparent) background and shows as a dark box. ~144fps frames.
         use_diagonal_blocks = true,
-        color_levels = 16,
-        gradient_exponent = 1.0,
+        -- Draw upper / right partial blocks directly (kitty renders the Legacy
+        -- Computing glyphs itself). Without it they're inverted lower / left blocks
+        -- whose fg is the bg fallback: dark slivers on a transparent terminal.
+        legacy_computing_symbols_support = true,
+        color_levels = 1,
+        gradient_exponent = 0,
         time_interval = 7,
-        -- Soft spring, no overshoot; long tail fades out.
-        stiffness = 0.6,
-        trailing_stiffness = 0.4,
+        -- Head lands almost at once (no lag behind the real cursor); only the tail eases.
+        stiffness = 0.9,
+        trailing_stiffness = 0.5,
         trailing_exponent = 3,
-        damping = 0.9,
-        stiffness_insert_mode = 0.5,
-        trailing_stiffness_insert_mode = 0.5,
-        damping_insert_mode = 0.9,
+        damping = 0.95,
+        stiffness_insert_mode = 0.9,
+        trailing_stiffness_insert_mode = 0.6,
+        damping_insert_mode = 0.95,
         distance_stop_animating = 0.1,
         -- Every move animates, including j/k and single-column h/l.
         smear_between_neighbor_lines = true,

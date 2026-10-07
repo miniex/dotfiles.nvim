@@ -54,7 +54,7 @@
 - **flash labels** — damin pink.
 - **indent guides** — uniform `┊` dotted guides (snacks.indent), no scope highlight (`[i`/`]i` still jump to scope edges); chunk off.
 - **zen** — `<leader>uz` focus mode hides the statusline (flower-bordered window).
-- **smear-cursor** — smooth trail: 16-step shade gradient with diagonal blocks, 7ms frames, soft spring with no overshoot; every move animates (including `j` / `k`). Off across windows and in picker / terminal floats.
+- **smear-cursor** — smooth trail with a solid single-color tail (transparent terminals show no dark box), diagonal blocks, 7ms frames, head lands at once, tail eases; every move animates (including `j` / `k`). Off across windows and in picker / terminal floats.
 - **Side panels** — aerial / trouble / dap / neotest open in their plugins' default positions.
 
 ## Modal floats
