@@ -12,7 +12,7 @@
 - [`just`](https://github.com/casey/just), [lazygit](https://github.com/jesseduffield/lazygit), [`fzf`](https://github.com/junegunn/fzf), [ImageMagick](https://imagemagick.org/) — optional (image previews require `magick`; animated GIFs show first frame only)
 - Database client CLIs (`psql` / `mysql` / `sqlite3`) — optional, only for `:DBUI` / dadbod against the matching engine
 
-Run `./tools/health.sh` to verify everything in one shot.
+Run `just check` to verify everything in one shot.
 
 ## Platform support
 

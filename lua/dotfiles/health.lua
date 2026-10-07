@@ -1,4 +1,4 @@
--- `:checkhealth dotfiles` — in-editor host check. Mirrors tools/health.sh minus the
+-- `:checkhealth dotfiles` — in-editor host check. Mirrors `just check` minus the
 -- shell-only bits (contributor dev-tooling, config-load smoke test).
 local M = {}
 

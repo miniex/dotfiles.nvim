@@ -1,6 +1,6 @@
 # Contributing
 
-Every commit must pass `tools/format.sh` + `tools/lint.sh` clean.
+Every commit must pass `just fmt` + `just lint` clean.
 
 ## Tools
 
@@ -29,16 +29,16 @@ cargo install stylua selene just                           # cargo
 
 ## Workflow
 
-Via the `justfile` wrapper: `just fmt` / `just lint` / `just health`. Or call the scripts directly:
+All tasks live in the `justfile`:
 
 ```bash
-./tools/format.sh   # stylua + shfmt rewrite; jq/taplo/yamlfmt on tracked files when present
-./tools/lint.sh     # stylua --check + lua-language-server + selene + shfmt diff + shellcheck
-                    # + fish -n / zsh -n on tracked *.fish / *.zsh files when present
-./tools/health.sh   # diagnose host prereqs + format/lint tools (tree-sitter, fonts, stylua/selene/…); never fails
+just fmt     # stylua + shfmt rewrite; jq/taplo/yamlfmt on tracked files when present
+just lint    # stylua --check + lua-language-server + selene + shfmt diff + shellcheck
+             # + fish -n / zsh -n on tracked *.fish / *.zsh files when present
+just check   # diagnose host prereqs + format/lint tools (tree-sitter, fonts, stylua/selene/…); never fails
 ```
 
-`lint.sh` exits non-zero on drift or diagnostic; keep it clean before pushing. `health.sh` is informational.
+`just lint` exits non-zero on drift or diagnostic; keep it clean before pushing. `just check` is informational.
 
 ## PR rules
 

@@ -14,11 +14,10 @@ Why files live where they do.
 │   ├── config/             core: options, autocmds, keymaps, lazy bootstrap
 │   └── plugins/            plugin specs (lazy.nvim picks them up)
 ├── docs/                 markdown guides (this file)
-├── tools/                shell helpers: format / lint / health
-├── justfile              task runner (just fmt / lint / health)
+├── justfile              tasks: just fmt / lint / check
 ├── install.sh            one-shot installer (backup / update in place)
 ├── set-lang.sh           lang toggles → gitignored lua/config/langs_local.lua
-├── scripts/              term-bin shims (term-bin/nvim → outer nvim)
+├── scripts/              shell helpers: _colors.sh, term-bin shims (term-bin/nvim → outer nvim)
 ├── assets/               dashboard sticker, preview image
 ├── CONTRIBUTING.md
 └── README.md
@@ -35,7 +34,6 @@ The asymmetry between `lsp/` / `snippets/` (at root) and `lua/config|plugins/` (
 | `after/ftplugin/<ft>.lua` | Neovim auto-sources `<rtp>/after/ftplugin/<ft>.lua` on `FileType`. Cannot move.                 |
 | `lua/<mod>/*.lua`         | `require("mod.x")` resolves to `<rtp>/lua/mod/x.lua`. Cannot move out of `lua/`.                |
 | `snippets/<ft>.lua`       | Free choice. Path is set in `lua/plugins/coding/completion.lua` (`luasnip.loaders.from_lua`).   |
-| `tools/`                  | Free. Shell scripts, not loaded by Neovim.                                                      |
 | `scripts/term-bin/`       | Free. `$EDITOR` + `PATH` shim in the snacks terminal; `git commit` / `nvim` open in outer nvim. |
 
 ## Boot sequence

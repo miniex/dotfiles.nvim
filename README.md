@@ -105,7 +105,7 @@ Leader: `<Space>`. Full reference: [docs/KEYMAPS.md](docs/KEYMAPS.md).
 
 ## Contributing
 
-PRs welcome. Before opening: `just fmt` + `just lint` (or `./tools/format.sh` + `./tools/lint.sh`) must pass clean. Run `just health` to verify host prereqs (tree-sitter, Nerd Fonts, toolchains). Commit prefix lowercase (`feat:`, `fix:`, …). Full details: [CONTRIBUTING.md](CONTRIBUTING.md).
+PRs welcome. Before opening: `just fmt` + `just lint` must pass clean. Run `just check` to verify host prereqs (tree-sitter, Nerd Fonts, toolchains). Commit prefix lowercase (`feat:`, `fix:`, …). Full details: [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 

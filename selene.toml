@@ -1,4 +1,4 @@
-# selene config (std lib: vim.toml). Used by nvim-lint in-editor and tools/lint.sh.
+# selene config (std lib: vim.toml). Used by nvim-lint in-editor and `just lint`.
 std = "vim"
 
 [lints]
