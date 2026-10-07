@@ -9,7 +9,7 @@
 - **Navigation** — `gd` / `gr` / `gI` / `gy` open an fzf-lua picker (auto-jumps on a single result); `<leader>cI` / `cG` / `cH` for incoming / outgoing calls + type hierarchy.
 - **Rename** — `<leader>rn` via inc-rename with a live in-buffer preview.
 - **Formatting** — `<leader>cf` runs `vim.lsp.buf.format` (native LSP; no formatter plugin). `gq` / `gw` route through the LSP formatter on code filetypes (via `formatexpr`); prose (markdown / gitcommit) keeps Neovim's built-in reflow.
-- **Semantic tokens** — off by default on TS (vtsls), Python (basedpyright), and C/C++ (clangd), where they clash with treesitter highlight; toggle per buffer with `<leader>uy` (survives `:lsp restart`).
+- **Semantic tokens** — off by default on TS (vtsls), Python (basedpyright), and C/C++ (clangd), where they clash with treesitter highlight; `<leader>uy` toggles them for the current buffer's servers.
 - **Colors** — colorizer highlights hex (and CSS functions in style files); LSP document colors are left at nvim defaults.
 - **Linked editing** — an HTML/JSX tag and its closing tag rename in sync via native `vim.lsp.linked_editing_range` on capable servers (html, …).
 - **Diagnostics** — single config in `lua/plugins/lsp/init.lua`; `tiny-inline-diagnostic.nvim` owns virtual text. Severity-sorted, signs `✗`/`!`/`i`/`?`.

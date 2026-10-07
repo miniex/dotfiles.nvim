@@ -505,10 +505,21 @@ return {
                         end
                     end, "Rename")
                     -- Semantic tokens can clash with treesitter highlight; toggle per buffer.
+                    -- Per client: SEMANTIC_TOKENS_OFF disables by client_id, and a bufnr
+                    -- toggle is ANDed with that flag, so it couldn't turn them back on.
                     map("n", "<leader>uy", function()
                         local b = vim.api.nvim_get_current_buf()
-                        local on = vim.lsp.semantic_tokens.is_enabled({ bufnr = b })
+                        local clients = vim.tbl_filter(function(c)
+                            return c:supports_method("textDocument/semanticTokens/full", b)
+                        end, vim.lsp.get_clients({ bufnr = b }))
+                        local on = false
+                        for _, c in ipairs(clients) do
+                            on = on or vim.lsp.semantic_tokens.is_enabled({ bufnr = b, client_id = c.id })
+                        end
                         vim.lsp.semantic_tokens.enable(not on, { bufnr = b })
+                        for _, c in ipairs(clients) do
+                            vim.lsp.semantic_tokens.enable(not on, { client_id = c.id })
+                        end
                     end, "Toggle Semantic Tokens")
                     -- Signature help: blink owns it (auto popup + <C-k> in completion.lua).
                 end,

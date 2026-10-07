@@ -1,7 +1,7 @@
 -- classRegex teaches the LSP about utility wrappers (cva / clsx / cn / tw).
 return {
-    -- The bundled root_dir falls back to .git, attaching to every repo. Tailwind
-    -- projects only: a config file or a package.json depending on tailwindcss (v4).
+    -- The bundled root_dir minus its .git fallback, which attached to every repo:
+    -- a config file, package.json / mix.lock / Gemfile.lock naming tailwind (v4).
     root_dir = function(bufnr, on_dir)
         local fname = vim.api.nvim_buf_get_name(bufnr)
         local files = {
@@ -13,8 +13,16 @@ return {
             "postcss.config.cjs",
             "postcss.config.mjs",
             "postcss.config.ts",
+            -- Django (django-tailwind)
+            "theme/static_src/tailwind.config.js",
+            "theme/static_src/tailwind.config.cjs",
+            "theme/static_src/tailwind.config.mjs",
+            "theme/static_src/tailwind.config.ts",
+            "theme/static_src/postcss.config.js",
         }
-        files = require("lspconfig.util").insert_package_json(files, "tailwindcss", fname)
+        local util = require("lspconfig.util")
+        files = util.insert_package_json(files, "tailwindcss", fname)
+        files = util.root_markers_with_field(files, { "mix.lock", "Gemfile.lock" }, "tailwind", fname)
         local found = vim.fs.find(files, { path = fname, upward = true })[1]
         if found then
             on_dir(vim.fs.dirname(found))

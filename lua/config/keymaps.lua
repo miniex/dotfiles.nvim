@@ -60,21 +60,16 @@ map("<leader>j", "gJ", "n", "Join lines (no space)")
 
 -- gco / gcO / gcA: not in 0.12's built-in gc. The marker follows the treesitter
 -- context (JSX, vue blocks, md fences) the way vim/_comment.lua resolves it.
-local function commentstring_at(row, col)
-    local ok, parser = pcall(vim.treesitter.get_parser, 0, nil, { error = false })
-    if not ok or not parser then
-        return vim.bo.commentstring
-    end
-    parser:parse({ row, row + 1 })
+-- Returns the commentstring and how specific it is (capture metadata > tree depth).
+local function commentstring_at(parser, row, col)
     local caps = vim.treesitter.get_captures_at_pos(0, row, col)
     for i = #caps, 1, -1 do
         local md = caps[i].metadata
         local cs = md["bo.commentstring"] or (md[caps[i].id] and md[caps[i].id]["bo.commentstring"])
         if cs then
-            return cs
+            return cs, math.huge
         end
     end
-    -- Deepest language tree at the position with a commentstring.
     local range, found, depth = { row, col, row, col + 1 }, nil, 0
     local function walk(tree, level)
         if not tree:contains(range) then
@@ -91,7 +86,36 @@ local function commentstring_at(row, col)
         end
     end
     walk(parser, 1)
-    return found or vim.bo.commentstring
+    return found, depth
+end
+
+-- The new line sits between two existing ones (o: this and the next, O: the
+-- previous and this); the more specific side wins, so `o` on a ```lua fence
+-- line or a <script> tag gets the inner language's marker.
+local function commentstring_for(where, row)
+    local ok, parser = pcall(vim.treesitter.get_parser, 0, nil, { error = false })
+    if not ok or not parser then
+        return vim.bo.commentstring
+    end
+    local last = vim.api.nvim_buf_line_count(0) - 1
+    local function eol(r)
+        return { r, math.max(#vim.fn.getline(r + 1) - 1, 0) }
+    end
+    local function bol(r)
+        return { r, math.max((vim.fn.getline(r + 1):find("%S") or 1) - 1, 0) }
+    end
+    local spots = where == "A" and { eol(row) }
+        or where == "o" and { eol(row), row < last and bol(row + 1) or nil }
+        or { bol(row), row > 0 and eol(row - 1) or nil }
+    parser:parse({ math.max(row - 1, 0), math.min(row + 2, last + 1) })
+    local best, best_depth = nil, -1
+    for _, pos in ipairs(spots) do
+        local cs, depth = commentstring_at(parser, pos[1], pos[2])
+        if cs and depth > best_depth then
+            best, best_depth = cs, depth
+        end
+    end
+    return best or vim.bo.commentstring
 end
 
 -- One insert: the line is opened / appended by the real o / O / A and the marker
@@ -99,17 +123,19 @@ end
 -- would split it into two undo steps).
 local function comment_insert(where)
     local row = vim.api.nvim_win_get_cursor(0)[1] - 1
-    local line = vim.api.nvim_get_current_line()
-    local col = where == "A" and math.max(#line - 1, 0) or (line:find("%S") or 1) - 1
-    local cs = commentstring_at(row, col)
+    local cs = commentstring_for(where, row)
     local left, right = cs:match("^%s*(.-)%s*%%s%s*(.-)%s*$")
-    left, right = left or "//", right or ""
+    if not left then
+        vim.notify("'commentstring' is empty or has no %s", vim.log.levels.WARN)
+        return
+    end
     local keys = where .. (where == "A" and " " or "") .. left .. " "
     if right ~= "" then
         -- Park before the closer: `{/* | */}`.
         keys = keys .. " " .. right .. ("<C-g>U<Left>"):rep(vim.fn.strchars(right) + 1)
     end
-    vim.api.nvim_feedkeys(vim.keycode(keys), "n", false)
+    -- "i": insert at the head of typeahead, so a macro's remaining keys come after.
+    vim.api.nvim_feedkeys(vim.keycode(keys), "in", false)
 end
 
 map("gco", function()
