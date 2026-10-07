@@ -88,36 +88,12 @@ local function open_dashboard()
     end
 end
 
--- On last file buffer close → dashboard in main window (avoid [No Name]).
-local function open_dashboard_if_empty(closing)
-    -- A named buffer still on screen (e.g. oil, which is unlisted) replaced the file — not empty.
-    for _, win in ipairs(vim.api.nvim_list_wins()) do
-        local b = vim.api.nvim_win_get_buf(win)
-        if
-            b ~= closing
-            and vim.api.nvim_win_get_config(win).relative == ""
-            and vim.api.nvim_buf_get_name(b) ~= ""
-            and (vim.bo[b].buftype == "" or vim.bo[b].buftype == "acwrite")
-        then
-            return
-        end
-    end
+-- Dashboard when no named file is listed (dir launch with nothing restored).
+local function open_dashboard_if_empty()
     for _, buf in ipairs(vim.api.nvim_list_bufs()) do
-        if
-            buf ~= closing
-            and vim.api.nvim_buf_is_valid(buf)
-            and vim.bo[buf].buflisted
-            and vim.bo[buf].buftype == ""
-            and vim.api.nvim_buf_get_name(buf) ~= ""
-        then
+        if vim.bo[buf].buflisted and vim.bo[buf].buftype == "" and vim.api.nvim_buf_get_name(buf) ~= "" then
             return
         end
-    end
-    -- Single-file mode (`nvim <file>`) is a throwaway editor: closing the file
-    -- exits instead of falling back to the dashboard.
-    if vim.g.single_file then
-        vim.cmd("qall")
-        return
     end
     open_dashboard()
 end
@@ -186,7 +162,7 @@ if vim.g.dir_launch then
         nested = true,
         callback = function()
             vim.schedule(function()
-                open_dashboard_if_empty(nil)
+                open_dashboard_if_empty()
             end)
         end,
     })
@@ -216,23 +192,6 @@ if vim.g.multi_dir then
         end,
     })
 end
-
-vim.api.nvim_create_autocmd("BufDelete", {
-    group = vim.api.nvim_create_augroup("SnacksDashboardOnLastClose", { clear = true }),
-    callback = function(args)
-        -- Skip terminals / help / scratches — only file buffer closes can leave the editor "empty".
-        if not vim.api.nvim_buf_is_valid(args.buf) then
-            return
-        end
-        if vim.bo[args.buf].buftype ~= "" or not vim.bo[args.buf].buflisted then
-            return
-        end
-        local closing = args.buf
-        vim.schedule(function()
-            open_dashboard_if_empty(closing)
-        end)
-    end,
-})
 
 -- Source-of-truth for dashboard shortcuts: feeds preset.keys + the icon strip.
 local DASH_KEYS = {

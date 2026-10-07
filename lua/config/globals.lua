@@ -8,7 +8,6 @@ vim.g.loaded_perl_provider = 0
 vim.g.loaded_node_provider = 0
 
 -- Launch modes (read by persistence / autocmds):
---  • single_file — one file (`nvim x`): no dashboard, one buffer at a time.
 --  • file_launch — any file arg(s), incl. `nvim a b c`: no session save/restore.
 --  • multi_dir — `nvim dir1 dir2`: per-dir projects; :next/:prev tcd's in.
 -- `nvim` is the full IDE; `nvim <dir>` is a bare launch inside <dir> (same session).
@@ -22,11 +21,11 @@ do
         -- cwd (hence the session key) matches and the same workspace restores.
         -- chdir guarded: an inaccessible dir falls through to the file-launch branch.
         pcall(vim.cmd, "argdelete *")
-        vim.g.single_file, vim.g.file_launch = false, false
+        vim.g.file_launch = false
         vim.g.dir_launch = vim.fn.getcwd() -- a VimEnter drops the stray dir buffer
     elseif n == 0 and vim.fn.has("ttyin") == 0 then
         -- Piped stdin (`cmd | nvim -`): file-launch semantics, no session over piped content.
-        vim.g.single_file, vim.g.file_launch, vim.g.multi_dir = false, true, false
+        vim.g.file_launch, vim.g.multi_dir = true, false
     else
         local files = 0
         for i = 0, n - 1 do
@@ -34,7 +33,6 @@ do
                 files = files + 1
             end
         end
-        vim.g.single_file = n == 1 and files == 1
         vim.g.file_launch = files > 0 -- dirs alone never block the session
         vim.g.multi_dir = n >= 2 and files == 0
     end

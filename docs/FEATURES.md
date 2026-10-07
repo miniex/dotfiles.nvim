@@ -120,7 +120,7 @@ Yank → system clipboard auto-routed via `wl-copy` (Wayland), `xclip` (X11), `p
 
 picker · profiler · terminal · dashboard · notifier · indent · scope · image · bigfile · quickfile · bufdelete · input · scratch · zen · words · lazygit · gitbrowse · rename (LSP-aware).
 
-Closing the last named file (`<leader>w` / `<leader>bd` / `:q` / `:wq` / `:x` / `ZZ`) swaps the main window in place for the dashboard — except in a single-file launch (see Launch modes), where it exits instead. On the dashboard `:q` / `:wq` / `:x` / `ZZ` exit nvim; `<leader>w` jumps to a file buffer if any, else exits. `<leader>;` peeks and returns to the alternate on the next press. Persistence quietly swaps dashboard windows out before saving so the session restores cleanly. Footer surfaces a `<leader>qs` hint when a session exists for the cwd.
+`:q` / `:x` / `ZZ` are stock. On the dashboard `<leader>w` jumps to a file buffer if any, else exits. `<leader>;` peeks and returns to the alternate on the next press. Persistence quietly swaps dashboard windows out before saving so the session restores cleanly. Footer surfaces a `<leader>qs` hint when a session exists for the cwd.
 
 ## Launch modes
 
@@ -128,8 +128,7 @@ How you start Neovim sets the workspace behavior:
 
 - **`nvim`** (no args) — full IDE: dashboard, and the cwd session auto-restores on start and saves on exit.
 - **`nvim <dir>`** — identical to `cd <dir> && nvim`: chdir's into `<dir>` (dropping the stray dir buffer) and keys the session to `<dir>`, landing on the dashboard or the cwd's restored session (an inaccessible dir falls back to a bare launch).
-- **`nvim <file>`** — single-file editor: no dashboard, one buffer at a time (opening another wipes the previous), no session. Closing the file exits Neovim.
-- **`nvim a b c…`** (multiple files) — open as buffers in argument order (more can be opened), but the session is left untouched.
+- **`nvim <file…>`** — opens the files as buffers; the session is left untouched.
 - **`nvim dir1 dir2…`** (multiple dirs) — each dir is its own project root; `:next` / `:prev` `:tcd` into whichever is current (cwd / pickers / LSP / session key follow) and show that dir's dashboard. Directory buffers are unlisted, so buffer lists carry only the files you open. Sessions are **manual**: `<leader>qs` restores the current dir's, exit saves it (no auto-restore, so `:next` / `:prev` stay intact).
 
-This keeps `nvim <file>` a throwaway editor that never disturbs a directory's saved workspace. Set via `vim.g.single_file` / `vim.g.file_launch` / `vim.g.multi_dir` in `lua/config/globals.lua`.
+This keeps `nvim <file>` from disturbing a directory's saved workspace. Set via `vim.g.file_launch` / `vim.g.multi_dir` in `lua/config/globals.lua`.

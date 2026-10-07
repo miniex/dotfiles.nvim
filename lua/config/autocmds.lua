@@ -377,19 +377,6 @@ vim.api.nvim_create_autocmd("VimEnter", {
     end,
 })
 
--- Single-file mode (`nvim <file>`): one buffer at a time — bufhidden=wipe drops the
--- previous file when you open another (confirm=true prompts if it was modified).
-if vim.g.single_file then
-    vim.api.nvim_create_autocmd({ "BufReadPost", "BufNewFile" }, {
-        group = vim.api.nvim_create_augroup("single-file-buffer", { clear = true }),
-        callback = function(args)
-            if vim.bo[args.buf].buftype == "" then
-                vim.bo[args.buf].bufhidden = "wipe"
-            end
-        end,
-    })
-end
-
 -- `nvim <dir>`: globals chdir'd + argdelete'd; drop the leftover directory buffer so
 -- it lands on the dashboard / restored session. Runs before persistence's autoload.
 if vim.g.dir_launch then
