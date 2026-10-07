@@ -25,7 +25,7 @@ Language-agnostic servers (e.g. `typos_lsp`) aren't mapped per-language — they
 
 Client-side file watching (`didChangeWatchedFiles`) is on for every server when `inotifywait` exists, which can stall a large project on open. Fix per server: a server-side watcher (rust-analyzer's `files.watcher = "server"`) or `dynamicRegistration = false` in its `after/lsp/<server>.lua`.
 
-Linters → `config.lang.lint()`, non-LSP tools → `config.lang.mason()`, neotest adapters → `config.lang.neotest()`, each in the lang's file; `lua/plugins/lsp/{lint,dap,neotest}.lua` keep only shared setup. CodeLLDB-based DAP (C/C++, Zig, Nim, Rust) → shared resolver `lua/config/codelldb.lua`. Repeated lang-spec fragments (mason / treesitter / blink / lint / neotest / code-action keys) have one-line helpers in `lua/config/lang.lua`; DAP mason-binary guards in `lua/config/dap.lua`. JSON/YAML SchemaStore wiring → shared `lua/config/lsp_schemastore.lua`. Semantic tokens are disabled for vtsls / basedpyright / clangd centrally in `lua/plugins/lsp/init.lua` (`SEMANTIC_TOKENS_OFF`).
+Linters → `config.lang.lint()`, non-LSP tools → `config.lang.mason()`, neotest adapters → `config.lang.neotest()`, each in the lang's file; `lua/plugins/lsp/{lint,dap,neotest}.lua` keep only shared setup. CodeLLDB-based DAP (C/C++, Zig, Nim, Rust) → shared resolver `lua/config/codelldb.lua`. Repeated lang-spec fragments (mason / treesitter / blink / lint / neotest / code-action keys) have one-line helpers in `lua/config/lang.lua`; DAP mason-binary guards in `lua/config/dap.lua`. JSON/YAML/TOML SchemaStore wiring → shared `lua/config/lsp_schemastore.lua`. Semantic tokens are disabled for vtsls / basedpyright / clangd centrally in `lua/plugins/lsp/init.lua` (`SEMANTIC_TOKENS_OFF`).
 
 ## Snippets
 

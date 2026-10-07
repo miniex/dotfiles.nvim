@@ -58,35 +58,58 @@ map("J", function()
 end, "n", "Join lines (keep cursor)")
 map("<leader>j", "gJ", "n", "Join lines (no space)")
 
--- gco / gcO / gcA: not in 0.12's built-in gc. The marker is probed with `gcc` on a
--- scratch line, so it follows the treesitter context (JSX, vue blocks, md fences).
-local function comment_parts()
-    local row = vim.api.nvim_win_get_cursor(0)[1]
-    vim.api.nvim_buf_set_lines(0, row, row, false, { "\1" })
-    vim.api.nvim_win_set_cursor(0, { row + 1, 0 })
-    pcall(vim.cmd, "undojoin")
-    vim.cmd("normal gcc")
-    local probed = vim.api.nvim_get_current_line()
-    pcall(vim.cmd, "undojoin")
-    vim.api.nvim_buf_set_lines(0, row, row + 1, false, {})
-    vim.api.nvim_win_set_cursor(0, { row, 0 })
-    local left, right = probed:match("^%s*(.-)%s*\1%s*(.*)$")
-    return left or "//", right or ""
+-- gco / gcO / gcA: not in 0.12's built-in gc. The marker follows the treesitter
+-- context (JSX, vue blocks, md fences) the way vim/_comment.lua resolves it.
+local function commentstring_at(row, col)
+    local ok, parser = pcall(vim.treesitter.get_parser, 0, nil, { error = false })
+    if not ok or not parser then
+        return vim.bo.commentstring
+    end
+    parser:parse({ row, row + 1 })
+    local caps = vim.treesitter.get_captures_at_pos(0, row, col)
+    for i = #caps, 1, -1 do
+        local md = caps[i].metadata
+        local cs = md["bo.commentstring"] or (md[caps[i].id] and md[caps[i].id]["bo.commentstring"])
+        if cs then
+            return cs
+        end
+    end
+    -- Deepest language tree at the position with a commentstring.
+    local range, found, depth = { row, col, row, col + 1 }, nil, 0
+    local function walk(tree, level)
+        if not tree:contains(range) then
+            return
+        end
+        for _, ft in ipairs(vim.treesitter.language.get_filetypes(tree:lang())) do
+            local cs = vim.filetype.get_option(ft, "commentstring")
+            if cs ~= "" and level > depth then
+                found, depth = cs, level
+            end
+        end
+        for _, child in pairs(tree:children()) do
+            walk(child, level + 1)
+        end
+    end
+    walk(parser, 1)
+    return found or vim.bo.commentstring
 end
 
+-- One insert: the line is opened / appended by the real o / O / A and the marker
+-- typed in, so a single `u` drops the whole comment (API edits + startinsert
+-- would split it into two undo steps).
 local function comment_insert(where)
-    local row, line = vim.api.nvim_win_get_cursor(0)[1], vim.api.nvim_get_current_line()
-    local left, right = comment_parts()
-    -- `A` rewrites the current line; `o` / `O` open one at the same indent.
-    local prefix = (where == "A" and line .. " " or line:match("^%s*")) .. left .. " "
-    local at = where == "A" and row - 1 or (where == "O" and row - 1 or row)
-    pcall(vim.cmd, "undojoin")
-    vim.api.nvim_buf_set_lines(0, at, where == "A" and row or at, false, {
-        prefix .. (right ~= "" and " " .. right or ""),
-    })
-    -- Right-delimited (`{/* */}`) parks before the closer; otherwise append at EOL.
-    vim.api.nvim_win_set_cursor(0, { at + 1, right ~= "" and #prefix or 0 })
-    vim.cmd(right ~= "" and "startinsert" or "startinsert!")
+    local row = vim.api.nvim_win_get_cursor(0)[1] - 1
+    local line = vim.api.nvim_get_current_line()
+    local col = where == "A" and math.max(#line - 1, 0) or (line:find("%S") or 1) - 1
+    local cs = commentstring_at(row, col)
+    local left, right = cs:match("^%s*(.-)%s*%%s%s*(.-)%s*$")
+    left, right = left or "//", right or ""
+    local keys = where .. (where == "A" and " " or "") .. left .. " "
+    if right ~= "" then
+        -- Park before the closer: `{/* | */}`.
+        keys = keys .. " " .. right .. ("<C-g>U<Left>"):rep(vim.fn.strchars(right) + 1)
+    end
+    vim.api.nvim_feedkeys(vim.keycode(keys), "n", false)
 end
 
 map("gco", function()
