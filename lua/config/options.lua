@@ -25,7 +25,7 @@ opt.sessionoptions = { "curdir", "winsize", "help", "globals", "skiprtp" }
 opt.number = true
 opt.relativenumber = true
 opt.termguicolors = true
-opt.signcolumn = "yes:2"
+opt.signcolumn = "yes"
 opt.fillchars:append({ eob = " " })
 -- block-wise visual edits past line end (column / table editing)
 opt.virtualedit = "block"
