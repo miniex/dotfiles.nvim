@@ -187,6 +187,13 @@ if vim.g.dir_launch then
                     pcall(vim.api.nvim_buf_delete, b, { force = true })
                 end
             end
+            -- The delete leaves a fresh [No Name]; the dashboard opens its own buffer,
+            -- so let this one vanish instead of lingering in the buffer list.
+            local cur = vim.api.nvim_get_current_buf()
+            if vim.api.nvim_buf_get_name(cur) == "" and not vim.bo[cur].modified then
+                vim.bo[cur].buflisted = false
+                vim.bo[cur].bufhidden = "wipe"
+            end
         end,
     })
 end

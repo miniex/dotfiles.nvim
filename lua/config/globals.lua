@@ -19,6 +19,8 @@ end
 -- Stock ftplugins (python/rust/go, …) map [[ ]] buffer-locally, hiding the
 -- snacks.words reference jumps. markdown.lua / help.lua ignore this (sections, gO).
 vim.g.no_plugin_maps = 1
+-- Stock ftplugin/qf.vim would replace the global statusline in the qf window.
+vim.g.qf_disable_statusline = 1
 
 -- Launch modes (read by persistence / autocmds / snacks):
 --  • `nvim` — full IDE: dashboard + cwd session.

@@ -73,6 +73,7 @@ return {
             })
         end,
         opts = {
+            PATH = "skip", -- globals.lua already prepends mason/bin at startup
             ui = {
                 border = vim.g.flower_border,
                 width = 0.85,

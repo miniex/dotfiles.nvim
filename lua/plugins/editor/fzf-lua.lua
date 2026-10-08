@@ -1,3 +1,24 @@
+-- Open from a sidebar / qf / dashboard lands in the first normal file window (as
+-- fff and snacks do), not in the window the picker was started from.
+local function in_main(action)
+    return function(selected, o)
+        local function main(w)
+            return vim.api.nvim_win_get_config(w).relative == ""
+                and vim.bo[vim.api.nvim_win_get_buf(w)].buftype == ""
+                and not vim.wo[w].winfixbuf
+        end
+        if not main(0) then
+            for _, w in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
+                if main(w) then
+                    vim.api.nvim_set_current_win(w)
+                    break
+                end
+            end
+        end
+        return require("fzf-lua.actions")[action](selected, o)
+    end
+end
+
 return {
     "ibhagwan/fzf-lua",
     dependencies = { "nvim-tree/nvim-web-devicons" },
@@ -247,6 +268,14 @@ return {
         -- No fzf scrollbar: it draws a second │ right next to the divider.
         fzf_opts = { ["--gutter"] = " ", ["--no-scrollbar"] = true },
         grep = { prompt = "  ", winopts = { title = " ✿ grep ✿ " }, _headers = {} },
+        actions = {
+            files = {
+                true,
+                ["enter"] = in_main("file_edit_or_qf"),
+                ["ctrl-s"] = in_main("file_split"),
+                ["ctrl-v"] = in_main("file_vsplit"),
+            },
+        },
         -- [1] = true merges with the defaults (F4 preview, alt-a, ...) instead of replacing them.
         keymap = {
             builtin = {

@@ -64,6 +64,24 @@ return {
             },
             {
                 "Weissle/persistent-breakpoints.nvim",
+                -- dap is keys-lazy, so saved breakpoints stayed hidden until the first
+                -- <leader>d key. Load on read when this cwd has a non-empty save.
+                init = function()
+                    vim.api.nvim_create_autocmd("BufReadPost", {
+                        group = vim.api.nvim_create_augroup("breakpoints-load", { clear = true }),
+                        callback = function()
+                            local file = vim.fn.stdpath("data")
+                                .. "/nvim_checkpoints/"
+                                .. vim.fn.getcwd():gsub("/", "_")
+                                .. ".json"
+                            local stat = vim.uv.fs_stat(file)
+                            if stat and stat.size > 2 then
+                                require("lazy").load({ plugins = { "persistent-breakpoints.nvim" } })
+                                return true
+                            end
+                        end,
+                    })
+                end,
                 opts = {
                     -- Auto-load saved breakpoints (keyed by cwd in stdpath('data')).
                     load_breakpoints_event = { "BufReadPost" },

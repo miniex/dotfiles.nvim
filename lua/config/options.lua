@@ -18,7 +18,8 @@ opt.smartcase = true
 opt.inccommand = "split"
 opt.grepprg = "rg --vimgrep --smart-case"
 
--- session: window-visible buffers only (no hidden badd); globals for NeotestSummaryOpen
+-- session: window-visible buffers only (no hidden badd; each window's alternate still
+-- comes back via `balt`, unloaded); globals for NeotestSummaryOpen
 opt.sessionoptions = { "curdir", "winsize", "help", "globals", "skiprtp" }
 
 -- visual
