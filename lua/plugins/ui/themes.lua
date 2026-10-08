@@ -38,6 +38,9 @@ return {
                     return {
                         WinSeparator = { fg = damin_pink, bg = "NONE" },
                         FloatBorder = { fg = damin_pink, bg = "NONE" },
+                        -- Stock surface1 numbers vanish on a transparent background.
+                        LineNr = { fg = pal.dim },
+                        CursorLineNr = { fg = damin_blue, bold = true },
 
                         GitSignsAdd = { fg = git_add, bg = "NONE" },
                         GitSignsChange = { fg = git_change, bg = "NONE" },
