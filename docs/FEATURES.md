@@ -9,7 +9,7 @@
 - **Navigation** — `gd` / `gr` / `gI` / `gy` open an fzf-lua picker (auto-jumps on a single result); `<leader>cI` / `cG` / `cH` for incoming / outgoing calls + type hierarchy.
 - **Rename** — `<leader>rn` via inc-rename with a live in-buffer preview.
 - **Formatting** — `<leader>cf` runs `vim.lsp.buf.format` (native LSP; no formatter plugin). `gq` / `gw` route through the LSP formatter on code filetypes (via `formatexpr`); prose (markdown / gitcommit) keeps Neovim's built-in reflow.
-- **Semantic tokens** — off by default on TS (vtsls), Python (basedpyright), and C/C++ (clangd), where they clash with treesitter highlight; `<leader>uy` toggles them for the current buffer's servers.
+- **Semantic tokens** — off by default on TS (vtsls), Python (basedpyright), and C/C++ (clangd), where they clash with treesitter highlight; `<leader>uy` toggles them for the current buffer's servers (in all their buffers).
 - **Colors** — colorizer highlights hex (and CSS functions in style files); LSP document colors are left at nvim defaults.
 - **Linked editing** — an HTML/JSX tag and its closing tag rename in sync via native `vim.lsp.linked_editing_range` on capable servers (html, …).
 - **Diagnostics** — single config in `lua/plugins/lsp/init.lua`; `tiny-inline-diagnostic.nvim` owns virtual text. Severity-sorted, signs `✗`/`!`/`i`/`?`.
@@ -47,7 +47,7 @@
 
 - **Theme** — Catppuccin Mocha retoned to a 2-color **damin** palette: `#98ABCC` (blue) / `#E890B0` (pink). Mirrors [`fish-theme-damin`](https://github.com/miniex/fish-theme-damin) + [`dotfiles.kitty`](https://github.com/miniex/dotfiles.kitty) + [`dotfiles.tmux`](https://github.com/miniex/dotfiles.tmux).
 - **statusline** — hand-rolled global statusline ([`lua/config/statusline.lua`](../lua/config/statusline.lua)); plain text, transparent. Left: 3-letter mode (`NOR` / `INS` / `VIS` / `V-L` / `V-B` / `REP` / `CMD` / `TRM` …, mode-colored), `@x` while recording a macro, git branch, relative path + `[+]` / `[RO]`, diagnostic counts (`E1 W2 I1 H1`). Right: LSP progress (spinner + title, `✓ <client>` on end), attached LSP client names, gitsigns diff (`+a ~c -r`), off-default encoding / line-ending (non-`utf-8` / non-`unix` only), `searchcount()` match `[cur/total]` (cached; skipped above 20000 lines), `line:col` + `%P`. Empty on the dashboard.
-- **statuscolumn** — hand-rolled ([`lua/config/statuscolumn.lua`](../lua/config/statuscolumn.lua)): sign (bloom ✿ / diagnostics) │ number │ git. gitsigns sit right of the number instead of sharing the sign column; no cache, so the ✿ never lags.
+- **statuscolumn** — hand-rolled ([`lua/config/statuscolumn.lua`](../lua/config/statuscolumn.lua)): two sign cells (bloom ✿, diagnostics, breakpoints), number, git sign. gitsigns sit right of the number instead of sharing the sign column; `nonumber` / `signcolumn=no` / foldcolumn are respected; no cache, so the ✿ never lags.
 - **Buffers** — no tabline. `<S-h>` / `<S-l>` or `[b` / `]b` cycle, `<leader>fb` picks.
 - **cursor bloom** — `✿` sign on the current line in mode color (custom autocmd in [`lua/config/cursor-bloom.lua`](../lua/config/cursor-bloom.lua)). Refresh defer skips picker/terminal/chrome buffers.
 - **which-key** — hint floats pinned to the bottom row at 85% editor width (centered); height grows with content. `timeoutlen=300`.

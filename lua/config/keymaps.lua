@@ -60,14 +60,15 @@ map("<leader>j", "gJ", "n", "Join lines (no space)")
 
 -- gco / gcO / gcA: not in 0.12's built-in gc. The marker follows the treesitter
 -- context (JSX, vue blocks, md fences) the way vim/_comment.lua resolves it.
--- Returns the commentstring and how specific it is (capture metadata > tree depth).
+-- Returns the capture-metadata commentstring (JSX etc.) if any, else the deepest
+-- language tree's commentstring and its depth.
 local function commentstring_at(parser, row, col)
     local caps = vim.treesitter.get_captures_at_pos(0, row, col)
     for i = #caps, 1, -1 do
         local md = caps[i].metadata
         local cs = md["bo.commentstring"] or (md[caps[i].id] and md[caps[i].id]["bo.commentstring"])
         if cs then
-            return cs, math.huge
+            return cs
         end
     end
     local range, found, depth = { row, col, row, col + 1 }, nil, 0
@@ -86,12 +87,13 @@ local function commentstring_at(parser, row, col)
         end
     end
     walk(parser, 1)
-    return found, depth
+    return nil, found, depth
 end
 
 -- The new line sits between two existing ones (o: this and the next, O: the
--- previous and this); the more specific side wins, so `o` on a ```lua fence
--- line or a <script> tag gets the inner language's marker.
+-- previous and this). Capture metadata counts only when both sides share it
+-- (`return (` / `<div>` stays `//`); otherwise the deeper language tree wins,
+-- so `o` on a ```lua fence line or a <script> tag gets the inner marker.
 local function commentstring_for(where, row)
     local ok, parser = pcall(vim.treesitter.get_parser, 0, nil, { error = false })
     if not ok or not parser then
@@ -108,12 +110,20 @@ local function commentstring_for(where, row)
         or where == "o" and { eol(row), row < last and bol(row + 1) or nil }
         or { bol(row), row > 0 and eol(row - 1) or nil }
     parser:parse({ math.max(row - 1, 0), math.min(row + 2, last + 1) })
-    local best, best_depth = nil, -1
-    for _, pos in ipairs(spots) do
-        local cs, depth = commentstring_at(parser, pos[1], pos[2])
+    local meta, shared, best, best_depth = nil, true, nil, -1
+    for i, pos in ipairs(spots) do
+        local m, cs, depth = commentstring_at(parser, pos[1], pos[2])
+        if i == 1 then
+            meta = m
+        elseif m ~= meta then
+            shared = false
+        end
         if cs and depth > best_depth then
             best, best_depth = cs, depth
         end
+    end
+    if meta and shared then
+        return meta
     end
     return best or vim.bo.commentstring
 end

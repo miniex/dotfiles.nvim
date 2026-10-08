@@ -45,7 +45,7 @@ The asymmetry between `after/` / `snippets/` (at root) and `lua/config|plugins/`
 6. `config.cursor-bloom` — mode-colored `✿` sign on the current line
 7. `config.lazy` — bootstrap lazy.nvim and load `plugins.*` specs
 8. `config.statusline` — hand-rolled global statusline
-9. `config.statuscolumn` — sign | number | git gutter
+9. `config.statuscolumn` — signs | number | git gutter
 
 Plugin specs are discovered by `lazy.setup({ spec = { { import = "plugins.coding" }, ... } })` in `lua/config/lazy.lua`. Per-language modules (`lua/plugins/lang/<lang>.lua`) are loaded only when the matching key in `lua/config/langs.lua` is `true`.
 

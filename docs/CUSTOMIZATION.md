@@ -44,7 +44,7 @@ Drop Lua files in `~/.config/nvim/snippets/`. Filetype-scoped by filename (e.g. 
 ## Statusline
 
 - `lua/config/statusline.lua` — hand-rolled `%!` render function; segments, mode labels (`MODES`), and `Stl*` highlight groups all live there. Colors come from `config.palette`.
-- `lua/config/statuscolumn.lua` — `sign | number | git` gutter; git signs are matched by their `GitSigns*` highlight.
+- `lua/config/statuscolumn.lua` — `signs | number | git` gutter; git signs are matched by their `GitSigns*` highlight, `SIGNS` sets the sign cells.
 
 ## Picker / terminal exclusions
 

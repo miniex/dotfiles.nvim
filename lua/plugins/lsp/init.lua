@@ -293,6 +293,8 @@ return {
             -- Servers whose semantic tokens clash with treesitter. Disabled here, not via
             -- the server's on_attach, so its bundled on_attach (e.g. pyright cmds) still runs.
             local SEMANTIC_TOKENS_OFF = { basedpyright = true, vtsls = true, clangd = true }
+            -- client_id -> on/off set by <leader>uy; wins over SEMANTIC_TOKENS_OFF on later attaches.
+            local semantic_user = {}
 
             -- Per-client, capability-gated; runs on EVERY attach so wiring isn't
             -- tied to attach order (e.g. ruff before basedpyright). Buffer-global
@@ -301,7 +303,9 @@ return {
                 -- Per client, not per buffer: a bufnr filter also kills tokens from
                 -- other servers on the buffer (vue_ls next to vtsls).
                 if
-                    SEMANTIC_TOKENS_OFF[client.name] and vim.lsp.semantic_tokens.is_enabled({ client_id = client.id })
+                    SEMANTIC_TOKENS_OFF[client.name]
+                    and semantic_user[client.id] == nil
+                    and vim.lsp.semantic_tokens.is_enabled({ client_id = client.id })
                 then
                     pcall(vim.lsp.semantic_tokens.enable, false, { client_id = client.id })
                 end
@@ -508,9 +512,9 @@ return {
                             vim.api.nvim_feedkeys(":IncRename " .. w, "n", false)
                         end
                     end, "Rename")
-                    -- Semantic tokens can clash with treesitter highlight; toggle per buffer.
-                    -- Per client: SEMANTIC_TOKENS_OFF disables by client_id, and a bufnr
-                    -- toggle is ANDed with that flag, so it couldn't turn them back on.
+                    -- Semantic tokens can clash with treesitter highlight. Toggles this buffer's
+                    -- clients (all their buffers): SEMANTIC_TOKENS_OFF disables by client_id,
+                    -- and a bufnr toggle is ANDed with that flag, so it couldn't turn them back on.
                     map("n", "<leader>uy", function()
                         local b = vim.api.nvim_get_current_buf()
                         local clients = vim.tbl_filter(function(c)
@@ -522,6 +526,7 @@ return {
                         end
                         vim.lsp.semantic_tokens.enable(not on, { bufnr = b })
                         for _, c in ipairs(clients) do
+                            semantic_user[c.id] = not on
                             vim.lsp.semantic_tokens.enable(not on, { client_id = c.id })
                         end
                     end, "Toggle Semantic Tokens")

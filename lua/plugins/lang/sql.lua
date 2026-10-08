@@ -37,20 +37,25 @@ return {
             -- prints nothing; fall back to ansi there.
             local base = require("lint.linters.sqlfluff")
             require("lint").linters.sqlfluff = function()
-                local dir = vim.fs.dirname(vim.api.nvim_buf_get_name(0))
+                local name = vim.api.nvim_buf_get_name(0)
+                local dir = vim.fs.dirname(name)
                 local configured = vim.fs.find(function(name, path)
                     if name == ".sqlfluff" then
                         return true
                     end
                     if name == "pyproject.toml" or name == "setup.cfg" or name == "tox.ini" then
                         local ok, lines = pcall(vim.fn.readfile, path .. "/" .. name)
-                        return ok and table.concat(lines, "\n"):find("sqlfluff") ~= nil
+                        return ok and table.concat(lines, "\n"):find("sqlfluff.-dialect") ~= nil
                     end
                     return false
                 end, { upward = true, path = dir, limit = 1 })[1]
                 local args = { "lint", "--format=json" }
                 if not configured then
                     args[#args + 1] = "--dialect=ansi"
+                end
+                -- sqlfluff resolves config from this path, not from cwd.
+                if name ~= "" then
+                    vim.list_extend(args, { "--stdin-filename", name })
                 end
                 args[#args + 1] = "-"
                 return vim.tbl_extend("force", base, { args = args })
