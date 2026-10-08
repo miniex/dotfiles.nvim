@@ -309,7 +309,7 @@ Open keys only open or focus — never close — so `<space>t` stays typable at 
 | `<leader>T`                                | Open / focus terminal #2                                                 |
 | `<Esc>` (normal mode)                      | Hide terminal. Terminal mode keeps Esc for lazygit / shell TUIs.         |
 | `<C-x>`                                    | Hide terminal (works in terminal mode too)                               |
-| `<leader>w`                                | Delete buffer (on dashboard → file buf if any, else `:qall`)             |
+| `<leader>w`                                | Delete buffer (last → dashboard; on dashboard → file buf, else `:qall`)  |
 | `<leader>;`                                | Toggle dashboard (peek; press again to return)                           |
 | `<leader>bd` / `<leader>bD`                | Snacks.bufdelete: confirm-on-modified / force                            |
 | `<leader>.` / `<leader>bS`                 | Snacks scratch: toggle / select buffer                                   |

@@ -18,5 +18,11 @@ return {
         keymaps = {
             ["q"] = "actions.close",
         },
+        -- Its floats default to 'winborder' (rounded); match the flower chrome.
+        float = { border = vim.g.flower_border },
+        confirmation = { border = vim.g.flower_border },
+        progress = { border = vim.g.flower_border },
+        ssh = { border = vim.g.flower_border },
+        keymaps_help = { border = vim.g.flower_border },
     },
 }

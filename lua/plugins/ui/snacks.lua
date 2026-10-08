@@ -48,6 +48,27 @@ local function open_dashboard_if_empty()
     open_dashboard()
 end
 
+-- Closing the last file falls back to the dashboard, not a [No Name] that <leader>w
+-- can never get past (it only quits from the dashboard).
+local function delete_buf(opts)
+    Snacks.bufdelete(opts)
+    vim.schedule(function()
+        local cur = vim.api.nvim_get_current_buf()
+        if
+            vim.api.nvim_buf_get_name(cur) ~= ""
+            or vim.bo[cur].buftype ~= ""
+            or vim.bo[cur].modified
+            or vim.api.nvim_buf_line_count(cur) > 1
+            or vim.api.nvim_buf_get_lines(cur, 0, 1, false)[1] ~= ""
+        then
+            return
+        end
+        vim.bo[cur].buflisted = false
+        vim.bo[cur].bufhidden = "wipe"
+        open_dashboard_if_empty()
+    end)
+end
+
 -- Skip terminals and the dashboard itself — those bounce back or jump into a terminal.
 local function is_real_file_buf(buf)
     return buf > 0
@@ -303,7 +324,14 @@ return {
                     { ("✿ %d/%d plugins"):format(stats.loaded, stats.count), hl = "Comment" },
                 }
                 local ok_p, persistence = pcall(require, "persistence")
-                if ok_p and vim.fn.filereadable(persistence.current()) == 1 then
+                -- Same lookup as load(): the branch session, else the cwd's main one.
+                if
+                    ok_p
+                    and (
+                        vim.fn.filereadable(persistence.current()) == 1
+                        or vim.fn.filereadable(persistence.current({ branch = false })) == 1
+                    )
+                then
                     table.insert(segments, { "  ·  ", hl = "DashHeader3" })
                     table.insert(segments, { "✦ ", hl = "DashHeader5" })
                     table.insert(segments, { "<leader>qs to restore", hl = "Comment" })
@@ -356,6 +384,11 @@ return {
             -- Two boxes; the preview has no left border, so the list's right
             -- border is the single ✿│✿ divider.
             layouts = {
+                -- vim.ui.select (session pick, code actions fallback, …): merged into
+                -- snacks' select preset, only the rounded box swapped for flowers.
+                select = {
+                    layout = { border = vim.g.flower_border, title = " ✿ {title} ✿ " },
+                },
                 default = {
                     layout = {
                         box = "horizontal",
@@ -522,7 +555,7 @@ return {
                     end
                     return
                 end
-                Snacks.bufdelete()
+                delete_buf()
             end,
             desc = "Delete Buffer",
         },
@@ -536,14 +569,14 @@ return {
         {
             "<leader>bd",
             function()
-                Snacks.bufdelete()
+                delete_buf()
             end,
             desc = "Delete Buffer (confirm if modified)",
         },
         {
             "<leader>bD",
             function()
-                Snacks.bufdelete({ force = true })
+                delete_buf({ force = true })
             end,
             desc = "Delete Buffer (force)",
         },

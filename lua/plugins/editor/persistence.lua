@@ -13,7 +13,12 @@ return {
         -- Empty `enew`-only sessions trample the dashboard; only restore real files.
         local function session_has_files()
             local ok, result = pcall(function()
-                local file = require("persistence").current()
+                -- Same lookup as load(): a new branch falls back to the cwd's main session.
+                local p = require("persistence")
+                local file = p.current()
+                if vim.fn.filereadable(file) == 0 then
+                    file = p.current({ branch = false })
+                end
                 if vim.fn.filereadable(file) == 0 then
                     return false
                 end

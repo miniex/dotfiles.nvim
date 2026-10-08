@@ -118,7 +118,7 @@ See [`lua/config/modal-floats.lua`](../lua/config/modal-floats.lua) for the mutu
 
 picker · profiler · terminal · dashboard · notifier · indent · scope · image · bigfile · quickfile · bufdelete · input · scratch · zen · words · lazygit · gitbrowse · rename (LSP-aware).
 
-`:q` / `:x` / `ZZ` are stock. On the dashboard `<leader>w` jumps to a file buffer if any, else exits. `<leader>;` peeks and returns to the alternate on the next press. Persistence quietly swaps dashboard windows out before saving so the session restores cleanly. Footer surfaces a `<leader>qs` hint when a session exists for the cwd.
+`:q` / `:x` / `ZZ` are stock. On the dashboard `<leader>w` jumps to a file buffer if any, else exits; closing the last file buffer (`<leader>w` / `<leader>bd`) lands back on the dashboard. `<leader>;` peeks and returns to the alternate on the next press. Persistence quietly swaps dashboard windows out before saving so the session restores cleanly. Footer surfaces a `<leader>qs` hint when a session exists for the cwd. Sessions are per branch; a branch without one restores the cwd's main-branch session.
 
 ## Launch modes
 
