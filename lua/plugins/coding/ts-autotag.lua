@@ -10,7 +10,6 @@ return {
         "vue",
         "xml",
         "php",
-        "markdown",
         "astro",
     },
     opts = {

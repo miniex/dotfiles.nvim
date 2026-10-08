@@ -96,8 +96,9 @@ vim.api.nvim_create_autocmd("BufReadPost", {
         local mark = vim.api.nvim_buf_get_mark(args.buf, '"')
         local last = vim.api.nvim_buf_line_count(args.buf)
         if mark[1] > 0 and mark[1] <= last then
-            if pcall(vim.api.nvim_win_set_cursor, 0, mark) then
-                -- Open folds + center, matching jump keymaps.
+            local line = vim.api.nvim_buf_get_lines(args.buf, mark[1] - 1, mark[1], false)[1] or ""
+            if pcall(vim.api.nvim_win_set_cursor, 0, mark) and #line < 10000 then
+                -- Open folds + center, matching jump keymaps (skipped on huge lines: 200ms+).
                 pcall(vim.cmd, "normal! zvzz")
             end
         end

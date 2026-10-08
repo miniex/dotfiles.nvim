@@ -48,9 +48,20 @@ set_hl()
 local group = vim.api.nvim_create_augroup("Statusline", { clear = true })
 vim.api.nvim_create_autocmd("ColorScheme", { group = group, callback = set_hl })
 
-local redraw = vim.schedule_wrap(function()
-    pcall(vim.cmd.redrawstatus)
-end)
+-- Coalesced: LspProgress / DiagnosticChanged / GitSignsUpdate come in bursts
+-- (~400 in 0.5s on lua_ls load), and each redrawstatus is a full screen update.
+local redraw_timer = assert(vim.uv.new_timer())
+local function redraw()
+    if not redraw_timer:is_active() then
+        redraw_timer:start(
+            50,
+            0,
+            vim.schedule_wrap(function()
+                pcall(vim.cmd.redrawstatus)
+            end)
+        )
+    end
+end
 
 -- Client names per buffer, invalidated on attach/detach instead of rebuilt per render.
 local lsp_names = {}
@@ -102,11 +113,15 @@ vim.api.nvim_create_autocmd("LspProgress", {
 
 -- searchcount() rescans the buffer; cache it by pattern + changedtick + cursor (an
 -- autocmd can't: CmdlineLeave fires before @/ updates). Skip in huge buffers: a
--- sparse pattern scans the whole file (~24ms/move at 200k lines).
-local SEARCHCOUNT_MAX_LINES = 20000
+-- sparse pattern scans the whole file (~24ms/move at 200k lines, 30ms on a 1.5MB line).
+local SEARCHCOUNT_MAX_LINES, SEARCHCOUNT_MAX_BYTES = 20000, 1024 * 1024
 local search_key, search = nil, ""
 local function search_count(buf)
-    if vim.v.hlsearch == 0 or vim.api.nvim_buf_line_count(buf) > SEARCHCOUNT_MAX_LINES then
+    if vim.v.hlsearch == 0 then
+        return ""
+    end
+    local n = vim.api.nvim_buf_line_count(buf)
+    if n > SEARCHCOUNT_MAX_LINES or vim.api.nvim_buf_get_offset(buf, n) > SEARCHCOUNT_MAX_BYTES then
         return ""
     end
     local cur = vim.api.nvim_win_get_cursor(0)

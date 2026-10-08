@@ -46,7 +46,7 @@
 ## UI
 
 - **Theme** — Catppuccin Mocha retoned to a 2-color **damin** palette: `#98ABCC` (blue) / `#E890B0` (pink). Mirrors [`fish-theme-damin`](https://github.com/miniex/fish-theme-damin) + [`dotfiles.kitty`](https://github.com/miniex/dotfiles.kitty) + [`dotfiles.tmux`](https://github.com/miniex/dotfiles.tmux).
-- **statusline** — hand-rolled global statusline ([`lua/config/statusline.lua`](../lua/config/statusline.lua)); plain text, transparent. Left: 3-letter mode (`NOR` / `INS` / `VIS` / `V-L` / `V-B` / `REP` / `CMD` / `TRM` …, mode-colored), `@x` while recording a macro, git branch, relative path + `[+]` / `[RO]`, diagnostic counts (`E1 W2 I1 H1`). Right: LSP progress (spinner + title, `✓ <client>` on end), attached LSP client names, gitsigns diff (`+a ~c -r`), off-default encoding / line-ending (non-`utf-8` / non-`unix` only), `searchcount()` match `[cur/total]` (cached; skipped above 20000 lines), `line:col` + `%P`. Empty on the dashboard.
+- **statusline** — hand-rolled global statusline ([`lua/config/statusline.lua`](../lua/config/statusline.lua)); plain text, transparent. Left: 3-letter mode (`NOR` / `INS` / `VIS` / `V-L` / `V-B` / `REP` / `CMD` / `TRM` …, mode-colored), `@x` while recording a macro, git branch, relative path + `[+]` / `[RO]`, diagnostic counts (`E1 W2 I1 H1`). Right: LSP progress (spinner + title, `✓ <client>` on end), attached LSP client names, gitsigns diff (`+a ~c -r`), off-default encoding / line-ending (non-`utf-8` / non-`unix` only), `searchcount()` match `[cur/total]` (cached; skipped above 20000 lines / 1 MiB), `line:col` + `%P`. Empty on the dashboard.
 - **statuscolumn** — hand-rolled ([`lua/config/statuscolumn.lua`](../lua/config/statuscolumn.lua)): two sign cells (bloom ✿, diagnostics, breakpoints), number, git sign. gitsigns sit right of the number instead of sharing the sign column; `nonumber` / `signcolumn=no` / foldcolumn are respected; no cache, so the ✿ never lags.
 - **Buffers** — no tabline. `<S-h>` / `<S-l>` or `[b` / `]b` cycle, `<leader>fb` picks.
 - **cursor bloom** — `✿` sign on the current line in mode color (custom autocmd in [`lua/config/cursor-bloom.lua`](../lua/config/cursor-bloom.lua)). Refresh defer skips picker/terminal/chrome buffers.
@@ -55,7 +55,7 @@
 - **flash labels** — damin pink.
 - **indent guides** — uniform `┊` dotted guides (snacks.indent), no scope highlight (`[i`/`]i` still jump to scope edges); chunk off.
 - **zen** — `<leader>uz` focus mode hides the statusline (flower-bordered window).
-- **smear-cursor** — smooth trail with a solid single-color tail (transparent terminals show no dark box), diagonal blocks, 7ms frames, head lands at once, tail eases; every move animates (including `j` / `k`). Off across windows and in picker / terminal floats.
+- **smear-cursor** — smooth trail with a solid single-color tail (transparent terminals show no dark box), diagonal blocks, 7ms frames, head lands at once, tail eases; every move animates (including `j` / `k`). Off across windows, in picker / terminal floats, and in buffers >10000 lines.
 - **Side panels** — aerial / trouble / dap / neotest open in their plugins' default positions.
 
 ## Modal floats

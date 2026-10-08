@@ -69,11 +69,13 @@ Cursor chrome skips any non-file buffer (`buftype ~= ""`): pickers, panels, term
 Two size tiers, smallest first:
 
 - **> 1 MiB** (or a >2000-char first line) — treesitter (`ts-attach` in `lua/config/autocmds.lua`), rainbow-delimiters (also >10000 lines), and LSP CodeLens / reference highlight are skipped (size check cached per buffer); colorizer detaches on a >2000-char first line.
-- **> 2 MiB** — `snacks.bigfile` degrades features (LSP / treesitter / syntax / folds / matchparen) and colorizer skips it (`!bigfile`). Tune `size` in `lua/plugins/ui/snacks.lua`.
+- **> 2 MiB** (or minified: average line > 1000 chars) — `snacks.bigfile` degrades features (LSP / treesitter / syntax / folds / matchparen, plus `nowrap`) and colorizer / smear-cursor skip it (`bigfile` filetype). Tune `size` / `setup` in `lua/plugins/ui/snacks.lua`.
+
+By line count: gitsigns skips buffers **> 40000 lines** (`on_attach` in `lua/plugins/editor/git.lua`), smear-cursor pauses in buffers **> 10000 lines**.
 
 Separately, files **> 10 MiB** are skipped by the focus-time `:checktime` auto-reload (per buffer, size cached), so a changed huge file isn't reloaded on every focus (`lua/config/autocmds.lua`).
 
-The statusline search match count is skipped in buffers **> 20000 lines** — `searchcount()` rescans the buffer per cursor move (~24 ms at 200k lines). Tune `SEARCHCOUNT_MAX_LINES` in `lua/config/statusline.lua`.
+The statusline search match count is skipped in buffers **> 20000 lines or > 1 MiB** — `searchcount()` rescans the buffer per cursor move (~24 ms at 200k lines). Tune `SEARCHCOUNT_MAX_LINES` / `SEARCHCOUNT_MAX_BYTES` in `lua/config/statusline.lua`.
 
 ## Modal floats
 

@@ -92,6 +92,11 @@ return {
                 changedelete = { text = "▎" },
             },
             on_attach = function(bufnr)
+                -- max_file_length is checked on BufReadPre (lazy load), when the buffer
+                -- is still empty, so huge files got through (+270MB on 200k lines).
+                if vim.api.nvim_buf_line_count(bufnr) > 40000 or vim.bo[bufnr].filetype == "bigfile" then
+                    return false
+                end
                 local gs = require("gitsigns")
 
                 local function map(mode, l, r, desc)

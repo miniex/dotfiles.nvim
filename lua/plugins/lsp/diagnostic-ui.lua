@@ -39,6 +39,16 @@ return {
         -- Native signs/float live in lsp/init.lua; tiny-inline only owns virtual_text.
         config = function(_, opts)
             require("tiny-inline-diagnostic").setup(opts)
+            -- Upstream bug: cache.update copies via { unpack(diagnostics) }, which errors
+            -- past LuaJIT's ~8000-value limit. Cap what it caches; drop once fixed.
+            local cache = require("tiny-inline-diagnostic.cache")
+            local update = cache.update
+            cache.update = function(bufnr, diagnostics)
+                if diagnostics and #diagnostics > 7000 then
+                    diagnostics = vim.list_slice(diagnostics, 1, 7000)
+                end
+                return update(bufnr, diagnostics)
+            end
         end,
         keys = {
             {

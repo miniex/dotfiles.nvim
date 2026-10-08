@@ -175,7 +175,31 @@ return {
     lazy = false,
     ---@type snacks.Config
     opts = {
-        bigfile = { enabled = true, size = 2 * 1024 * 1024 }, -- 2 MiB
+        bigfile = {
+            enabled = true,
+            size = 2 * 1024 * 1024, -- 2 MiB
+            -- Stock setup, plus nowrap: a wrapped multi-MB line (minified js/json) is
+            -- re-laid out on every redraw (~90ms per <C-d>, 500ms stalls).
+            setup = function(ctx)
+                if vim.fn.exists(":NoMatchParen") ~= 0 then
+                    vim.cmd("NoMatchParen")
+                end
+                Snacks.util.wo(0, {
+                    foldmethod = "manual",
+                    statuscolumn = "",
+                    conceallevel = 0,
+                    wrap = false,
+                    linebreak = false,
+                    breakindent = false,
+                })
+                vim.b.completion = false
+                vim.schedule(function()
+                    if vim.api.nvim_buf_is_valid(ctx.buf) then
+                        vim.bo[ctx.buf].syntax = ctx.ft
+                    end
+                end)
+            end,
+        },
         bufdelete = { enabled = true },
         dashboard = {
             enabled = true,
@@ -302,6 +326,9 @@ return {
                 or vim.env.GHOSTTY_RESOURCES_DIR ~= nil
                 or vim.env.GHOSTTY_BIN_DIR ~= nil
                 or vim.env.TERM == "xterm-ghostty",
+            -- No hover float where inline placeholders are missing (tmux): it runs a
+            -- treesitter parse on every CursorMoved (~20ms/key in big markdown).
+            doc = { float = false },
         },
         indent = {
             enabled = true,

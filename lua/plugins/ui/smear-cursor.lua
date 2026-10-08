@@ -39,6 +39,29 @@ return {
             "fff_preview",
             "fzf",
             "fzflua_backdrop",
+            "bigfile",
         },
     },
+    config = function(_, opts)
+        local smear = require("smear_cursor")
+        smear.setup(opts)
+        -- Every frame is a full redraw (decoration providers, treesitter on_start);
+        -- pause in huge buffers. Only undoes its own pause, not :SmearCursorToggle.
+        local paused = false
+        local function check(buf)
+            local big = vim.api.nvim_buf_line_count(buf) > 10000
+            if big and smear.enabled then
+                smear.enabled, paused = false, true
+            elseif not big and paused then
+                smear.enabled, paused = true, false
+            end
+        end
+        vim.api.nvim_create_autocmd("BufEnter", {
+            group = vim.api.nvim_create_augroup("smear-big-buffer", { clear = true }),
+            callback = function(args)
+                check(args.buf)
+            end,
+        })
+        check(vim.api.nvim_get_current_buf())
+    end,
 }
